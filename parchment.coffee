@@ -15,7 +15,7 @@ class Parchment extends ParchmentNode
 class Block extends ParchmentNode
   formatText: (index, length, name, value) ->
     super
-    if index + length > this.getLength()
+    if index + length > this.length()
       this.format(name, value)
 
   insertText: (index, text) ->
@@ -29,13 +29,13 @@ class Block extends ParchmentNode
     )
 
   deleteText: (index, length) ->
-    if index + length > this.getLength() && this.next?
+    if index + length > this.length() && this.next?
       this.mergeNext()
     super
     if children.length == 0
       this.append(Parchment.create('break'))
 
-  getLength: ->
+  length: ->
     return super() + 1
 
 
@@ -63,7 +63,7 @@ class Embed extends Leaf
 
 class Text extends Leaf
   formatText: (index, length, name, value) ->
-    if index != 0 || length != this.getLength()
+    if index != 0 || length != this.length()
       this.split(index, length)
     this.wrap(name, value)
 

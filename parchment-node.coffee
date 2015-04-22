@@ -15,7 +15,7 @@ class ParchmentNode extends DOMNode
     child.insertText(offset, text)
 
   deleteText: (index, length) ->
-    this.remove() if index == 0 && length == this.getLength()
+    this.remove() if index == 0 && length == this.length()
     children.forEachAt(index, length, (child, offset, length) =>
       child.deleteText(offset, length)
     )
@@ -24,11 +24,6 @@ class ParchmentNode extends DOMNode
     children.forEachAt(index, length, (child, offset, length) =>
       child.formatText(offset, length, name, value)
     )
-
-  getLength: ->
-    return children.reduce((memo, child) ->
-      return memo + child.getLength()
-    , 0)
 
   replace: (name, value) ->
     node = Parchment.create(name, value)
@@ -39,6 +34,7 @@ class ParchmentNode extends DOMNode
     super
 
   split: (index) ->
+    return if index == 0 || index == this.length()
     clone = this.clone()
     this.parent.insertBefore(clone, this)
     this.children.forEachAt(0, index, (child, offset, length) ->
