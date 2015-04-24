@@ -30,13 +30,21 @@ class TreeList
     node.prev = node.next = undefined
     @length -= 1
 
-  iterator: ->
-    cur = @head
+  iterator: (startNode) ->
+    cur = startNode || @head
     # TODO use yield with ES6
     return ->
       ret = cur
       cur = cur.next if cur?
       return ret
+
+  find: (index) ->
+    next = this.iterator()
+    while cur = next()
+      length = cur.length()
+      return [cur, index] if index < length
+      index -= length
+    return false
 
   forEach: (callback) ->
     next = this.iterator()
@@ -44,6 +52,7 @@ class TreeList
       callback(cur)
 
   forEachAt: (index, length, callback) ->
+    # TODO use this.find()
     next = this.iterator()
     curIndex = 0
     while cur = next()
