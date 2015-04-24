@@ -1,8 +1,11 @@
 _ = require('lodash')
+dom = require('../../lib/dom')
 Parchment = require('./parchment')
 
 
 class Block extends Parchment.Node
+  @tagName: 'P'
+
   deleteText: (index, length) ->
     if index + length > this.length() && this.next?
       this.mergeNext()
@@ -30,6 +33,8 @@ class Block extends Parchment.Node
 
 
 class Inline extends Parchment.Node
+  @tagName: 'SPAN'
+
   deleteText: (index, length) ->
     super
     if children.length == 0
@@ -44,16 +49,24 @@ class Inline extends Parchment.Node
 
 
 class Leaf extends Inline
+  @tagName: ''
 
 
 class Embed extends Leaf
+  @tagName: ''
+
   formatText: (index, length, name, value) ->
     this.wrap(name, value)
 
 
 class Text extends Leaf
+  @tagName: ''
+
+  length: ->
+    return dom(@domNode).text().length
+
   constructor: (value) ->
-    value = document.createTextNode(value) unless _.isElement(value)
+    value = document.createTextNode(value) if _.isString(value)
     super(value)
 
   formatText: (index, length, name, value) ->
@@ -67,11 +80,13 @@ class Text extends Leaf
     this.parent.insertBefore(this.next, embed)
 
   insertText: (index, text) ->
-    curText = this.node.textContent
-    this.node.textContent = curText.slice(0, index) + text + curText.slice(index)
+    curText = dom(@domNode).text()
+    dom(@domNode).text(curText.slice(0, index) + text + curText.slice(index))
 
 
 class Break extends Leaf
+  @tagName: 'BR'
+
   formatText: (index, length, name, value) ->
     this.wrap(name, value)
 
@@ -80,7 +95,6 @@ class Break extends Leaf
 
   insertText: (index, text) ->
     this.replace('text', text)
-
 
 
 Parchment.define('block', Block)
