@@ -1,95 +1,126 @@
-ParchmentNode = require('./parchment-node')
+_ = require('lodash')
+
+
+class ParchmentNode
+  @tagName: 'DIV'
+
+  constructor: (@domNode) ->
+    @domNode = document.createElement(this.constructor.tagName) unless @domNode?
+    @prev = @next = @parent = undefined
+    @children = undefined
+
+  build: ->
+    _.map(@domNode.childNodes).forEach((node) =>
+      child = Parchment.attach(node)
+      if child
+        @children.append(child)
+        child.build()
+      else
+        node.parentNode.removeChild(node)
+    )
+
+  length: ->
+    return 0 unless @children?
+    return @children.reduce((memo, child) ->
+      return memo + child.length()
+    , 0)
+
+  append: (other) ->
+    this.insertBefore(other, undefined)
+
+  insertBefore: (other, refNode) ->
+    @children = new LinkedList() unless @children?
+    @children.insertBefore(other, refNode)
+    @domNode.insertBefore(other.node, refNode?.node)
+    other.parent = this
+
+  remove: ->
+    return unless @parent?.children?
+    @parent.children.remove(this)
+    @domNode.parentNode.removeChild(@domNode)
+    @parent = @prev = @next = undefined
+
+  replace: (name, value) ->
+    return unless @parent?
+    other = Parchment.create(name, value)
+    @parent.insertBefore(other, this)
+    @children.forEach((child) ->
+      other.append(child)
+      other.domNode.appendChild(child.domNode)
+    )
+    this.attributes.forEach((attribute) =>
+      attribute.add(other)
+      attribute.remove(this)
+    )
+    this.remove()
+
+  split: (index) ->
+    return if index == 0 || index == this.length()
+    clone = this.clone()
+    this.parent.insertBefore(clone, this)
+    this.children.forEachAt(0, index, (child, offset, length) ->
+      child.remove()
+      clone.append(child)
+    )
+
+  wrap: (name, value) ->
+    other = Parchment.create(name, value)
+    this.attributes.forEach((attribute) =>
+      attribute.add(other)
+      attribute.remove(this)
+    )
+    @parent.insertBefore(other, this)
+    this.remove()
+    other.append(this)
+    @parent = other
+
+
+  deleteText: (index, length) ->
+    this.remove() if index == 0 && length == this.length()
+    children.forEachAt(index, length, (child, offset, length) =>
+      child.deleteText(offset, length)
+    )
+
+  formatText: (index, length, name, value) ->
+    children.forEachAt(index, length, (child, offset, length) =>
+      child.formatText(offset, length, name, value)
+    )
+
+  insertEmbed: (index, name, value) ->
+    [child, offset] = children.find(index)
+    child.insertEmbed(offset, name, value)
+
+  insertText: (index, text) ->
+    [child, offset] = children.find(index)
+    child.insertText(offset, text)
 
 
 class Parchment extends ParchmentNode
   @Node: ParchmentNode
 
-  @create: (name, value) ->
-    # Create both ParchmentNode and parallel DOM node
+  @tags: {}
+  @types: {}
 
-  @define: (nodeClass) ->
-
-
-
-
-class Block extends ParchmentNode
-  formatText: (index, length, name, value) ->
-    super
-    if index + length > this.length()
-      this.format(name, value)
-
-  insertText: (index, text) ->
-    lineTexts = text.split('\n')
-    super(index, lineTexts[0])
-    next = this.next
-    lineTexts.slice(1).forEach((lineText) =>
-      line = Parchment.create('block')
-      line.insertText(0, text)
-      this.parent.insertBefore(line, next)
-    )
-
-  deleteText: (index, length) ->
-    if index + length > this.length() && this.next?
-      this.mergeNext()
-    super
-    if children.length == 0
-      this.append(Parchment.create('break'))
-
-  length: ->
-    return super() + 1
-
-
-class Inline
-  deleteText: (index, length) ->
-    super
-    if children.length == 0
-      this.append(Parchment.create('break'))
-
-  formatText: (index, length, name, value) ->
-    if (order > true)
-      this.split(index, length)
-      this.wrap(name, value)
+  # Create new ParchmentNode matching existing dom node
+  @attach: (node) ->
+    c = this.match(node)
+    if c
+      return new c(node)
     else
-      super(index, length, name, value)
+      return false
 
+  @create: (name, value) ->
+    return Parchment.types[name].create(value)
 
-class Leaf extends Inline
+  @define: (name, nodeClass) ->
+    Parchment.types[name] = nodeClass
+    Parchment.tags[nodeClass.tag.toUpperCase()] = nodeClass if nodeClass.tag?
 
-
-class Embed extends Leaf
-  formatText: (index, length, name, value) ->
-    this.wrap(name, value)
-
-
-class Text extends Leaf
-  formatText: (index, length, name, value) ->
-    if index != 0 || length != this.length()
-      this.split(index, length)
-    this.wrap(name, value)
-
-  insertText: (index, text) ->
-    curText = this.node.textContent
-    this.node.textContent = curText.slice(0, index) + text + curText.slice(index)
-
-  insertEmbed: (index, name, value) ->
-    this.split(index)
-    embed = Parchment.create(name, value)
-    this.parent.insertBefore(this.next, embed)
-
-
-class Break extends Leaf
-  formatText: (index, length, name, value) ->
-    this.wrap(name, value)
-
-  insertEmbed: (index, name, value) ->
-    this.replace(name, value)
-
-  insertText: (index, text) ->
-    this.replace('text', text)
-
-
-
-Parchment.define()
+  @match: (node) ->
+    switch node.nodeType
+      when node.ELEMENT_NODE then return Parchment.tags[node.tagName]
+      when node.TEXT_NODE then return Parchment.types['text']
+      else return false
 
 
 
