@@ -59,9 +59,9 @@ class TreeList
       break unless curIndex < index + length
       curLength = cur.length()
       if index <= curIndex
-        callback(0, Math.min(curLength, index + length - curIndex), cur)
+        callback(cur, 0, Math.min(curLength, index + length - curIndex))
       else if index < curIndex + curLength
-        callback(index - curIndex, Math.min(length, curIndex + curLength - index), cur)
+        callback(cur, index - curIndex, Math.min(length, curIndex + curLength - index))
       curIndex += curLength
 
   reduce: (callback, memo) ->

@@ -35,17 +35,22 @@ class Block extends Parchment.Node
 class Inline extends Parchment.Node
   @tagName: 'SPAN'
 
+  constructor: (node) ->
+    node = undefined unless node?.nodeType?
+    super(node)
+
   deleteText: (index, length) ->
     super
     if children.length == 0
       this.append(Parchment.create('break'))
 
   formatText: (index, length, name, value) ->
-    if (order > true)
-      this.split(index, length)
-      this.wrap(name, value)
+    if true # order > true
+      target = this.split(index)
+      target.split(length)
+      target.wrap(name, value)
     else
-      super(index, length, name, value)
+      super
 
 
 class Leaf extends Inline
@@ -62,17 +67,17 @@ class Embed extends Leaf
 class Text extends Leaf
   @tagName: ''
 
-  length: ->
-    return dom(@domNode).text().length
-
   constructor: (value) ->
     value = document.createTextNode(value) if _.isString(value)
     super(value)
 
-  formatText: (index, length, name, value) ->
-    if index != 0 || length != this.length()
-      this.split(index, length)
-    this.wrap(name, value)
+  length: ->
+    return dom(@domNode).text().length
+
+  split: (index) ->
+    after = new this.constructor(@domNode.splitText(index))
+    @parent.insertBefore(after, @next)
+    return after
 
   insertEmbed: (index, name, value) ->
     this.split(index)

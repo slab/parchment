@@ -6,7 +6,7 @@ class ParchmentNode
   @tagName: 'DIV'
 
   constructor: (@domNode) ->
-    @domNode = document.createElement(this.constructor.tagName) unless @domNode?
+    @domNode = document.createElement(this.constructor.tagName) unless @domNode?.nodeType?
     @prev = @next = @parent = undefined
     @children = undefined
     this.build()
@@ -29,11 +29,13 @@ class ParchmentNode
   append: (other) ->
     this.insertBefore(other, undefined)
 
-  insertBefore: (other, refNode) ->
+  insertBefore: (childNode, refNode) ->
     @children = new TreeList() unless @children?
-    @children.insertBefore(other, refNode)
-    @domNode.insertBefore(other.domNode, refNode?.domNode) unless other.domNode.nextSibling == refNode?.domNode
-    other.parent = this
+    @children.insertBefore(childNode, refNode)
+    refDomNode = if refNode? then refNode.domNode else null
+    if !childNode.next? || childNode.domNode.nextSibling != refDomNode
+      @domNode.insertBefore(childNode.domNode, refDomNode)
+    childNode.parent = this
 
   remove: ->
     return unless @parent?.children?
@@ -55,21 +57,29 @@ class ParchmentNode
     # )
     this.remove()
 
+  clone: ->
+    domNode = @domNode.cloneNode()
+    return new this.constructor(domNode)
+
   split: (index) ->
-    return if index == 0 || index == this.length()
-    clone = this.clone()
-    @parent.insertBefore(clone, this)
-    @children.forEachAt(0, index, (child, offset, length) ->
-      child.remove()
-      clone.append(child)
-    )
+    return this if index == 0
+    return @next if index == this.length()
+    before = this.clone()
+    @parent.insertBefore(before, this)
+    if @children?
+      @children.forEachAt(0, index, (child, offset, length) ->
+        child.split(offset) if length != child.length()
+        child.remove()
+        clone.append(child)
+      )
+    return this
 
   wrap: (name, value) ->
     other = Parchment.create(name, value)
-    this.attributes.forEach((attribute) =>
-      attribute.add(other)
-      attribute.remove(this)
-    )
+    # @attributes.forEach((attribute) =>
+    #   attribute.add(other)
+    #   attribute.remove(this)
+    # )
     @parent.insertBefore(other, this)
     this.remove()
     other.append(this)
@@ -109,7 +119,7 @@ class Parchment extends ParchmentNode
     return false
 
   @create: (name, value) ->
-    return Parchment.types[name].create(value)
+    return new Parchment.types[name](value)
 
   @define: (name, nodeClass) ->
     # TODO warn of tag/type overwrite
@@ -118,7 +128,11 @@ class Parchment extends ParchmentNode
 
   @match: (node) ->
     switch node.nodeType
-      when node.ELEMENT_NODE then return Parchment.tags[node.tagName]
+      when node.ELEMENT_NODE
+        if node.hasAttribute('data-ql-type')
+          return Parchment.types[node.getAttribute('data-ql-type')]
+        else
+          return Parchment.tags[node.tagName]
       when node.TEXT_NODE then return Parchment.types['text']
       else return false
 
