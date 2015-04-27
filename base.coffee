@@ -28,9 +28,6 @@ class Block extends Parchment.Node
       this.parent.insertBefore(line, next)
     )
 
-  length: ->
-    return super() + 1
-
 
 class Inline extends Parchment.Node
   @tagName: 'SPAN'
@@ -54,7 +51,7 @@ class Inline extends Parchment.Node
 
 
 class Leaf extends Inline
-  @tagName: ''
+  @tagName: ''  # TODO fix tagName being empty String
 
 
 class Embed extends Leaf

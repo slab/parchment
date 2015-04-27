@@ -64,15 +64,15 @@ class ParchmentNode
   split: (index) ->
     return this if index == 0
     return @next if index == this.length()
-    before = this.clone()
-    @parent.insertBefore(before, this)
+    after = this.clone()
+    @parent.insertBefore(after, @next)
     if @children?
-      @children.forEachAt(0, index, (child, offset, length) ->
-        child.split(offset) if length != child.length()
+      @children.forEachAt(index, this.length(), (child, offset, length) ->
+        child = child.split(offset) if offset != 0
         child.remove()
-        clone.append(child)
+        after.append(child)
       )
-    return this
+    return after
 
   wrap: (name, value) ->
     other = Parchment.create(name, value)
