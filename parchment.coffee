@@ -1,4 +1,5 @@
 _ = require('lodash')
+OrderedMap = require('./ordered-map')
 TreeList = require('./tree-list')
 
 
@@ -109,8 +110,8 @@ class ParchmentNode
 class Parchment extends ParchmentNode
   @Node: ParchmentNode
 
-  @tags: {}
-  @types: {}
+  @tags: new OrderedMap()
+  @types: new OrderedMap()
 
   # Create new ParchmentNode matching existing dom node
   @attach: (node) ->
@@ -119,21 +120,22 @@ class Parchment extends ParchmentNode
     return false
 
   @create: (name, value) ->
-    return new Parchment.types[name](value)
+    nodeClass = Parchment.types.get(name)
+    return new nodeClass(value)
 
   @define: (name, nodeClass) ->
     # TODO warn of tag/type overwrite
-    Parchment.types[name] = nodeClass
-    Parchment.tags[nodeClass.tagName.toUpperCase()] = nodeClass if nodeClass.tagName?
+    Parchment.types.append(name, nodeClass)
+    Parchment.tags.get(nodeClass.tagName.toUpperCase()) = nodeClass if nodeClass.tagName?
 
   @match: (node) ->
     switch node.nodeType
       when node.ELEMENT_NODE
         if node.hasAttribute('data-ql-type')
-          return Parchment.types[node.getAttribute('data-ql-type')]
+          return Parchment.types.get(node.getAttribute('data-ql-type'))
         else
-          return Parchment.tags[node.tagName]
-      when node.TEXT_NODE then return Parchment.types['text']
+          return Parchment.tags.get(node.tagName)
+      when node.TEXT_NODE then return Parchment.types.get('text')
       else return false
 
 
