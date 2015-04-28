@@ -3,21 +3,11 @@ class OrderedMap
     @map = {}
     @keys = []
 
-  append: (key, value) ->
-    this.remove(key)
-    @keys.append(key)
-    @map[key] = value
-
-  compare: (key1, key2) ->
-    return @keys.indexOf(key1) - @keys.indexOf(key2)
-
   get: (key) ->
     return @map[key]
 
-  insert: (index, key, value) ->
-    this.remove(key)
-    @keys.splice(index, key)
-    @map[key] = value
+  indexOf: (key) ->
+    return @keys.indexOf(key)
 
   length: ->
     return @keys.length
@@ -27,6 +17,10 @@ class OrderedMap
     index = @keys.indexOf(key)
     @keys.splice(index, 1)
     delete @map[key]
+
+  set: (key, value) ->
+    @keys.push(key) if !@map[key]?
+    @map[key] = value
 
 
 module.exports = OrderedMap

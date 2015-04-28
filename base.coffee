@@ -1,17 +1,20 @@
 _ = require('lodash')
 dom = require('../../lib/dom')
-Parchment = require('./parchment')
+Node = require('./node')
+Registry = require('./registry')
 
 
-class Block extends Parchment.Node
+class Block extends Node
+  @nodeName: 'block'
   @tagName: 'P'
+  @scope: Registry.scopes.BLOCK
 
   deleteText: (index, length) ->
     if index + length > this.length() && this.next?
       this.mergeNext()
     super
     if children.length == 0
-      this.append(Parchment.create('break'))
+      this.append(Registry.create('break'))
 
   formatText: (index, length, name, value) ->
     super
@@ -23,14 +26,16 @@ class Block extends Parchment.Node
     super(index, lineTexts[0])
     next = this.next
     lineTexts.slice(1).forEach((lineText) =>
-      line = Parchment.create('block')
+      line = Registry.create('block')
       line.insertText(0, text)
       this.parent.insertBefore(line, next)
     )
 
 
-class Inline extends Parchment.Node
+class Inline extends Node
+  @nodeName: 'inline'
   @tagName: 'SPAN'
+  @scope: Registry.scopes.INLINE
 
   constructor: (node) ->
     node = undefined unless node?.nodeType?
@@ -39,10 +44,10 @@ class Inline extends Parchment.Node
   deleteText: (index, length) ->
     super
     if children.length == 0
-      this.append(Parchment.create('break'))
+      this.append(Registry.create('break'))
 
   formatText: (index, length, name, value) ->
-    if true # order > true
+    if Registry.compare(this.constructor.nodeName, name) > 0
       target = this.split(index)
       target.split(length)
       target.wrap(name, value)
@@ -51,18 +56,22 @@ class Inline extends Parchment.Node
 
 
 class Leaf extends Inline
-  @tagName: ''  # TODO fix tagName being empty String
+  @nodeName: 'leaf'
+  @scope: Registry.scopes.LEAF
 
 
 class Embed extends Leaf
-  @tagName: ''
+  @nodeName: 'embed'
+
+  length: ->
+    return 1
 
   formatText: (index, length, name, value) ->
     this.wrap(name, value)
 
 
 class Text extends Leaf
-  @tagName: ''
+  @nodeName: 'text'
 
   constructor: (value) ->
     value = document.createTextNode(value) if _.isString(value)
@@ -72,13 +81,20 @@ class Text extends Leaf
     return dom(@domNode).text().length
 
   split: (index) ->
+    return this if index == 0
+    return @next if index == this.length()
     after = new this.constructor(@domNode.splitText(index))
     @parent.insertBefore(after, @next)
     return after
 
+  formatText: (index, length, name, value) ->
+    target = this.split(index)
+    target.split(length)
+    target.wrap(name, value)
+
   insertEmbed: (index, name, value) ->
     this.split(index)
-    embed = Parchment.create(name, value)
+    embed = Registry.create(name, value)
     this.parent.insertBefore(this.next, embed)
 
   insertText: (index, text) ->
@@ -87,6 +103,7 @@ class Text extends Leaf
 
 
 class Break extends Leaf
+  @nodeName: 'break'
   @tagName: 'BR'
 
   formatText: (index, length, name, value) ->
@@ -99,10 +116,10 @@ class Break extends Leaf
     this.replace('text', text)
 
 
-Parchment.define('block', Block)
-Parchment.define('break', Break)
-Parchment.define('inline', Inline)
-Parchment.define('text', Text)
-
-
-module.exports = Inline
+module.exports =
+  Block: Block
+  Break: Break
+  Embed: Embed
+  Inline: Inline
+  Leaf: Leaf
+  Text: Text

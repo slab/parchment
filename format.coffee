@@ -1,27 +1,28 @@
-Inline = require('./base')
-Parchment = require('./parchment')
+Inline = require('./base').Inline
 
 
 class Bold extends Inline
+  @nodeName: 'bold'
   @tagName: 'STRONG'
 
 
 class Italic extends Inline
+  @nodeName: 'italic'
   @tagName: 'EM'
 
 
-class Underline extends Inline
-  @tagName: 'U'
-
-
 class Strike extends Inline
+  @nodeName: 'strike'
   @tagName: 'S'
 
 
-Parchment.define('bold', Bold)
-Parchment.define('italic', Italic)
-Parchment.define('underline', Underline)
-Parchment.define('strike', Strike)
+class Underline extends Inline
+  @nodeName: 'underline'
+  @tagName: 'U'
 
 
-module.exports = Bold
+module.exports =
+  Bold: Bold
+  Italic: Italic
+  Strike: Strike
+  Underline: Underline
