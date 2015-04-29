@@ -38,6 +38,16 @@ class Node
       @domNode.insertBefore(childNode.domNode, refDomNode)
     childNode.parent = this
 
+  isolate: (index, length) ->
+    target = this.split(index)
+    target.split(length)
+    return target
+
+  moveChildren: (parent, refNode) ->
+    @children.forEach((child) ->
+      parent.insertBefore(child, refNode)
+    )
+
   remove: ->
     @parent.children.remove(this)
     @domNode.parentNode.removeChild(@domNode)
@@ -47,10 +57,7 @@ class Node
     return unless @parent?
     other = Registry.create(name, value)
     @parent.insertBefore(other, this)
-    @children.forEach((child) ->
-      other.append(child)
-      other.domNode.appendChild(child.domNode)
-    )
+    this.moveChildren(other)
     # @attributes.forEach((attribute) =>
     #   attribute.add(other)
     #   attribute.remove(this)
@@ -73,6 +80,10 @@ class Node
     )
     return after
 
+  unwrap: ->
+    this.moveChildren(@parent, this)
+    this.remove()
+
   wrap: (name, value) ->
     other = Registry.create(name, value)
     # @attributes.forEach((attribute) =>
@@ -92,9 +103,14 @@ class Node
     )
 
   formatText: (index, length, name, value) ->
-    @children.forEachAt(index, length, (child, offset, length) =>
-      child.formatText(offset, length, name, value)
-    )
+    if this.constructor.nodeName == name
+      return if !!value
+      target = this.isolate(index, length)
+      target.unwrap()
+    else
+      @children.forEachAt(index, length, (child, offset, length) =>
+        child.formatText(offset, length, name, value)
+      )
 
   insertEmbed: (index, name, value) ->
     [child, offset] = @children.find(index)

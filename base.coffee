@@ -47,9 +47,8 @@ class Inline extends Node
       this.append(Registry.create('break'))
 
   formatText: (index, length, name, value) ->
-    if Registry.compare(this.constructor.nodeName, name) > 0
-      target = this.split(index)
-      target.split(length)
+    if Registry.compare(this.constructor.nodeName, name) < 0 && !!value
+      target = this.isolate()
       target.wrap(name, value)
     else
       super
