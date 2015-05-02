@@ -1,5 +1,8 @@
+/.build
 /dist
 /node_modules
+
 *.log
 *.notes
+
 tsconfig.json

@@ -1,8 +1,11 @@
+.build
 .git
 .notes
 *.log
+
 bower.json
-tsconfig.json
-test
 gulpfile.js
 karma.conf.js
+tsconfig.json
+
+test
