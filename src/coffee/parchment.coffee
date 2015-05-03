@@ -1,4 +1,3 @@
-_ = require('lodash')
 Registry = require('./registry')
 Node = require('./node')
 Base = require('./base')
