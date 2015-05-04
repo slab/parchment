@@ -122,7 +122,7 @@ describe('TreeList', function() {
       this.list.append(this.a, this.b, this.c);
       this.list.forEach(this.spy.callback);
       expect(this.spy.callback.calls.count()).toEqual(3);
-      var result = _.reduce(this.spy.callback.calls.all(), function(memo, call) {
+      var result = this.spy.callback.calls.all().reduce(function(memo, call) {
         return memo + call.args[0].str;
       }, '');
       expect(result).toEqual('abc');

@@ -35,8 +35,8 @@ class TreeList {
       this.tail = node;
     } else {
       this.head = this.tail = node;
-      this.length += 1;
     }
+    this.length += 1;
   }
 
   remove(node: TreeNode): void {
@@ -77,7 +77,7 @@ class TreeList {
   forEachAt(index: number, length: number, callback): void {
     // TODO use this.find()
     var cur, curIndex = 0, next = this.iterator();
-    while (cur = next() && curIndex < index + length) {
+    while ((cur = next()) && curIndex < index + length) {
       var curLength = cur.length();
       if (index <= curIndex) {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));

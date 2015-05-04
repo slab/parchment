@@ -3,9 +3,7 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine'],
     files: [
-      'node_modules/lodash/index.js',
-      'dist/tree-list.js',
-
+      '.build/test/parchment.exposed.js',
       'test/unit/*.js'
     ],
     exclude: [],
