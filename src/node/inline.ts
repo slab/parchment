@@ -11,14 +11,14 @@ class InlineNode extends ParchmentNode {
     super(domNode);
   }
 
-  deleteText(index, length) {
+  deleteText(index: number, length: number): void {
     super.deleteText(index, length);
     if (this.children.length === 0) {
       this.append(Registry.create('break'));
     }
   }
 
-  formatText(index, length, name, value) {
+  formatText(index: number, length: number, name: string, value: any): void {
     if (Registry.compare(this.class.nodeName, name) < 0 && !!value) {
       var target = this.isolate(index, length);
       target.wrap(name, value);

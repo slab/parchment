@@ -11,7 +11,7 @@ export enum Scope {
   LEAF = 1
 };
 
-export function attach(node) {
+export function attach(node: Node): any {
   var nodeClass = match(node);
   if (nodeClass) {
     return new nodeClass(node);
@@ -29,14 +29,14 @@ export function compare(typeName1: string, typeName2: string): number {
   }
 };
 
-export function create(name: string, value?) {
+export function create(name: string, value?:any) {
   var nodeClass = types.get(name);
   var instance = new nodeClass(value);
   instance.class = nodeClass;
   return instance;
 };
 
-export function define(nodeClass) {
+export function define(nodeClass): void {
   // TODO warn of tag/type overwrite
   types.set(nodeClass.nodeName, nodeClass);
   if (!!nodeClass.tagName) {
@@ -50,6 +50,6 @@ export function match(node) {
   } else if (node instanceof HTMLElement) {
     return tags[node.tagName];
   } else {
-    return false;
+    return null;
   }
 };

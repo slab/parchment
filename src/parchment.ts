@@ -17,23 +17,23 @@ class Parchment extends ParchmentNode {
   static nodeName = 'parchment';
   static tagName = 'DIV';
 
-  static attach(node) {
+  static attach(node: Node): any {
     return Registry.attach(node);
   }
 
-  static compare(typeName1, typeName2) {
+  static compare(typeName1: string, typeName2: string): number {
     return Registry.compare(typeName1, typeName2);
   }
 
-  static create(name, value) {
+  static create(name: string, value?:any): ParchmentNode {
     return Registry.create(name, value);
   }
 
-  static define(nodeClass) {
+  static define(nodeClass): void {
     return Registry.define(nodeClass);
   }
 
-  static match(node) {
+  static match(node: Node): ParchmentNode {
     return Registry.match(node);
   }
 }

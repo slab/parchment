@@ -15,16 +15,16 @@ class ShadowNode implements TreeNode {
     this.domNode = domNode;
   }
 
-  append(other) {
+  append(other: ShadowNode): void {
     this.insertBefore(other);
   }
 
-  clone() {
+  clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
     return Registry.create(this.class.nodeName, domNode);
   }
 
-  insertBefore(childNode, refNode?) {
+  insertBefore(childNode: ShadowNode, refNode?: ShadowNode): void {
     this.children.insertBefore(childNode, refNode);
     var refDomNode = null;
     if (!!refNode) {
@@ -36,7 +36,7 @@ class ShadowNode implements TreeNode {
     childNode.parent = this;
   }
 
-  isolate(index: number, length: number) {
+  isolate(index: number, length: number): ShadowNode {
     var target = this.split(index);
     target.split(length);
     return target;
@@ -51,19 +51,19 @@ class ShadowNode implements TreeNode {
     // 2. Move children, delete other node
   }
 
-  moveChildren(parent, refNode = null) {
+  moveChildren(parent: ShadowNode, refNode?:ShadowNode): void {
     this.children.forEach(function(child) {
       parent.insertBefore(child, refNode);
     });
   }
 
-  remove() {
+  remove(): void {
     this.parent.children.remove(this);
     if (!!this.domNode.parentNode) this.domNode.parentNode.removeChild(this.domNode);
     this.parent = this.prev = this.next = undefined;
   }
 
-  replace(name, value) {
+  replace(name: string, value:any): void {
     if (!this.parent) return;
     var other = Registry.create(name, value);
     this.parent.insertBefore(other, this);
@@ -72,7 +72,7 @@ class ShadowNode implements TreeNode {
     this.remove();
   }
 
-  split(index) {
+  split(index: number): ShadowNode {
     if (index === 0) return this;
     if (index === this.length()) return this.next;
     var after = this.clone();
@@ -85,12 +85,12 @@ class ShadowNode implements TreeNode {
     return after;
   }
 
-  unwrap() {
+  unwrap(): void {
     this.moveChildren(this.parent, this);
     this.remove();
   }
 
-  wrap(name, value) {
+  wrap(name: string, value: any): void {
     var other = Registry.create(name, value);
     // TODO handle attributes
     this.parent.insertBefore(other, this);

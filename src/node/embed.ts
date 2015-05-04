@@ -6,11 +6,11 @@ class EmbedNode extends ParchmentNode {
   static nodeName = 'embed';
   static scope = Registry.Scope.LEAF;
 
-  length() {
+  length(): number {
     return 1;
   }
 
-  formatText(index, length, name, value) {
+  formatText(index: number, length: number, name: string, value: any): void {
     this.wrap(name, value);
   }
 }

@@ -40,7 +40,7 @@ class ParchmentNode extends ShadowNode {
     }
   }
 
-  formatText(index: number, length: number, name: string, value: string): void {
+  formatText(index: number, length: number, name: string, value: any): void {
     if (this.class.nodeName === name) {
       if (!!value) return;
       var target = this.isolate(index, length);
