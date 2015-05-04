@@ -6,8 +6,9 @@ class ParchmentNode extends ShadowNode {
   static nodeName = 'node';
   static scope = Registry.Scope.BLOCK;
 
-  constructor() {
-    super();
+  constructor(value) {
+    // TODO enforce value being same tag as our definition
+    super(value);
     this.build();
   }
 
@@ -18,20 +19,20 @@ class ParchmentNode extends ShadowNode {
   }
 
   build(): void {
-    var childNodes = Array.prototype.slice.call(this.domNode);
-    childNodes.forEach(function(node) {
+    var childNodes = Array.prototype.slice.call(this.domNode.childNodes);
+    childNodes.forEach((node) => {
       var child = Registry.attach(node);
       if (!!child) {
         this.append(child);
-      } else {
-        this.remove();
+      } else if (!!node.parentNode) {
+        node.parentNode.removeChild(node);
       }
     });
   }
 
   deleteText(index: number, length: number): void {
     if (index === 0 && length === this.length()) {
-      this.remove()
+      this.remove();
     } else {
       this.children.forEachAt(index, length, function(child, offset, length) {
         child.deleteText(offset, length);
@@ -52,14 +53,15 @@ class ParchmentNode extends ShadowNode {
   }
 
   insertEmbed(index: number, name: string, value: any): void {
-    // TODO fix
-    // var [child, offset] = this.children.find(index);
-    // child.insertEmbed(offset, name, value);
+    var _arr = this.children.find(index);
+    var child = <ParchmentNode>_arr[0], offset = _arr[1];
+    child.insertEmbed(offset, name, value);
   }
 
   insertText(index: number, text: string): void {
-    // var [child, offset] = this.children.find(index);
-    // child.insertText(offset, text);
+    var _arr = this.children.find(index);
+    var child = <ParchmentNode>_arr[0], offset = _arr[1];
+    child.insertText(offset, text);
   }
 }
 

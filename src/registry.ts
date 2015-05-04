@@ -45,11 +45,11 @@ export function define(nodeClass) {
 };
 
 export function match(node) {
-  if (typeof node === "Text") {
+  if (node instanceof Text) {
     return types.get('text');
-  } else if (typeof node === "HTMLElement") {
+  } else if (node instanceof HTMLElement) {
     return tags[node.tagName];
   } else {
-    return null;
+    return false;
   }
 };

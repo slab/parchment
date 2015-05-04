@@ -11,8 +11,8 @@ class ShadowNode implements TreeNode {
   domNode: Node;
   class;
 
-  constructor() {
-
+  constructor(domNode: Node) {
+    this.domNode = domNode;
   }
 
   append(other) {

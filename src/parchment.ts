@@ -14,6 +14,9 @@ class Parchment extends ParchmentNode {
   static InlineNode = InlineNode;
   static Scope = Registry.Scope;
 
+  static nodeName = 'parchment';
+  static tagName = 'DIV';
+
   static attach(node) {
     return Registry.attach(node);
   }
@@ -36,6 +39,7 @@ class Parchment extends ParchmentNode {
 }
 
 
+Parchment.define(Parchment);
 Parchment.define(TextNode);
 Parchment.define(BlockNode);
 Parchment.define(InlineNode);

@@ -7,8 +7,8 @@ class InlineNode extends ParchmentNode {
   static tagName = 'SPAN';
   static scope = Registry.Scope.INLINE;
 
-  constructor() {
-    super();
+  constructor(domNode) {
+    super(domNode);
   }
 
   deleteText(index, length) {

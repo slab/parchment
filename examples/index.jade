@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title Parchment Demo
+    link(rel='stylesheet', type='text/css', href='styles/style.css')
+    meta(charset='utf-8')
+
+  body
+    #content-container
+      p One
+      p Two
+
+    script(type='text/javascript', src='../dist/parchment.js')
+    script(type='text/javascript').
+      var container = document.querySelector('#content-container');
+      container.innerHTML = container.innerHTML.replace(/\s+/g, '');
+      var parchment = new Parchment(container);
