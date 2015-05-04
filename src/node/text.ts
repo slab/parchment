@@ -28,6 +28,11 @@ class TextNode extends ParchmentNode {
     return after;
   }
 
+  deleteText(index: number, length: number): void {
+    var curText = this.domNode.data;
+    this.domNode.data = curText.slice(0, index) + curText.slice(index + length);
+  }
+
   formatText(index: number, length: number, name: string, value: string): void {
     var target = this.isolate(index, length);
     target.wrap(name, value);
