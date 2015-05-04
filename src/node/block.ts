@@ -26,9 +26,9 @@ class BlockNode extends ParchmentNode {
 
   insertText(index, text) {
     var lines = text.split('\n');
-    super(index, lines[0]);
+    super.insertText(index, lines[0]);
     var next = this.next;
-    lines.slice(1).forEach(function(lineText) => {
+    lines.slice(1).forEach((lineText) => {
       var line = Registry.create('block');
       line.insertText(0, text);
       this.parent.insertBefore(line, next);

@@ -1,4 +1,4 @@
-import TreeNode = require('./tree-node');
+import TreeNode = require('../tree-node');
 
 
 class TreeList {
@@ -88,7 +88,7 @@ class TreeList {
     }
   }
 
-  reduce(callback, memo): void {
+  reduce(callback, memo) {
     var cur, next = this.iterator();
     while (cur = next()) {
       memo = callback(memo, cur);

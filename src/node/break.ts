@@ -12,13 +12,11 @@ class BreakNode extends ParchmentNode {
   }
 
   insertEmbed(index, name, value) {
-    var embedNode = Registry.create('name', textNode);
-    this.replace(embedNode);
+    this.replace(name, value);
   }
 
   insertText(index, text) {
-    var textNode = Registry.create('text', textNode);
-    this.replace(textNode);
+    this.replace('text', text);
   }
 }
 

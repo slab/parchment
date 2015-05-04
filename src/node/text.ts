@@ -6,8 +6,8 @@ class TextNode extends ParchmentNode {
   static nodeName = 'text';
   static scope = Registry.Scope.LEAF;
 
-  constructor(value) {
-
+  constructor() {
+    super();
   }
 }
 

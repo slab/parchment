@@ -4,7 +4,7 @@ import Registry = require('../registry');
 
 class EmbedNode extends ParchmentNode {
   static nodeName = 'embed';
-  static scope = Registry.scopes.LEAF;
+  static scope = Registry.Scope.LEAF;
 
   length() {
     return 1;

@@ -1,19 +1,13 @@
 import Registry = require('./registry');
 import ShadowNode = require('./shadow-node');
-import TreeList = require('./tree-list');
-import TreeNode = require('./tree-node');
 
 
-class ParchmentNode extends ShadowNode, implements TreeNode {
-  children: TreeList;
-  domNode: Node;
-
+class ParchmentNode extends ShadowNode {
   static nodeName = 'node';
   static scope = Registry.Scope.BLOCK;
 
   constructor() {
-    this.prev = this.next = this.parent = null;
-    this.children = new TreeList();
+    super();
     this.build();
   }
 
@@ -46,7 +40,7 @@ class ParchmentNode extends ShadowNode, implements TreeNode {
   }
 
   formatText(index: number, length: number, name: string, value: string): void {
-    if (this.constructor.nodeName === name) {
+    if (this.class.nodeName === name) {
       if (!!value) return;
       var target = this.isolate(index, length);
       target.unwrap();
@@ -58,13 +52,14 @@ class ParchmentNode extends ShadowNode, implements TreeNode {
   }
 
   insertEmbed(index: number, name: string, value: any): void {
-    var [child, offset] = @children.find(index);
-    child.insertEmbed(offset, name, value);
+    // TODO fix
+    // var [child, offset] = this.children.find(index);
+    // child.insertEmbed(offset, name, value);
   }
 
   insertText(index: number, text: string): void {
-    var [child, offset] = @children.find(index);
-    child.insertText(offset, text);
+    // var [child, offset] = this.children.find(index);
+    // child.insertText(offset, text);
   }
 }
 
