@@ -9,9 +9,10 @@ import BreakNode = require('./node/break');
 
 
 class Parchment extends ParchmentNode {
+  static Node = ParchmentNode;
   static BlockNode = BlockNode;
-  static EmbedNode = EmbedNode;
   static InlineNode = InlineNode;
+  static EmbedNode = EmbedNode;
   static Scope = Registry.Scope;
 
   static nodeName = 'parchment';
