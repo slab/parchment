@@ -11,16 +11,12 @@ export enum Scope {
   LEAF = 1
 };
 
-function spawn(NodeClass, param: string|Node): any {
-  if (!!NodeClass) {
-    return new NodeClass(param, NodeClass);
-  }
-  return null;
-}
-
 export function attach(node: Node): any {
   var NodeClass = match(node);
-  return spawn(NodeClass, node);
+  if (!!NodeClass) {
+    return new NodeClass(node, NodeClass);
+  }
+  return null;
 };
 
 export function compare(typeName1: string, typeName2: string): number {
@@ -35,11 +31,10 @@ export function compare(typeName1: string, typeName2: string): number {
 
 export function create(name: string, value?:any) {
   var NodeClass = types.get(name);
-  var instance = spawn(NodeClass, value);
-  if (!instance) {
+  if (!NodeClass) {
     throw new Error(`Unable to create ${name}`);
   }
-  return instance;
+  return new NodeClass(value, NodeClass);
 };
 
 export function define(NodeClass) {
