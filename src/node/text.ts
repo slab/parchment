@@ -1,9 +1,9 @@
-import ParchmentNode = require('../parchment-node');
+import LeafNode = require('./leaf');
 import Registry = require('../registry');
 import ShadowNode = require('../shadow-node');
 
 
-class TextNode extends ParchmentNode {
+class TextNode extends LeafNode {
   static nodeName = 'text';
   static scope = Registry.Scope.LEAF;
 
@@ -16,13 +16,17 @@ class TextNode extends ParchmentNode {
     super(value, NodeClass);
   }
 
-  length(): number {
+  getLength(): number {
     return this.domNode.data.length;
+  }
+
+  getValue():any[] {
+    return [this.domNode.data];
   }
 
   split(index: number): ShadowNode {
     if (index === 0) return this;
-    if (index === this.length()) return this.next;
+    if (index === this.getLength()) return this.next;
     var after = Registry.create(this.class.nodeName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
     return after;

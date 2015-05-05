@@ -1,17 +1,27 @@
-import ParchmentNode = require('../parchment-node');
+import LeafNode = require('./leaf');
 import Registry = require('../registry');
 
 
-class EmbedNode extends ParchmentNode {
+class EmbedNode extends LeafNode {
   static nodeName = 'embed';
   static scope = Registry.Scope.LEAF;
 
-  length(): number {
+  formatText(index: number, length: number, name: string, value: any): void {
+    this.wrap(name, value);
+  }
+
+  getLength(): number {
     return 1;
   }
 
-  formatText(index: number, length: number, name: string, value: any): void {
-    this.wrap(name, value);
+  getFormat(): any[] {
+    return [{}];
+  }
+
+  getValue(): any[] {
+    var value = {};
+    value[this.class.nodeName] = true;
+    return [value];
   }
 }
 

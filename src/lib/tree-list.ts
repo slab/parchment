@@ -60,7 +60,7 @@ class TreeList {
   find(index: number): [TreeNode, number] {
     var cur, next = this.iterator();
     while (cur = next()) {
-      var length = cur.length();
+      var length = cur.getLength();
       if (index < length) return [cur, index];
       index -= length;
     }
@@ -78,7 +78,7 @@ class TreeList {
     // TODO use this.find()
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
-      var curLength = cur.length();
+      var curLength = cur.getLength();
       if (index <= curIndex) {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));
       } else if (index < curIndex + curLength) {

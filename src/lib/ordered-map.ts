@@ -19,10 +19,6 @@ class OrderedMap {
     return !!this.map[key];
   }
 
-  length(): number {
-    return this.keys.length;
-  }
-
   remove(key): void {
     if (this.has(key)) {
       var index = this.indexOf(key);
@@ -36,6 +32,10 @@ class OrderedMap {
       this.keys.push(key);
     }
     this.map[key] = value;
+  }
+
+  size(): number {
+    return this.keys.length;
   }
 }
 

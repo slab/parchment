@@ -25,6 +25,10 @@ class ShadowNode implements TreeNode {
     return Registry.create(this.class.nodeName, domNode);
   }
 
+  getLength(): number {
+    return 1;
+  }
+
   insertBefore(childNode: ShadowNode, refNode?: ShadowNode): void {
     this.children.insertBefore(childNode, refNode);
     var refDomNode = null;
@@ -41,10 +45,6 @@ class ShadowNode implements TreeNode {
     var target = this.split(index);
     target.split(length);
     return target;
-  }
-
-  length(): number {
-    return 1;
   }
 
   mergeNext() {
@@ -75,10 +75,10 @@ class ShadowNode implements TreeNode {
 
   split(index: number): ShadowNode {
     if (index === 0) return this;
-    if (index === this.length()) return this.next;
+    if (index === this.getLength()) return this.next;
     var after = this.clone();
     this.parent.insertBefore(after, this.next);
-    this.children.forEachAt(index, this.length(), function(child, offset, length) {
+    this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
       var child = child.split(offset);
       child.remove();
       after.append(child);

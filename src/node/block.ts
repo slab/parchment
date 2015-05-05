@@ -10,7 +10,7 @@ class BlockNode extends ParchmentNode {
   // TODO enable when we support trailign newline
 
   // deleteText(index, length) {
-  //   if (index + length > this.length() && !!this.next) {
+  //   if (index + length > this.getLength() && !!this.next) {
   //     this.mergeNext();
   //   }
   // }
@@ -21,7 +21,7 @@ class BlockNode extends ParchmentNode {
 
   // formatText(index, length, name, value) {
   //   super.formatText(index, length, name, value);
-  //   if (index + length > this.length()) {
+  //   if (index + length > this.getLength()) {
   //     this.format(name, value);
   //   }
   // }

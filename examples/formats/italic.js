@@ -1,4 +1,4 @@
 var Italic = Parchment.define({
   nodeName: 'italic',
-  tagName: 'em'
+  tagName: 'EM'
 }, Parchment.InlineNode);

@@ -12,12 +12,6 @@ class ParchmentNode extends ShadowNode {
     this.build();
   }
 
-  length(): number {
-    return this.children.reduce(function(memo, child) {
-      return memo + child.length();
-    }, 0);
-  }
-
   build(): void {
     var childNodes = Array.prototype.slice.call(this.domNode.childNodes || []);
     childNodes.forEach((node) => {
@@ -30,8 +24,26 @@ class ParchmentNode extends ShadowNode {
     });
   }
 
+  getLength(): number {
+    return this.children.reduce(function(memo, child) {
+      return memo + child.getLength();
+    }, 0);
+  }
+
+  getFormat():any[] {
+    return this.children.reduce(function(format, child) {
+      return format.concat(child.getFormat());
+    }, []);
+  }
+
+  getValue():any[] {
+    return this.children.reduce(function(value, child) {
+      return value.concat(child.getValue());
+    }, []);
+  }
+
   deleteText(index: number, length: number): void {
-    if (index === 0 && length === this.length()) {
+    if (index === 0 && length === this.getLength()) {
       this.remove();
     } else {
       this.children.forEachAt(index, length, function(child, offset, length) {
