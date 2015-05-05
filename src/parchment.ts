@@ -42,16 +42,18 @@ class Parchment extends ParchmentNode {
           SubClass[prop] = SuperClass[prop];
         }
       }
-      for (var prop in NodeClass) {
-        if (NodeClass.hasOwnProperty(prop)) {
-          SubClass[prop] = NodeClass[prop];
-        }
-      }
-      var Extender = function() {
-        this.constructor = SubClass;
-      }
+      var Extender = function() { this.constructor = SubClass; }
       Extender.prototype = SuperClass.prototype;
       SubClass.prototype = new Extender();
+      for (var prop in NodeClass) {
+        if (NodeClass.hasOwnProperty(prop)) {
+          if (typeof NodeClass[prop] === 'function') {
+            SubClass.prototype[prop] = NodeClass[prop];
+          } else {
+            SubClass[prop] = NodeClass[prop];
+          }
+        }
+      }
       return Registry.define(SubClass);
     }
   }
