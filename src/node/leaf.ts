@@ -10,10 +10,6 @@ class LeafNode extends ParchmentNode {
     return 1;
   }
 
-  getFormat(): any[] {
-    return [{}];
-  }
-
   getValue(): any[] {
     return [{}];
   }

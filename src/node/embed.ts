@@ -14,10 +14,6 @@ class EmbedNode extends LeafNode {
     return 1;
   }
 
-  getFormat(): any[] {
-    return [{}];
-  }
-
   getValue(): any[] {
     var value = {};
     value[this.class.nodeName] = true;

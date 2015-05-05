@@ -42,12 +42,6 @@ class ParchmentNode extends ShadowNode {
     }, 0);
   }
 
-  getFormat():any[] {
-    return this.children.reduce(function(format, child) {
-      return format.concat(child.getFormat());
-    }, []);
-  }
-
   getValue():any[] {
     return this.children.reduce(function(value, child) {
       return value.concat(child.getValue());
