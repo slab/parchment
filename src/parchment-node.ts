@@ -6,9 +6,12 @@ class ParchmentNode extends ShadowNode {
   static nodeName = 'node';
   static scope = Registry.Scope.BLOCK;
 
+  class;
+
   constructor(value: Node, NodeClass) {
-    value = value || document.createElement(NodeClass.tagName);
-    super(value, NodeClass);
+    this.class = NodeClass;
+    value = this.init(value);
+    super(value);
     this.build();
   }
 
@@ -22,6 +25,15 @@ class ParchmentNode extends ShadowNode {
         node.parentNode.removeChild(node);
       }
     });
+  }
+
+  init(value: Node): any {
+    return value || document.createElement(this.class.tagName);
+  }
+
+  clone(): ParchmentNode {
+    var domNode = this.domNode.cloneNode();
+    return Registry.create(this.class.nodeName, domNode);
   }
 
   getLength(): number {

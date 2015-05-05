@@ -9,11 +9,11 @@ class TextNode extends LeafNode {
 
   domNode: Text;
 
-  constructor(value, NodeClass) {
+  init(value): any {
     if (value instanceof String) {
       value = document.createTextNode(value);
     }
-    super(value, NodeClass);
+    return super.init(value);
   }
 
   getLength(): number {

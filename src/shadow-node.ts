@@ -9,11 +9,9 @@ class ShadowNode implements TreeNode {
   parent: ShadowNode = null;
   children: TreeList = new TreeList();
   domNode: Node;
-  class;
 
-  constructor(domNode: Node, NodeClass) {
+  constructor(domNode: Node) {
     this.domNode = domNode;
-    this.class = NodeClass;  // TODO find better solution
   }
 
   append(other: ShadowNode): void {
@@ -22,7 +20,7 @@ class ShadowNode implements TreeNode {
 
   clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
-    return Registry.create(this.class.nodeName, domNode);
+    return Registry.create('node', domNode);
   }
 
   getLength(): number {
