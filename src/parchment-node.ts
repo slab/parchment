@@ -6,9 +6,9 @@ class ParchmentNode extends ShadowNode {
   static nodeName = 'node';
   static scope = Registry.Scope.BLOCK;
 
-  constructor(value) {
-    // TODO enforce value being same tag as our definition
-    super(value);
+  constructor(value: Node, NodeClass) {
+    value = value || document.createElement(NodeClass.tagName);
+    super(value, NodeClass);
     this.build();
   }
 
@@ -19,7 +19,7 @@ class ParchmentNode extends ShadowNode {
   }
 
   build(): void {
-    var childNodes = Array.prototype.slice.call(this.domNode.childNodes);
+    var childNodes = Array.prototype.slice.call(this.domNode.childNodes || []);
     childNodes.forEach((node) => {
       var child = Registry.attach(node);
       if (!!child) {

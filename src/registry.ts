@@ -11,12 +11,16 @@ export enum Scope {
   LEAF = 1
 };
 
-export function attach(node: Node): any {
-  var nodeClass = match(node);
-  if (nodeClass) {
-    return new nodeClass(node);
+function spawn(NodeClass, param: string|Node): any {
+  if (!!NodeClass) {
+    return new NodeClass(param, NodeClass);
   }
-  return false;
+  return null;
+}
+
+export function attach(node: Node): any {
+  var NodeClass = match(node);
+  return spawn(NodeClass, node);
 };
 
 export function compare(typeName1: string, typeName2: string): number {
@@ -30,18 +34,17 @@ export function compare(typeName1: string, typeName2: string): number {
 };
 
 export function create(name: string, value?:any) {
-  var nodeClass = types.get(name);
-  var instance = new nodeClass(value);
-  instance.class = nodeClass;
-  return instance;
+  var NodeClass = types.get(name);
+  return spawn(NodeClass, value);
 };
 
-export function define(nodeClass): void {
+export function define(NodeClass) {
   // TODO warn of tag/type overwrite
-  types.set(nodeClass.nodeName, nodeClass);
-  if (!!nodeClass.tagName) {
-    tags[nodeClass.tagName.toUpperCase()] = nodeClass;
+  types.set(NodeClass.nodeName, NodeClass);
+  if (!!NodeClass.tagName) {
+    tags[NodeClass.tagName.toUpperCase()] = NodeClass;
   }
+  return NodeClass;
 };
 
 export function match(node) {

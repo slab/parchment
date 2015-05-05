@@ -9,11 +9,11 @@ class TextNode extends ParchmentNode {
 
   domNode: Text;
 
-  constructor(value) {
+  constructor(value, NodeClass) {
     if (value instanceof String) {
       value = document.createTextNode(value);
     }
-    super(value);
+    super(value, NodeClass);
   }
 
   length(): number {

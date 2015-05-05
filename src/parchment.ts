@@ -30,12 +30,38 @@ class Parchment extends ParchmentNode {
     return Registry.create(name, value);
   }
 
-  static define(nodeClass): void {
-    return Registry.define(nodeClass);
+  static define(NodeClass, SuperClass = ParchmentNode): any {
+    if (typeof NodeClass !== 'object') {
+      return Registry.define(NodeClass);
+    } else {
+      var SubClass = function() {
+        SuperClass.apply(this, arguments);
+      };
+      for (var prop in SuperClass) {
+        if (SuperClass.hasOwnProperty(prop)) {
+          SubClass[prop] = SuperClass[prop];
+        }
+      }
+      for (var prop in NodeClass) {
+        if (NodeClass.hasOwnProperty(prop)) {
+          SubClass[prop] = NodeClass[prop];
+        }
+      }
+      var Extender = function() {
+        this.constructor = SubClass;
+      }
+      Extender.prototype = SuperClass.prototype;
+      SubClass.prototype = new Extender();
+      return Registry.define(SubClass);
+    }
   }
 
   static match(node: Node): ParchmentNode {
     return Registry.match(node);
+  }
+
+  constructor(value) {
+    super(value, Parchment);
   }
 }
 

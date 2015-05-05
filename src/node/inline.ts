@@ -7,8 +7,11 @@ class InlineNode extends ParchmentNode {
   static tagName = 'SPAN';
   static scope = Registry.Scope.INLINE;
 
-  constructor(domNode) {
-    super(domNode);
+  constructor(domNode, NodeClass) {
+    if (!(domNode instanceof HTMLElement)) {
+      domNode = null;
+    }
+    super(domNode, NodeClass);
   }
 
   deleteText(index: number, length: number): void {
