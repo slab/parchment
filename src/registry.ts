@@ -29,13 +29,17 @@ export function compare(typeName1: string, typeName2: string): number {
   if (type1.scope != type2.scope) {
     return type1.scope - type2.scope;
   } else {
-    return types.indexOf(typeName1) - types.indexOf(typeName2)
+    return types.indexOf(typeName1) - types.indexOf(typeName2);
   }
 };
 
 export function create(name: string, value?:any) {
   var NodeClass = types.get(name);
-  return spawn(NodeClass, value);
+  var instance = spawn(NodeClass, value);
+  if (!instance) {
+    throw new Error(`Unable to create ${name}`);
+  }
+  return instance;
 };
 
 export function define(NodeClass) {
