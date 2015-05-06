@@ -7,7 +7,7 @@ class BlockNode extends ParchmentNode {
   static tagName = 'P';
   static scope = Registry.Scope.BLOCK;
 
-  // TODO enable when we support trailign newline
+  // TODO enable when we support trailing newline
 
   // deleteText(index, length) {
   //   if (index + length > this.getLength() && !!this.next) {

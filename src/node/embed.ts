@@ -2,6 +2,9 @@ import LeafNode = require('./leaf');
 import Registry = require('../registry');
 
 
+// TODO we can define insertText by calling insertText on neighbors
+
+
 class EmbedNode extends LeafNode {
   static nodeName = 'embed';
   static scope = Registry.Scope.LEAF;
