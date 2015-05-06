@@ -12,8 +12,10 @@
     "examples",
     "src",
     "test",
-    "Gruntfile.js",
+    "gulpfile.js",
     "index.js",
-    "package.json"
+    "karma.conf.js",
+    "package.json",
+    "tsconfig.json"
   ]
 }
