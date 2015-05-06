@@ -8,13 +8,11 @@
   "devDependencies": {
     "browserify": "~9.0.8",
     "gulp": "~3.8.11",
-    "gulp-flatten": "0.0.4",
-    "gulp-typescript": "~2.6.0",
     "jasmine-core": "~2.3.0",
     "karma": "~0.12.31",
     "karma-chrome-launcher": "~0.1.8",
     "karma-jasmine": "~0.3.5",
-    "vinyl-buffer": "~1.0.0",
+    "tsify": "~0.8.1",
     "vinyl-source-stream": "~1.1.0"
   },
   "license": "MIT",
