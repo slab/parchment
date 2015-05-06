@@ -14,12 +14,6 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build:test', ['build:ts'], function() {
-  return bundler('./test/parchment.ts')
-    .pipe(source('parchment.js'))
-    .pipe(gulp.dest('./build/test'));
-});
-
 gulp.task('test', function(done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js'

@@ -1,11 +1,17 @@
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine'],
+    frameworks: ['browserify', 'jasmine'],
     files: [
-      '.build/test/parchment.exposed.js',
+      'test/parchment.ts',
       'test/unit/*.js'
     ],
+    preprocessors: {
+      'test/parchment.ts': ['browserify']
+    },
+    browserify: {
+      plugin: ['tsify']
+    },
     exclude: [],
     reporters: ['progress'],
     browsers: ['Chrome'],
