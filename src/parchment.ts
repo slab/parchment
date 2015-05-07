@@ -3,6 +3,7 @@ import BlockNode = require('./node/block');
 import EmbedNode = require('./node/embed');
 import InlineNode = require('./node/inline');
 import Registry = require('./registry');
+import Util = require('./lib/util');
 
 import TextNode = require('./node/text')
 import BreakNode = require('./node/break');
@@ -34,26 +35,7 @@ class Parchment extends ParchmentNode {
     if (typeof NodeClass !== 'object') {
       return Registry.define(NodeClass);
     } else {
-      var SubClass = function() {
-        SuperClass.apply(this, arguments);
-      };
-      for (var prop in SuperClass) {
-        if (SuperClass.hasOwnProperty(prop)) {
-          SubClass[prop] = SuperClass[prop];
-        }
-      }
-      var Extender = function() { this.constructor = SubClass; }
-      Extender.prototype = SuperClass.prototype;
-      SubClass.prototype = new Extender();
-      for (var prop in NodeClass) {
-        if (NodeClass.hasOwnProperty(prop)) {
-          if (typeof NodeClass[prop] === 'function') {
-            SubClass.prototype[prop] = NodeClass[prop];
-          } else {
-            SubClass[prop] = NodeClass[prop];
-          }
-        }
-      }
+      var SubClass = Util.inherit(NodeClass, SuperClass);
       return Registry.define(SubClass);
     }
   }
