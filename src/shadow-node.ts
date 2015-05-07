@@ -46,15 +46,15 @@ class ShadowNode implements TreeNode {
   }
 
   merge() {
-    if (!!this.next && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
-      var lastChild = this.children.tail;
-      this.next.moveChildren(this, null);
-      this.next.remove();
-      this.merge();
-      if (!!lastChild) {
-        lastChild.merge();
-      }
-    }
+    // if (!!this.next && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
+    //   var lastChild = this.children.tail;
+    //   this.next.moveChildren(this, null);
+    //   this.next.remove();
+    //   this.merge();
+    //   if (!!lastChild) {
+    //     lastChild.merge();
+    //   }
+    // }
   }
 
   moveChildren(parent: ShadowNode, refNode?:ShadowNode): void {

@@ -1,1 +1,1 @@
-module.exports = require('dist/parchment.js');
+module.exports = require('./dist/parchment.js');

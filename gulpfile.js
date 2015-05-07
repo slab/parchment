@@ -1,4 +1,5 @@
 var browserify = require('browserify');
+var derequire = require('gulp-derequire');
 var gulp = require('gulp');
 var karma = require('karma').server;
 var source = require('vinyl-source-stream');
@@ -9,8 +10,13 @@ gulp.task('default', ['build']);
 
 
 gulp.task('build', function() {
-  return bundler('./src/parchment.ts')
+  var b = browserify({
+    standalone: 'Parchment',
+    entries: './src/parchment.ts'
+  });
+  b.plugin('tsify', { target: 'ES5' }).bundle()
     .pipe(source('parchment.js'))
+    .pipe(derequire())
     .pipe(gulp.dest('./dist'));
 });
 
@@ -31,10 +37,3 @@ gulp.task('watch', function() {
   gulp.watch('**/*.ts', ['build']);
 });
 
-
-function bundler(files) {
-  return browserify({
-    standalone: 'Parchment',
-    entries: files
-  }).plugin('tsify', { target: 'ES5' }).bundle();
-}
