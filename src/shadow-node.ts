@@ -45,9 +45,16 @@ class ShadowNode implements TreeNode {
     return target;
   }
 
-  mergeNext() {
-    // 1. Check we are the same tag and attributes
-    // 2. Move children, delete other node
+  merge() {
+    if (!!this.next && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
+      var lastChild = this.children.tail;
+      this.next.moveChildren(this, null);
+      this.next.remove();
+      this.merge();
+      if (!!lastChild) {
+        lastChild.merge();
+      }
+    }
   }
 
   moveChildren(parent: ShadowNode, refNode?:ShadowNode): void {
