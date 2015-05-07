@@ -5,7 +5,7 @@
   "authors": ["Jason Chen <jhchen7@gmail.com>"],
   "description": "A configurable container",
   "main": "dist/parchment.js",
-  "license": "MIT",
+  "license": "BSD",
   "ignore": [
     "**/.*",
     "config",
