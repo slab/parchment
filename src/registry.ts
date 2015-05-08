@@ -13,7 +13,7 @@ export enum Scope {
 
 export function attach(node: Node): any {
   var NodeClass = match(node);
-  if (!!NodeClass) {
+  if (NodeClass != null) {
     return new NodeClass(node, NodeClass);
   }
   return null;
@@ -22,7 +22,7 @@ export function attach(node: Node): any {
 export function compare(typeName1: string, typeName2: string): number {
   var type1 = types.get(typeName1);
   var type2 = types.get(typeName2);
-  if (type1.scope != type2.scope) {
+  if (type1.scope !== type2.scope) {
     return type1.scope - type2.scope;
   } else {
     return types.indexOf(typeName1) - types.indexOf(typeName2);
@@ -31,7 +31,7 @@ export function compare(typeName1: string, typeName2: string): number {
 
 export function create(name: string, value?:any) {
   var NodeClass = types.get(name);
-  if (!NodeClass) {
+  if (NodeClass == null) {
     throw new Error(`Unable to create ${name}`);
   }
   return new NodeClass(value, NodeClass);
@@ -40,7 +40,7 @@ export function create(name: string, value?:any) {
 export function define(NodeClass) {
   // TODO warn of tag/type overwrite
   types.set(NodeClass.nodeName, NodeClass);
-  if (!!NodeClass.tagName) {
+  if (typeof NodeClass.tagName === 'string') {
     tags[NodeClass.tagName.toUpperCase()] = NodeClass;
   }
   return NodeClass;

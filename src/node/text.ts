@@ -38,14 +38,6 @@ class TextNode extends LeafNode {
     target.wrap(name, value);
   }
 
-  insertAt(index: number, value: string, def?: any): void {
-    if (!!def) {
-      this.insertEmbed(index, value, def);
-    } else {
-      this.insertText(index, value);
-    }
-  }
-
   insertEmbed(index: number, name: string, value: any): void {
     this.split(index);
     var embed = Registry.create(name, value);

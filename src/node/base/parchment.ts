@@ -3,7 +3,7 @@ interface ParchmentNode {
   // static scope: Registry.Scope;
   // constructor(value: Node, NodeClass);    // TODO not sure why this breaks things
 
-  // formats(): any;
+  formats(): any;
   values(): any;
 
   insertAt(index: number, value: string, def?: any): void;

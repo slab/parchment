@@ -14,6 +14,13 @@ class InlineNode extends ParentNode {
     return super.init(value);
   }
 
+  formats() {
+    var format = {};
+    format[this.statics.nodeName] = true;
+    // TODO add attributes
+    return format;
+  }
+
   deleteAt(index: number, length: number): void {
     super.deleteAt(index, length);
     if (this.children.length === 0) {
@@ -22,7 +29,7 @@ class InlineNode extends ParentNode {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (Registry.compare(this.statics.nodeName, name) < 0 && !!value) {
+    if (Registry.compare(this.statics.nodeName, name) < 0 && value != null) {
       var target = this.isolate(index, length);
       target.wrap(name, value);
     } else {

@@ -20,9 +20,9 @@ class LinkedList<T extends LinkedNode> {
 
   insertBefore(node: T, refNode: T): void {
     node.next = refNode;
-    if (!!refNode) {
+    if (refNode != null) {
       node.prev = refNode.prev;
-      if (!!refNode.prev) {
+      if (refNode.prev != null) {
         refNode.prev.next = node;
       }
       refNode.prev = node;
@@ -40,19 +40,19 @@ class LinkedList<T extends LinkedNode> {
   }
 
   remove(node: T): void {
-    if (!!node.prev) node.prev.next = node.next;
-    if (!!node.next) node.next.prev = node.prev
+    if (node.prev != null) node.prev.next = node.next;
+    if (node.next != null) node.next.prev = node.prev
     if (node === this.head) this.head = <T>node.next;
     if (node === this.tail) this.tail = <T>node.prev;
     node.prev = node.next = undefined;
     this.length -= 1;
   }
 
-  iterator(curNode: T = this.head): ()=>T {
+  iterator(curNode: T = this.head): () => T {
     // TODO use yield when we can
-    return function():T {
+    return function(): T {
       var ret = curNode;
-      if (!!curNode) curNode = <T>curNode.next;
+      if (curNode != null) curNode = <T>curNode.next;
       return ret;
     }
   }
@@ -74,7 +74,7 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  forEachAt(index: number, length: number, callback: (cur:T, offset:number, length:number)=>void): void {
+  forEachAt(index: number, length: number, callback: (cur: T, offset: number, length: number) => void): void {
     // TODO use this.find()
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
@@ -86,6 +86,13 @@ class LinkedList<T extends LinkedNode> {
       }
       curIndex += curLength;
     }
+  }
+
+  map(callback: (cur: T) => any): any[] {
+    return this.reduce(function(memo, cur: T) {
+      memo.push(callback(cur));
+      return memo;
+    }, []);
   }
 
   reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {

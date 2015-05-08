@@ -9,11 +9,11 @@ export function copy(source, target = {}) {
 }
 
 export function data(node: Node, key: string, value?: any) {
-  if (!!value) {
-    if (!node[DATA_KEY]) node[DATA_KEY] = {};
+  if (value != null) {
+    if (node[DATA_KEY] == null) node[DATA_KEY] = {};
     node[DATA_KEY][key] = value;
   } else {
-    if (!node[DATA_KEY]) return undefined;
+    if (node[DATA_KEY] == null) return undefined;
     return node[DATA_KEY][key];
   }
 }

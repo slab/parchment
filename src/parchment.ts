@@ -3,6 +3,7 @@ import EmbedNode = require('./node/embed');
 import InlineNode = require('./node/inline');
 import LeafNode = require('./node/base/leaf');
 import ParentNode = require('./node/base/parent');
+
 import ParchmentNode = require('./node/base/parchment');
 import Registry = require('./registry');
 import Util = require('./lib/util');
@@ -22,6 +23,7 @@ class Parchment extends ParentNode {
 
   static nodeName = 'parchment';
   static tagName = 'DIV';
+
 
   static attach(node: Node): any {
     return Registry.attach(node);
@@ -46,6 +48,18 @@ class Parchment extends ParentNode {
 
   static match(node: Node): ParchmentNode {
     return Registry.match(node);
+  }
+
+  formats(): any[] {
+    return this.children.map(function(child) {
+      return child.formats();
+    });
+  }
+
+  values(): any[] {
+    return this.children.map(function(child) {
+      return child.values();
+    });
   }
 }
 

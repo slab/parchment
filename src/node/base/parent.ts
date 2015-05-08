@@ -20,9 +20,9 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
     var childNodes = Array.prototype.slice.call(this.domNode.childNodes || []);
     childNodes.forEach((node) => {
       var child = Registry.attach(node);
-      if (!!child) {
+      if (child != null) {
         this.appendChild(child);
-      } else if (!!node.parentNode) {
+      } else if (node.parentNode != null) {
         node.parentNode.removeChild(node);
       }
     });
@@ -31,6 +31,10 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
   // TODO same code as leaf.ts
   init(value: any): any {
     return value || document.createElement(this.statics.tagName);
+  }
+
+  formats(): any {
+    throw new Error('ParentNode.formats() should be overwritten.');
   }
 
   length(): number {
@@ -64,7 +68,7 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     if (this.statics.nodeName === name) {
-      if (!!value) return;
+      if (value != null) return;
       var target = this.isolate(index, length);
       target.unwrap();
     } else {

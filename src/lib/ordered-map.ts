@@ -16,7 +16,7 @@ class OrderedMap {
   }
 
   has(key: string): boolean {
-    return !!this.map[key];
+    return this.map[key] != null;
   }
 
   remove(key): void {

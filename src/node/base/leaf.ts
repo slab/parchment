@@ -7,11 +7,13 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
   static nodeName = 'leaf';
   static scope = Registry.Scope.LEAF;
 
-  // formats(): any;
-
   // TODO same code as parent.ts
   init(value: any): any {
     return value || document.createElement(this.statics.tagName);
+  }
+
+  formats(): any {
+    return null;
   }
 
   length(): number {
@@ -28,7 +30,7 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
   }
 
   deleteAt(index: number, length: number): void {
-    // TODO warn
+    throw new Error('LeafNode.deleteAt() should be overwritten.');
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -36,7 +38,7 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    if (!!def) {
+    if (def == null) {
       this.insertEmbed(index, value, def);
     } else {
       this.insertText(index, value);
@@ -44,11 +46,11 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
   }
 
   insertEmbed(index: number, name: string, value: any): void {
-    // TODO warn
+    throw new Error('LeafNode.insertEmbed() should be overwritten.');
   }
 
   insertText(index: number, text: string): void {
-    // TODO warn
+    throw new Error('LeafNode.insertText() should be overwritten.');
   }
 }
 

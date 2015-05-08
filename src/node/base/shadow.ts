@@ -38,12 +38,12 @@ export class ShadowNode implements LinkedNode {
   }
 
   merge() {
-    // if (!!this.next && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
+    // if (this.next != null && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
     //   var lastChild = this.children.tail;
     //   this.next.moveChildren(this, null);
     //   this.next.remove();
     //   this.merge();
-    //   if (!!lastChild) {
+    //   if (lastChild != null) {
     //     lastChild.merge();
     //   }
     // }
@@ -51,12 +51,12 @@ export class ShadowNode implements LinkedNode {
 
   remove(): void {
     this.parent.children.remove(this);
-    if (!!this.domNode.parentNode) this.domNode.parentNode.removeChild(this.domNode);
+    if (this.domNode.parentNode != null) this.domNode.parentNode.removeChild(this.domNode);
     this.parent = this.prev = this.next = undefined;
   }
 
   replace(name: string, value: any): ShadowNode {
-    if (!this.parent) return;
+    if (this.parent == null) return;
     var replacement = Registry.create(name, value);
     this.parent.insertBefore(replacement, this);
     // TODO handle attributes
@@ -89,10 +89,10 @@ export class ShadowParent extends ShadowNode {
   insertBefore(childNode: ShadowNode, refNode?: ShadowNode): void {
     this.children.insertBefore(childNode, refNode);
     var refDomNode = null;
-    if (!!refNode) {
+    if (refNode != null) {
       refDomNode = refNode.domNode;
     }
-    if (!childNode.next || childNode.domNode.nextSibling != refDomNode) {
+    if (childNode.next == null || childNode.domNode.nextSibling != refDomNode) {
       this.domNode.insertBefore(childNode.domNode, refDomNode);
     }
     childNode.parent = this;
