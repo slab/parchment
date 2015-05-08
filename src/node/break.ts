@@ -1,4 +1,4 @@
-import LeafNode = require('./leaf');
+import LeafNode = require('./base/leaf');
 import Registry = require('../registry');
 
 
@@ -7,17 +7,13 @@ class BreakNode extends LeafNode {
   static tagName = 'BR';
   static scope = Registry.Scope.LEAF;
 
-  getLength():number {
+  length(): number {
     return 0;
   }
 
-  getValue(): any[] {
-    return [""];
-  }
-
-  deleteText(index: number, length: number): void {
-    // TODO warn
-  }
+  // getValue(): any[] {
+  //   return [""];
+  // }
 
   formatText(index: number, length: number, name: string, value: any): void {
     this.wrap(name, value);

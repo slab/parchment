@@ -1,9 +1,9 @@
-import TreeNode = require('../tree-node');
+import LinkedNode = require('./linked-node');
 
 
-class TreeList {
-  head: TreeNode;
-  tail: TreeNode;
+class LinkedList<T extends LinkedNode> {
+  head: T;
+  tail: T;
   length: number;
 
   constructor() {
@@ -11,14 +11,14 @@ class TreeList {
     this.length = 0;
   }
 
-  append(...nodes: TreeNode[]): void {
+  append(...nodes: T[]): void {
     this.insertBefore(nodes[0], undefined);
     if (nodes.length > 1) {
       this.append.apply(this, nodes.slice(1));
     }
   }
 
-  insertBefore(node: TreeNode, refNode: TreeNode): void {
+  insertBefore(node: T, refNode: T): void {
     node.next = refNode;
     if (!!refNode) {
       node.prev = refNode.prev;
@@ -39,28 +39,28 @@ class TreeList {
     this.length += 1;
   }
 
-  remove(node: TreeNode): void {
-    if (!!node.prev)         node.prev.next = node.next;
-    if (!!node.next)         node.next.prev = node.prev
-    if (node === this.head)  this.head = node.next;
-    if (node === this.tail)  this.tail = node.prev;
+  remove(node: T): void {
+    if (!!node.prev) node.prev.next = node.next;
+    if (!!node.next) node.next.prev = node.prev
+    if (node === this.head) this.head = <T>node.next;
+    if (node === this.tail) this.tail = <T>node.prev;
     node.prev = node.next = undefined;
     this.length -= 1;
   }
 
-  iterator(curNode: TreeNode = this.head) {
+  iterator(curNode: T = this.head) {
     // TODO use yield when we can
     return function() {
       var ret = curNode;
-      if (!!curNode) curNode = curNode.next;
+      if (!!curNode) curNode = <T>curNode.next;
       return ret;
     }
   }
 
-  find(index: number): [TreeNode, number] {
+  find(index: number): [T, number] {
     var cur, next = this.iterator();
     while (cur = next()) {
-      var length = cur.getLength();
+      var length = cur.length();
       if (index < length) return [cur, index];
       index -= length;
     }
@@ -78,7 +78,7 @@ class TreeList {
     // TODO use this.find()
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
-      var curLength = cur.getLength();
+      var curLength = cur.length();
       if (index <= curIndex) {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));
       } else if (index < curIndex + curLength) {
@@ -98,4 +98,4 @@ class TreeList {
 }
 
 
-export = TreeList;
+export = LinkedList;

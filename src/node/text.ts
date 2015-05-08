@@ -1,6 +1,6 @@
-import LeafNode = require('./leaf');
+import LeafNode = require('./base/leaf');
 import Registry = require('../registry');
-import ShadowNode = require('../shadow-node');
+import Shadow = require('./base/shadow');
 
 
 class TextNode extends LeafNode {
@@ -9,40 +9,48 @@ class TextNode extends LeafNode {
 
   domNode: Text;
 
-  init(value): any {
-    if (value instanceof String) {
-      value = document.createTextNode(value);
-    }
-    return super.init(value);
-  }
+  // init(value): any {
+  //   if (value instanceof String) {
+  //     value = document.createTextNode(value);
+  //   }
+  //   return super.init(value);
+  // }
 
-  getLength(): number {
+  length(): number {
     return this.domNode.data.length;
   }
 
-  getValue():any[] {
-    return [this.domNode.data];
-  }
+  // getValue(): y[] {
+  //   return [this.domNode.data];
+  // }
 
-  split(index: number): ShadowNode {
+  split(index: number): Shadow.ShadowNode {
     if (index === 0) return this;
-    if (index === this.getLength()) return this.next;
-    var after = Registry.create(this.class.nodeName, this.domNode.splitText(index));
+    if (index === this.length()) return this.next;
+    var after = Registry.create(this.statics.nodeName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
     return after;
   }
 
-  deleteText(index: number, length: number): void {
+  deleteAt(index: number, length: number): void {
     var curText = this.domNode.data;
     this.domNode.data = curText.slice(0, index) + curText.slice(index + length);
   }
 
-  formatText(index: number, length: number, name: string, value: string): void {
+  formatAt(index: number, length: number, name: string, value: string): void {
     var target = this.isolate(index, length);
     target.wrap(name, value);
   }
 
-  insertEmbed(index: number, name: string, value: string): void {
+  insertAt(index: number, value: string, def?: any): void {
+    if (!!def) {
+      this.insertEmbed(index, value, def);
+    } else {
+      this.insertText(index, value);
+    }
+  }
+
+  insertEmbed(index: number, name: string, value: any): void {
     this.split(index);
     var embed = Registry.create(name, value);
     this.parent.insertBefore(embed, this.next);

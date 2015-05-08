@@ -1,4 +1,4 @@
-import LeafNode = require('./leaf');
+import LeafNode = require('./base/leaf');
 import Registry = require('../registry');
 
 
@@ -13,15 +13,15 @@ class EmbedNode extends LeafNode {
     this.wrap(name, value);
   }
 
-  getLength(): number {
+  length(): number {
     return 1;
   }
 
-  getValue(): any[] {
-    var value = {};
-    value[this.class.nodeName] = true;
-    return [value];
-  }
+  // getValue(): any[] {
+  //   var value = {};
+  //   value[this.class.nodeName] = true;
+  //   return [value];
+  // }
 }
 
 

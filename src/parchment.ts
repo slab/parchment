@@ -1,7 +1,9 @@
-import ParchmentNode = require('./parchment-node');
 import BlockNode = require('./node/block');
 import EmbedNode = require('./node/embed');
 import InlineNode = require('./node/inline');
+import LeafNode = require('./node/base/leaf');
+import ParentNode = require('./node/base/parent');
+import ParchmentNode = require('./node/base/parchment');
 import Registry = require('./registry');
 import Util = require('./lib/util');
 
@@ -9,11 +11,13 @@ import TextNode = require('./node/text')
 import BreakNode = require('./node/break');
 
 
-class Parchment extends ParchmentNode {
-  static Node = ParchmentNode;
+class Parchment extends ParentNode {
   static BlockNode = BlockNode;
-  static InlineNode = InlineNode;
   static EmbedNode = EmbedNode;
+  static InlineNode = InlineNode;
+  static LeafNode = LeafNode;
+  static ParentNode = ParentNode;
+
   static Scope = Registry.Scope;
 
   static nodeName = 'parchment';
@@ -31,7 +35,7 @@ class Parchment extends ParchmentNode {
     return Registry.create(name, value);
   }
 
-  static define(NodeClass, SuperClass = ParchmentNode): any {
+  static define(NodeClass, SuperClass = ParentNode): any {
     if (typeof NodeClass !== 'object') {
       return Registry.define(NodeClass);
     } else {
@@ -42,10 +46,6 @@ class Parchment extends ParchmentNode {
 
   static match(node: Node): ParchmentNode {
     return Registry.match(node);
-  }
-
-  constructor(value) {
-    super(value, Parchment);
   }
 }
 
