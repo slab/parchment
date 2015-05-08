@@ -10,7 +10,7 @@ module.exports = function(config) {
       'test/parchment.ts': ['browserify']
     },
     browserify: {
-      plugin: ['tsify']
+      plugin: [['tsify', { target: 'ES5' }]]
     },
     exclude: [],
     reporters: ['progress'],

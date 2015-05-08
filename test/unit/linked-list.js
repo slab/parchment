@@ -1,10 +1,10 @@
-describe('TreeList', function() {
+describe('LinkedList', function() {
   beforeEach(function() {
-    this.list = new TreeList();
+    this.list = new LinkedList();
     this.a = { str: 'a' };
     this.b = { str: 'b' };
     this.c = { str: 'c' };
-    this.a.getLength = this.b.getLength = this.c.getLength = function() {
+    this.a.length = this.b.length = this.c.length = function() {
       return 3;
     };
   });
