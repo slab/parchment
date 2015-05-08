@@ -48,9 +48,9 @@ class LinkedList<T extends LinkedNode> {
     this.length -= 1;
   }
 
-  iterator(curNode: T = this.head) {
+  iterator(curNode: T = this.head): ()=>T {
     // TODO use yield when we can
-    return function() {
+    return function():T {
       var ret = curNode;
       if (!!curNode) curNode = <T>curNode.next;
       return ret;
@@ -67,14 +67,14 @@ class LinkedList<T extends LinkedNode> {
     return [null, 0];
   }
 
-  forEach(callback): void {
+  forEach(callback: (cur: T) => void): void {
     var cur, next = this.iterator();
     while (cur = next()) {
       callback(cur);
     }
   }
 
-  forEachAt(index: number, length: number, callback): void {
+  forEachAt(index: number, length: number, callback: (cur:T, offset:number, length:number)=>void): void {
     // TODO use this.find()
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
@@ -88,7 +88,7 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  reduce(callback, memo) {
+  reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {
     var cur, next = this.iterator();
     while (cur = next()) {
       memo = callback(memo, cur);
