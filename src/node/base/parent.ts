@@ -25,6 +25,12 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
     });
   }
 
+  // TODO same code as leaf.ts
+  init(value: any): any {
+    return value || document.createElement(this.statics.tagName);
+  }
+
+
   length(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.length();

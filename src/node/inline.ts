@@ -7,12 +7,12 @@ class InlineNode extends ParentNode {
   static tagName = 'SPAN';
   static scope = Registry.Scope.INLINE;
 
-  // init(value): any {
-  //   if (!(value instanceof HTMLElement)) {
-  //     value = null;
-  //   }
-  //   return super.init(value);
-  // }
+  init(value: any): any {
+    if (!(value instanceof HTMLElement)) {
+      value = null;
+    }
+    return super.init(value);
+  }
 
   deleteAt(index: number, length: number): void {
     super.deleteAt(index, length);

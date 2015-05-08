@@ -9,12 +9,12 @@ class TextNode extends LeafNode {
 
   domNode: Text;
 
-  // init(value): any {
-  //   if (value instanceof String) {
-  //     value = document.createTextNode(value);
-  //   }
-  //   return super.init(value);
-  // }
+  init(value: any): any {
+    if (value instanceof String) {
+      value = document.createTextNode(value);
+    }
+    return super.init(value);
+  }
 
   length(): number {
     return this.domNode.data.length;

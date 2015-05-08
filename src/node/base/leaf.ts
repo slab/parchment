@@ -6,6 +6,11 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
   // formats(): any;
   // values(): any;
 
+  // TODO same code as parent.ts
+  init(value: any): any {
+    return value || document.createElement(this.statics.tagName);
+  }
+
   deleteAt(index: number, length: number): void {
     // TODO warn
   }

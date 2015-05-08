@@ -8,15 +8,18 @@ export class ShadowNode implements LinkedNode {
   next: ShadowNode = null;
   parent: ShadowParent = null;
   domNode: Node = null;
-  class;
 
-  constructor(domNode: Node) {
-    this.domNode = domNode;
+  constructor(value: any) {
+    this.domNode = this.init(value);
   }
 
   get statics(): any {
     // TODO: Hack for accessing inherited static methods
     return this.constructor;
+  }
+
+  init(value: any): any {
+    return value;
   }
 
   clone(): ShadowNode {
