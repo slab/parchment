@@ -16,13 +16,9 @@ class TextNode extends LeafNode {
     return super.init(value);
   }
 
-  length(): number {
-    return this.domNode.data.length;
+  values(): string {
+    return this.domNode.data;
   }
-
-  // getValue(): y[] {
-  //   return [this.domNode.data];
-  // }
 
   split(index: number): Shadow.ShadowNode {
     if (index === 0) return this;

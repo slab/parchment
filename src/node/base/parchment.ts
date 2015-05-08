@@ -4,7 +4,7 @@ interface ParchmentNode {
   // constructor(value: Node, NodeClass);    // TODO not sure why this breaks things
 
   // formats(): any;
-  // values(): any;
+  values(): any;
 
   insertAt(index: number, value: string, def?: any): void;
   formatAt(index: number, length: number, name: string, value: any): void;

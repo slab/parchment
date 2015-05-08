@@ -9,19 +9,19 @@ class EmbedNode extends LeafNode {
   static nodeName = 'embed';
   static scope = Registry.Scope.LEAF;
 
-  formatText(index: number, length: number, name: string, value: any): void {
-    this.wrap(name, value);
-  }
-
   length(): number {
     return 1;
   }
 
-  // getValue(): any[] {
-  //   var value = {};
-  //   value[this.class.nodeName] = true;
-  //   return [value];
-  // }
+  values(): any {
+    var value = {};
+    value[this.statics.nodeName] = true;
+    return value;
+  }
+
+  formatText(index: number, length: number, name: string, value: any): void {
+    this.wrap(name, value);
+  }
 }
 
 

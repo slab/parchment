@@ -1,14 +1,30 @@
 import ParchmentNode = require('./parchment');
+import Registry = require('../../registry');
 import Shadow = require('./shadow');
 
 
 class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
+  static nodeName = 'leaf';
+  static scope = Registry.Scope.LEAF;
+
   // formats(): any;
-  // values(): any;
 
   // TODO same code as parent.ts
   init(value: any): any {
     return value || document.createElement(this.statics.tagName);
+  }
+
+  length(): number {
+    var value = this.values();
+    if (typeof value === 'string') {
+      return value.length;
+    } else {
+      return 1;
+    }
+  }
+
+  values(): any {
+    return {};
   }
 
   deleteAt(index: number, length: number): void {

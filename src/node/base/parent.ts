@@ -6,6 +6,9 @@ import Shadow = require('./shadow');
 
 
 class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
+  static nodeName = 'parent';
+  static scope = Registry.Scope.BLOCK;
+
   children: LinkedList<LeafNode|ParentNode> = new LinkedList<LeafNode|ParentNode>();
 
   constructor(value: Node) {
@@ -30,7 +33,6 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
     return value || document.createElement(this.statics.tagName);
   }
 
-
   length(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.length();
@@ -38,7 +40,17 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
   }
 
   // formats(): any;
-  // values(): any;
+  values(): any[] {
+    return this.children.reduce(function(memo, child) {
+      var value = child.values();
+      if (value instanceof Array) {
+        memo = memo.concat(value);
+      } else if (value != null) {
+        memo.push(value);
+      }
+      return memo;
+    }, []);
+  }
 
   deleteAt(index: number, length: number): void {
     if (index === 0 && length === this.length()) {

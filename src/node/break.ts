@@ -11,9 +11,9 @@ class BreakNode extends LeafNode {
     return 0;
   }
 
-  // getValue(): any[] {
-  //   return [""];
-  // }
+  value(): any {
+    return null;
+  }
 
   formatText(index: number, length: number, name: string, value: any): void {
     this.wrap(name, value);
