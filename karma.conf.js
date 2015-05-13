@@ -10,10 +10,14 @@ module.exports = function(config) {
       'test/parchment.ts': ['browserify']
     },
     browserify: {
+      transform: ['browserify-istanbul'],
       plugin: [['tsify', { target: 'ES5' }]]
     },
     exclude: [],
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+    coverageReporter: {
+      type: 'text'
+    },
     browsers: ['Chrome'],
 
     port: 9876,
