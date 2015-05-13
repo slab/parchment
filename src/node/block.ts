@@ -22,7 +22,7 @@ class BlockNode extends ParentNode {
       } else {
         return [format];
       }
-    }
+    };
     return this.children.reduce(function(memo, child) {
       return memo.concat(collector(child));
     }, []);
@@ -31,4 +31,3 @@ class BlockNode extends ParentNode {
 
 
 export = BlockNode;
-
