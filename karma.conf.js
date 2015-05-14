@@ -1,28 +1,21 @@
 var through = require('through');
-var istanbul = require('istanbul');
-var store = require('karma-coverage/lib/sourceCache').getByBasePath(__dirname);
-
-var instrumenter = new istanbul.Instrumenter();
-var transform = function(file) {
-  var data = '';
-  return through(function(buff) {
-    data += buff;
-  }, function() {
-    var self = this;
-    store[file] = data;
-    instrumenter.instrument(data, file, function(err, code) {
-      if (!err) {
-        self.queue(code);
-      } else {
-        self.emit('error', err);
-      }
-      self.queue(null);
-    })
-  })
-};
-
 
 module.exports = function(config) {
+  var transform = function(file) {
+    // Hack to give karma-coverage the source files for html reporter
+    // since we do not actually use karma to instrument in order to
+    // map to pre-browserified code
+    var store = require('karma-coverage/lib/sourceCache').getByBasePath(config.basePath);
+    var chunks = [];
+    return through(function(buff) {
+      chunks.push(buff);
+      this.queue(buff)
+    }, function() {
+      store[file] = chunks.join('');
+      this.queue(null);
+    })
+  };
+
   config.set({
     basePath: '',
     frameworks: ['browserify', 'jasmine'],
@@ -34,7 +27,7 @@ module.exports = function(config) {
       'test/parchment.ts': ['browserify']
     },
     browserify: {
-      transform: [transform],
+      transform: [transform, 'browserify-istanbul'],
       plugin: [['tsify', { target: 'ES5' }]]
     },
     exclude: [],
