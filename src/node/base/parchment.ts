@@ -1,7 +1,6 @@
 interface ParchmentNode {
   // static nodeName: string;
   // static scope: Registry.Scope;
-  // constructor(value: Node, NodeClass);    // TODO not sure why this breaks things
 
   formats(): any;
   values(): any;

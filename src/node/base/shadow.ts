@@ -18,7 +18,10 @@ export class ShadowNode implements LinkedNode {
     return this.constructor;
   }
 
-  init(value: any): any {
+  init(value: any): Node {
+    if (!(value instanceof Node)) {
+      throw new Error('ShadowNode must be initialized with DOM Node but got: ' + value)
+    }
     return value;
   }
 
