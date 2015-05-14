@@ -22,18 +22,32 @@ gulp.task('build', function() {
 
 gulp.task('test', function(done) {
   karma.start({
-    configFile: __dirname + '/karma.conf.js'
+    configFile: __dirname + '/karma.conf.js',
+    reporters: ['progress'],
+    browserify: {
+      plugin: [['tsify', { target: 'ES5' }]]
+    }
+  }, done);
+});
+
+gulp.task('test:coverage', function(done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    reporters: ['progress', 'coverage']
   }, done);
 });
 
 gulp.task('test:server', function(done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
-    singleRun: false
+    singleRun: false,
+    reporters: ['progress'],
+    browserify: {
+      plugin: [['tsify', { target: 'ES5' }]]
+    }
   }, done);
 });
 
 gulp.task('watch', function() {
   gulp.watch('**/*.ts', ['build']);
 });
-

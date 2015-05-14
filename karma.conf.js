@@ -34,7 +34,10 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
     coverageReporter: {
       dir: '.build/coverage',
-      type: 'html'
+      reporters: [
+        { type: 'html' },
+        { type: 'text' }
+      ]
     },
     browsers: ['Chrome'],
 
