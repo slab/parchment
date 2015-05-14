@@ -1,11 +1,11 @@
 var Link = Parchment.define({
   init: function(value) {
-    var a = document.createElement('A');
+    var a = document.createElement(this.statics.tagName);
     a.href = value;
     return a;
   },
-  getFormat: function() {
-    return [{ link: this.domNode.href }];
+  formats: function() {
+    return { link: this.domNode.href };
   },
   nodeName: 'link',
   tagName: 'A'
