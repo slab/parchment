@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var browserify = require('browserify');
 var derequire = require('gulp-derequire');
 var gulp = require('gulp');
@@ -6,14 +5,6 @@ var karma = require('karma').server;
 var source = require('vinyl-source-stream');
 var tsconfig = require('./tsconfig.json');
 var tsify = require('tsify');
-
-
-var karmaCommon = {
-  configFile: __dirname + '/karma.conf.js',
-  browserify: {
-    plugin: [['tsify', tsconfig.compilerOptions]]
-  }
-};
 
 
 gulp.task('default', ['build']);
@@ -30,21 +21,29 @@ gulp.task('build', function() {
 });
 
 gulp.task('test', function(done) {
-  karma.start(karmaCommon, done);
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    browserify: {
+      plugin: [['tsify', tsconfig.compilerOptions]]
+    },
+  }, done);
 });
 
 gulp.task('test:coverage', function(done) {
-  var config = _.defaults({
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
     reporters: ['progress', 'coverage']
-  }, karmaCommon);
-  delete config['browserify'];
-  karma.start(config, done);
+  }, done);
 });
 
 gulp.task('test:server', function(done) {
-  karma.start(_.defaults({
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    browserify: {
+      plugin: [['tsify', tsconfig.compilerOptions]]
+    },
     singleRun: false
-  }, karmaCommon), done);
+  }, done);
 });
 
 gulp.task('watch', function() {
