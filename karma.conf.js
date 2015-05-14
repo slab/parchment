@@ -1,4 +1,5 @@
 var through = require('through');
+var tsconfig = require('./tsconfig.json');
 
 module.exports = function(config) {
   var transform = function(file) {
@@ -28,10 +29,10 @@ module.exports = function(config) {
     },
     browserify: {
       transform: [transform, 'browserify-istanbul'],
-      plugin: [['tsify', { target: 'ES5' }]]
+      plugin: [['tsify', tsconfig.compilerOptions]]
     },
     exclude: [],
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
     coverageReporter: {
       dir: '.build/coverage',
       reporters: [
