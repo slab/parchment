@@ -128,6 +128,14 @@ describe('LinkedList', function() {
       expect(result).toEqual('abc');
     });
 
+    it('map', function() {
+      this.list.append(this.a, this.b, this.c);
+      var arr = this.list.map(function(node) {
+        return node.str;
+      });
+      expect(arr).toEqual(['a', 'b', 'c']);
+    });
+
     it('reduce', function() {
       this.list.append(this.a, this.b, this.c);
       var memo = this.list.reduce(function(memo, node) {
