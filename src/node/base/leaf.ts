@@ -39,9 +39,9 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
 
   insertAt(index: number, value: string, def?: any): void {
     if (def == null) {
-      this.insertEmbed(index, value, def);
-    } else {
       this.insertText(index, value);
+    } else {
+      this.insertEmbed(index, value, def);
     }
   }
 
