@@ -25,10 +25,6 @@ class Parchment extends ParentNode {
   static tagName = 'DIV';
 
 
-  static attach(node: Node): any {
-    return Registry.attach(node);
-  }
-
   static compare(typeName1: string, typeName2: string): number {
     return Registry.compare(typeName1, typeName2);
   }

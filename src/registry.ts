@@ -11,14 +11,6 @@ export enum Scope {
   LEAF = 1
 };
 
-export function attach(node: Node): any {
-  var NodeClass = match(node);
-  if (NodeClass != null) {
-    return new NodeClass(node, NodeClass);
-  }
-  return null;
-};
-
 export function compare(typeName1: string, typeName2: string): number {
   var type1 = types.get(typeName1);
   var type2 = types.get(typeName2);

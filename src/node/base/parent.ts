@@ -19,8 +19,9 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
   build(): void {
     var childNodes = Array.prototype.slice.call(this.domNode.childNodes || []);
     childNodes.forEach((node) => {
-      var child = Registry.attach(node);
-      if (child != null) {
+      var NodeClass = Registry.match(node);
+      if (NodeClass != null) {
+        var child = new NodeClass(node);
         this.appendChild(child);
       } else if (node.parentNode != null) {
         node.parentNode.removeChild(node);
