@@ -43,7 +43,6 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
     }, 0);
   }
 
-  // formats(): any;
   values(): any[] {
     return this.children.reduce(function(memo, child) {
       var value = child.values();
