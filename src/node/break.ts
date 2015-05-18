@@ -15,7 +15,7 @@ class BreakNode extends LeafNode {
     return null;
   }
 
-  formatText(index: number, length: number, name: string, value: any): void {
+  formatAt(index: number, length: number, name: string, value: any): void {
     this.wrap(name, value);
   }
 

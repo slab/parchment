@@ -19,7 +19,7 @@ class EmbedNode extends LeafNode {
     return value;
   }
 
-  formatText(index: number, length: number, name: string, value: any): void {
+  formatAt(index: number, length: number, name: string, value: any): void {
     this.wrap(name, value);
   }
 }

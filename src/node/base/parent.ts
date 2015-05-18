@@ -11,7 +11,7 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
 
   children: LinkedList<LeafNode|ParentNode> = new LinkedList<LeafNode|ParentNode>();
 
-  constructor(value: Node) {
+  constructor(value: HTMLElement) {
     super(value);
     this.build();
   }
