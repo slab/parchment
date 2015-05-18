@@ -1,5 +1,3 @@
-import ParchmentNode = require("../node/base/parchment")
-
 interface Attribute {
   // static attrName: string;
   // static scope: Registry.Scope;
