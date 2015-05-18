@@ -1,10 +1,9 @@
 import OrderedMap = require('./lib/ordered-map');
-import ParchmentNode = require('./node/base/parchment');
 
 
 var attributes = {};
 var tags = {};
-var types = new OrderedMap<ParchmentNode>();
+var types = new OrderedMap<any>();
 
 export enum Scope {
   BLOCK = 3,
