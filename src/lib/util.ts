@@ -45,3 +45,11 @@ export function inherit(Class, SuperClass) {
 export function merge(obj1, obj2) {
   return copy(obj2, copy(obj1));
 }
+
+export function mixin(derivedClass: any, baseClasses: any[]) {
+  baseClasses.forEach(baseClass => {
+    Object.getOwnPropertyNames(baseClass.prototype).forEach(name => {
+      derivedClass.prototype[name] = baseClass.prototype[name];
+    });
+  });
+}
