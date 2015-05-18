@@ -1,5 +1,5 @@
-class OrderedMap {
-  protected map: { [id: string]: any };
+class OrderedMap<T> {
+  protected map: { [id: string]: T };
   protected keys: string[];
 
   constructor() {
@@ -7,7 +7,7 @@ class OrderedMap {
     this.keys = [];
   }
 
-  get(key: string): any {
+  get(key: string): T {
     return this.map[key];
   }
 
@@ -19,7 +19,7 @@ class OrderedMap {
     return this.map[key] != null;
   }
 
-  remove(key): void {
+  remove(key: string): void {
     if (this.has(key)) {
       var index = this.indexOf(key);
       this.keys.splice(index, 1);
@@ -27,7 +27,7 @@ class OrderedMap {
     }
   }
 
-  set(key: string, value): void {
+  set(key: string, value: T): void {
     if (!this.has(key)) {
       this.keys.push(key);
     }
