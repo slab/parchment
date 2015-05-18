@@ -5,7 +5,9 @@ var attributes = {};
 var tags = {};
 var types = new OrderedMap<any>();
 
+
 export enum Scope {
+  CONTAINER = 4,
   BLOCK = 3,
   INLINE = 2,
   LEAF = 1

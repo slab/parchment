@@ -23,6 +23,7 @@ class Parchment extends ParentNode {
 
   static nodeName = 'parchment';
   static tagName = 'DIV';
+  static scope = Registry.Scope.CONTAINER;
 
 
   static compare(typeName1: string, typeName2: string): number {
