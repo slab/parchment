@@ -68,5 +68,5 @@ Parchment.define(BlockBlot);
 Parchment.define(InlineBlot);
 Parchment.define(BreakBlot);
 
-
-export default Parchment;
+// ES6 export will not correctly expose an object { define: Parchment }
+export = Parchment;
