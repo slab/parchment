@@ -1,4 +1,4 @@
-import Attribute = require('./attribute');
+import Attribute = require('./base');
 import Shadow = require("../node/base/shadow")
 
 
