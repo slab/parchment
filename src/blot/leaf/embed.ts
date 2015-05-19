@@ -1,13 +1,12 @@
-import LeafNode = require('./base/leaf');
-import Registry = require('../registry');
+import LeafBlot from './base';
+import { Scope } from '../../registry';
 
 
 // TODO we can define insertText by calling insertText on neighbors
 
-
-class EmbedNode extends LeafNode {
+class EmbedBlot extends LeafBlot {
   static nodeName = 'embed';
-  static scope = Registry.Scope.LEAF;
+  static scope = Scope.LEAF;
 
   length(): number {
     return 1;
@@ -25,4 +24,4 @@ class EmbedNode extends LeafNode {
 }
 
 
-export = EmbedNode;
+export default EmbedBlot;

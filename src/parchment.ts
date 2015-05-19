@@ -1,23 +1,24 @@
-import BlockNode = require('./node/block');
-import EmbedNode = require('./node/embed');
-import InlineNode = require('./node/inline');
-import LeafNode = require('./node/base/leaf');
-import ParentNode = require('./node/base/parent');
+import BlockBlot from './blot/parent/block';
+import EmbedBlot from './blot/leaf/embed';
+import LeafBlot from './blot/leaf/base';
+import InlineBlot from './blot/parent/inline';
+import ParentBlot from './blot/parent/base';
 
-import ParchmentNode = require('./node/base/parchment');
-import Registry = require('./registry');
-import Util = require('./lib/util');
+import Blot from './blot/base';
+import { inherit } from './util';
 
-import TextNode = require('./node/text')
-import BreakNode = require('./node/break');
+import TextBlot from './blot/leaf/text';
+import BreakBlot from './blot/leaf/break';
+
+import * as Registry from './registry';
 
 
-class Parchment extends ParentNode {
-  static BlockNode = BlockNode;
-  static EmbedNode = EmbedNode;
-  static InlineNode = InlineNode;
-  static LeafNode = LeafNode;
-  static ParentNode = ParentNode;
+class Parchment extends ParentBlot {
+  static Block = BlockBlot;
+  static Embed = EmbedBlot;
+  static Inline = InlineBlot;
+  static Leaf = LeafBlot;
+  static Parent = ParentBlot;
 
   static Scope = Registry.Scope;
 
@@ -30,20 +31,20 @@ class Parchment extends ParentNode {
     return Registry.compare(typeName1, typeName2);
   }
 
-  static create(name: string, value?:any): ParchmentNode {
+  static create(name: string, value?:any): Blot {
     return Registry.create(name, value);
   }
 
-  static define(NodeClass, SuperClass = ParentNode): any {
+  static define(NodeClass, SuperClass = ParentBlot): any {
     if (typeof NodeClass !== 'object') {
       return Registry.define(NodeClass);
     } else {
-      var SubClass = Util.inherit(NodeClass, SuperClass);
+      var SubClass = inherit(NodeClass, SuperClass);
       return Registry.define(SubClass);
     }
   }
 
-  static match(node: Node): ParchmentNode {
+  static match(node: Node): Blot {
     return Registry.match(node);
   }
 
@@ -62,10 +63,10 @@ class Parchment extends ParentNode {
 
 
 Parchment.define(Parchment);
-Parchment.define(TextNode);
-Parchment.define(BlockNode);
-Parchment.define(InlineNode);
-Parchment.define(BreakNode);
+Parchment.define(TextBlot);
+Parchment.define(BlockBlot);
+Parchment.define(InlineBlot);
+Parchment.define(BreakBlot);
 
 
-export = Parchment;
+export default Parchment;

@@ -1,9 +1,9 @@
-import LeafNode = require('./base/leaf');
-import Registry = require('../registry');
-import Shadow = require('./base/shadow');
+import LeafBlot from './base';
+import Shadow from '../../shadow/base';
+import * as Registry from '../../registry';
 
 
-class TextNode extends LeafNode {
+class TextBlot extends LeafBlot {
   static nodeName = 'text';
   static scope = Registry.Scope.LEAF;
 
@@ -20,7 +20,7 @@ class TextNode extends LeafNode {
     return this.domNode.data;
   }
 
-  split(index: number): Shadow.ShadowNode {
+  split(index: number): Shadow {
     if (index === 0) return this;
     if (index === this.length()) return this.next;
     var after = Registry.create(this.statics.nodeName, this.domNode.splitText(index));
@@ -51,4 +51,4 @@ class TextNode extends LeafNode {
 }
 
 
-export = TextNode;
+export default TextBlot;

@@ -1,11 +1,11 @@
-import LeafNode = require('./base/leaf');
-import Registry = require('../registry');
+import LeafBlot from './base';
+import { Scope } from '../../registry';
 
 
-class BreakNode extends LeafNode {
+class BreakBlot extends LeafBlot {
   static nodeName = 'break';
   static tagName = 'BR';
-  static scope = Registry.Scope.LEAF;
+  static scope = Scope.LEAF;
 
   length(): number {
     return 0;
@@ -29,4 +29,4 @@ class BreakNode extends LeafNode {
 }
 
 
-export = BreakNode;
+export default BreakBlot;

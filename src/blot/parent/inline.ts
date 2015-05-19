@@ -1,8 +1,8 @@
-import ParentNode = require('./base/parent');
-import Registry = require('../registry');
+import ParentBlot from './base';
+import * as Registry from '../../registry';
 
 
-class InlineNode extends ParentNode {
+class InlineBlot extends ParentBlot {
   static nodeName = 'inline';
   static tagName = 'SPAN';
   static scope = Registry.Scope.INLINE;
@@ -39,4 +39,4 @@ class InlineNode extends ParentNode {
 }
 
 
-export = InlineNode;
+export default InlineBlot;

@@ -1,4 +1,4 @@
-interface ParchmentNode {
+interface Blot {
   // static nodeName: string;
   // static scope: Registry.Scope;
   init(value: any): any;
@@ -11,4 +11,5 @@ interface ParchmentNode {
   deleteAt(index: number, length: number): void;
 }
 
-export = ParchmentNode;
+
+export default Blot;

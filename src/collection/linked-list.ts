@@ -1,4 +1,4 @@
-import LinkedNode = require('./linked-node');
+import LinkedNode from './linked-node';
 
 
 class LinkedList<T extends LinkedNode> {
@@ -105,4 +105,4 @@ class LinkedList<T extends LinkedNode> {
 }
 
 
-export = LinkedList;
+export default LinkedList;

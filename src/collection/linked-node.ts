@@ -6,4 +6,4 @@ interface LinkedNode {
 }
 
 
-export = LinkedNode;
+export default LinkedNode;

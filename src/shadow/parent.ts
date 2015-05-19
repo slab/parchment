@@ -1,11 +1,15 @@
-export class ShadowParent extends ShadowNode {
-  children: LinkedList<ShadowNode> = new LinkedList<ShadowNode>();
+import LinkedList from '../collection/linked-list';
+import Shadow from './base';
 
-  appendChild(other: ShadowNode): void {
+
+class ShadowParent extends Shadow {
+  children: LinkedList<Shadow> = new LinkedList<Shadow>();
+
+  appendChild(other: Shadow): void {
     this.insertBefore(other);
   }
 
-  insertBefore(childNode: ShadowNode, refNode?: ShadowNode): void {
+  insertBefore(childNode: Shadow, refNode?: Shadow): void {
     this.children.insertBefore(childNode, refNode);
     var refDomNode = null;
     if (refNode != null) {
@@ -21,7 +25,7 @@ export class ShadowParent extends ShadowNode {
     return <ShadowParent>super.isolate(index, length);
   }
 
-  moveChildren(parent: ShadowParent, refNode?: ShadowNode): void {
+  moveChildren(parent: ShadowParent, refNode?: Shadow): void {
     this.children.forEach(function(child) {
       parent.insertBefore(child, refNode);
     });
@@ -33,7 +37,7 @@ export class ShadowParent extends ShadowNode {
     return replacement;
   }
 
-  split(index: number): ShadowNode {
+  split(index: number): Shadow {
     if (index === 0) return this;
     if (index === this.length()) return this.next;
     var after = <ShadowParent>this.clone();
@@ -51,3 +55,6 @@ export class ShadowParent extends ShadowNode {
     this.remove();
   }
 }
+
+
+export default ShadowParent;

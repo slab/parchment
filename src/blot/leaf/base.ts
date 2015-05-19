@@ -1,11 +1,11 @@
-import ParchmentNode = require('./parchment');
-import Registry = require('../../registry');
-import Shadow = require('./shadow');
+import Shadow from '../../shadow/base';
+import Blot from '../base';
+import { Scope } from '../../registry';
 
 
-class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
+class LeafBlot extends Shadow implements Blot {
   static nodeName = 'leaf';
-  static scope = Registry.Scope.LEAF;
+  static scope = Scope.LEAF;
 
   // TODO same code as parent.ts
   init(value: any): any {
@@ -55,4 +55,4 @@ class LeafNode extends Shadow.ShadowNode implements ParchmentNode {
 }
 
 
-export = LeafNode;
+export default LeafBlot;

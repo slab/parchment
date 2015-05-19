@@ -40,4 +40,4 @@ class OrderedMap<T> {
 }
 
 
-export = OrderedMap;
+export default OrderedMap;

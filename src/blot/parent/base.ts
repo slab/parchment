@@ -1,15 +1,15 @@
-import LeafNode = require('./leaf');
-import LinkedList = require('../../lib/linked-list');
-import ParchmentNode = require('./parchment');
-import Registry = require('../../registry');
-import Shadow = require('./shadow');
+import Blot from '../base';
+import LeafBlot from '../leaf/base';
+import LinkedList from '../../collection/linked-list';
+import ShadowParent from '../../shadow/parent';
+import * as Registry from '../../registry';
 
 
-class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
+class ParentBlot extends ShadowParent implements Blot {
   static nodeName = 'parent';
   static scope = Registry.Scope.BLOCK;
 
-  children: LinkedList<LeafNode|ParentNode> = new LinkedList<LeafNode|ParentNode>();
+  children: LinkedList<LeafBlot|ParentBlot> = new LinkedList<LeafBlot|ParentBlot>();
 
   constructor(value: HTMLElement) {
     super(value);
@@ -86,4 +86,4 @@ class ParentNode extends Shadow.ShadowParent implements ParchmentNode {
 }
 
 
-export = ParentNode;
+export default ParentBlot;

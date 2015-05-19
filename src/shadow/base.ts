@@ -1,11 +1,12 @@
-import LinkedList = require('../../lib/linked-list');
-import LinkedNode = require('../../lib/linked-node');
-import Registry = require('../../registry');
+import LinkedList from '../collection/linked-list';
+import LinkedNode from '../collection/linked-node';
+import ShadowParent from './parent';
+import * as Registry from '../registry';
 
 
-export class ShadowNode implements LinkedNode {
-  prev: ShadowNode = null;
-  next: ShadowNode = null;
+class Shadow implements LinkedNode {
+  prev: Shadow = null;
+  next: Shadow = null;
   parent: ShadowParent = null;
   domNode: Node = null;
 
@@ -20,17 +21,17 @@ export class ShadowNode implements LinkedNode {
 
   init(value: any): Node {
     if (!(value instanceof Node)) {
-      throw new Error('ShadowNode must be initialized with DOM Node but got: ' + value)
+      throw new Error('Shadow must be initialized with DOM Node but got: ' + value)
     }
     return value;
   }
 
-  clone(): ShadowNode {
+  clone(): Shadow {
     var domNode = this.domNode.cloneNode();
     return Registry.create('node', domNode);
   }
 
-  isolate(index: number, length: number): ShadowNode {
+  isolate(index: number, length: number): Shadow {
     var target = this.split(index);
     target.split(length);
     return target;
@@ -58,7 +59,7 @@ export class ShadowNode implements LinkedNode {
     this.parent = this.prev = this.next = undefined;
   }
 
-  replace(name: string, value: any): ShadowNode {
+  replace(name: string, value: any): Shadow {
     if (this.parent == null) return;
     var replacement = Registry.create(name, value);
     this.parent.insertBefore(replacement, this);
@@ -67,7 +68,7 @@ export class ShadowNode implements LinkedNode {
     return replacement;
   }
 
-  split(index: number): ShadowNode {
+  split(index: number): Shadow {
     return index === 0 ? this : this.next;
   }
 
@@ -81,3 +82,6 @@ export class ShadowNode implements LinkedNode {
     return wrapper;
   }
 }
+
+
+export default Shadow;

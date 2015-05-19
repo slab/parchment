@@ -1,4 +1,4 @@
-import OrderedMap = require('./lib/ordered-map');
+import OrderedMap from './collection/ordered-map';
 
 
 var attributes = {};
