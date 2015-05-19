@@ -18,7 +18,7 @@ export function data(node: Node, key: string, value?: any) {
   }
 }
 
-export function inherit(Class, SuperClass) {
+export function inherit(ClassObject, SuperClass) {
   var SubClass = function() {
     SuperClass.apply(this, arguments);
   };
@@ -30,12 +30,12 @@ export function inherit(Class, SuperClass) {
   var Extender = function() { this.constructor = SubClass; }
   Extender.prototype = SuperClass.prototype;
   SubClass.prototype = new Extender();
-  for (var prop in Class) {
-    if (Class.hasOwnProperty(prop)) {
-      if (typeof Class[prop] === 'function') {
-        SubClass.prototype[prop] = Class[prop];
+  for (var prop in ClassObject) {
+    if (ClassObject.hasOwnProperty(prop)) {
+      if (typeof ClassObject[prop] === 'function') {
+        SubClass.prototype[prop] = ClassObject[prop];
       } else {
-        SubClass[prop] = Class[prop];
+        SubClass[prop] = ClassObject[prop];
       }
     }
   }
