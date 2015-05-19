@@ -24,20 +24,20 @@ export function compare(typeName1: string, typeName2: string): number {
 };
 
 export function create(name: string, value?:any) {
-  var NodeClass = types.get(name);
-  if (NodeClass == null) {
+  var BlotClass = types.get(name);
+  if (BlotClass == null) {
     throw new Error(`Unable to create ${name}`);
   }
-  return new NodeClass(value, NodeClass);
+  return new BlotClass(value, BlotClass);
 };
 
-export function define(NodeClass) {
+export function define(BlotClass) {
   // TODO warn of tag/type overwrite
-  types.set(NodeClass.nodeName, NodeClass);
-  if (typeof NodeClass.tagName === 'string') {
-    tags[NodeClass.tagName.toUpperCase()] = NodeClass;
+  types.set(BlotClass.nodeName, BlotClass);
+  if (typeof BlotClass.tagName === 'string') {
+    tags[BlotClass.tagName.toUpperCase()] = BlotClass;
   }
-  return NodeClass;
+  return BlotClass;
 };
 
 export function match(node) {

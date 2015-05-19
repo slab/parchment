@@ -35,11 +35,11 @@ class Parchment extends ParentBlot {
     return Registry.create(name, value);
   }
 
-  static define(NodeClass, SuperClass = ParentBlot): any {
-    if (typeof NodeClass !== 'object') {
-      return Registry.define(NodeClass);
+  static define(BlotClass, SuperClass = ParentBlot): any {
+    if (typeof BlotClass !== 'object') {
+      return Registry.define(BlotClass);
     } else {
-      var SubClass = inherit(NodeClass, SuperClass);
+      var SubClass = inherit(BlotClass, SuperClass);
       return Registry.define(SubClass);
     }
   }
