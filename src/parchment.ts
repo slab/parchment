@@ -5,7 +5,6 @@ import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/base';
 
 import Blot from './blot/base';
-import { inherit } from './util';
 
 import TextBlot from './blot/leaf/text';
 import BreakBlot from './blot/leaf/break';
@@ -26,27 +25,10 @@ class Parchment extends ParentBlot {
   static tagName = 'DIV';
   static scope = Registry.Scope.CONTAINER;
 
-
-  static compare(typeName1: string, typeName2: string): number {
-    return Registry.compare(typeName1, typeName2);
-  }
-
-  static create(name: string, value?:any): Blot {
-    return Registry.create(name, value);
-  }
-
-  static define(BlotClass, SuperClass = ParentBlot): any {
-    if (typeof BlotClass !== 'object') {
-      return Registry.define(BlotClass);
-    } else {
-      var SubClass = inherit(BlotClass, SuperClass);
-      return Registry.define(SubClass);
-    }
-  }
-
-  static match(node: Node): Blot {
-    return Registry.match(node);
-  }
+  static compare = Registry.compare;
+  static create = Registry.create;
+  static define = Registry.define;
+  static match = Registry.match;
 
   formats(): any[] {
     return this.children.map(function(child) {

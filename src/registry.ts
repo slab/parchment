@@ -1,4 +1,6 @@
 import OrderedMap from './collection/ordered-map';
+import ParentBlot from './blot/parent/base';
+import { inherit } from './util';
 
 
 var attributes = {};
@@ -31,7 +33,10 @@ export function create(name: string, value?:any) {
   return new BlotClass(value, BlotClass);
 };
 
-export function define(BlotClass) {
+export function define(BlotClass, SuperClass = ParentBlot) {
+  if (typeof BlotClass === 'object') {
+    BlotClass = inherit(BlotClass, SuperClass);
+  }
   // TODO warn of tag/type overwrite
   types.set(BlotClass.nodeName, BlotClass);
   if (typeof BlotClass.tagName === 'string') {
