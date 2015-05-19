@@ -6,6 +6,7 @@ import BreakBlot from '../src/blot/leaf/break';
 import EmbedBlot from '../src/blot/leaf/embed';
 import TextBlot from '../src/blot/leaf/text';
 import ParentBlot from '../src/blot/parent/base';
+import ContainerBlot from '../src/blot/parent/container';
 import BlockBlot from '../src/blot/parent/block';
 import InlineBlot from '../src/blot/parent/inline';
 
