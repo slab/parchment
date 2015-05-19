@@ -5,7 +5,7 @@ import { inherit } from './util';
 
 var attributes = {};
 var tags = {};
-var types = new OrderedMap<any>();
+var types = new OrderedMap<any>();  // We would specify a class definition if we could
 
 
 export enum Scope {
