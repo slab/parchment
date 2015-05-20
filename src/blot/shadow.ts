@@ -1,12 +1,21 @@
 import LinkedList from '../collection/linked-list';
 import LinkedNode from '../collection/linked-node';
-import ShadowParent from './parent';
 import * as Registry from '../registry';
 
 
-class Shadow implements LinkedNode {
-  prev: Shadow = null;
-  next: Shadow = null;
+export interface ShadowParent {
+  children: LinkedList<ShadowNode>;
+
+  appendChild(child: ShadowNode): void;
+  insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
+  moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
+  unwrap(): void;
+}
+
+
+export class ShadowNode implements LinkedNode {
+  prev: ShadowNode = null;
+  next: ShadowNode = null;
   parent: ShadowParent = null;
   domNode: Node = null;
 
@@ -19,6 +28,10 @@ class Shadow implements LinkedNode {
     return this.constructor;
   }
 
+  build(): void {
+
+  }
+
   init(value: any): Node {
     if (!(value instanceof Node)) {
       throw new Error('Shadow must be initialized with DOM Node but got: ' + value)
@@ -26,12 +39,12 @@ class Shadow implements LinkedNode {
     return value;
   }
 
-  clone(): Shadow {
+  clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
     return Registry.create('node', domNode);
   }
 
-  isolate(index: number, length: number): Shadow {
+  isolate(index: number, length: number): ShadowNode {
     var target = this.split(index);
     target.split(length);
     return target;
@@ -59,7 +72,7 @@ class Shadow implements LinkedNode {
     this.parent = this.prev = this.next = undefined;
   }
 
-  replace(name: string, value: any): Shadow {
+  replace(name: string, value: any): ShadowNode {
     if (this.parent == null) return;
     var replacement = Registry.create(name, value);
     this.parent.insertBefore(replacement, this);
@@ -68,12 +81,12 @@ class Shadow implements LinkedNode {
     return replacement;
   }
 
-  split(index: number): Shadow {
+  split(index: number): ShadowNode {
     return index === 0 ? this : this.next;
   }
 
   wrap(name: string, value: any): ShadowParent {
-    var wrapper: ShadowParent = Registry.create(name, value);
+    var wrapper = Registry.create(name, value);
     // TODO handle attributes
     this.parent.insertBefore(wrapper, this);
     this.remove();
@@ -82,6 +95,3 @@ class Shadow implements LinkedNode {
     return wrapper;
   }
 }
-
-
-export default Shadow;

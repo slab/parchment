@@ -1,16 +1,10 @@
-import Shadow from '../../shadow/base';
 import Blot from '../base';
 import { Scope } from '../../registry';
 
 
-class LeafBlot extends Shadow implements Blot {
+class LeafBlot extends Blot {
   static nodeName = 'leaf';
   static scope = Scope.LEAF;
-
-  // TODO same code as parent.ts
-  init(value: any): any {
-    return value || document.createElement(this.statics.tagName);
-  }
 
   formats(): any {
     return null;

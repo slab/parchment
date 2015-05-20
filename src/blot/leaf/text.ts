@@ -1,5 +1,5 @@
 import LeafBlot from './base';
-import Shadow from '../../shadow/base';
+import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
 
@@ -20,7 +20,7 @@ class TextBlot extends LeafBlot {
     return this.domNode.data;
   }
 
-  split(index: number): Shadow {
+  split(index: number): ShadowNode {
     if (index === 0) return this;
     if (index === this.length()) return this.next;
     var after = Registry.create(this.statics.nodeName, this.domNode.splitText(index));

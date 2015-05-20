@@ -1,15 +1,16 @@
 import Blot from '../base';
 import LeafBlot from '../leaf/base';
 import LinkedList from '../../collection/linked-list';
-import ShadowParent from '../../shadow/parent';
+import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
 
 
-class ParentBlot extends ShadowParent implements Blot {
+class ParentBlot extends Blot implements ShadowParent {
   static nodeName = 'parent';
   static scope = Registry.Scope.BLOCK;
 
-  children: LinkedList<LeafBlot|ParentBlot> = new LinkedList<LeafBlot|ParentBlot>();
+  parent: ParentBlot = null;
+  children: LinkedList<Blot> = new LinkedList<Blot>();
 
   constructor(value: HTMLElement) {
     super(value);
@@ -27,11 +28,6 @@ class ParentBlot extends ShadowParent implements Blot {
         node.parentNode.removeChild(node);
       }
     });
-  }
-
-  // TODO same code as leaf.ts
-  init(value: any): any {
-    return value || document.createElement(this.statics.tagName);
   }
 
   formats(): any {
@@ -90,6 +86,57 @@ class ParentBlot extends ShadowParent implements Blot {
     var _arr = this.children.find(index);
     var child = _arr[0], offset = _arr[1];
     child.insertAt(offset, value, def);
+  }
+
+  appendChild(other: Blot): void {
+    this.insertBefore(other);
+  }
+
+  insertBefore(childNode: Blot, refNode?: Blot): void {
+    this.children.insertBefore(childNode, refNode);
+    var refDomNode = null;
+    if (refNode != null) {
+      refDomNode = refNode.domNode;
+    }
+    if (childNode.next == null || childNode.domNode.nextSibling != refDomNode) {
+      this.domNode.insertBefore(childNode.domNode, refDomNode);
+    }
+    childNode.parent = this;
+  }
+
+
+  // isolate(index: number, length: number): ShadowParent {
+  //   return <ShadowParent>super.isolate(index, length);
+  // }
+
+  moveChildren(parent: ParentBlot, refNode?: Blot): void {
+    this.children.forEach(function(child) {
+      parent.insertBefore(child, refNode);
+    });
+  }
+
+  replace(name: string, value: any): Blot {
+    var replacement = <ParentBlot>super.replace(name, value);
+    this.moveChildren(replacement);
+    return replacement;
+  }
+
+  split(index: number): Blot {
+    if (index === 0) return this;
+    if (index === this.length()) return this.next;
+    var after = <ParentBlot>this.clone();
+    this.parent.insertBefore(after, this.next);
+    this.children.forEachAt(index, this.length(), function(child, offset, length) {
+      var child = <Blot>child.split(offset);
+      child.remove();
+      after.appendChild(child);
+    });
+    return after;
+  }
+
+  unwrap(): void {
+    this.moveChildren(this.parent, this);
+    this.remove();
   }
 }
 

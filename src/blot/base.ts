@@ -1,16 +1,51 @@
-interface Blot {
-  // static nodeName: string;
-  // static scope: Registry.Scope;
-  init(value: any): any;
+import { Scope } from '../registry';
+import { ShadowNode } from './shadow';
 
-  formats(): any;
-  values(): any;
 
-  format(name: string, value: any): void;
+class Blot extends ShadowNode {
+  static nodeName = 'base';
+  static scope = Scope.INLINE;
 
-  insertAt(index: number, value: string, def?: any): void;
-  formatAt(index: number, length: number, name: string, value: any): void;
-  deleteAt(index: number, length: number): void;
+  prev: Blot = null;
+  next: Blot = null;
+
+
+  constructor(value: any) {
+    super(value);
+    this.build();
+  }
+
+  init(value: any): any {
+    return value || document.createElement(this.statics.tagName);
+  }
+
+  build(): void {
+    // TODO attributes
+  }
+
+  formats(): any {
+
+  }
+
+  values(): any {
+
+  }
+
+  format(name: string, value: any): void {
+
+  }
+
+  insertAt(index: number, value: string, def?: any): void {
+
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+
+  }
+
+  deleteAt(index: number, length: number): void {
+
+  }
 }
 
 
