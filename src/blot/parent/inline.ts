@@ -30,8 +30,8 @@ class InlineBlot extends ParentBlot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.compare(this.statics.nodeName, name) < 0 && value != null) {
-      var target = this.isolate(index, length);
-      target.wrap(name, value);
+      var target = <ParentBlot>this.isolate(index, length);  // TODO this is not necessarily true
+      target.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
     }

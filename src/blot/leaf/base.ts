@@ -33,8 +33,12 @@ class LeafBlot extends Shadow implements Blot {
     throw new Error('LeafNode.deleteAt() should be overwritten.');
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
+  format(name: string, value: any): void {
     this.wrap(name, value);
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    this.format(name, value);
   }
 
   insertAt(index: number, value: string, def?: any): void {

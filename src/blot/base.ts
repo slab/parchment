@@ -6,6 +6,8 @@ interface Blot {
   formats(): any;
   values(): any;
 
+  format(name: string, value: any): void;
+
   insertAt(index: number, value: string, def?: any): void;
   formatAt(index: number, length: number, name: string, value: any): void;
   deleteAt(index: number, length: number): void;

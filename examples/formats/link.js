@@ -9,4 +9,4 @@ var Link = Parchment.define({
   },
   nodeName: 'link',
   tagName: 'A'
-}, Parchment.InlineNode);
+}, Parchment.Inline);

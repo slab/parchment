@@ -66,11 +66,19 @@ class ParentBlot extends ShadowParent implements Blot {
     }
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
+  format(name: string, value: any): void {
     if (this.statics.nodeName === name) {
-      if (value != null) return;
-      var target = this.isolate(index, length);
-      target.unwrap();
+      if (value) return; // Nothing to do if adding existing format
+      this.unwrap();
+    } else {
+      if (!value) return; // Can't remove formatting from self
+      this.wrap(name, value);
+    }
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    if (index === 0 && length === this.length()) {
+      this.format(name, value);
     } else {
       this.children.forEachAt(index, length, function(child, offset, length) {
         child.formatAt(offset, length, name, value);

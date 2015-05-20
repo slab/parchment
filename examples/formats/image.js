@@ -18,4 +18,4 @@ var Image = Parchment.define({
     }
     return value;
   }
-}, Parchment.EmbedNode);
+}, Parchment.Embed);
