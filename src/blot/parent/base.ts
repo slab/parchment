@@ -30,10 +30,6 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  formats(): any {
-    throw new Error('ParentNode.formats() should be overwritten.');
-  }
-
   length(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.length();
@@ -103,11 +99,6 @@ class ParentBlot extends Blot implements ShadowParent {
     }
     childNode.parent = this;
   }
-
-
-  // isolate(index: number, length: number): ShadowParent {
-  //   return <ShadowParent>super.isolate(index, length);
-  // }
 
   moveChildren(parent: ParentBlot, refNode?: Blot): void {
     this.children.forEach(function(child) {

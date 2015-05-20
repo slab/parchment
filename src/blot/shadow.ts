@@ -28,20 +28,15 @@ export class ShadowNode implements LinkedNode {
     return this.constructor;
   }
 
-  build(): void {
-
-  }
-
   init(value: any): Node {
-    if (!(value instanceof Node)) {
-      throw new Error('Shadow must be initialized with DOM Node but got: ' + value)
-    }
-    return value;
+    if (value instanceof Node) return value;
+    throw new Error('Shadow must be initialized with DOM Node but got: ' + value)
   }
 
   clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
-    return Registry.create('node', domNode);
+    var name = this.statics.tagName || 'node';
+    return Registry.create(name, domNode);
   }
 
   isolate(index: number, length: number): ShadowNode {
