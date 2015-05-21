@@ -1,29 +1,28 @@
-// import Attribute from './base';
-// import Shadow from '../node/base/shadow';
+import Attribute from './base';
 
 
-// class StyleAttribute implements Attribute {
-//   protected styleName: string;
+class StyleAttribute implements Attribute {
+  protected styleName: string;
 
-//   constructor(name) {
-//     this.styleName = name;
-//   }
+  constructor(name) {
+    this.styleName = name;
+  }
 
-//   add(node: Shadow.ShadowNode, value: string) {
-//     node.domNode.style[this.styleName] = value;
-//   }
+  add(node: HTMLElement, value: string) {
+    node.style[this.styleName] = value;
+  }
 
-//   remove(node: Shadow.ShadowNode) {
-//     node.domNode.style[this.styleName] = '';
-//     if (!node.domNode.getAttribute('style')) {
-//       node.domNode.removeAttribute('style');
-//     }
-//   }
+  remove(node: HTMLElement) {
+    node.style[this.styleName] = '';
+    if (!node.getAttribute('style')) {
+      node.removeAttribute('style');
+    }
+  }
 
-//   value(node: Shadow.ShadowNode) {
-//     return node.style[this.styleName];
-//   }
-// }
+  value(node: HTMLElement) {
+    return node.style[this.styleName];
+  }
+}
 
 
-// export default StyleAttribute;
+export default StyleAttribute;

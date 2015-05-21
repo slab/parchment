@@ -1,10 +1,10 @@
-// interface Attribute {
-//   // static attrName: string;
-//   // static scope: Registry.Scope;
+interface Attribute {
+  // static attrName: string;
+  // static scope: Registry.Scope;
 
-//   add(node: ParchmentNode, value: any): void;
-//   remove(node: ParchmentNode): void;
-//   value(node: ParchmentNode): any;
-// }
+  add(node: HTMLElement, value: any): void;
+  remove(node: HTMLElement): void;
+  value(node: HTMLElement): any;
+}
 
-// export default Attribute;
+export default Attribute;
