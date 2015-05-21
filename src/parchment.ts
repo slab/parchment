@@ -2,9 +2,9 @@ import BlockBlot from './blot/parent/block';
 import ContainerBlot from './blot/parent/container';
 import EmbedBlot from './blot/leaf/embed';
 import InlineBlot from './blot/parent/inline';
-import ParentBlot from './blot/parent/base';
+import ParentBlot from './blot/parent/parent';
 
-import Blot from './blot/base';
+import Blot from './blot/blot';
 
 import TextBlot from './blot/leaf/text';
 import BreakBlot from './blot/leaf/break';

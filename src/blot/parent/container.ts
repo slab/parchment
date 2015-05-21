@@ -1,4 +1,4 @@
-import ParentBlot from './base';
+import ParentBlot from './parent';
 import { Scope } from '../../registry';
 
 

@@ -1,4 +1,4 @@
-import Blot from '../base';
+import Blot from '../blot';
 import { Scope } from '../../registry';
 
 

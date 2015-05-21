@@ -1,4 +1,4 @@
-import Attribute from './base';
+import Attribute from './attribute';
 
 
 class StyleAttribute implements Attribute {

@@ -3,7 +3,7 @@ import { ShadowNode } from './shadow';
 
 
 class Blot extends ShadowNode {
-  static nodeName = 'base';
+  static nodeName = 'blot';
   static scope = Registry.Scope.LEAF;
 
   prev: Blot = null;

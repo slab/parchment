@@ -1,4 +1,4 @@
-import ParentBlot from './base';
+import ParentBlot from './parent';
 import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
 

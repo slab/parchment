@@ -1,5 +1,5 @@
-import Blot from '../base';
-import ParentBlot from './base';
+import Blot from '../blot';
+import ParentBlot from './parent';
 import { merge } from '../../util';
 import * as Registry from '../../registry';
 

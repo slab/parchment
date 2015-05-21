@@ -1,4 +1,4 @@
-import Blot from '../base';
+import Blot from '../blot';
 import LinkedList from '../../collection/linked-list';
 import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
