@@ -33,7 +33,7 @@ export function create(name: string, value?:any) {
   return new BlotClass(value, BlotClass);
 };
 
-export function define(BlotClass, SuperClass = ParentBlot) {
+export function define(BlotClass, SuperClass = types.get('parent')) {
   if (typeof BlotClass === 'object') {
     BlotClass = inherit(BlotClass, SuperClass);
   }
