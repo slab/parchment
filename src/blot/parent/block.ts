@@ -30,6 +30,18 @@ class BlockBlot extends ParentBlot {
       this.appendChild(Registry.create('break'));
     }
   }
+
+  format(name: string, value: any): void {
+    if (value) {
+      if (name !== this.statics.nodeName) {
+        this.replace(name, value);
+      }
+    } else {
+      if ('block' !== this.statics.nodeName) {
+        this.replace('block', true);
+      }
+    }
+  }
 }
 
 

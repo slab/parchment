@@ -7,13 +7,6 @@ class InlineBlot extends ParentBlot {
   static tagName = 'SPAN';
   static scope = Registry.Scope.INLINE;
 
-  init(value: any): any {
-    if (!(value instanceof HTMLElement)) {
-      value = null;
-    }
-    return super.init(value);
-  }
-
   formats() {
     var format = {};
     format[this.statics.nodeName] = true;

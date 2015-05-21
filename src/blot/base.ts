@@ -10,7 +10,10 @@ class Blot extends ShadowNode {
   next: Blot = null;
 
   init(value: any): any {
-    return value || document.createElement(this.statics.tagName);
+    if (!(value instanceof Node)) {
+      value = document.createElement(this.statics.tagName);
+    }
+    return super.init(value);
   }
 
   formats(): any {
@@ -33,7 +36,6 @@ class Blot extends ShadowNode {
   insertAt(index: number, value: string, def?: any): void {
     var target = this.split(index);
     var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
-    console.log(blot);
     this.parent.insertBefore(blot, target);
   }
 
