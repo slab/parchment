@@ -1,3 +1,4 @@
+import Blot from '../base';
 import ParentBlot from './base';
 import { merge } from '../../util';
 import * as Registry from '../../registry';
@@ -33,14 +34,17 @@ class BlockBlot extends ParentBlot {
 
   format(name: string, value: any): void {
     if (value) {
-      if (name !== this.statics.nodeName) {
-        this.replace(name, value);
-      }
+      this.replace(name, value);
     } else {
-      if ('block' !== this.statics.nodeName) {
-        this.replace('block', true);
-      }
+      this.replace('block', true);
     }
+  }
+
+  replace(name: string, value: any): Blot {
+    if (name === this.statics.nodeName) {
+      return this;
+    }
+    return super.replace(name, value);
   }
 }
 

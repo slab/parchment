@@ -1,4 +1,5 @@
 import ParentBlot from './base';
+import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
 
 
@@ -21,6 +22,13 @@ class InlineBlot extends ParentBlot {
     } else {
       super.formatAt(index, length, name, value);
     }
+  }
+
+  wrap(name: string, value: any): ShadowParent {
+    if (name === this.statics.nodeName) {
+      return this;
+    }
+    return super.wrap(name, value);
   }
 }
 

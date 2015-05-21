@@ -104,12 +104,10 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   format(name: string, value: any): void {
-    if (this.statics.nodeName === name) {
-      if (value) return; // Nothing to do if adding existing format
+    if (value && name === this.statics.nodeName) {
       this.unwrap();
     } else {
-      if (!value) return; // Can't remove formatting from self
-      this.wrap(name, value);
+      super.format(name, value);
     }
   }
 
