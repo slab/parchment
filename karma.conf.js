@@ -2,7 +2,7 @@ var through = require('through');
 var tsconfig = require('./tsconfig.json');
 
 module.exports = function(config) {
-  var transform = function(file) {
+  var cacheSource = function(file) {
     // Hack to give karma-coverage the source files for html reporter
     // since we do not actually use karma to instrument in order to
     // map to pre-browserified code
@@ -10,11 +10,11 @@ module.exports = function(config) {
     var chunks = [];
     return through(function(buff) {
       chunks.push(buff);
-      this.queue(buff)
+      this.queue(buff);
     }, function() {
       store[file] = chunks.join('');
       this.queue(null);
-    })
+    });
   };
 
   config.set({
@@ -28,7 +28,7 @@ module.exports = function(config) {
       'test/parchment.ts': ['browserify']
     },
     browserify: {
-      transform: [transform, 'browserify-istanbul'],
+      transform: [cacheSource, 'browserify-istanbul'],
       plugin: [['tsify', tsconfig.compilerOptions]]
     },
     exclude: [],
