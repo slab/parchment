@@ -1,13 +1,16 @@
 import * as Registry from '../registry';
+import Attributable from '../attribute/attributable';
 import { ShadowNode } from './shadow';
+import { mixin } from '../util';
 
 
-class Blot extends ShadowNode {
+class Blot extends ShadowNode implements Attributable {
   static nodeName = 'blot';
   static scope = Registry.Scope.LEAF;
 
   prev: Blot = null;
   next: Blot = null;
+  attributes = {};
 
   init(value: any): any {
     if (!(value instanceof Node)) {
@@ -30,7 +33,9 @@ class Blot extends ShadowNode {
   }
 
   format(name: string, value: any): void {
-    if (value) {
+    if (Registry.type(name) === Registry.Type.ATTRIBUTE) {
+      this.attribute(name, value);
+    } else if (value) {
       this.wrap(name, value);
     }
   }
@@ -45,7 +50,10 @@ class Blot extends ShadowNode {
     var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     this.parent.insertBefore(blot, target);
   }
+
+  attribute(name: string, value: any): void { }
 }
+mixin(Blot, [Attributable]);
 
 
 export default Blot;

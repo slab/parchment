@@ -33,7 +33,9 @@ class BlockBlot extends ParentBlot {
   }
 
   format(name: string, value: any): void {
-    if (value) {
+    if (Registry.match(name)) {
+      this.attribute(name, value);
+    } else if (value) {
       this.replace(name, value);
     } else {
       this.replace('block', true);

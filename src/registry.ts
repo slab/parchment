@@ -45,11 +45,13 @@ export function define(BlotClass, SuperClass = types.get('parent')) {
   return BlotClass;
 };
 
-export function match(node) {
-  if (node instanceof Text) {
-    return types.get('text');
-  } else if (node instanceof HTMLElement) {
+export function match(input) {
+  if (typeof input === 'string') {
+    return types.get(input);
+  } else if (input instanceof HTMLElement) {
     return tags[node.tagName];
+  } else if (input instanceof Text) {
+    return types.get('text');
   } else {
     return null;
   }
