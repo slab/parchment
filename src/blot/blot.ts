@@ -6,7 +6,6 @@ import { mixin } from '../util';
 
 class Blot extends ShadowNode implements Attributable {
   static nodeName = 'blot';
-  static scope = Registry.Scope.LEAF;
 
   prev: Blot = null;
   next: Blot = null;

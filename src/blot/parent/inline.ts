@@ -6,7 +6,6 @@ import * as Registry from '../../registry';
 class InlineBlot extends ParentBlot {
   static nodeName = 'inline';
   static tagName = 'SPAN';
-  static scope = Registry.Scope.INLINE;
 
   formats() {
     var format = {};

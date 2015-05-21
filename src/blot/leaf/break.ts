@@ -1,11 +1,9 @@
 import Blot from '../blot';
-import { Scope } from '../../registry';
 
 
 class BreakBlot extends Blot {
   static nodeName = 'break';
   static tagName = 'BR';
-  static scope = Scope.LEAF;
 
   length(): number {
     return 0;

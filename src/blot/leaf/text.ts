@@ -5,7 +5,6 @@ import * as Registry from '../../registry';
 
 class TextBlot extends Blot {
   static nodeName = 'text';
-  static scope = Registry.Scope.LEAF;
 
   domNode: Text;
 

@@ -6,7 +6,6 @@ import * as Registry from '../../registry';
 
 class ParentBlot extends Blot implements ShadowParent {
   static nodeName = 'parent';
-  static scope = Registry.Scope.BLOCK;
 
   parent: ParentBlot = null;
   children: LinkedList<Blot> = new LinkedList<Blot>();

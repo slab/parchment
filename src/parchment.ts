@@ -20,7 +20,6 @@ class Parchment extends ContainerBlot {
   static Inline = InlineBlot;
   static Parent = ParentBlot;
 
-  static Scope = Registry.Scope;
   static compare = Registry.compare;
   static create = Registry.create;
   static define = Registry.define;

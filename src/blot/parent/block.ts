@@ -7,7 +7,6 @@ import * as Registry from '../../registry';
 class BlockBlot extends ParentBlot {
   static nodeName = 'block';
   static tagName = 'P';
-  static scope = Registry.Scope.BLOCK;
 
   formats(): any {
     var collector = function(node): any[] {

@@ -8,21 +8,8 @@ var tags = {};
 var types = new OrderedMap<any>();  // We would specify a class definition if we could
 
 
-export enum Scope {
-  CONTAINER = 4,
-  BLOCK = 3,
-  INLINE = 2,
-  LEAF = 1
-};
-
 export function compare(typeName1: string, typeName2: string): number {
-  var type1 = types.get(typeName1);
-  var type2 = types.get(typeName2);
-  if (type1.scope !== type2.scope) {
-    return type1.scope - type2.scope;
-  } else {
-    return types.indexOf(typeName1) - types.indexOf(typeName2);
-  }
+  return types.indexOf(typeName1) - types.indexOf(typeName2);
 };
 
 export function create(name: string, value?:any) {
