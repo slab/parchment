@@ -1,19 +1,23 @@
-import LeafBlot from './base';
+import Blot from '../base';
 import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
 
-class TextBlot extends LeafBlot {
+class TextBlot extends Blot {
   static nodeName = 'text';
   static scope = Registry.Scope.LEAF;
 
   domNode: Text;
 
   init(value: any): any {
-    if (value instanceof String) {
+    if (typeof value === 'string') {
       value = document.createTextNode(value);
     }
     return super.init(value);
+  }
+
+  length(): number {
+    return this.values().length;
   }
 
   values(): string {
@@ -36,12 +40,6 @@ class TextBlot extends LeafBlot {
   formatAt(index: number, length: number, name: string, value: string): void {
     var target = this.isolate(index, length);
     target.wrap(name, value);
-  }
-
-  insertEmbed(index: number, name: string, value: any): void {
-    this.split(index);
-    var embed = Registry.create(name, value);
-    this.parent.insertBefore(embed, this.next);
   }
 
   insertText(index: number, text: string): void {

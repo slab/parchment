@@ -1,18 +1,14 @@
-import LeafBlot from './base';
+import Blot from '../base';
 import { Scope } from '../../registry';
 
 
-class BreakBlot extends LeafBlot {
+class BreakBlot extends Blot {
   static nodeName = 'break';
   static tagName = 'BR';
   static scope = Scope.LEAF;
 
   length(): number {
     return 0;
-  }
-
-  value(): any {
-    return null;
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {

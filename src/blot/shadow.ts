@@ -9,7 +9,6 @@ export interface ShadowParent {
   appendChild(child: ShadowNode): void;
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
   moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
-  unwrap(): void;
 }
 
 
@@ -47,18 +46,6 @@ export class ShadowNode implements LinkedNode {
 
   length(): number {
     return 1;
-  }
-
-  merge() {
-    // if (this.next != null && this.getFormat() === this.next.getFormat()) {  // TODO implement object comparison
-    //   var lastChild = this.children.tail;
-    //   this.next.moveChildren(this, null);
-    //   this.next.remove();
-    //   this.merge();
-    //   if (lastChild != null) {
-    //     lastChild.merge();
-    //   }
-    // }
   }
 
   remove(): void {

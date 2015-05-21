@@ -1,12 +1,12 @@
 import ParentBlot from './base';
 import { merge } from '../../util';
-import { Scope } from '../../registry';
+import * as Registry from '../../registry';
 
 
 class BlockBlot extends ParentBlot {
   static nodeName = 'block';
   static tagName = 'P';
-  static scope = Scope.BLOCK;
+  static scope = Registry.Scope.BLOCK;
 
   formats(): any {
     var collector = function(node): any[] {
@@ -22,6 +22,13 @@ class BlockBlot extends ParentBlot {
     return this.children.reduce(function(memo, child) {
       return memo.concat(collector(child));
     }, []);
+  }
+
+  deleteAt(index: number, length: number): void {
+    super.deleteAt(index, length);
+    if (this.children.length === 0) {
+      this.appendChild(Registry.create('break'));
+    }
   }
 }
 

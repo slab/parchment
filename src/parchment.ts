@@ -1,7 +1,6 @@
 import BlockBlot from './blot/parent/block';
 import ContainerBlot from './blot/parent/container';
 import EmbedBlot from './blot/leaf/embed';
-import LeafBlot from './blot/leaf/base';
 import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/base';
 
@@ -19,7 +18,6 @@ class Parchment extends ContainerBlot {
   static Block = BlockBlot;
   static Embed = EmbedBlot;
   static Inline = InlineBlot;
-  static Leaf = LeafBlot;
   static Parent = ParentBlot;
 
   static Scope = Registry.Scope;

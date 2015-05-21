@@ -21,13 +21,6 @@ class InlineBlot extends ParentBlot {
     return format;
   }
 
-  deleteAt(index: number, length: number): void {
-    super.deleteAt(index, length);
-    if (this.children.length === 0) {
-      this.appendChild(Registry.create('break'));
-    }
-  }
-
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.compare(this.statics.nodeName, name) < 0 && value != null) {
       var target = <ParentBlot>this.isolate(index, length);  // TODO this is not necessarily true
