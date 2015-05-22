@@ -1,4 +1,4 @@
-import Blot from '../blot';
+import BreakBlot from '../leaf/break';
 import ParentBlot from './parent';
 import { merge } from '../../util';
 import * as Registry from '../../registry';
@@ -27,7 +27,7 @@ class BlockBlot extends ParentBlot {
   deleteAt(index: number, length: number): void {
     super.deleteAt(index, length);
     if (this.children.length === 0) {
-      this.appendChild(Registry.create('break'));
+      this.appendChild(Registry.create(BreakBlot.nodeName));
     }
   }
 
@@ -37,15 +37,8 @@ class BlockBlot extends ParentBlot {
     } else if (value) {
       this.replace(name, value);
     } else {
-      this.replace('block', true);
+      this.replace(BlockBlot.nodeName, true);
     }
-  }
-
-  replace(name: string, value: any): Blot {
-    if (name === this.statics.nodeName) {
-      return this;
-    }
-    return super.replace(name, value);
   }
 }
 

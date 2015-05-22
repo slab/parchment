@@ -1,4 +1,5 @@
 import Blot from '../blot';
+import TextBlot from './text';
 
 
 class BreakBlot extends Blot {
@@ -18,7 +19,7 @@ class BreakBlot extends Blot {
   }
 
   insertText(index: number, text: string): void {
-    this.replace('text', text);
+    this.replace(TextBlot.nodeName, text);
   }
 }
 

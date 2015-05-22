@@ -14,6 +14,14 @@ class Attributable {
       delete this.attributes[name];
     }
   }
+
+  moveAttributes(target: Attributable): void {
+    Object.keys(this.attributes).forEach(key => {
+      var value = this.attributes[key].value(this.domNode);
+      target.attribute(key, value);
+      this.attribute(key, false);
+    });
+  }
 }
 
 

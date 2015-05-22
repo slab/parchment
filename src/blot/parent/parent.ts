@@ -37,9 +37,13 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  replace(name: string, value: any): Blot {
+  replace(name: string, value: any): ParentBlot {
+    if (name === this.statics.nodeName) {
+      return this;
+    }
     var replacement = <ParentBlot>super.replace(name, value);
     this.moveChildren(replacement);
+    this.moveAttributes(replacement);
     return replacement;
   }
 

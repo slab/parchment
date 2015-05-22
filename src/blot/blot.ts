@@ -51,6 +51,7 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   attribute(name: string, value: any): void { }
+  moveAttributes(target: Attributable): void { }
 }
 mixin(Blot, [Attributable]);
 

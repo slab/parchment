@@ -39,7 +39,7 @@ class TextBlot extends Blot {
 
   format(name: string, value: any): void {
     if (typeof Registry.match(name) !== 'function') {
-      var target = <InlineBlot>this.wrap('inline', true);
+      var target = <InlineBlot>this.wrap(InlineBlot.nodeName, true);
       target.format(name, value);
     } else {
       super.format(name, value);

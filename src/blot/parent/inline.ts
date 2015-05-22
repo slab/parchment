@@ -1,3 +1,4 @@
+import Blot from '../blot';
 import ParentBlot from './parent';
 import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
@@ -15,8 +16,8 @@ class InlineBlot extends ParentBlot {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (Registry.compare(this.statics.nodeName, name) < 0 && value != null) {
-      var target = <ParentBlot>this.isolate(index, length);  // TODO this is not necessarily true
+    if (Registry.compare(this.statics.nodeName, name) < 0) {
+      var target = <Blot>this.isolate(index, length);
       target.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
@@ -26,8 +27,21 @@ class InlineBlot extends ParentBlot {
   wrap(name: string, value: any): ShadowParent {
     if (name === this.statics.nodeName) {
       return this;
+    } else if (this.statics.nodeName === InlineBlot.nodeName) {
+      return this.replace(name, value);
+    } else {
+      var wrapper = <ParentBlot>super.wrap(name, value);
+      this.moveAttributes(wrapper);
+      return wrapper;
     }
-    return super.wrap(name, value);
+  }
+
+  unwrap(): void {
+    if (Object.keys(this.attributes).length) {
+      this.replace(InlineBlot.nodeName, true);
+    } else {
+      super.unwrap();
+    }
   }
 }
 
