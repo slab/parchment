@@ -32,7 +32,7 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   format(name: string, value: any): void {
-    if (Registry.type(name) === Registry.Type.ATTRIBUTE) {
+    if (typeof Registry.match(name) !== 'function') {
       this.attribute(name, value);
     } else if (value) {
       this.wrap(name, value);

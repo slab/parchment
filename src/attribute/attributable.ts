@@ -8,7 +8,7 @@ class Attributable {
   attribute(name: string, value: any): void {
     if (value) {
       this.attributes[name] = Registry.match(name);
-      this.attributes[name].add(value);
+      this.attributes[name].add(this.domNode, value);
     } else {
       this.attributes[name].remove(this.domNode);
       delete this.attributes[name];

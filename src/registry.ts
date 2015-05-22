@@ -3,7 +3,6 @@ import ParentBlot from './blot/parent/parent';
 import { inherit } from './util';
 
 
-var attributes = {};
 var tags = {};
 var types = new OrderedMap<any>();  // We would specify a class definition if we could
 
@@ -22,7 +21,13 @@ export function create(name: string, value?:any) {
 
 export function define(BlotClass, SuperClass = types.get('parent')) {
   if (typeof BlotClass === 'object') {
-    BlotClass = inherit(BlotClass, SuperClass);
+    if (BlotClass.nodeName != null) {
+      BlotClass = inherit(BlotClass, SuperClass);
+    } else {
+      var attr = new SuperClass(BlotClass.styleName);
+      types.set(BlotClass.attrName, attr);
+      return attr;
+    }
   }
   // TODO warn of tag/type overwrite
   types.set(BlotClass.nodeName, BlotClass);
@@ -36,7 +41,7 @@ export function match(input) {
   if (typeof input === 'string') {
     return types.get(input);
   } else if (input instanceof HTMLElement) {
-    return tags[node.tagName];
+    return tags[input.tagName];
   } else if (input instanceof Text) {
     return types.get('text');
   } else {

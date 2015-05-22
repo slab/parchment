@@ -1,4 +1,5 @@
 import Blot from '../blot';
+import InlineBlot from '../parent/inline';
 import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
@@ -36,9 +37,18 @@ class TextBlot extends Blot {
     this.domNode.data = curText.slice(0, index) + curText.slice(index + length);
   }
 
-  formatAt(index: number, length: number, name: string, value: string): void {
-    var target = this.isolate(index, length);
-    target.wrap(name, value);
+  format(name: string, value: any): void {
+    if (typeof Registry.match(name) !== 'function') {
+      var target = <InlineBlot>this.wrap('inline', true);
+      target.format(name, value);
+    } else {
+      super.format(name, value);
+    }
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    var target = <TextBlot>this.isolate(index, length);
+    target.format(name, value);
   }
 
   insertText(index: number, text: string): void {

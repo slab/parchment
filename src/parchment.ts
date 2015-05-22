@@ -1,13 +1,13 @@
+import Blot from './blot/blot';
 import BlockBlot from './blot/parent/block';
+import BreakBlot from './blot/leaf/break';
 import ContainerBlot from './blot/parent/container';
 import EmbedBlot from './blot/leaf/embed';
 import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/parent';
-
-import Blot from './blot/blot';
-
 import TextBlot from './blot/leaf/text';
-import BreakBlot from './blot/leaf/break';
+
+import StyleAttribute from './attribute/style';
 
 import * as Registry from './registry';
 
@@ -19,6 +19,8 @@ class Parchment extends ContainerBlot {
   static Embed = EmbedBlot;
   static Inline = InlineBlot;
   static Parent = ParentBlot;
+
+  static Style = StyleAttribute;
 
   static compare = Registry.compare;
   static create = Registry.create;
