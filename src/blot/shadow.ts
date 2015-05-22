@@ -2,6 +2,10 @@ import LinkedList from '../collection/linked-list';
 import LinkedNode from '../collection/linked-node';
 import * as Registry from '../registry';
 
+interface ShadowStatic {
+  nodeName: string;
+  tagName: string;
+}
 
 export interface ShadowParent {
   children: LinkedList<ShadowNode>;
@@ -10,7 +14,6 @@ export interface ShadowParent {
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
   moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
 }
-
 
 export class ShadowNode implements LinkedNode {
   prev: ShadowNode = null;
@@ -25,9 +28,13 @@ export class ShadowNode implements LinkedNode {
     this.domNode = node;
   }
 
-  get statics(): any {
-    // TODO: Hack for accessing inherited static methods
-    return this.constructor;
+  // TODO: Hack for accessing inherited static methods
+  get statics(): ShadowStatic {
+    var statics = <any>this.constructor;
+    return {
+      nodeName: statics.nodeName,
+      tagName: statics.tagName
+    };
   }
 
   clone(): ShadowNode {
