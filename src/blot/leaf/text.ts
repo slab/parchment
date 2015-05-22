@@ -3,17 +3,17 @@ import InlineBlot from '../parent/inline';
 import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
-
 class TextBlot extends Blot {
   static nodeName = 'text';
 
   domNode: Text;
 
-  init(value: any): any {
+  constructor(value: string | Node) {
     if (typeof value === 'string') {
-      value = document.createTextNode(value);
+      super(document.createTextNode(value));
+    } else {
+      super(value);
     }
-    return super.init(value);
   }
 
   length(): number {

@@ -18,8 +18,11 @@ export class ShadowNode implements LinkedNode {
   parent: ShadowParent = null;
   domNode: Node = null;
 
-  constructor(value: any) {
-    this.domNode = this.init(value);
+  constructor(node: Node) {
+    if (!(node instanceof Node)) {
+      throw new Error(`Shadow must be initialized with DOM Node but got: ${node}`);
+    }
+    this.domNode = node;
   }
 
   get statics(): any {
@@ -27,14 +30,9 @@ export class ShadowNode implements LinkedNode {
     return this.constructor;
   }
 
-  init(value: any): Node {
-    if (value instanceof Node) return value;
-    throw new Error('Shadow must be initialized with DOM Node but got: ' + value)
-  }
-
   clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
-    var name = this.statics.tagName || 'node';
+    var name = this.statics.tagName || 'blot';
     return Registry.create(name, domNode);
   }
 

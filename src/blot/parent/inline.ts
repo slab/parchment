@@ -8,6 +8,14 @@ class InlineBlot extends ParentBlot {
   static nodeName = 'inline';
   static tagName = 'SPAN';
 
+  constructor(value: HTMLElement | boolean) {
+    if (typeof value === 'boolean') {
+      super(document.createElement(this.statics.tagName));
+    } else {
+      super(value);
+    }
+  }
+
   formats() {
     var format = {};
     format[this.statics.nodeName] = true;

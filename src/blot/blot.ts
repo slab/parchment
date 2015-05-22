@@ -11,11 +11,13 @@ class Blot extends ShadowNode implements Attributable {
   next: Blot = null;
   attributes = {};
 
-  init(value: any): any {
-    if (!(value instanceof Node)) {
-      value = document.createElement(this.statics.tagName);
-    }
-    return super.init(value);
+  constructor(node: Node) {
+    super(node);
+    this.init();
+  }
+
+  init(): void {
+    // Meant for custom blots to overwrite
   }
 
   formats(): any {

@@ -13,7 +13,7 @@ export function compare(typeName1: string, typeName2: string): number {
 
 export function create(name: string, value?:any) {
   var BlotClass = types.get(name);
-  if (BlotClass == null) {
+  if (typeof BlotClass !== 'function') {
     throw new Error(`Unable to create ${name}`);
   }
   return new BlotClass(value, BlotClass);
