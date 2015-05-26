@@ -1,7 +1,13 @@
 import * as Registry from '../registry';
+import Attribute from '../attribute/attribute';
 import Attributable from '../attribute/attributable';
 import { ShadowNode } from './shadow';
 import { mixin } from '../util';
+
+
+interface Attributes {
+  [index: string]: Attribute
+}
 
 
 class Blot extends ShadowNode implements Attributable {
@@ -9,7 +15,7 @@ class Blot extends ShadowNode implements Attributable {
 
   prev: Blot = null;
   next: Blot = null;
-  attributes = {};
+  attributes: Attributes = {};
 
   constructor(node: Node) {
     super(node);
@@ -21,7 +27,12 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   formats(): any {
-    return null;
+    return Object.keys(this.attributes).reduce((formats, name) => {
+      if (this.domNode instanceof HTMLElement) {
+        formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
+      }
+      return formats;
+    }, {});
   }
 
   values(): any {

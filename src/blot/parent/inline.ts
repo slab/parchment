@@ -17,10 +17,9 @@ class InlineBlot extends ParentBlot {
   }
 
   formats() {
-    var format = {};
-    format[this.statics.nodeName] = true;
-    // TODO add attributes
-    return format;
+    var formats = super.formats();
+    formats[this.statics.nodeName] = true;
+    return formats;
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
