@@ -16,7 +16,9 @@ export function create(name: string, value?:any) {
   if (typeof BlotClass !== 'function') {
     throw new Error(`Unable to create ${name}`);
   }
-  return new BlotClass(value, BlotClass);
+  var obj = new BlotClass(value, BlotClass);
+  obj.init();
+  return obj;
 };
 
 export function define(BlotClass, SuperClass = types.get('parent')) {

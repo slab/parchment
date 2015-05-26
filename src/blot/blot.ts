@@ -13,7 +13,7 @@ class Blot extends ShadowNode implements Attributable {
 
   constructor(node: Node) {
     super(node);
-    this.init();
+    this.buildAttributes();
   }
 
   init(): void {
@@ -53,6 +53,7 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   attribute(name: string, value: any): void { }
+  buildAttributes(): void { }
   moveAttributes(target: Attributable): void { }
 }
 mixin(Blot, [Attributable]);

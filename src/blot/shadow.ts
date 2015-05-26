@@ -63,7 +63,6 @@ export class ShadowNode implements LinkedNode {
     if (this.parent == null) return;
     var replacement = Registry.create(name, value);
     this.parent.insertBefore(replacement, this);
-    // TODO handle attributes
     this.remove();
     return replacement;
   }
@@ -74,7 +73,6 @@ export class ShadowNode implements LinkedNode {
 
   wrap(name: string, value: any): ShadowParent {
     var wrapper = Registry.create(name, value);
-    // TODO handle attributes
     this.parent.insertBefore(wrapper, this);
     this.remove();
     wrapper.appendChild(this);
