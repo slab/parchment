@@ -5,18 +5,23 @@ import { ShadowNode } from './shadow';
 import * as Util from '../util';
 
 
-var DATA_KEY = '__blot_data';
+const DATA_KEY = '__blot_data';
 
 
 interface Attributes {
   [index: string]: Attribute
 }
 
+export interface Position {
+  blot: Blot;
+  offset: number;
+}
+
 
 class Blot extends ShadowNode implements Attributable {
   static nodeName = 'blot';
 
-  static findBlot(node: Node) {
+  static findBlot(node: Node): Blot {
     return node[DATA_KEY];
   }
 
@@ -60,6 +65,13 @@ class Blot extends ShadowNode implements Attributable {
   deleteAt(index: number, length: number): void {
     var target = this.isolate(index, length);
     target.remove();
+  }
+
+  findPath(index: number): Position[] {
+    return [{
+      blot: this,
+      offset: index
+    }];
   }
 
   format(name: string, value: any): void {

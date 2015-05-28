@@ -1,4 +1,4 @@
-import Blot from '../blot';
+import Blot, { Position } from '../blot';
 import LinkedList from '../../collection/linked-list';
 import { ShadowParent } from '../shadow';
 import * as Registry from '../../registry';
@@ -104,6 +104,16 @@ class ParentBlot extends Blot implements ShadowParent {
         child.deleteAt(offset, length);
       });
     }
+  }
+
+  findPath(index: number): Position[] {
+    var _arr = this.children.find(index);
+    var child = _arr[0], offset = _arr[1];
+    var pos:Position[] = [{
+      blot: this,
+      offset: index - offset
+    }];
+    return pos.concat(child.findPath(offset));
   }
 
   format(name: string, value: any): void {
