@@ -76,7 +76,7 @@ class LinkedList<T extends LinkedNode> {
 
   forEachAt(index: number, length: number, callback: (cur: T, offset: number, length: number) => void): void {
     // TODO use this.find()
-    if (length === 0) return;
+    if (length <= 0) return;
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
       var curLength = cur.length();
