@@ -15,6 +15,9 @@ gulp.task('build', function() {
     entries: './src/parchment.ts'
   });
   b.plugin('tsify', tsconfig.compilerOptions).bundle()
+    .on('error', function(e) {
+      console.error(e.toString());
+    })
     .pipe(source('parchment.js'))
     .pipe(derequire())
     .pipe(gulp.dest('./dist'));
