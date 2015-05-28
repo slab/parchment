@@ -1,4 +1,5 @@
 var browserify = require('browserify');
+var derequire = require('gulp-derequire');
 var gulp = require('gulp');
 var karma = require('karma').server;
 var source = require('vinyl-source-stream');
@@ -15,6 +16,7 @@ gulp.task('build', function() {
   });
   b.plugin('tsify', tsconfig.compilerOptions).bundle()
     .pipe(source('parchment.js'))
+    .pipe(derequire())
     .pipe(gulp.dest('./dist'));
 });
 
