@@ -1,21 +1,8 @@
-var DATA_KEY = '__data';    // TODO switch to const in ES6
-
-
 export function copy(source, target = {}) {
   return Object.keys(source).reduce(function(memo, key) {
     memo[key] = source[key];
     return memo;
   }, target);
-}
-
-export function data(node: Node, key: string, value?: any) {
-  if (value != null) {
-    if (node[DATA_KEY] == null) node[DATA_KEY] = {};
-    node[DATA_KEY][key] = value;
-  } else {
-    if (node[DATA_KEY] == null) return undefined;
-    return node[DATA_KEY][key];
-  }
 }
 
 export function inherit(ClassObject, SuperClass) {

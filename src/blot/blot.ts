@@ -2,7 +2,10 @@ import * as Registry from '../registry';
 import Attribute from '../attribute/attribute';
 import Attributable from '../attribute/attributable';
 import { ShadowNode } from './shadow';
-import { mixin } from '../util';
+import * as Util from '../util';
+
+
+var DATA_KEY = '__blot_data';
 
 
 interface Attributes {
@@ -13,17 +16,32 @@ interface Attributes {
 class Blot extends ShadowNode implements Attributable {
   static nodeName = 'blot';
 
-  prev: Blot = null;
-  next: Blot = null;
-  attributes: Attributes = {};
+  static findBlot(node: Node) {
+    return node[DATA_KEY];
+  }
 
-  constructor(node: Node) {
+  prev: Blot;
+  next: Blot;
+  attributes: Attributes;
+
+  constructor(node: any) {
+    if (!(node instanceof Node)) {
+      node = document.createElement(this.statics.tagName);
+    }
+    this.attributes = {};
+    this.prev = this.next = null;
     super(node);
+    this.domNode[DATA_KEY] = this;
     this.buildAttributes();
   }
 
   init(): void {
     // Meant for custom blots to overwrite
+  }
+
+  remove(): void {
+    delete this.domNode[DATA_KEY];
+    super.remove();
   }
 
   formats(): any {
@@ -67,7 +85,7 @@ class Blot extends ShadowNode implements Attributable {
   buildAttributes(): void { }
   moveAttributes(target: Attributable): void { }
 }
-mixin(Blot, [Attributable]);
+Util.mixin(Blot, [Attributable]);
 
 
 export default Blot;
