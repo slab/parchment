@@ -7,8 +7,7 @@ class LinkedList<T extends LinkedNode> {
   length: number;
 
   constructor() {
-    this.head = this.tail = undefined;
-    this.length = 0;
+    this.empty();
   }
 
   append(...nodes: T[]): void {
@@ -16,6 +15,11 @@ class LinkedList<T extends LinkedNode> {
     if (nodes.length > 1) {
       this.append.apply(this, nodes.slice(1));
     }
+  }
+
+  empty(): void {
+    this.head = this.tail = undefined;
+    this.length = 0;
   }
 
   insertBefore(node: T, refNode: T): void {

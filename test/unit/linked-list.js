@@ -92,6 +92,14 @@ describe('LinkedList', function() {
       expect(this.list.head).toBeUndefined();
       expect(this.list.tail).toBeUndefined();
     });
+
+    it('empty', function() {
+      this.list.append(this.a, this.b);
+      this.list.empty();
+      expect(this.list.length).toEqual(0);
+      expect(this.list.head).toBeUndefined();
+      expect(this.list.tail).toBeUndefined();
+    });
   });
 
   describe('iteration', function() {
