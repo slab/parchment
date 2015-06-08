@@ -1,12 +1,36 @@
 import BreakBlot from '../leaf/break';
+import Observable from '../observable';
 import ParentBlot from './parent';
 import { merge } from '../../util';
 import * as Registry from '../../registry';
 
 
-class BlockBlot extends ParentBlot {
+class BlockBlot extends ParentBlot implements Observable {
   static nodeName = 'block';
   static tagName = 'P';
+
+  observer: MutationObserver;
+
+  constructor(value: HTMLElement) {
+    super(value);
+    this.observer = new MutationObserver(this.observeHandler);
+    this.observer.observe(this.domNode, {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true
+    });
+  }
+
+  observeHandler(mutations: MutationRecord[]): void {
+    this.children.empty();
+    this.build();
+    this.observer.takeRecords();  // Ignore changes caused by this handler
+  }
+
+  update(): void {
+    this.observeHandler(this.observer.takeRecords());
+  }
 
   formats(): any {
     var collector = function(node): any[] {
