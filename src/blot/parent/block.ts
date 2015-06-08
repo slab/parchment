@@ -1,4 +1,3 @@
-import BreakBlot from '../leaf/break';
 import ParentBlot from './parent';
 import { merge } from '../../util';
 import * as Registry from '../../registry';
@@ -22,13 +21,6 @@ class BlockBlot extends ParentBlot {
     return this.children.reduce(function(memo, child) {
       return memo.concat(collector(child));
     }, []);
-  }
-
-  deleteAt(index: number, length: number): void {
-    super.deleteAt(index, length);
-    if (this.children.length === 0) {
-      this.appendChild(Registry.create(BreakBlot.nodeName));
-    }
   }
 
   format(name: string, value: any): void {
