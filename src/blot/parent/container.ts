@@ -6,7 +6,7 @@ class ContainerBlot extends ParentBlot {
   static nodeName = 'container';
   static tagName = 'DIV';
 
-  findPath(index: number): any[] {
+  findPath(index: number): Position[] {
     return super.findPath(index).slice(1);    // Exclude ourself from result
   }
 

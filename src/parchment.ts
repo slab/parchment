@@ -1,4 +1,3 @@
-import Blot from './blot/blot';
 import BlockBlot from './blot/parent/block';
 import ContainerBlot from './blot/parent/container';
 import EmbedBlot from './blot/leaf/embed';
@@ -15,9 +14,10 @@ class Parchment extends ContainerBlot {
   static nodeName = 'parchment';
 
   static Block = BlockBlot;
-  static Embed = EmbedBlot;
-  static Inline = InlineBlot;
   static Parent = ParentBlot;
+  static Inline = InlineBlot;
+  static Embed = EmbedBlot;
+  static Text = TextBlot;
 
   static Style = StyleAttribute;
 

@@ -1,5 +1,4 @@
 import OrderedMap from './collection/ordered-map';
-import ParentBlot from './blot/parent/parent';
 import { inherit } from './util';
 
 
