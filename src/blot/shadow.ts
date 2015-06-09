@@ -14,6 +14,7 @@ export interface ShadowParent {
   appendChild(child: ShadowNode): void;
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
   moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
+  unwrap(): void;
 }
 
 export class ShadowNode implements LinkedNode {
