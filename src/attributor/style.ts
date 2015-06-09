@@ -1,7 +1,7 @@
-import Attribute from './attribute';
+import Attributor from './attributor';
 
 
-class StyleAttribute implements Attribute {
+class StyleAttribute implements Attributor {
   protected styleName: string;
 
   constructor(name) {

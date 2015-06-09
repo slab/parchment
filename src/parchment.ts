@@ -5,7 +5,7 @@ import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/parent';
 import TextBlot from './blot/leaf/text';
 
-import StyleAttribute from './attribute/style';
+import StyleAttributor from './attributor/style';
 
 import * as Registry from './registry';
 
@@ -19,7 +19,7 @@ class Parchment extends ContainerBlot {
   static Embed = EmbedBlot;
   static Text = TextBlot;
 
-  static Style = StyleAttribute;
+  static Style = StyleAttributor;
 
   static create = Registry.create;
   static define = Registry.define;

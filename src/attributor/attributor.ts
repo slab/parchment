@@ -1,4 +1,4 @@
-interface Attribute {
+interface Attributor {
   // static attrName: string;
 
   add(node: HTMLElement, value: any): void;
@@ -6,4 +6,4 @@ interface Attribute {
   value(node: HTMLElement): any;
 }
 
-export default Attribute;
+export default Attributor;

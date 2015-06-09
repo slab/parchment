@@ -1,6 +1,6 @@
 import * as Registry from '../registry';
-import Attribute from '../attribute/attribute';
-import Attributable from '../attribute/attributable';
+import Attributor from '../attributor/attributor';
+import Attributable from '../attributor/attributable';
 import { ShadowNode } from './shadow';
 import * as Util from '../util';
 
@@ -8,8 +8,8 @@ import * as Util from '../util';
 const DATA_KEY = '__blot_data';
 
 
-interface Attributes {
-  [index: string]: Attribute
+interface Attributors {
+  [index: string]: Attributor
 }
 
 export interface Position {
@@ -27,7 +27,7 @@ class Blot extends ShadowNode implements Attributable {
 
   prev: Blot;
   next: Blot;
-  attributes: Attributes;
+  attributes: Attributors;
 
   constructor(node: any) {
     if (!(node instanceof Node)) {
