@@ -25,6 +25,9 @@
     "type": "git",
     "url": "https://github.com/quilljs/parchment"
   },
+  "scripts": {
+    "test": "gulp test"
+  },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"
   }
