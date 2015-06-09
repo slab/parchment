@@ -20,7 +20,7 @@ export function define(BlotClass, SuperClass = types['parent']) {
     if (BlotClass.nodeName != null) {
       BlotClass = inherit(BlotClass, SuperClass);
     } else {
-      var attr = new SuperClass(BlotClass.styleName);
+      let attr = new SuperClass(BlotClass.styleName);
       types[BlotClass.attrName] = attr;
       return attr;
     }

@@ -19,7 +19,7 @@ class InlineBlot extends ParentBlot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     if (this.statics.compare(name)) {
-      var target = <Blot>this.isolate(index, length);
+      let target = <Blot>this.isolate(index, length);
       target.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
@@ -32,7 +32,7 @@ class InlineBlot extends ParentBlot {
     } else if (this.statics.nodeName === InlineBlot.nodeName) {
       return this.replace(name, value);
     } else {
-      var wrapper = <ParentBlot>super.wrap(name, value);
+      let wrapper = <ParentBlot>super.wrap(name, value);
       this.moveAttributes(wrapper);
       return wrapper;
     }

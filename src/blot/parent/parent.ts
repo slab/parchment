@@ -21,9 +21,8 @@ class ParentBlot extends Blot implements ShadowParent {
 
   insertBefore(childNode: Blot, refNode?: Blot): void {
     this.children.insertBefore(childNode, refNode);
-    var refDomNode = null;
     if (refNode != null) {
-      refDomNode = refNode.domNode;
+      var refDomNode = refNode.domNode;
     }
     if (childNode.next == null || childNode.domNode.nextSibling != refDomNode) {
       this.domNode.insertBefore(childNode.domNode, refDomNode);
@@ -70,7 +69,7 @@ class ParentBlot extends Blot implements ShadowParent {
     childNodes.forEach((node) => {
       var BlotClass = Registry.match(node);
       if (BlotClass != null) {
-        var child = new BlotClass(node);
+        let child = new BlotClass(node);
         this.appendChild(child);
       } else if (node.parentNode != null) {
         node.parentNode.removeChild(node);
