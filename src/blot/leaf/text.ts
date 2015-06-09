@@ -4,7 +4,7 @@ import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
 class TextBlot extends Blot {
-  static nodeName = 'text';
+  static blotName = 'text';
 
   domNode: Text;
 
@@ -27,7 +27,7 @@ class TextBlot extends Blot {
   split(index: number): ShadowNode {
     if (index === 0) return this;
     if (index === this.length()) return this.next;
-    var after = Registry.create(this.statics.nodeName, this.domNode.splitText(index));
+    var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
     return after;
   }
@@ -39,7 +39,7 @@ class TextBlot extends Blot {
 
   format(name: string, value: any): void {
     if (typeof Registry.match(name) !== 'function') {
-      let target = <InlineBlot>this.wrap(InlineBlot.nodeName, true);
+      let target = <InlineBlot>this.wrap(InlineBlot.blotName, true);
       target.format(name, value);
     } else {
       super.format(name, value);

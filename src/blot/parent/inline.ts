@@ -4,16 +4,16 @@ import { ShadowParent } from '../shadow';
 
 
 class InlineBlot extends ParentBlot {
-  static nodeName = 'inline';
+  static blotName = 'inline';
   static tagName = 'SPAN';
 
   static compare = function(otherName: string): boolean {
-    return this.nodeName < otherName;
+    return this.blotName < otherName;
   }
 
   formats() {
     var formats = super.formats();
-    formats[this.statics.nodeName] = true;
+    formats[this.statics.blotName] = true;
     return formats;
   }
 
@@ -27,9 +27,9 @@ class InlineBlot extends ParentBlot {
   }
 
   wrap(name: string, value: any): ShadowParent {
-    if (name === this.statics.nodeName) {
+    if (name === this.statics.blotName) {
       return this;
-    } else if (this.statics.nodeName === InlineBlot.nodeName) {
+    } else if (this.statics.blotName === InlineBlot.blotName) {
       return this.replace(name, value);
     } else {
       let wrapper = <ParentBlot>super.wrap(name, value);
@@ -40,7 +40,7 @@ class InlineBlot extends ParentBlot {
 
   unwrap(): void {
     if (Object.keys(this.attributes).length) {
-      this.replace(InlineBlot.nodeName, true);
+      this.replace(InlineBlot.blotName, true);
     } else {
       super.unwrap();
     }

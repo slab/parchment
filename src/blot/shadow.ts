@@ -3,7 +3,7 @@ import LinkedNode from '../collection/linked-node';
 import * as Registry from '../registry';
 
 interface ShadowStatic {
-  nodeName: string;
+  blotName: string;
   tagName: string;
   compare?: (string) => boolean;
 }
@@ -33,7 +33,7 @@ export class ShadowNode implements LinkedNode {
   get statics(): ShadowStatic {
     var statics = <any>this.constructor;
     return {
-      nodeName: statics.nodeName,
+      blotName: statics.blotName,
       tagName: statics.tagName,
       compare: statics.compare
     };

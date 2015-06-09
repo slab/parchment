@@ -17,7 +17,7 @@ export function create(name: string, value?:any) {
 
 export function define(BlotClass, SuperClass = types['parent']) {
   if (typeof BlotClass === 'object') {
-    if (BlotClass.nodeName != null) {
+    if (BlotClass.blotName != null) {
       BlotClass = inherit(BlotClass, SuperClass);
     } else {
       let attr = new SuperClass(BlotClass.styleName);
@@ -26,7 +26,7 @@ export function define(BlotClass, SuperClass = types['parent']) {
     }
   }
   // TODO warn of tag/type overwrite
-  types[BlotClass.nodeName] = BlotClass;
+  types[BlotClass.blotName] = BlotClass;
   if (typeof BlotClass.tagName === 'string') {
     tags[BlotClass.tagName.toUpperCase()] = BlotClass;
   }

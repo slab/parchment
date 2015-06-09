@@ -4,7 +4,7 @@ import * as Registry from '../../registry';
 
 
 class BlockBlot extends ParentBlot {
-  static nodeName = 'block';
+  static blotName = 'block';
   static tagName = 'P';
 
   formats(): any {
@@ -29,7 +29,7 @@ class BlockBlot extends ParentBlot {
     } else if (value) {
       this.replace(name, value);
     } else {
-      this.replace(BlockBlot.nodeName, true);
+      this.replace(BlockBlot.blotName, true);
     }
   }
 }

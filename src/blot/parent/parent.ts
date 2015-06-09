@@ -5,7 +5,7 @@ import * as Registry from '../../registry';
 
 
 class ParentBlot extends Blot implements ShadowParent {
-  static nodeName = 'parent';
+  static blotName = 'parent';
 
   parent: ParentBlot = null;
   children: LinkedList<Blot> = new LinkedList<Blot>();
@@ -37,7 +37,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   replace(name: string, value: any): ParentBlot {
-    if (name === this.statics.nodeName) {
+    if (name === this.statics.blotName) {
       return this;
     }
     var replacement = <ParentBlot>super.replace(name, value);
@@ -116,7 +116,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   format(name: string, value: any): void {
-    if (value && name === this.statics.nodeName) {
+    if (value && name === this.statics.blotName) {
       this.unwrap();
     } else {
       super.format(name, value);

@@ -11,7 +11,7 @@ import * as Registry from './registry';
 
 
 class Parchment extends ContainerBlot {
-  static nodeName = 'parchment';
+  static blotName = 'parchment';
 
   static Block = BlockBlot;
   static Parent = ParentBlot;

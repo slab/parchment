@@ -19,7 +19,7 @@ export interface Position {
 
 
 class Blot extends ShadowNode implements Attributable {
-  static nodeName = 'blot';
+  static blotName = 'blot';
 
   static findBlot(node: Node): Blot {
     return node[DATA_KEY];

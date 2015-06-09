@@ -3,7 +3,7 @@ import ParentBlot from './parent';
 
 
 class ContainerBlot extends ParentBlot {
-  static nodeName = 'container';
+  static blotName = 'container';
   static tagName = 'DIV';
 
   findPath(index: number): Position[] {
