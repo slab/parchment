@@ -5,6 +5,7 @@ import * as Registry from '../registry';
 interface ShadowStatic {
   nodeName: string;
   tagName: string;
+  compare?: (string) => boolean;
 }
 
 export interface ShadowParent {
@@ -33,7 +34,8 @@ export class ShadowNode implements LinkedNode {
     var statics = <any>this.constructor;
     return {
       nodeName: statics.nodeName,
-      tagName: statics.tagName
+      tagName: statics.tagName,
+      compare: statics.compare
     };
   }
 

@@ -21,7 +21,6 @@ class Parchment extends ContainerBlot {
 
   static Style = StyleAttribute;
 
-  static compare = Registry.compare;
   static create = Registry.create;
   static define = Registry.define;
   static match = Registry.match;

@@ -1,12 +1,15 @@
 import Blot from '../blot';
 import ParentBlot from './parent';
 import { ShadowParent } from '../shadow';
-import * as Registry from '../../registry';
 
 
 class InlineBlot extends ParentBlot {
   static nodeName = 'inline';
   static tagName = 'SPAN';
+
+  static compare = function(otherName: string): boolean {
+    return this.nodeName < otherName;
+  }
 
   formats() {
     var formats = super.formats();
@@ -15,7 +18,7 @@ class InlineBlot extends ParentBlot {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (Registry.compare(this.statics.nodeName, name) < 0) {
+    if (this.statics.compare(name)) {
       var target = <Blot>this.isolate(index, length);
       target.format(name, value);
     } else {
