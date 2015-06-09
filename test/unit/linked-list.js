@@ -109,6 +109,17 @@ describe('LinkedList', function() {
       expect(this.spy.callback.calls.count()).toEqual(0)
     });
 
+    it('iterate non-head start', function() {
+      this.list.append(this.a, this.b, this.c);
+      var next = this.list.iterator(this.b);
+      var b = next();
+      var c = next();
+      var d = next();
+      expect(b).toEqual(this.b);
+      expect(c).toEqual(this.c);
+      expect(d).toBeUndefined();
+    });
+
     it('find', function() {
       this.list.append(this.a, this.b, this.c);
       expect(this.list.find(0)).toEqual([this.a, 0]);
