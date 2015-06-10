@@ -78,15 +78,15 @@ class Blot extends ShadowNode implements Attributable {
     return {};
   }
 
-  init(): void {
-    // Meant for custom blots to overwrite
-  }
-
   insertAt(index: number, value: string, def?: any): void {
     var target = this.split(index);
     var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     this.parent.insertBefore(blot, target);
   }
+
+  onCreate(): void { }
+  onUpdate(): void { }
+  onRemove(): void { }
 
   remove(): void {
     delete this.domNode[DATA_KEY];

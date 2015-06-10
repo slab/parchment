@@ -22,7 +22,6 @@ class ContainerBlot extends ParentBlot implements Observable {
         var blot = Blot.findBlot(node);
         if (blot != null) {
           blot.remove();
-          this.onUpdate('remove', blot);
         }
       });
       Array.prototype.slice.call(mutation.addedNodes).forEach(node => {
@@ -36,11 +35,10 @@ class ContainerBlot extends ParentBlot implements Observable {
         }
       });
     });
+    if (mutations.length > 0) {
+      this.onUpdate();
+    }
     this.observer.takeRecords();  // Ignore changes caused by this handler
-  }
-
-  onUpdate(type: string, blot: Blot): void {
-    // Meant for subclasses to overwrite
   }
 
   update(): void {

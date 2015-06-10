@@ -15,7 +15,7 @@ export function create(name: string, value?:any) {
     throw new Error(`Unable to create ${name}`);
   }
   var obj = new BlotClass(value, BlotClass);
-  obj.init(value);
+  obj.onCreate(value);
   return obj;
 };
 
