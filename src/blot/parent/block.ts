@@ -24,7 +24,7 @@ class BlockBlot extends ParentBlot {
   }
 
   format(name: string, value: any): void {
-    if (typeof Registry.match(name) !== 'function') {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);
     } else if (value) {
       this.replace(name, value);

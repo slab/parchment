@@ -33,8 +33,8 @@ class Attributable {
     });
 
     attributes.concat(classes).concat(styles).forEach(name => {
-      var attr = Registry.match(name);
-      if (attr != null && typeof attr.value === 'function') {  // TODO better check for attribute
+      var attr = Registry.match(name, Registry.Type.ATTRIBUTE);
+      if (attr != null) {
         this.attributes[name] = attr;
       }
     });

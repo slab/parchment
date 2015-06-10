@@ -38,7 +38,7 @@ class TextBlot extends Blot {
   }
 
   format(name: string, value: any): void {
-    if (typeof Registry.match(name) !== 'function') {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) !== null) {
       let target = <InlineBlot>this.wrap(InlineBlot.blotName, true);
       target.format(name, value);
     } else {

@@ -4,6 +4,10 @@ import { inherit } from './util';
 var tags = {};
 var types = {};
 
+export enum Type {
+  ATTRIBUTE = 1,
+  BLOT = 2
+}
 
 export function create(name: string, value?:any) {
   var BlotClass = types[name];
@@ -33,14 +37,21 @@ export function define(BlotClass, SuperClass = types['parent']) {
   return BlotClass;
 };
 
-export function match(input: string | Node) {
-  if (typeof input === 'string') {
-    return types[input];
-  } else if (input instanceof HTMLElement) {
-    return tags[input.tagName];
-  } else if (input instanceof Text) {
-    return types['text'];
-  } else {
-    return null;
+export function match(query: string | Node, type?: Type) {
+  if (typeof query === 'string') {
+    let match = types[query];
+    if (match == null || type == null) return match;
+    // Check type mismatch
+    if ((type === Type.ATTRIBUTE && typeof match.blotName === 'string') ||
+        (type === Type.BLOT && typeof match.attrName === 'string')) {
+      return null;
+    }
+  } else if (query instanceof Node && type === Type.BLOT) {
+    if (query instanceof HTMLElement) {
+      return tags[query.tagName];
+    } else if (query instanceof Text) {
+      return types['text'];
+    }
   }
+  return null;
 };
