@@ -2,25 +2,27 @@ import Attributor from './attributor';
 
 
 class StyleAttribute implements Attributor {
-  protected styleName: string;
+  public attrName: string;
+  protected styleKey: string;
 
-  constructor(name) {
-    this.styleName = name;
+  constructor(name, key) {
+    this.attrName = name;
+    this.styleKey = key;
   }
 
   add(node: HTMLElement, value: string) {
-    node.style[this.styleName] = value;
+    node.style[this.styleKey] = value;
   }
 
   remove(node: HTMLElement) {
-    node.style[this.styleName] = '';
+    node.style[this.styleKey] = '';
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
     }
   }
 
   value(node: HTMLElement) {
-    return node.style[this.styleName];
+    return node.style[this.styleKey];
   }
 }
 

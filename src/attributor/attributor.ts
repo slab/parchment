@@ -1,5 +1,5 @@
 interface Attributor {
-  // static attrName: string;
+  attrName: string;
 
   add(node: HTMLElement, value: any): void;
   remove(node: HTMLElement): void;
