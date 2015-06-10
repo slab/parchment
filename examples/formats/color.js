@@ -1,9 +1,9 @@
 var Background = Parchment.define({
   attrName: 'background',
-  styleName: 'backgroundColor'
+  keyName: 'backgroundColor'
 }, Parchment.Style);
 
 var Color = Parchment.define({
   attrName: 'color',
-  styleName: 'color'
+  keyName: 'color'
 }, Parchment.Style);

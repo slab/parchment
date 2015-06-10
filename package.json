@@ -8,22 +8,25 @@
   "devDependencies": {
     "browserify": "~10.2.0",
     "browserify-istanbul": "~0.2.1",
-    "gulp": "~3.8.11",
+    "gulp": "~3.9.0",
     "gulp-derequire": "~2.1.0",
     "jasmine-core": "~2.3.0",
     "karma": "~0.12.31",
-    "karma-browserify": "~4.1.2",
+    "karma-browserify": "~4.2.1",
     "karma-chrome-launcher": "~0.1.8",
     "karma-coverage": "~0.3.1",
     "karma-jasmine": "~0.3.5",
     "through": "~2.3.7",
-    "tsify": "~0.10.2",
+    "tsify": "~0.11.2",
     "vinyl-source-stream": "~1.1.0"
   },
-  "license": "BSD",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "https://github.com/quilljs/parchment"
+  },
+  "scripts": {
+    "test": "gulp test"
   },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"

@@ -9,7 +9,7 @@ export function inherit(ClassObject, SuperClass) {
   var SubClass = function() {
     SuperClass.apply(this, arguments);
   };
-  for (var prop in SuperClass) {
+  for (let prop in SuperClass) {
     if (SuperClass.hasOwnProperty(prop)) {
       SubClass[prop] = SuperClass[prop];
     }
@@ -17,7 +17,7 @@ export function inherit(ClassObject, SuperClass) {
   var Extender = function() { this.constructor = SubClass; }
   Extender.prototype = SuperClass.prototype;
   SubClass.prototype = new Extender();
-  for (var prop in ClassObject) {
+  for (let prop in ClassObject) {
     if (ClassObject.hasOwnProperty(prop)) {
       if (typeof ClassObject[prop] === 'function') {
         SubClass.prototype[prop] = ClassObject[prop];

@@ -1,5 +1,5 @@
 var Image = Parchment.define({
-  nodeName: 'image',
+  blotName: 'image',
   tagName: 'IMG',
   init: function(value) {
     var img = document.createElement(this.statics.tagName);

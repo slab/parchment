@@ -1,4 +1,4 @@
 var Bold = Parchment.define({
-  nodeName: 'bold',
+  blotName: 'bold',
   tagName: 'STRONG'
 }, Parchment.Inline);

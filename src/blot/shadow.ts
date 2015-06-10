@@ -3,8 +3,9 @@ import LinkedNode from '../collection/linked-node';
 import * as Registry from '../registry';
 
 interface ShadowStatic {
-  nodeName: string;
+  blotName: string;
   tagName: string;
+  compare?: (string) => boolean;
 }
 
 export interface ShadowParent {
@@ -13,6 +14,7 @@ export interface ShadowParent {
   appendChild(child: ShadowNode): void;
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
   moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
+  unwrap(): void;
 }
 
 export class ShadowNode implements LinkedNode {
@@ -32,8 +34,9 @@ export class ShadowNode implements LinkedNode {
   get statics(): ShadowStatic {
     var statics = <any>this.constructor;
     return {
-      nodeName: statics.nodeName,
-      tagName: statics.tagName
+      blotName: statics.blotName,
+      tagName: statics.tagName,
+      compare: statics.compare
     };
   }
 

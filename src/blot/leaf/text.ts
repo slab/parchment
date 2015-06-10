@@ -4,7 +4,7 @@ import { ShadowNode } from '../shadow';
 import * as Registry from '../../registry';
 
 class TextBlot extends Blot {
-  static nodeName = 'text';
+  static blotName = 'text';
 
   domNode: Text;
 
@@ -16,30 +16,14 @@ class TextBlot extends Blot {
     }
   }
 
-  length(): number {
-    return this.values().length;
-  }
-
-  values(): string {
-    return this.domNode.data;
-  }
-
-  split(index: number): ShadowNode {
-    if (index === 0) return this;
-    if (index === this.length()) return this.next;
-    var after = Registry.create(this.statics.nodeName, this.domNode.splitText(index));
-    this.parent.insertBefore(after, this.next);
-    return after;
-  }
-
   deleteAt(index: number, length: number): void {
     var curText = this.domNode.data;
     this.domNode.data = curText.slice(0, index) + curText.slice(index + length);
   }
 
   format(name: string, value: any): void {
-    if (typeof Registry.match(name) !== 'function') {
-      var target = <InlineBlot>this.wrap(InlineBlot.nodeName, true);
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) !== null) {
+      let target = <InlineBlot>this.wrap(InlineBlot.blotName, true);
       target.format(name, value);
     } else {
       super.format(name, value);
@@ -51,9 +35,25 @@ class TextBlot extends Blot {
     target.format(name, value);
   }
 
+  getValue(): string {
+    return this.domNode.data;
+  }
+
   insertText(index: number, text: string): void {
     var curText = this.domNode.data;
     this.domNode.data = curText.slice(0, index) + text + curText.slice(index);
+  }
+
+  length(): number {
+    return this.getValue().length;
+  }
+
+  split(index: number): ShadowNode {
+    if (index === 0) return this;
+    if (index === this.length()) return this.next;
+    var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
+    this.parent.insertBefore(after, this.next);
+    return after;
   }
 }
 

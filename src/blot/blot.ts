@@ -1,6 +1,6 @@
 import * as Registry from '../registry';
-import Attribute from '../attribute/attribute';
-import Attributable from '../attribute/attributable';
+import Attributor from '../attributor/attributor';
+import Attributable from '../attributor/attributable';
 import { ShadowNode } from './shadow';
 import * as Util from '../util';
 
@@ -8,8 +8,8 @@ import * as Util from '../util';
 const DATA_KEY = '__blot_data';
 
 
-interface Attributes {
-  [index: string]: Attribute
+interface Attributors {
+  [index: string]: Attributor
 }
 
 export interface Position {
@@ -19,7 +19,7 @@ export interface Position {
 
 
 class Blot extends ShadowNode implements Attributable {
-  static nodeName = 'blot';
+  static blotName = 'blot';
 
   static findBlot(node: Node): Blot {
     return node[DATA_KEY];
@@ -27,7 +27,7 @@ class Blot extends ShadowNode implements Attributable {
 
   prev: Blot;
   next: Blot;
-  attributes: Attributes;
+  attributes: Attributors;
 
   constructor(node: any) {
     if (!(node instanceof Node)) {
@@ -38,28 +38,6 @@ class Blot extends ShadowNode implements Attributable {
     super(node);
     this.domNode[DATA_KEY] = this;
     this.buildAttributes();
-  }
-
-  init(): void {
-    // Meant for custom blots to overwrite
-  }
-
-  remove(): void {
-    delete this.domNode[DATA_KEY];
-    super.remove();
-  }
-
-  formats(): any {
-    return Object.keys(this.attributes).reduce((formats, name) => {
-      if (this.domNode instanceof HTMLElement) {
-        formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
-      }
-      return formats;
-    }, {});
-  }
-
-  values(): any {
-    return {};
   }
 
   deleteAt(index: number, length: number): void {
@@ -75,7 +53,7 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   format(name: string, value: any): void {
-    if (typeof Registry.match(name) !== 'function') {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);
     } else if (value) {
       this.wrap(name, value);
@@ -87,10 +65,32 @@ class Blot extends ShadowNode implements Attributable {
     target.format(name, value);
   }
 
+  getFormat(): any {
+    return Object.keys(this.attributes).reduce((formats, name) => {
+      if (this.domNode instanceof HTMLElement) {
+        formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
+      }
+      return formats;
+    }, {});
+  }
+
+  getValue(): any {
+    return {};
+  }
+
+  init(): void {
+    // Meant for custom blots to overwrite
+  }
+
   insertAt(index: number, value: string, def?: any): void {
     var target = this.split(index);
     var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     this.parent.insertBefore(blot, target);
+  }
+
+  remove(): void {
+    delete this.domNode[DATA_KEY];
+    super.remove();
   }
 
   attribute(name: string, value: any): void { }

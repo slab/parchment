@@ -1,6 +1,5 @@
 import StyleAttribute from '../src/attribute/style';
 
-import BreakBlot from '../src/blot/leaf/break';
 import EmbedBlot from '../src/blot/leaf/embed';
 import TextBlot from '../src/blot/leaf/text';
 import ParentBlot from '../src/blot/parent/parent';
@@ -21,7 +20,6 @@ import Parchment = require('../src/parchment');
 
 window['StyleAttribute'] = StyleAttribute;
 
-window['BreakBlot'] = BreakBlot;
 window['EmbedBlot'] = EmbedBlot;
 window['TextBlot'] = TextBlot;
 window['ParentBlot'] = ParentBlot;

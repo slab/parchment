@@ -47,19 +47,19 @@ class ContainerBlot extends ParentBlot implements Observable {
     this.observeHandler(this.observer.takeRecords());
   }
 
-  findPath(index: number): any[] {
+  findPath(index: number): Position[] {
     return super.findPath(index).slice(1);    // Exclude ourself from result
   }
 
-  formats(): any[] {
+  getFormat(): any[] {
     return this.children.map(function(child) {
-      return child.formats();
+      return child.getFormat();
     });
   }
 
-  values(): any[] {
+  getValue(): any[] {
     return this.children.map(function(child) {
-      return child.values();
+      return child.getValue();
     });
   }
 }

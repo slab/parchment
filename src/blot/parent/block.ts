@@ -1,4 +1,3 @@
-import BreakBlot from '../leaf/break';
 import Observable from '../observable';
 import ParentBlot from './parent';
 import { merge } from '../../util';
@@ -22,19 +21,19 @@ class BlockBlot extends ParentBlot implements Observable {
     });
   }
 
-  observeHandler(mutations: MutationRecord[]): void {
-    this.children.empty();
-    this.build();
-    this.observer.takeRecords();  // Ignore changes caused by this handler
+  format(name: string, value: any): void {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
+      this.attribute(name, value);
+    } else if (value) {
+      this.replace(name, value);
+    } else {
+      this.replace(BlockBlot.blotName, true);
+    }
   }
 
-  update(): void {
-    this.observeHandler(this.observer.takeRecords());
-  }
-
-  formats(): any {
+  getFormat(): any {
     var collector = function(node): any[] {
-      var format = node.formats() || {};
+      var format = node.getFormat() || {};
       if (node instanceof ParentBlot) {
         return node.children.reduce(function(memo, child) {
           return memo.concat(collector(child));
@@ -48,21 +47,14 @@ class BlockBlot extends ParentBlot implements Observable {
     }, []);
   }
 
-  deleteAt(index: number, length: number): void {
-    super.deleteAt(index, length);
-    if (this.children.length === 0) {
-      this.appendChild(Registry.create(BreakBlot.nodeName));
-    }
+  observeHandler(mutations: MutationRecord[]): void {
+    this.children.empty();
+    this.build();
+    this.observer.takeRecords();  // Ignore changes caused by this handler
   }
 
-  format(name: string, value: any): void {
-    if (typeof Registry.match(name) !== 'function') {
-      this.attribute(name, value);
-    } else if (value) {
-      this.replace(name, value);
-    } else {
-      this.replace(BlockBlot.nodeName, true);
-    }
+  update(): void {
+    this.observeHandler(this.observer.takeRecords());
   }
 }
 
