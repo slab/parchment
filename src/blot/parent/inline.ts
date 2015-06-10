@@ -11,18 +11,26 @@ class InlineBlot extends ParentBlot {
     return this.blotName < otherName;
   }
 
-  formats() {
-    var formats = super.formats();
-    formats[this.statics.blotName] = true;
-    return formats;
-  }
-
   formatAt(index: number, length: number, name: string, value: any): void {
     if (this.statics.compare(name)) {
       let target = <Blot>this.isolate(index, length);
       target.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
+    }
+  }
+
+  getFormat() {
+    var formats = super.getFormat();
+    formats[this.statics.blotName] = true;
+    return formats;
+  }
+
+  unwrap(): void {
+    if (Object.keys(this.attributes).length) {
+      this.replace(InlineBlot.blotName, true);
+    } else {
+      super.unwrap();
     }
   }
 
@@ -35,14 +43,6 @@ class InlineBlot extends ParentBlot {
       let wrapper = <ParentBlot>super.wrap(name, value);
       this.moveAttributes(wrapper);
       return wrapper;
-    }
-  }
-
-  unwrap(): void {
-    if (Object.keys(this.attributes).length) {
-      this.replace(InlineBlot.blotName, true);
-    } else {
-      super.unwrap();
     }
   }
 }

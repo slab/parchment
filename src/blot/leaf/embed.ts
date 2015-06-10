@@ -6,7 +6,7 @@ import Blot from '../blot';
 class EmbedBlot extends Blot {
   static blotName = 'embed';
 
-  values(): any {
+  getValue(): any {
     var value = {};
     value[this.statics.blotName] = true;
     return value;

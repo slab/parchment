@@ -7,9 +7,19 @@ class BlockBlot extends ParentBlot {
   static blotName = 'block';
   static tagName = 'P';
 
-  formats(): any {
+  format(name: string, value: any): void {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
+      this.attribute(name, value);
+    } else if (value) {
+      this.replace(name, value);
+    } else {
+      this.replace(BlockBlot.blotName, true);
+    }
+  }
+
+  getFormat(): any {
     var collector = function(node): any[] {
-      var format = node.formats() || {};
+      var format = node.getFormat() || {};
       if (node instanceof ParentBlot) {
         return node.children.reduce(function(memo, child) {
           return memo.concat(collector(child));
@@ -21,16 +31,6 @@ class BlockBlot extends ParentBlot {
     return this.children.reduce(function(memo, child) {
       return memo.concat(collector(child));
     }, []);
-  }
-
-  format(name: string, value: any): void {
-    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
-      this.attribute(name, value);
-    } else if (value) {
-      this.replace(name, value);
-    } else {
-      this.replace(BlockBlot.blotName, true);
-    }
   }
 }
 
