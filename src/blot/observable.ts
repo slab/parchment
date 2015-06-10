@@ -2,7 +2,7 @@ interface Observable {
   observer: MutationObserver;
 
   observeHandler(mutatations: MutationRecord[]): void;
-  update(): void;
+  update(): boolean;
 }
 
 

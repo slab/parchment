@@ -29,7 +29,6 @@ class ContainerBlot extends ParentBlot implements Observable {
         var blot = Registry.create(node);
         if (blot != null) {
           this.insertBefore(blot, refBlot);
-          this.onUpdate('add', blot);
         } else if (node.parentNode != null) {
           node.parentNode.removeChild(node);
         }
@@ -39,10 +38,6 @@ class ContainerBlot extends ParentBlot implements Observable {
       this.onUpdate();
     }
     this.observer.takeRecords();  // Ignore changes caused by this handler
-  }
-
-  update(): void {
-    this.observeHandler(this.observer.takeRecords());
   }
 
   findPath(index: number): Position[] {
@@ -59,6 +54,12 @@ class ContainerBlot extends ParentBlot implements Observable {
     return this.children.map(function(child) {
       return child.getValue();
     });
+  }
+
+  update(): boolean {
+    var mutations = this.observer.takeRecords();
+    this.observeHandler(mutations);
+    return mutations.length > 0;
   }
 }
 

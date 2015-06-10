@@ -91,6 +91,7 @@ class Blot extends ShadowNode implements Attributable {
   remove(): void {
     delete this.domNode[DATA_KEY];
     super.remove();
+    this.onRemove();
   }
 
   attribute(name: string, value: any): void { }

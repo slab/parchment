@@ -48,13 +48,18 @@ class BlockBlot extends ParentBlot implements Observable {
   }
 
   observeHandler(mutations: MutationRecord[]): void {
-    this.children.empty();
-    this.build();
-    this.observer.takeRecords();  // Ignore changes caused by this handler
+    if (mutations.length > 0) {
+      this.children.empty();
+      this.build();
+      this.observer.takeRecords();  // Ignore changes caused by this handler
+      this.onUpdate();
+    }
   }
 
-  update(): void {
-    this.observeHandler(this.observer.takeRecords());
+  update(): boolean {
+    var mutations = this.observer.takeRecords();
+    this.observeHandler(mutations);
+    return mutations.length > 0;
   }
 }
 
