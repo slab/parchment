@@ -9,7 +9,8 @@ export enum Type {
   BLOT = 2
 }
 
-export function create(name: string, value?:any) {
+
+function create(name: string, value?:any) {
   var BlotClass = types[name];
   if (typeof BlotClass !== 'function') {
     throw new Error(`Unable to create ${name}`);
@@ -17,27 +18,39 @@ export function create(name: string, value?:any) {
   var obj = new BlotClass(value, BlotClass);
   obj.onCreate(value);
   return obj;
-};
+}
 
-export function define(BlotClass, SuperClass = types['parent']) {
+function define(BlotClass, SuperClass?) {
   if (typeof BlotClass === 'object') {
-    if (BlotClass.blotName != null) {
-      BlotClass = inherit(BlotClass, SuperClass);
+    if (typeof BlotClass.blotName === 'string') {
+      return defineBlotObject(BlotClass, SuperClass);
     } else {
-      let attr = new SuperClass(BlotClass.attrName, BlotClass.keyName);
-      types[BlotClass.attrName] = attr;
-      return attr;
+      return defineAttrObject(BlotClass, SuperClass);
     }
+  } else {
+    return defineBlotClass(BlotClass)
   }
+}
+
+function defineAttrObject(AttrObject, SuperClass) {
+  return types[AttrObject.attrName] = new SuperClass(AttrObject.attrName, AttrObject.keyName);
+}
+
+function defineBlotClass(BlotClass) {
   // TODO warn of tag/type overwrite
   types[BlotClass.blotName] = BlotClass;
   if (typeof BlotClass.tagName === 'string') {
     tags[BlotClass.tagName.toUpperCase()] = BlotClass;
   }
   return BlotClass;
-};
+}
 
-export function match(query: string | Node, type?: Type) {
+function defineBlotObject(BlotObject, SuperClass = types['parent']) {
+  var BlotClass = inherit(BlotObject, SuperClass);
+  return defineBlotClass(BlotClass);
+}
+
+function match(query: string | Node, type?: Type) {
   if (typeof query === 'string') {
     let match = types[query];
     if (match == null || type == null) return match;
@@ -54,4 +67,6 @@ export function match(query: string | Node, type?: Type) {
     }
   }
   return null;
-};
+}
+
+export { create, define, match };
