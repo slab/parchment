@@ -7,6 +7,7 @@ class TextBlot extends Blot {
   static blotName = 'text';
 
   domNode: Text;
+  private text: string;
 
   constructor(value: string | Node) {
     if (typeof value === 'string') {
@@ -14,11 +15,12 @@ class TextBlot extends Blot {
     } else {
       super(value);
     }
+    this.text = this.domNode.data;
   }
 
   deleteAt(index: number, length: number): void {
-    var curText = this.domNode.data;
-    this.domNode.data = curText.slice(0, index) + curText.slice(index + length);
+    this.text = this.text.slice(0, index) + this.text.slice(index + length);
+    this.domNode.data = this.text;
   }
 
   format(name: string, value: any): void {
@@ -36,16 +38,16 @@ class TextBlot extends Blot {
   }
 
   getValue(): string {
-    return this.domNode.data;
+    return this.text;
   }
 
   insertText(index: number, text: string): void {
-    var curText = this.domNode.data;
-    this.domNode.data = curText.slice(0, index) + text + curText.slice(index);
+    this.text = this.text.slice(0, index) + text + this.text.slice(index);
+    this.domNode.data = this.text;
   }
 
   length(): number {
-    return this.getValue().length;
+    return this.text.length;
   }
 
   split(index: number): ShadowNode {
