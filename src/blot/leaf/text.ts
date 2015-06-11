@@ -1,6 +1,6 @@
 import Blot from '../blot';
 import InlineBlot from '../parent/inline';
-import { ShadowNode } from '../shadow';
+import ShadowNode from '../shadow';
 import * as Registry from '../../registry';
 
 class TextBlot extends Blot {

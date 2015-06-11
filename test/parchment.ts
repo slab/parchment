@@ -1,4 +1,4 @@
-import StyleAttribute from '../src/attribute/style';
+import StyleAttribute from '../src/attributor/style';
 
 import EmbedBlot from '../src/blot/leaf/embed';
 import TextBlot from '../src/blot/leaf/text';
@@ -8,9 +8,8 @@ import BlockBlot from '../src/blot/parent/block';
 import InlineBlot from '../src/blot/parent/inline';
 
 import LinkedList from '../src/collection/linked-list';
-import OrderedMap from '../src/collection/ordered-map';
 
-import { ShadowNode } from '../src/blot/shadow';
+import ShadowNode from '../src/blot/shadow';
 
 import * as Registry from '../src/registry';
 import * as Util from '../src/util';
@@ -27,7 +26,6 @@ window['BlockBlot'] = BlockBlot;
 window['InlineBlot'] = InlineBlot;
 
 window['LinkedList'] = LinkedList;
-window['OrderedMap'] = OrderedMap;
 
 window['ShadowNode'] = ShadowNode;
 

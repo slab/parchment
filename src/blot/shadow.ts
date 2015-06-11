@@ -8,7 +8,7 @@ interface ShadowStatic {
   compare?: (string) => boolean;
 }
 
-export interface ShadowParent {
+interface ShadowParent {
   children: LinkedList<ShadowNode>;
 
   appendChild(child: ShadowNode): void;
@@ -17,7 +17,7 @@ export interface ShadowParent {
   unwrap(): void;
 }
 
-export class ShadowNode implements LinkedNode {
+class ShadowNode implements LinkedNode {
   prev: ShadowNode = null;
   next: ShadowNode = null;
   parent: ShadowParent = null;
@@ -83,3 +83,5 @@ export class ShadowNode implements LinkedNode {
     return wrapper;
   }
 }
+
+export { ShadowParent, ShadowNode as default };

@@ -1,7 +1,7 @@
 import * as Registry from '../registry';
 import Attributor from '../attributor/attributor';
 import Attributable from '../attributor/attributable';
-import { ShadowNode } from './shadow';
+import ShadowNode from './shadow';
 import * as Util from '../util';
 
 
