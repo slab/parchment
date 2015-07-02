@@ -70,7 +70,7 @@ class ShadowNode implements LinkedNode {
     return replacement;
   }
 
-  split(index: number): ShadowNode {
+  split(index: number, force?: boolean): ShadowNode {
     return index === 0 ? this : this.next;
   }
 

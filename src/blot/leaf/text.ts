@@ -50,9 +50,11 @@ class TextBlot extends Blot {
     return this.text.length;
   }
 
-  split(index: number): ShadowNode {
-    if (index === 0) return this;
-    if (index === this.length()) return this.next;
+  split(index: number, force: boolean = false): ShadowNode {
+    if (!force) {
+      if (index === 0) return this;
+      if (index === this.length()) return this.next;
+    }
     var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
     return after;

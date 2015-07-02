@@ -117,13 +117,15 @@ class ParentBlot extends Blot implements ShadowParent {
     return replacement;
   }
 
-  split(index: number): Blot {
-    if (index === 0) return this;
-    if (index === this.length()) return this.next;
+  split(index: number, force: boolean = false): Blot {
+    if (!force) {
+      if (index === 0) return this;
+      if (index === this.length()) return this.next;
+    }
     var after = <ParentBlot>this.clone();
     this.parent.insertBefore(after, this.next);
     this.children.forEachAt(index, this.length(), function(child, offset, length) {
-      var child = <Blot>child.split(offset);
+      var child = <Blot>child.split(offset, force);
       child.remove();
       after.appendChild(child);
     });
