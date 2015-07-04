@@ -42,7 +42,7 @@ class ShadowNode implements LinkedNode {
 
   clone(): ShadowNode {
     var domNode = this.domNode.cloneNode();
-    var name = this.statics.tagName || 'blot';
+    var name = this.statics.blotName || 'blot';
     return Registry.create(name, domNode);
   }
 

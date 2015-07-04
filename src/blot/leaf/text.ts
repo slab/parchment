@@ -20,7 +20,11 @@ class TextBlot extends Blot {
 
   deleteAt(index: number, length: number): void {
     this.text = this.text.slice(0, index) + this.text.slice(index + length);
-    this.domNode.data = this.text;
+    if (this.text.length > 0) {
+      this.domNode.data = this.text;
+    } else {
+      this.remove();
+    }
   }
 
   format(name: string, value: any): void {
