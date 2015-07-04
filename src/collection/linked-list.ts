@@ -64,7 +64,7 @@ class LinkedList<T extends LinkedNode> {
   find(index: number): [T, number] {
     var cur, next = this.iterator();
     while (cur = next()) {
-      let length = cur.length();
+      let length = cur.getLength();
       if (index < length) return [cur, index];
       index -= length;
     }
@@ -83,7 +83,7 @@ class LinkedList<T extends LinkedNode> {
     if (length <= 0) return;
     var cur, curIndex = 0, next = this.iterator();
     while ((cur = next()) && curIndex < index + length) {
-      let curLength = cur.length();
+      let curLength = cur.getLength();
       if (index <= curIndex) {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));
       } else if (index < curIndex + curLength) {

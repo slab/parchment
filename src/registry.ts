@@ -50,7 +50,7 @@ function defineBlotObject(BlotObject, SuperClass = types['parent']) {
   return defineBlotClass(BlotClass);
 }
 
-function match(query: string | Node, type?: Type) {
+function match(query: string | Node, type: Type = Type.BLOT) {
   if (typeof query === 'string') {
     let match = types[query];
     if (match == null || type == null) return match;

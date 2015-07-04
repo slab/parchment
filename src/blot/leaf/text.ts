@@ -37,6 +37,10 @@ class TextBlot extends Blot {
     target.format(name, value);
   }
 
+  getLength(): number {
+    return this.text.length;
+  }
+
   getValue(): string {
     return this.text;
   }
@@ -50,14 +54,10 @@ class TextBlot extends Blot {
     }
   }
 
-  length(): number {
-    return this.text.length;
-  }
-
   split(index: number, force: boolean = false): ShadowNode {
     if (!force) {
       if (index === 0) return this;
-      if (index === this.length()) return this.next;
+      if (index === this.getLength()) return this.next;
     }
     var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);

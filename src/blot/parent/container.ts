@@ -12,8 +12,8 @@ class ContainerBlot extends ParentBlot implements Observable {
 
   constructor(value: HTMLElement) {
     super(value);
-    this.observer = new MutationObserver(this.observeHandler);
-    this.observer.observe(this.domNode, { childList: true });
+    // this.observer = new MutationObserver(this.observeHandler);
+    // this.observer.observe(this.domNode, { childList: true });
   }
 
   observeHandler(mutations: MutationRecord[]): void {

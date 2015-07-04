@@ -46,14 +46,14 @@ class ShadowNode implements LinkedNode {
     return Registry.create(name, domNode);
   }
 
+  getLength(): number {
+    return 1;
+  }
+
   isolate(index: number, length: number): ShadowNode {
     var target = this.split(index);
     target.split(length);
     return target;
-  }
-
-  length(): number {
-    return 1;
   }
 
   remove(): void {

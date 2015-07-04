@@ -33,7 +33,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   deleteAt(index: number, length: number): void {
-    if (index === 0 && length === this.length()) {
+    if (index === 0 && length === this.getLength()) {
       this.remove();
     } else {
       this.children.forEachAt(index, length, function(child, offset, length) {
@@ -64,6 +64,12 @@ class ParentBlot extends Blot implements ShadowParent {
     this.children.forEachAt(index, length, function(child, offset, length) {
       child.formatAt(offset, length, name, value);
     });
+  }
+
+  getLength(): number {
+    return this.children.reduce(function(memo, child) {
+      return memo + child.getLength();
+    }, 0);
   }
 
   getValue(): any[] {
@@ -100,12 +106,6 @@ class ParentBlot extends Blot implements ShadowParent {
     childBlot.parent = this;
   }
 
-  length(): number {
-    return this.children.reduce(function(memo, child) {
-      return memo + child.length();
-    }, 0);
-  }
-
   moveChildren(parent: ParentBlot, refNode?: Blot): void {
     this.children.forEach(function(child) {
       parent.insertBefore(child, refNode);
@@ -125,11 +125,11 @@ class ParentBlot extends Blot implements ShadowParent {
   split(index: number, force: boolean = false): Blot {
     if (!force) {
       if (index === 0) return this;
-      if (index === this.length()) return this.next;
+      if (index === this.getLength()) return this.next;
     }
     var after = <ParentBlot>this.clone();
     this.parent.insertBefore(after, this.next);
-    this.children.forEachAt(index, this.length(), function(child, offset, length) {
+    this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
       var child = <Blot>child.split(offset, force);
       child.remove();
       after.appendChild(child);

@@ -2,7 +2,7 @@ interface LinkedNode {
   prev: LinkedNode;
   next: LinkedNode;
 
-  length(): number;
+  getLength(): number;
 }
 
 
