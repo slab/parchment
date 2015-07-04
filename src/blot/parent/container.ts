@@ -56,6 +56,14 @@ class ContainerBlot extends ParentBlot implements Observable {
     });
   }
 
+  insertAt(index: number, value: string, def?: any): void {
+    if (this.children.length === 0) {
+      let block = Registry.create('block');
+      this.insertBefore(block);
+    }
+    super.insertAt(index, value, def);
+  }
+
   update(): boolean {
     var mutations = this.observer.takeRecords();
     this.observeHandler(mutations);

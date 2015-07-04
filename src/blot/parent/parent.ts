@@ -81,7 +81,12 @@ class ParentBlot extends Blot implements ShadowParent {
   insertAt(index: number, value: string, def?: any): void {
     var _arr = this.children.find(index);
     var child = _arr[0], offset = _arr[1];
-    child.insertAt(offset, value, def);
+    if (child) {
+      child.insertAt(offset, value, def);
+    } else {
+      let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+      this.insertBefore(blot);
+    }
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {

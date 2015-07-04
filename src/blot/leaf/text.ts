@@ -41,9 +41,13 @@ class TextBlot extends Blot {
     return this.text;
   }
 
-  insertText(index: number, text: string): void {
-    this.text = this.text.slice(0, index) + text + this.text.slice(index);
-    this.domNode.data = this.text;
+  insertAt(index: number, value: string, def?: any): void {
+    if (def == null) {
+      this.text = this.text.slice(0, index) + value + this.text.slice(index);
+      this.domNode.data = this.text;
+    } else {
+      super.insertAt(index, value, def);
+    }
   }
 
   length(): number {
@@ -57,6 +61,7 @@ class TextBlot extends Blot {
     }
     var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
+    this.text = this.domNode.data;
     return after;
   }
 }
