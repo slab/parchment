@@ -41,7 +41,14 @@ module.exports = function(config) {
       ]
     },
     browsers: ['Chrome'],
-
+    customLaunchers: {
+      'saucelabs-chrome': {
+        base: 'SauceLabs',
+        browserName: 'Chrome',
+        platform: 'Mac 10.10',
+        version: '43'
+      }
+    },
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
