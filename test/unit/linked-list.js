@@ -4,7 +4,7 @@ describe('LinkedList', function() {
     this.a = { str: 'a' };
     this.b = { str: 'b' };
     this.c = { str: 'c' };
-    this.a.length = this.b.length = this.c.length = function() {
+    this.a.getLength = this.b.getLength = this.c.getLength = function() {
       return 3;
     };
   });
