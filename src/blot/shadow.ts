@@ -58,7 +58,6 @@ class ShadowNode implements LinkedNode {
   remove(): void {
     this.parent.children.remove(this);
     if (this.domNode.parentNode != null) this.domNode.parentNode.removeChild(this.domNode);
-    this.parent = this.prev = this.next = undefined;
   }
 
   replace(name: string, value: any): ShadowNode {

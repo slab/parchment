@@ -48,7 +48,6 @@ class LinkedList<T extends LinkedNode> {
     if (node.next != null) node.next.prev = node.prev
     if (node === this.head) this.head = <T>node.next;
     if (node === this.tail) this.tail = <T>node.prev;
-    node.prev = node.next = undefined;
     this.length -= 1;
   }
 
