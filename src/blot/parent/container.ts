@@ -12,8 +12,37 @@ class ContainerBlot extends ParentBlot implements Observable {
 
   constructor(value: HTMLElement) {
     super(value);
-    // this.observer = new MutationObserver(this.observeHandler);
-    // this.observer.observe(this.domNode, { childList: true });
+    this.observer = new MutationObserver(this.observeHandler);
+    this.observer.observe(this.domNode, { childList: true });
+  }
+
+  findPath(index: number): Position[] {
+    return super.findPath(index).slice(1);    // Exclude ourself from result
+  }
+
+  getFormat(): any[] {
+    return this.children.map(function(child) {
+      return child.getFormat();
+    });
+  }
+
+  getValue(): any[] {
+    return this.children.map(function(child) {
+      return child.getValue();
+    });
+  }
+
+  insertAt(index: number, value: string, def?: any): void {
+    if (this.children.length === 0) {
+      let block = Registry.create('block');
+      this.insertBefore(block);
+    }
+    super.insertAt(index, value, def);
+  }
+
+  insertBefore(child: Blot, ref?: Blot): void {
+    super.insertBefore(child, ref);
+    child.onUpdate = this.onUpdate.bind(this, 'update', child);
   }
 
   observeHandler(mutations: MutationRecord[]): void {
@@ -40,28 +69,8 @@ class ContainerBlot extends ParentBlot implements Observable {
     this.observer.takeRecords();  // Ignore changes caused by this handler
   }
 
-  findPath(index: number): Position[] {
-    return super.findPath(index).slice(1);    // Exclude ourself from result
-  }
-
-  getFormat(): any[] {
-    return this.children.map(function(child) {
-      return child.getFormat();
-    });
-  }
-
-  getValue(): any[] {
-    return this.children.map(function(child) {
-      return child.getValue();
-    });
-  }
-
-  insertAt(index: number, value: string, def?: any): void {
-    if (this.children.length === 0) {
-      let block = Registry.create('block');
-      this.insertBefore(block);
-    }
-    super.insertAt(index, value, def);
+  onUpdate(): void {
+    // To be overwritten
   }
 
   update(): boolean {

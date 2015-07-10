@@ -10,13 +10,22 @@ export enum Type {
 }
 
 
-function create(name: string, value?:any) {
-  var BlotClass = types[name];
+function create(name: Node);
+function create(name: string, value?: any);
+function create(name: any, value?: any): any {
+  var obj;
+  var BlotClass = match(name);
   if (typeof BlotClass !== 'function') {
-    throw new Error(`Unable to create ${name}`);
+    console.error(`Unable to create ${name}`);
+    return null;
   }
-  var obj = new BlotClass(value, BlotClass);
-  obj.onCreate(value);
+  if (typeof name === 'string') {
+    obj = new BlotClass(value, BlotClass);
+    obj.onCreate(value);
+  } else if (name instanceof Node) {
+    obj = new BlotClass(name);
+    obj.onCreate(name);
+  }
   return obj;
 }
 

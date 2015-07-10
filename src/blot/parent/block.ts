@@ -12,13 +12,13 @@ class BlockBlot extends ParentBlot implements Observable {
 
   constructor(value: HTMLElement) {
     super(value);
-    // this.observer = new MutationObserver(this.observeHandler);
-    // this.observer.observe(this.domNode, {
-    //   attributes: true,
-    //   characterData: true,
-    //   childList: true,
-    //   subtree: true
-    // });
+    this.observer = new MutationObserver(this.observeHandler);
+    this.observer.observe(this.domNode, {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true
+    });
   }
 
   format(name: string, value: any): void {
@@ -54,6 +54,10 @@ class BlockBlot extends ParentBlot implements Observable {
       this.observer.takeRecords();  // Ignore changes caused by this handler
       this.onUpdate();
     }
+  }
+
+  onUpdate(): void {
+    // To be overwritten
   }
 
   update(): boolean {

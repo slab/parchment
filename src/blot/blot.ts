@@ -22,6 +22,7 @@ class Blot extends ShadowNode implements Attributable {
   static blotName = 'blot';
 
   static findBlot(node: Node): Blot {
+    if (node == null) return null;
     return node[DATA_KEY];
   }
 
