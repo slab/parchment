@@ -6,7 +6,7 @@ module.exports = function(config) {
     // Hack to give karma-coverage the source files for html reporter
     // since we do not actually use karma to instrument in order to
     // map to pre-browserified code
-    var store = require('karma-coverage/lib/sourceCache').getByBasePath(config.basePath);
+    var store = require('karma-coverage/lib/source-cache').get(config.basePath);
     var chunks = [];
     return through(function(buff) {
       chunks.push(buff);
