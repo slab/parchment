@@ -1,5 +1,5 @@
 describe('Attributor', function() {
-  it('TextBlot format()', function() {
+  it('text', function() {
     var container = Registry.create('inline');
     var textBlot = new TextBlot('Test');
     container.appendChild(textBlot);
