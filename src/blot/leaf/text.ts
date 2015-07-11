@@ -1,6 +1,5 @@
 import Blot from '../blot';
 import InlineBlot from '../parent/inline';
-import ShadowNode from '../shadow';
 import * as Registry from '../../registry';
 
 class TextBlot extends Blot {
@@ -58,7 +57,7 @@ class TextBlot extends Blot {
     }
   }
 
-  split(index: number, force: boolean = false): ShadowNode {
+  split(index: number, force: boolean = false): Blot {
     if (!force) {
       if (index === 0) return this;
       if (index === this.getLength()) return this.next;
