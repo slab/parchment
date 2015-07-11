@@ -1,0 +1,3 @@
+describe('ContainerBlot', function() {
+
+});

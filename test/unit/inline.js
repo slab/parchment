@@ -1,0 +1,3 @@
+describe('InlineBlot', function() {
+
+});

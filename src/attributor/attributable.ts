@@ -7,7 +7,7 @@ class Attributable {
 
   attribute(name: string, value: any): void {
     if (value) {
-      this.attributes[name] = Registry.match(name);
+      this.attributes[name] = Registry.match(name, Registry.Type.ATTRIBUTE);
       this.attributes[name].add(this.domNode, value);
     } else {
       this.attributes[name].remove(this.domNode);
@@ -17,7 +17,6 @@ class Attributable {
 
   buildAttributes(): void {
     if (!(this.domNode instanceof HTMLElement)) return;
-
     var attributes = [], classes = [], styles = [];
     Array.prototype.slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
@@ -31,7 +30,6 @@ class Attributable {
         attributes.push(item.name);
       }
     });
-
     attributes.concat(classes).concat(styles).forEach(name => {
       var attr = Registry.match(name, Registry.Type.ATTRIBUTE);
       if (attr != null) {

@@ -1,4 +1,4 @@
-import { inherit } from './util';
+import Attributor from './attributor/attributor';
 
 
 var tags = {};
@@ -29,34 +29,17 @@ function create(name: any, value?: any): any {
   return obj;
 }
 
-function define(BlotClass, SuperClass?) {
-  if (typeof BlotClass === 'object') {
-    if (typeof BlotClass.blotName === 'string') {
-      return defineBlotObject(BlotClass, SuperClass);
-    } else {
-      return defineAttrObject(BlotClass, SuperClass);
-    }
+function define(Definition) {
+  if (Definition instanceof Attributor) {
+    return types[Definition.attrName] = Definition;
   } else {
-    return defineBlotClass(BlotClass)
+    // TODO warn of tag/type overwrite
+    types[Definition.blotName] = Definition;
+    if (typeof Definition.tagName === 'string') {
+      tags[Definition.tagName.toUpperCase()] = Definition;
+    }
+    return Definition;
   }
-}
-
-function defineAttrObject(AttrObject, SuperClass) {
-  return types[AttrObject.attrName] = new SuperClass(AttrObject.attrName, AttrObject.keyName);
-}
-
-function defineBlotClass(BlotClass) {
-  // TODO warn of tag/type overwrite
-  types[BlotClass.blotName] = BlotClass;
-  if (typeof BlotClass.tagName === 'string') {
-    tags[BlotClass.tagName.toUpperCase()] = BlotClass;
-  }
-  return BlotClass;
-}
-
-function defineBlotObject(BlotObject, SuperClass = types['parent']) {
-  var BlotClass = inherit(BlotObject, SuperClass);
-  return defineBlotClass(BlotClass);
 }
 
 function match(query: string | Node, type: Type = Type.BLOT) {
@@ -68,6 +51,7 @@ function match(query: string | Node, type: Type = Type.BLOT) {
         (type === Type.BLOT && typeof match.attrName === 'string')) {
       return null;
     }
+    return match;
   } else if (query instanceof Node && type === Type.BLOT) {
     if (query instanceof HTMLElement) {
       return tags[query.tagName];

@@ -12,6 +12,7 @@
     "gulp-derequire": "~2.1.0",
     "jasmine-core": "~2.3.4",
     "karma": "~0.12.37",
+    "karma-babel-preprocessor": "^5.2.1",
     "karma-browserify": "~4.2.1",
     "karma-chrome-launcher": "~0.2.0",
     "karma-coverage": "~0.4.2",

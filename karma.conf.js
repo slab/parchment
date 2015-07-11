@@ -22,9 +22,19 @@ module.exports = function(config) {
     frameworks: ['browserify', 'jasmine'],
     files: [
       'test/parchment.ts',
-      'test/unit/*.js'
+      'test/registry/*.js',
+      'test/unit/linked-list.js',   // Control test order
+      'test/unit/registry.js',
+      'test/unit/text.js',
+      'test/unit/embed.js',
+      'test/unit/inline.js',
+      'test/unit/block.js',
+      'test/unit/container.js',
+      'test/unit/format.js',
+      'test/unit/attributor.js'
     ],
     preprocessors: {
+      'test/registry/*.js': ['babel'],
       'test/parchment.ts': ['browserify']
     },
     browserify: {

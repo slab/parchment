@@ -130,8 +130,10 @@ class ParentBlot extends Blot implements ShadowParent {
     this.parent.insertBefore(after, this.next);
     this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
       var child = <Blot>child.split(offset, force);
-      child.remove();
-      after.appendChild(child);
+      if (child) {
+        child.remove();
+        after.appendChild(child);
+      }
     });
     return after;
   }
