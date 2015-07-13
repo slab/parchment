@@ -1,6 +1,6 @@
 class ImageBlot extends EmbedBlot {}
 
 ImageBlot.blotName = 'image';
-ImageBlot.tagName = 'img';
+ImageBlot.tagName = 'IMG';
 
 Registry.define(ImageBlot);
