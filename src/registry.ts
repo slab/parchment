@@ -29,6 +29,7 @@ function create(name: any, value?: any): any {
   return obj;
 }
 
+// Only support real classes since calling superclass definitions are so important
 function define(Definition) {
   if (Definition instanceof Attributor) {
     return types[Definition.attrName] = Definition;

@@ -31,7 +31,7 @@ module.exports = function(config) {
       'test/unit/block.js',
       'test/unit/container.js',
       'test/unit/format.js',
-      'test/unit/attributor.js'
+      'test/unit/style.js'
     ],
     preprocessors: {
       'test/registry/*.js': ['babel'],

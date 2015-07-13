@@ -9,7 +9,7 @@ class Attributable {
     if (value) {
       this.attributes[name] = Registry.match(name, Registry.Type.ATTRIBUTE);
       this.attributes[name].add(this.domNode, value);
-    } else {
+    } else if (this.attributes[name] != null) {
       this.attributes[name].remove(this.domNode);
       delete this.attributes[name];
     }

@@ -52,7 +52,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   format(name: string, value: any): void {
-    if (value && name === this.statics.blotName) {
+    if (!value && name === this.statics.blotName) {
       this.unwrap();
     } else {
       super.format(name, value);

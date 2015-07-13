@@ -7,12 +7,15 @@ class InlineBlot extends ParentBlot {
   static blotName = 'inline';
   static tagName = 'SPAN';
 
-  static compare = function(otherName: string): boolean {
-    return this.blotName < otherName;
+  static compare = function(thisName: string, otherName: string): boolean {
+    return thisName <= otherName;
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (this.statics.compare(name)) {
+    if (this.statics.compare(this.statics.blotName, name)) {
+      var formats = this.getFormat();
+      if (value && formats[name] === value) return;
+      if (!value && !formats[name]) return;
       let target = <Blot>this.isolate(index, length);
       target.format(name, value);
     } else {

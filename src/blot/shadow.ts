@@ -5,7 +5,7 @@ import * as Registry from '../registry';
 interface ShadowStatic {
   blotName: string;
   tagName: string;
-  compare?: (string) => boolean;
+  compare?: (self:string, other:string) => boolean;
 }
 
 interface ShadowParent {
