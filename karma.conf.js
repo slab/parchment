@@ -30,7 +30,6 @@ module.exports = function(config) {
       'test/unit/inline.js',
       'test/unit/block.js',
       'test/unit/container.js',
-      'test/unit/format.js',
       'test/unit/style.js'
     ],
     preprocessors: {

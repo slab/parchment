@@ -29,7 +29,7 @@ describe('Style Attributor', function() {
     container.appendChild(boldBlot);
     boldBlot.formatAt(1, 2, 'color', false);
     expect(boldBlot.domNode.outerHTML).toEqual('<strong>Bold</strong>');
-  })
+  });
 
   it('move attribute', function() {
     var container = Registry.create('inline');

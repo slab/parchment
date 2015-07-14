@@ -76,4 +76,24 @@ describe('TextBlot', function() {
     expect(textBlot.next).toEqual(after);
     expect(after.prev).toEqual(textBlot);
   });
+
+  it('format wrap', function() {
+    var container = Registry.create('inline');
+    var textBlot = new TextBlot('Test');
+    container.appendChild(textBlot);
+    textBlot.formatAt(0, 4, 'bold', true);
+    expect(textBlot.domNode.parentNode.tagName).toEqual('STRONG');
+    expect(textBlot.getValue()).toEqual('Test');
+  });
+
+  it('format split', function() {
+    var container = Registry.create('inline');
+    var textBlot = new TextBlot('Test');
+    container.appendChild(textBlot);
+    textBlot.formatAt(1, 2, 'bold', true);
+    expect(container.domNode.innerHTML).toEqual('T<strong>es</strong>t');
+    expect(textBlot.next.statics.blotName).toEqual('bold');
+    expect(textBlot.getValue()).toEqual('T');
+    expect(textBlot.next.getValue()).toEqual(['es']);
+  });
 });
