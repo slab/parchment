@@ -12,7 +12,7 @@ class InlineBlot extends ParentBlot {
     var thisAttr = Registry.match(thisName, Registry.Type.ATTRIBUTE);
     var otherAttr = Registry.match(otherName, Registry.Type.ATTRIBUTE);
     if (!!thisAttr !== !!otherAttr) {
-      return thisAttr;
+      return otherAttr;
     }
     return thisName <= otherName;
   }
