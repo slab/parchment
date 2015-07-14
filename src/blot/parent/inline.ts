@@ -1,5 +1,6 @@
 import Blot from '../blot';
 import ParentBlot from './parent';
+import * as Registry from '../../registry';
 import { ShadowParent } from '../shadow';
 
 
@@ -8,6 +9,11 @@ class InlineBlot extends ParentBlot {
   static tagName = 'SPAN';
 
   static compare = function(thisName: string, otherName: string): boolean {
+    var thisAttr = Registry.match(thisName, Registry.Type.ATTRIBUTE);
+    var otherAttr = Registry.match(otherName, Registry.Type.ATTRIBUTE);
+    if (!!thisAttr !== !!otherAttr) {
+      return thisAttr;
+    }
     return thisName <= otherName;
   }
 
