@@ -46,14 +46,16 @@ class InlineBlot extends ParentBlot implements Mergeable {
     return formats;
   }
 
-  mergeNext(): void {
-    if (!this.parent) return;
-    if (this.next != null &&
-        this.statics.blotName === this.next.statics.blotName &&
-        util.isEqual(this.next.getFormat(), this.getFormat())) {
-      (<ParentBlot>this.next).moveChildren(this);
-      this.next.remove();
+  merge(target: Blot = this.next): boolean {
+    if (!this.parent) return false;
+    if (target != null &&
+        this.statics.blotName === target.statics.blotName &&
+        util.isEqual(target.getFormat(), this.getFormat())) {
+      (<ParentBlot>target).moveChildren(this);
+      target.remove();
+      return true;
     }
+    return false;
   }
 
   unwrap(): void {

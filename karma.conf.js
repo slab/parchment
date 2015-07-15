@@ -25,6 +25,7 @@ module.exports = function(config) {
       'test/registry/*.js',
       'test/unit/linked-list.js',   // Control test order
       'test/unit/registry.js',
+      'test/unit/blot.js',
       'test/unit/text.js',
       'test/unit/embed.js',
       'test/unit/inline.js',

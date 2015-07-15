@@ -1,4 +1,4 @@
-fdescribe('InlineBlot', function() {
+describe('InlineBlot', function() {
   beforeEach(function() {
     this.oldCompare = InlineBlot.compare;
     InlineBlot.compare = function(thisName, otherName) {

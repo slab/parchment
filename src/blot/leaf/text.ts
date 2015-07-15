@@ -58,13 +58,14 @@ class TextBlot extends Blot implements Mergeable {
     }
   }
 
-  mergeNext(): void {
-    console.log("merge next");
-    if (this.next instanceof TextBlot) {
-      this.text = this.text + this.next['text']; // Typescript is supposed to know this.text is a TextBlot in this block :(
+  merge(target:Blot = this.next): boolean {
+    if (target instanceof TextBlot) {
+      this.text = this.text + target.text;
       this.domNode.data = this.text;
-      this.next.remove();
+      target.remove();
+      return true;
     }
+    return false;
   }
 
   split(index: number, force: boolean = false): Blot {

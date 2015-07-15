@@ -95,6 +95,9 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
+    if (childBlot.parent != null) {
+      childBlot.parent.children.remove(childBlot);
+    }
     this.children.insertBefore(childBlot, refBlot);
     if (refBlot != null) {
       var refDomNode = refBlot.domNode;
@@ -105,9 +108,16 @@ class ParentBlot extends Blot implements ShadowParent {
     childBlot.parent = this;
   }
 
-  moveChildren(parent: ParentBlot, refNode?: Blot): void {
-    this.children.forEach(function(child) {
-      parent.insertBefore(child, refNode);
+  moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
+    this.children.forEach((child) => {
+      if (child === this.children.head) {
+        let lastChild = <any>(refNode != null ? refNode.prev : targetParent.children.tail);
+        if (lastChild != null &&
+            typeof lastChild.merge === 'function' &&
+            lastChild.merge(child))
+          return;
+      }
+      targetParent.insertBefore(child, refNode);
     });
   }
 
@@ -131,7 +141,6 @@ class ParentBlot extends Blot implements ShadowParent {
     this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
       var child = <Blot>child.split(offset, force);
       if (child) {
-        child.remove();
         after.appendChild(child);
       }
     });
@@ -139,7 +148,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   unwrap(): void {
-    // Move children after us since we may call this.prev.mergeNext()
+    // Move children after us since we may call this.prev.merge()
     this.moveChildren(this.parent, this.next);
     this.remove();
   }

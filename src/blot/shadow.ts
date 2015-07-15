@@ -8,8 +8,9 @@ interface ShadowStatic {
   compare?: (self:string, other:string) => boolean;
 }
 
-interface ShadowParent {
+interface ShadowParent extends ShadowNode {
   children: LinkedList<ShadowNode>;
+  // domNode: HTMLElement;
 
   appendChild(child: ShadowNode): void;
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
@@ -57,13 +58,15 @@ class ShadowNode implements LinkedNode {
 
   remove(): void {
     this.parent.children.remove(this);
-    if (this.domNode.parentNode != null) this.domNode.parentNode.removeChild(this.domNode);
+    if (this.domNode.parentNode != null) {
+      this.domNode.parentNode.removeChild(this.domNode);
+    }
   }
 
   replace(name: string, value: any): ShadowNode {
     if (this.parent == null) return;
     var replacement = Registry.create(name, value);
-    this.parent.insertBefore(replacement, this);
+    this.parent.insertBefore(replacement, this.next);
     this.remove();
     return replacement;
   }
@@ -74,10 +77,8 @@ class ShadowNode implements LinkedNode {
 
   wrap(name: string, value: any): ShadowParent {
     var wrapper = Registry.create(name, value);
-    this.parent.insertBefore(wrapper, this);
-    this.remove();
+    this.parent.insertBefore(wrapper, this.next);
     wrapper.appendChild(this);
-    this.parent = wrapper;
     return wrapper;
   }
 }

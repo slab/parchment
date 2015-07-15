@@ -54,10 +54,18 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   format(name: string, value: any): void {
+    var mergeTarget = this;
     if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);
     } else if (Registry.match(name) && value) {
-      this.wrap(name, value);
+      mergeTarget = <any>this.wrap(name, value);
+    }
+    var next = <any>mergeTarget.next;
+    if (mergeTarget.prev != null && typeof mergeTarget.prev['merge'] === 'function') {
+      (<any>mergeTarget.prev).merge();
+    }
+    if (next != null && typeof next['merge'] === 'function') {
+      next.merge();
     }
   }
 
@@ -93,9 +101,8 @@ class Blot extends ShadowNode implements Attributable {
     delete this.domNode[DATA_KEY];
     super.remove();
     this.onRemove();
-    // TODO optimization: could figure out we need to merge before inserting
-    if (this.prev != null && typeof this.prev['mergeNext'] === 'function') {
-      (<any>this.prev).mergeNext();
+    if (this.prev != null && typeof this.prev['merge'] === 'function') {
+      (<any>this.prev).merge();
     }
   }
 

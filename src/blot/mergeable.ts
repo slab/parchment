@@ -1,5 +1,7 @@
+import Blot from './blot';
+
 interface Mergeable {
-  mergeNext(): void;
+  merge(target?:Blot): boolean;
 }
 
 export default Mergeable;
