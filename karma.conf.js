@@ -1,5 +1,4 @@
 var through = require('through');
-var tsconfig = require('./tsconfig.json');
 
 module.exports = function(config) {
   var cacheSource = function(file) {
@@ -39,7 +38,7 @@ module.exports = function(config) {
     },
     browserify: {
       transform: [cacheSource, 'browserify-istanbul'],
-      plugin: [['tsify', tsconfig.compilerOptions]]
+      plugin: [['tsify']]
     },
     exclude: [],
     reporters: ['progress'],

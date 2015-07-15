@@ -3,7 +3,6 @@ var derequire = require('gulp-derequire');
 var gulp = require('gulp');
 var karma = require('karma').server;
 var source = require('vinyl-source-stream');
-var tsconfig = require('./tsconfig.json');
 var tsify = require('tsify');
 
 
@@ -14,7 +13,7 @@ gulp.task('build', function() {
     standalone: 'Parchment',
     entries: './src/parchment.ts'
   });
-  b.plugin('tsify', tsconfig.compilerOptions).bundle()
+  b.plugin('tsify').bundle()
     .on('error', function(e) {
       console.error(e.toString());
     })
@@ -27,7 +26,7 @@ gulp.task('test', function(done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
     browserify: {
-      plugin: [['tsify', tsconfig.compilerOptions]]
+      plugin: [['tsify']]
     },
   }, done);
 });
@@ -43,7 +42,7 @@ gulp.task('test:server', function(done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
     browserify: {
-      plugin: [['tsify', tsconfig.compilerOptions]]
+      plugin: [['tsify']]
     },
     singleRun: false
   }, done);
@@ -53,7 +52,7 @@ gulp.task('test:travis', function(done) {
   karma.start({
     configFile: __dirname + '/karma.conf.js',
     browserify: {
-      plugin: [['tsify', tsconfig.compilerOptions]]
+      plugin: [['tsify']]
     },
     browsers: ['saucelabs-chrome'],
     reporters: ['dots', 'saucelabs'],
