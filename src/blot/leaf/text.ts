@@ -1,8 +1,9 @@
 import Blot from '../blot';
 import InlineBlot from '../parent/inline';
+import Mergeable from '../mergeable';
 import * as Registry from '../../registry';
 
-class TextBlot extends Blot {
+class TextBlot extends Blot implements Mergeable {
   static blotName = 'text';
 
   domNode: Text;
@@ -54,6 +55,15 @@ class TextBlot extends Blot {
       this.domNode.data = this.text;
     } else {
       super.insertAt(index, value, def);
+    }
+  }
+
+  mergeNext(): void {
+    console.log("merge next");
+    if (this.next instanceof TextBlot) {
+      this.text = this.text + this.next['text']; // Typescript is supposed to know this.text is a TextBlot in this block :(
+      this.domNode.data = this.text;
+      this.next.remove();
     }
   }
 

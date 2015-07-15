@@ -5,14 +5,14 @@ import * as Registry from '../../registry';
 
 
 class BlockBlot extends ParentBlot implements Observable {
-  static nodeName = 'block';
+  static blotName = 'block';
   static tagName = 'P';
 
   observer: MutationObserver;
 
   constructor(value: HTMLElement) {
     super(value);
-    this.observer = new MutationObserver(this.observeHandler);
+    this.observer = new MutationObserver(this.observeHandler.bind(this));
     this.observer.observe(this.domNode, {
       attributes: true,
       characterData: true,

@@ -139,7 +139,8 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   unwrap(): void {
-    this.moveChildren(this.parent, this);
+    // Move children after us since we may call this.prev.mergeNext()
+    this.moveChildren(this.parent, this.next);
     this.remove();
   }
 }

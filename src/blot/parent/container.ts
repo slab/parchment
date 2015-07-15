@@ -5,7 +5,7 @@ import * as Registry from '../../registry';
 
 
 class ContainerBlot extends ParentBlot implements Observable {
-  static nodeName = 'container';
+  static blotName = 'container';
   static tagName = 'DIV';
 
   observer: MutationObserver;

@@ -1,10 +1,12 @@
 import Blot from '../blot';
+import Mergeable from '../mergeable';
 import ParentBlot from './parent';
 import * as Registry from '../../registry';
 import { ShadowParent } from '../shadow';
+import * as util from '../../util';
 
 
-class InlineBlot extends ParentBlot {
+class InlineBlot extends ParentBlot implements Mergeable {
   static blotName = 'inline';
   static tagName = 'SPAN';
 
@@ -15,6 +17,13 @@ class InlineBlot extends ParentBlot {
       return otherAttr;
     }
     return thisName <= otherName;
+  }
+
+  format(name: string, value: any): void {
+    super.format(name, value);
+    if (Object.keys(this.getFormat()).length === 0) {
+      this.unwrap();
+    }
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -31,8 +40,20 @@ class InlineBlot extends ParentBlot {
 
   getFormat() {
     var formats = super.getFormat();
-    formats[this.statics.blotName] = true;
+    if (this.statics.blotName !== 'inline') {
+      formats[this.statics.blotName] = true;
+    }
     return formats;
+  }
+
+  mergeNext(): void {
+    if (!this.parent) return;
+    if (this.next != null &&
+        this.statics.blotName === this.next.statics.blotName &&
+        util.isEqual(this.next.getFormat(), this.getFormat())) {
+      (<ParentBlot>this.next).moveChildren(this);
+      this.next.remove();
+    }
   }
 
   unwrap(): void {
