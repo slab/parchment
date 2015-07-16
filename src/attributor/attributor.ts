@@ -1,9 +1,9 @@
-class Attributor {
+interface Attributor {
   attrName: string;
 
-  add(node: HTMLElement, value: any): void {};
-  remove(node: HTMLElement): void {};
-  value(node: HTMLElement): any {};
+  add(node: HTMLElement, value: any);
+  remove(node: HTMLElement);
+  value(node: HTMLElement);
 }
 
 export default Attributor;

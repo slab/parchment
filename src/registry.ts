@@ -31,15 +31,17 @@ function create(name: any, value?: any): any {
 
 // Only support real classes since calling superclass definitions are so important
 function define(Definition) {
-  if (Definition instanceof Attributor) {
-    return types[Definition.attrName] = Definition;
-  } else {
+  if (typeof Definition.blotName === 'string') {
     // TODO warn of tag/type overwrite
     types[Definition.blotName] = Definition;
     if (typeof Definition.tagName === 'string') {
       tags[Definition.tagName.toUpperCase()] = Definition;
     }
     return Definition;
+  } else if (typeof Definition.attrName === 'string') {
+    return types[Definition.attrName] = Definition;
+  } else {
+    console.error('Invalid definition');
   }
 }
 

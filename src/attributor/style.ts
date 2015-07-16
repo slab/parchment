@@ -1,14 +1,13 @@
 import Attributor from './attributor';
 
 
-class StyleAttributor extends Attributor {
+class StyleAttributor implements Attributor {
   public attrName: string;
   protected styleName: string;
 
   constructor(name, key) {
     this.attrName = name;
     this.styleName = key;
-    super();
   }
 
   add(node: HTMLElement, value: string): void {
