@@ -7,6 +7,7 @@ import * as Registry from '../../registry';
 class ParentBlot extends Blot implements ShadowParent {
   static blotName = 'parent';
 
+  domNode: HTMLElement;
   parent: ParentBlot = null;
   children: LinkedList<Blot> = new LinkedList<Blot>();
 

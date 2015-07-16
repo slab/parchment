@@ -10,7 +10,7 @@ interface ShadowStatic {
 
 interface ShadowParent extends ShadowNode {
   children: LinkedList<ShadowNode>;
-  // domNode: HTMLElement;
+  domNode: HTMLElement;
 
   appendChild(child: ShadowNode): void;
   insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
@@ -19,10 +19,10 @@ interface ShadowParent extends ShadowNode {
 }
 
 class ShadowNode implements LinkedNode {
-  prev: ShadowNode = null;
-  next: ShadowNode = null;
-  parent: ShadowParent = null;
-  domNode: Node = null;
+  prev: ShadowNode;
+  next: ShadowNode;
+  parent: ShadowParent;
+  domNode: Node;
 
   constructor(node: Node) {
     if (!(node instanceof Node)) {

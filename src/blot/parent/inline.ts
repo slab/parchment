@@ -66,7 +66,7 @@ class InlineBlot extends ParentBlot implements Mergeable {
     }
   }
 
-  wrap(name: string, value: any): ShadowParent {
+  wrap(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName) {
       return this;
     } else if (this.statics.blotName === InlineBlot.blotName) {
