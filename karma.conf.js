@@ -1,3 +1,4 @@
+var Buffer = require('buffer').Buffer;
 var through = require('through');
 
 module.exports = function(config) {
@@ -7,7 +8,17 @@ module.exports = function(config) {
     // map to pre-browserified code
     var store = require('karma-coverage/lib/source-cache').get(config.basePath);
     var chunks = [];
+    var tsExtends = /^var __extends =/;
     return through(function(buff) {
+      var str = buff.toString();
+      // More hacks for ignoring typescript's __extend
+      if (Buffer.isBuffer(buff) && tsExtends.test(str)) {
+        buff = Buffer.concat([
+          new Buffer(str.split('\n')[0]),
+          new Buffer('\n    /* istanbul ignore next */\n'),
+          new Buffer(str.split('\n').slice(1).join('\n'))
+        ])
+      }
       chunks.push(buff);
       this.queue(buff);
     }, function() {
