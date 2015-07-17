@@ -178,15 +178,6 @@ describe('LinkedList', function() {
 
     it('forEachAt partial nodes', function() {
       this.list.append(this.a, this.b, this.c);
-      this.list.forEachAt(1, 3, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toEqual(2);
-      var calls = this.spy.callback.calls.all();
-      expect(calls[0].args).toEqual([this.a, 1, 2]);
-      expect(calls[1].args).toEqual([this.b, 0, 1]);
-    });
-
-    it('forEachAt partial nodes', function() {
-      this.list.append(this.a, this.b, this.c);
       this.list.forEachAt(1, 7, this.spy.callback);
       expect(this.spy.callback.calls.count()).toEqual(3);
       var calls = this.spy.callback.calls.all();
