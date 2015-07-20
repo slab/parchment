@@ -12,7 +12,7 @@ class ContainerBlot extends ParentBlot implements Observable {
 
   constructor(value: HTMLElement) {
     super(value);
-    this.observer = new MutationObserver(this.observeHandler);
+    this.observer = new MutationObserver(this.observeHandler.bind(this));
     this.observer.observe(this.domNode, { childList: true });
   }
 
@@ -46,7 +46,7 @@ class ContainerBlot extends ParentBlot implements Observable {
   }
 
   observeHandler(mutations: MutationRecord[]): void {
-    mutations.forEach(function(mutation) {
+    mutations.forEach((mutation) => {
       Array.prototype.slice.call(mutation.removedNodes).forEach(function(node) {
         var blot = Blot.findBlot(node);
         if (blot != null) {

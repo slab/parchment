@@ -1,5 +1,5 @@
 describe('Blot', function() {
-  it('wrap', function() {
+  it('wrap()', function() {
     var parent = Registry.create('block');
     var head = Registry.create('bold');
     var text = Registry.create('text', 'Test');
