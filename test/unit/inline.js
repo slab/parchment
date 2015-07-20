@@ -105,4 +105,15 @@ describe('InlineBlot', function() {
     expect(container.children.head.children.length).toEqual(1);
     expect(container.getValue()).toEqual(['Tt']);
   });
+
+  it('getValue() + getFormat()', function() {
+    var italic = document.createElement('em');
+    italic.style.color = 'red';
+    italic.innerHTML = '<strong>Test</strong>!';
+    var blot = Registry.create(italic);
+    var formats = blot.getFormat();
+    var values = blot.getValue();
+    expect(formats).toEqual({ italic: true, color: 'red' });
+    expect(values).toEqual(['Test', '!']);
+  })
 });
