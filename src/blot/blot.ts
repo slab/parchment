@@ -93,14 +93,9 @@ class Blot extends ShadowNode implements Attributable {
     this.parent.insertBefore(blot, target);
   }
 
-  onCreate(): void { }
-  onUpdate(): void { }
-  onRemove(): void { }
-
   remove(): void {
     delete this.domNode[DATA_KEY];
     super.remove();
-    this.onRemove();
     if (this.prev != null && typeof this.prev['merge'] === 'function') {
       (<any>this.prev).merge();
     }

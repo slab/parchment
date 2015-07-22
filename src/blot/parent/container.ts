@@ -40,11 +40,6 @@ class ContainerBlot extends ParentBlot implements Observable {
     super.insertAt(index, value, def);
   }
 
-  insertBefore(child: Blot, ref?: Blot): void {
-    super.insertBefore(child, ref);
-    child.onUpdate = this.onUpdate.bind(this, 'update', child);
-  }
-
   observeHandler(mutations: MutationRecord[]): void {
     mutations.forEach((mutation) => {
       Array.prototype.slice.call(mutation.removedNodes).forEach(function(node) {
@@ -63,14 +58,7 @@ class ContainerBlot extends ParentBlot implements Observable {
         }
       });
     });
-    if (mutations.length > 0) {
-      this.onUpdate();
-    }
     this.observer.takeRecords();  // Ignore changes caused by this handler
-  }
-
-  onUpdate(): void {
-    // To be overwritten
   }
 
   update(): boolean {

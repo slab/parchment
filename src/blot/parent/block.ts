@@ -52,12 +52,7 @@ class BlockBlot extends ParentBlot implements Observable {
       this.children.empty();
       this.build();
       this.observer.takeRecords();  // Ignore changes caused by this handler
-      this.onUpdate();
     }
-  }
-
-  onUpdate(): void {
-    // To be overwritten
   }
 
   update(): boolean {

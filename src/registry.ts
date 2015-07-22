@@ -13,20 +13,17 @@ export enum Type {
 function create(name: Node);
 function create(name: string, value?: any);
 function create(name: any, value?: any): any {
-  var obj;
   var BlotClass = match(name);
   if (typeof BlotClass !== 'function') {
     console.error(`Unable to create ${name}`);
     return null;
   }
   if (typeof name === 'string') {
-    obj = new BlotClass(value, BlotClass);
-    obj.onCreate(value);
+    return new BlotClass(value);
   } else if (name instanceof Node) {
-    obj = new BlotClass(name);
-    obj.onCreate(name);
+    return new BlotClass(name);
   }
-  return obj;
+  return null;
 }
 
 // Only support real classes since calling superclass definitions are so important
