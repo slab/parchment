@@ -1,8 +1,8 @@
 import BlockBlot from './blot/parent/block';
-import ContainerBlot from './blot/parent/container';
 import EmbedBlot from './blot/leaf/embed';
 import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/parent';
+import RootBlot from './blot/parent/root';
 import TextBlot from './blot/leaf/text';
 
 import StyleAttributor from './attributor/style';
@@ -10,24 +10,22 @@ import StyleAttributor from './attributor/style';
 import * as Registry from './registry';
 
 
-class Parchment extends ContainerBlot {
-  static blotName = 'parchment';
+var Parchment = {
+  Root: RootBlot,
+  Block: BlockBlot,
+  Parent: ParentBlot,
+  Inline: InlineBlot,
+  Embed: EmbedBlot,
+  Text: TextBlot,
 
-  static Block = BlockBlot;
-  static Parent = ParentBlot;
-  static Inline = InlineBlot;
-  static Embed = EmbedBlot;
-  static Text = TextBlot;
+  Style: StyleAttributor,
 
-  static Style = StyleAttributor;
-
-  static create = Registry.create;
-  static define = Registry.define;
-  static match = Registry.match;
-}
+  create: Registry.create,
+  define: Registry.define,
+  match: Registry.match
+};
 
 
-Parchment.define(Parchment);
 Parchment.define(TextBlot);
 Parchment.define(BlockBlot);
 Parchment.define(InlineBlot);

@@ -1,24 +1,14 @@
-import Observable from '../observable';
 import ParentBlot from './parent';
-import { merge } from '../../util';
+import * as Util from '../../util';
 import * as Registry from '../../registry';
 
 
-class BlockBlot extends ParentBlot implements Observable {
+class BlockBlot extends ParentBlot {
   static blotName = 'block';
   static tagName = 'P';
 
-  observer: MutationObserver;
-
   constructor(value: HTMLElement) {
     super(value);
-    this.observer = new MutationObserver(this.observeHandler.bind(this));
-    this.observer.observe(this.domNode, {
-      attributes: true,
-      characterData: true,
-      childList: true,
-      subtree: true
-    });
   }
 
   format(name: string, value: any): void {
@@ -37,7 +27,7 @@ class BlockBlot extends ParentBlot implements Observable {
       if (node instanceof ParentBlot) {
         return node.children.reduce(function(memo, child) {
           return memo.concat(collector(child));
-        }, []).map(merge.bind(null, format));
+        }, []).map(Util.merge.bind(null, format));
       } else {
         return [format];
       }
@@ -45,20 +35,6 @@ class BlockBlot extends ParentBlot implements Observable {
     return this.children.reduce(function(memo, child) {
       return memo.concat(collector(child));
     }, []);
-  }
-
-  observeHandler(mutations: MutationRecord[]): void {
-    if (mutations.length > 0) {
-      this.children.empty();
-      this.build();
-      this.observer.takeRecords();  // Ignore changes caused by this handler
-    }
-  }
-
-  update(): boolean {
-    var mutations = this.observer.takeRecords();
-    this.observeHandler(mutations);
-    return mutations.length > 0;
   }
 }
 
