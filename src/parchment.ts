@@ -1,3 +1,4 @@
+import Blot from './blot/blot';
 import BlockBlot from './blot/parent/block';
 import EmbedBlot from './blot/leaf/embed';
 import InlineBlot from './blot/parent/inline';
@@ -22,7 +23,9 @@ var Parchment = {
 
   create: Registry.create,
   define: Registry.define,
-  match: Registry.match
+  match: Registry.match,
+
+  findBlot: Blot.findBlot
 };
 
 

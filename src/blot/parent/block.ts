@@ -20,22 +20,6 @@ class BlockBlot extends ParentBlot {
       this.replace(BlockBlot.blotName, true);
     }
   }
-
-  getFormat(): any {
-    var collector = function(node): any[] {
-      var format = node.getFormat() || {};
-      if (node instanceof ParentBlot) {
-        return node.children.reduce(function(memo, child) {
-          return memo.concat(collector(child));
-        }, []).map(Util.merge.bind(null, format));
-      } else {
-        return [format];
-      }
-    };
-    return this.children.reduce(function(memo, child) {
-      return memo.concat(collector(child));
-    }, []);
-  }
 }
 
 
