@@ -111,13 +111,6 @@ class ParentBlot extends Blot implements ShadowParent {
 
   moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
     this.children.forEach((child) => {
-      if (child === this.children.head) {
-        let lastChild = <any>(refNode != null ? refNode.prev : targetParent.children.tail);
-        if (lastChild != null &&
-            typeof lastChild.merge === 'function' &&
-            lastChild.merge(child))
-          return;
-      }
       targetParent.insertBefore(child, refNode);
     });
   }
@@ -149,7 +142,6 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   unwrap(): void {
-    // Move children after us since we may call this.prev.merge()
     this.moveChildren(this.parent, this.next);
     this.remove();
   }

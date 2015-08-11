@@ -115,5 +115,5 @@ describe('InlineBlot', function() {
     var values = blot.getValue();
     expect(formats).toEqual({ italic: true, color: 'red' });
     expect(values).toEqual(['Test', '!']);
-  })
+  });
 });

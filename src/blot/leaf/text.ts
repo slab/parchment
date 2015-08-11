@@ -1,9 +1,8 @@
 import Blot from '../blot';
 import InlineBlot from '../parent/inline';
-import Mergeable from '../mergeable';
 import * as Registry from '../../registry';
 
-class TextBlot extends Blot implements Mergeable {
+class TextBlot extends Blot {
   static blotName = 'text';
 
   domNode: Text;

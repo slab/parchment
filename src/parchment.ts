@@ -25,6 +25,8 @@ var Parchment = {
   define: Registry.define,
   match: Registry.match,
 
+  types: Registry.Type,    // TODO: Do we want this named differently?
+
   findBlot: Blot.findBlot
 };
 

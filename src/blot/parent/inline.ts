@@ -1,12 +1,11 @@
 import Blot from '../blot';
-import Mergeable from '../mergeable';
 import ParentBlot from './parent';
 import * as Registry from '../../registry';
 import { ShadowParent } from '../shadow';
 import * as util from '../../util';
 
 
-class InlineBlot extends ParentBlot implements Mergeable {
+class InlineBlot extends ParentBlot {
   static blotName = 'inline';
   static tagName = 'SPAN';
 
@@ -51,8 +50,10 @@ class InlineBlot extends ParentBlot implements Mergeable {
     if (target != null &&
         this.statics.blotName === target.statics.blotName &&
         util.isEqual(target.getFormat(), this.getFormat())) {
+      var nextTarget = this.children.tail;
       (<ParentBlot>target).moveChildren(this);
       target.remove();
+      nextTarget.merge();
       return true;
     }
     return false;
