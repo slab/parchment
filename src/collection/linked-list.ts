@@ -43,6 +43,17 @@ class LinkedList<T extends LinkedNode> {
     this.length += 1;
   }
 
+  offset(target: T): number {
+    var offset = 0;
+    var cur = this.head;
+    while (cur != null) {
+      if (cur === target) return offset;
+      offset += cur.getLength()
+      cur = <T>cur.next;
+    }
+    return -1;
+  }
+
   remove(node: T): void {
     if (node.prev != null) node.prev.next = node.next;
     if (node.next != null) node.next.prev = node.prev
