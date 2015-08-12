@@ -43,8 +43,14 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   findPath(index: number): Position[] {
-    var _arr = this.children.find(index);
-    var child = _arr[0], offset = _arr[1];
+    var child, offset;
+    if (index < this.getLength()) {
+      let arr = this.children.find(index);
+      child = arr[0], offset = arr[1];
+    } else {
+      child = this.children.tail;
+      offset = child.getLength();
+    }
     var pos: Position[] = [{
       blot: this,
       offset: index - offset

@@ -7,7 +7,7 @@ import * as Util from '../../util';
 
 
 class RootBlot extends ParentBlot {
-  static blotName = 'container';
+  static blotName = 'root';
   static tagName = 'DIV';
 
   children: LinkedList<BlockBlot>;
