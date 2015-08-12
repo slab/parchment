@@ -1,4 +1,12 @@
 describe('Attributor', function() {
+  it('build', function() {
+    var blot = Registry.create('inline');
+    blot.domNode.style.color = 'red';
+    blot.domNode.style.fontSize = '24px';
+    blot.buildAttributes();
+    expect(Object.keys(blot.attributes)).toEqual(['color', 'size']);
+  });
+
   it('add to text', function() {
     var container = Registry.create('block');
     var textBlot = new TextBlot('Test');
@@ -23,12 +31,15 @@ describe('Attributor', function() {
     node = document.createElement('strong');
     node.innerHTML = 'Bold';
     node.style.color = 'red';
+    node.style.fontSize = '24px';
     var boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
     expect(boldBlot.getValue()).toEqual(['B']);
     expect(boldBlot.next.getValue()).toEqual(['ol']);
     expect(boldBlot.next.domNode.style.color).toEqual('');
+    container.formatAt(1, 2, 'size', false);
+    expect(boldBlot.next.domNode.style.fontSize).toEqual('');
     expect(boldBlot.next.domNode.getAttribute('style')).toEqual(null);
   });
 

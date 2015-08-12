@@ -1,12 +1,23 @@
 import Attributor from './attributor/attributor';
 
-
+var attributes = {};
 var tags = {};
 var types = {};
 
 export enum Type {
   ATTRIBUTE = 1,
   BLOT = 2
+}
+
+
+function camelize(name: string): string {
+  if (name.length === 0) return name;
+  var parts = name.split('-');
+  var rest = parts.slice(1).map(function(part) {
+    if (part.length == 0) return part;
+    return part[0].toUpperCase() + part.slice(1);
+  }).join('');
+  return parts[0] + rest;
 }
 
 
@@ -36,7 +47,11 @@ function define(Definition) {
     }
     return Definition;
   } else if (typeof Definition.attrName === 'string') {
-    return types[Definition.attrName] = Definition;
+    types[Definition.attrName] = Definition;
+    if (typeof Definition.keyName === 'string') {
+      attributes[camelize(Definition.keyName)] = Definition;
+    }
+    return Definition;
   } else {
     console.error('Invalid definition');
   }
@@ -44,14 +59,14 @@ function define(Definition) {
 
 function match(query: string | Node, type: Type = Type.BLOT) {
   if (typeof query === 'string') {
-    let match = types[query];
-    if (match == null || type == null) return match;
-    // Check type mismatch
-    if ((type === Type.ATTRIBUTE && typeof match.blotName === 'string') ||
-        (type === Type.BLOT && typeof match.attrName === 'string')) {
-      return null;
+    if (type === Type.BLOT) {
+      return types[query];
+    } else {
+      let match = types[query] || attributes[camelize(query)];
+      // Check type mismatch
+      if (match != null && typeof match.blotName === 'string') return null;
+      return match;
     }
-    return match;
   } else if (query instanceof Node && type === Type.BLOT) {
     if (query instanceof HTMLElement) {
       return tags[query.tagName];
