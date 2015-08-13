@@ -137,6 +137,13 @@ describe('LinkedList', function() {
       expect(this.list.find(10)).toEqual([null, 0]);
     });
 
+    it('offset', function() {
+      this.list.append(this.a, this.b, this.c);
+      expect(this.list.offset(this.a)).toEqual(0);
+      expect(this.list.offset(this.b)).toEqual(3);
+      expect(this.list.offset(this.c)).toEqual(6);
+    });
+
     it('forEach', function() {
       this.list.append(this.a, this.b, this.c);
       this.list.forEach(this.spy.callback);
