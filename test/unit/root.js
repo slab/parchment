@@ -6,7 +6,21 @@ describe('Root', function() {
       this.root = new RootBlot(rootNode);
     });
 
-    it('boundary', function() {
+    it('middle', function() {
+      var path = this.root.findPath(7);
+      var expected = [
+        { blotName: 'block', offset: 5 },
+        { blotName: 'italic', offset: 0 },
+        { blotName: 'bold', offset: 0 },
+        { blotName: 'text', offset: 2 }
+      ];
+      path.forEach(function(position, i) {
+        expect(position.blot.statics.blotName).toEqual(expected[i].blotName);
+        expect(position.offset).toEqual(expected[i].offset);
+      });
+    });
+
+    it('between blots', function() {
       var path = this.root.findPath(5);
       var expected = [
         { blotName: 'block', offset: 5 },
@@ -21,6 +35,19 @@ describe('Root', function() {
     });
 
     it('inclusive', function() {
+      var path = this.root.findPath(3, true);
+      var expected = [
+        { blotName: 'block', offset: 0 },
+        { blotName: 'bold', offset: 0 },
+        { blotName: 'text', offset: 3 }
+      ];
+      path.forEach(function(position, i) {
+        expect(position.blot.statics.blotName).toEqual(expected[i].blotName);
+        expect(position.offset).toEqual(expected[i].offset);
+      });
+    });
+
+    it('last', function() {
       var path = this.root.findPath(9);
       var expected = [
         { blotName: 'block', offset: 5 },

@@ -16,8 +16,8 @@ class RootBlot extends ParentBlot {
     super(value);
   }
 
-  findPath(index: number): Position[] {
-    return super.findPath(index).slice(1);    // Exclude ourself from result
+  findPath(index: number, inclusive: boolean = false): Position[] {
+    return super.findPath(index, inclusive).slice(1);    // Exclude ourself from result
   }
 
   getFormat(): any[] {

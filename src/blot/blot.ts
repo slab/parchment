@@ -46,10 +46,10 @@ class Blot extends ShadowNode implements Attributable {
     target.remove();
   }
 
-  findPath(index: number): Position[] {
+  findPath(index: number, inclusive: boolean = false): Position[] {
     return [{
       blot: this,
-      offset: index
+      offset: Math.min(index, this.getLength())
     }];
   }
 
@@ -95,7 +95,6 @@ class Blot extends ShadowNode implements Attributable {
 
   offset(): number {
     if (this.parent == null) return 0;
-    console.log(this, this.parent.children.offset(this))
     return this.parent.children.offset(this);
   }
 
