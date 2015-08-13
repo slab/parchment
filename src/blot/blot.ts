@@ -93,6 +93,12 @@ class Blot extends ShadowNode implements Attributable {
     return false;
   }
 
+  offset(): number {
+    if (this.parent == null) return 0;
+    console.log(this, this.parent.children.offset(this))
+    return this.parent.children.offset(this);
+  }
+
   remove(): void {
     delete this.domNode[DATA_KEY];
     super.remove();

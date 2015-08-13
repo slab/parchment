@@ -22,6 +22,7 @@ class ParentBlot extends Blot implements ShadowParent {
 
   build(): void {
     var childNodes = Array.prototype.slice.call(this.domNode.childNodes);
+    this.children.empty();
     childNodes.forEach((node) => {
       var child = Registry.create(node);
       if (child != null) {
