@@ -1,6 +1,7 @@
 import Attributor from './attributor/attributor';
 
 var attributes = {};
+var classes = {};
 var tags = {};
 var types = {};
 
@@ -26,7 +27,7 @@ function create(name: string, value?: any);
 function create(name: any, value?: any): any {
   var BlotClass = match(name);
   if (typeof BlotClass !== 'function') {
-    console.error(`Unable to create ${name}`);
+    console.error('Unable to create', name);
     return null;
   }
   if (typeof name === 'string') {
@@ -39,22 +40,19 @@ function create(name: any, value?: any): any {
 
 // Only support real classes since calling superclass definitions are so important
 function define(Definition) {
-  if (typeof Definition.blotName === 'string') {
-    // TODO warn of tag/type overwrite
-    types[Definition.blotName] = Definition;
-    if (typeof Definition.tagName === 'string') {
-      tags[Definition.tagName.toUpperCase()] = Definition;
-    }
-    return Definition;
-  } else if (typeof Definition.attrName === 'string') {
-    types[Definition.attrName] = Definition;
-    if (typeof Definition.keyName === 'string') {
-      attributes[camelize(Definition.keyName)] = Definition;
-    }
-    return Definition;
-  } else {
+  if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
     console.error('Invalid definition');
+    return null;
   }
+  types[Definition.blotName || Definition.attrName] = Definition;
+  if (typeof Definition.clasName === 'string') {
+    classes[Definition.className] = Definition;
+  } else if (typeof Definition.tagName === 'string') {
+    tags[Definition.tagName.toUpperCase()] = Definition;
+  } else if (typeof Definition.keyName === 'string') {
+    attributes[camelize(Definition.keyName)] = Definition;
+  }
+  return Definition;
 }
 
 function match(query: string | Node, type: Type = Type.BLOT) {
