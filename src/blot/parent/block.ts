@@ -14,10 +14,12 @@ class BlockBlot extends ParentBlot {
   format(name: string, value: any): void {
     if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);
-    } else if (value) {
-      this.replace(name, value);
-    } else {
-      this.replace(BlockBlot.blotName, true);
+    } else if (Registry.match(name, Registry.Type.BLOT) instanceof BlockBlot) {
+      if (value) {
+        this.replace(name, value);
+      } else {
+        this.replace(BlockBlot.blotName, true);
+      }
     }
   }
 }
