@@ -49,6 +49,10 @@ function define(Definition) {
     classes[Definition.className] = Definition;
   } else if (typeof Definition.tagName === 'string') {
     tags[Definition.tagName.toUpperCase()] = Definition;
+  } else if (Array.isArray(Definition.tagName)) {
+    Definition.tagName.forEach(function(tag) {
+      tags[tag] = Definition;
+    });
   } else if (typeof Definition.keyName === 'string') {
     attributes[camelize(Definition.keyName)] = Definition;
   }
