@@ -122,7 +122,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   replace(name: string, value: any): ParentBlot {
-    if (name === this.statics.blotName) {
+    if (name === this.statics.blotName && this.getFormat[name] === value) {
       return this;
     }
     var replacement = <ParentBlot>super.replace(name, value);
