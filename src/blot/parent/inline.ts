@@ -10,11 +10,6 @@ class InlineBlot extends ParentBlot {
   static tagName = 'SPAN';
 
   static compare = function(thisName: string, otherName: string): boolean {
-    var thisAttr = Registry.match(thisName, Registry.Type.ATTRIBUTE);
-    var otherAttr = Registry.match(otherName, Registry.Type.ATTRIBUTE);
-    if (!!thisAttr !== !!otherAttr) {
-      return otherAttr;
-    }
     return thisName <= otherName;
   }
 
@@ -26,7 +21,8 @@ class InlineBlot extends ParentBlot {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (this.statics.compare(this.statics.blotName, name)) {
+    if (Registry.match(name, Registry.Type.ATTRIBUTE) ||
+        this.statics.compare(this.statics.blotName, name)) {
       var formats = this.getFormat();
       if (value && formats[name] === value) return;
       if (!value && !formats[name]) return;
