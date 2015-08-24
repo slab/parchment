@@ -51,7 +51,7 @@ function define(Definition) {
     tags[Definition.tagName.toUpperCase()] = Definition;
   } else if (Array.isArray(Definition.tagName)) {
     Definition.tagName.forEach(function(tag) {
-      tags[tag] = Definition;
+      tags[tag.toUpperCase()] = Definition;
     });
   } else if (typeof Definition.keyName === 'string') {
     attributes[camelize(Definition.keyName)] = Definition;

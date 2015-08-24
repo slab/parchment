@@ -69,7 +69,11 @@ class InlineBlot extends ParentBlot {
 
   wrap(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName) {
-      return this;
+      if (this.getFormat()[name] == value) {
+        return this;
+      } else {
+        return this.replace(name, value);
+      }
     } else if (this.statics.blotName === InlineBlot.blotName) {
       return this.replace(name, value);
     } else {
