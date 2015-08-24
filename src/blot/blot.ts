@@ -1,7 +1,7 @@
 import * as Registry from '../registry';
 import Attributor from '../attributor/attributor';
 import Attributable from '../attributor/attributable';
-import ShadowNode from './shadow';
+import ShadowNode, { ShadowParent } from './shadow';
 import * as Util from '../util';
 
 
@@ -93,9 +93,14 @@ class Blot extends ShadowNode implements Attributable {
     return false;
   }
 
-  offset(): number {
-    if (this.parent == null) return 0;
-    return this.parent.children.offset(this);
+  offset(root?: Blot): number {
+    if (this.parent == null || root == this) return 0;
+    // TODO rewrite this when we properly define parent as a BlotParent
+    if (root == null) {
+      return this.parent.children.offset(this);
+    } else {
+      return this.parent.children.offset(this) + (<any>this.parent).offset(root);
+    }
   }
 
   remove(): void {
