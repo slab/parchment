@@ -38,7 +38,7 @@ class LinkedList<T extends LinkedNode> {
       node.prev = this.tail;
       this.tail = node;
     } else {
-      node.prev = null;
+      node.prev = undefined;
       this.head = this.tail = node;
     }
     this.length += 1;
