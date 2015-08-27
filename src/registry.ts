@@ -5,6 +5,8 @@ var classes = {};
 var tags = {};
 var types = {};
 
+export const PREFIX = 'blot-';
+
 export enum Type {
   ATTRIBUTE = 1,
   BLOT = 2
@@ -45,9 +47,7 @@ function define(Definition) {
     return null;
   }
   types[Definition.blotName || Definition.attrName] = Definition;
-  if (typeof Definition.clasName === 'string') {
-    classes[Definition.className] = Definition;
-  } else if (typeof Definition.tagName === 'string') {
+  if (typeof Definition.tagName === 'string') {
     tags[Definition.tagName.toUpperCase()] = Definition;
   } else if (Array.isArray(Definition.tagName)) {
     Definition.tagName.forEach(function(tag) {
@@ -71,6 +71,12 @@ function match(query: string | Node, type: Type = Type.BLOT) {
     }
   } else if (query instanceof Node && type === Type.BLOT) {
     if (query instanceof HTMLElement) {
+      let names = query.className.split(' ');
+      for (name in names) {
+        if (name.indexOf(PREFIX) === 0) {
+          return types[name.slice(PREFIX.length)];
+        }
+      }
       return tags[query.tagName];
     } else if (query instanceof Text) {
       return types['text'];

@@ -12,6 +12,8 @@ import * as Registry from './registry';
 
 
 var Parchment = {
+  PREFIX: Registry.PREFIX,
+
   Root: RootBlot,
   Block: BlockBlot,
   Parent: ParentBlot,
