@@ -83,6 +83,9 @@ describe('LinkedList', function() {
       expect(this.list.tail.next).toBeUndefined();
       expect(this.a.next).toEqual(this.c);
       expect(this.c.prev).toEqual(this.a);
+      // Maintain references
+      expect(this.b.prev).toEqual(this.a);
+      expect(this.b.next).toEqual(this.c);
     });
 
     it('remove only node', function() {
@@ -99,6 +102,16 @@ describe('LinkedList', function() {
       expect(this.list.length).toEqual(0);
       expect(this.list.head).toBeUndefined();
       expect(this.list.tail).toBeUndefined();
+    });
+
+    it('move', function() {
+      this.list.append(this.a, this.b, this.c);
+      this.list.remove(this.b);
+      this.list.remove(this.a);
+      this.list.remove(this.c);
+      this.list.append(this.b);
+      expect(this.b.prev).toBeUndefined();
+      expect(this.b.next).toBeUndefined();
     });
   });
 

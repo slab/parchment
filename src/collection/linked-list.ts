@@ -38,6 +38,7 @@ class LinkedList<T extends LinkedNode> {
       node.prev = this.tail;
       this.tail = node;
     } else {
+      node.prev = null;
       this.head = this.tail = node;
     }
     this.length += 1;
