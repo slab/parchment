@@ -10,6 +10,9 @@ class Attributable {
       this.attributes[name].add(this.domNode, value);
     } else if (this.attributes[name] != null) {
       this.attributes[name].remove(this.domNode);
+    }
+    if (!this.attributes[name].value(this.domNode)) {
+      // Add falsy value may end up removing
       delete this.attributes[name];
     }
   }
