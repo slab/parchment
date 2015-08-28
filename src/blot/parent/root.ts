@@ -12,10 +12,6 @@ class RootBlot extends ParentBlot {
 
   children: LinkedList<BlockBlot>;
 
-  constructor(value: HTMLElement) {
-    super(value);
-  }
-
   findPath(index: number, inclusive: boolean = false): Position[] {
     return super.findPath(index, inclusive).slice(1);    // Exclude ourself from result
   }

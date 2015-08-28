@@ -7,10 +7,6 @@ class BlockBlot extends ParentBlot {
   static blotName = 'block';
   static tagName = 'P';
 
-  constructor(value: HTMLElement) {
-    super(value);
-  }
-
   format(name: string, value: any): void {
     if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);

@@ -66,8 +66,8 @@ class ShadowNode implements LinkedNode {
   replace(name: string, value: any): ShadowNode {
     if (this.parent == null) return;
     var replacement = Registry.create(name, value);
-    this.parent.insertBefore(replacement, this.next);  // <- need to check merge
-    this.remove();  // <- need to check merge again (which it does but not the above)
+    this.parent.insertBefore(replacement, this.next);
+    this.remove();
     return replacement;
   }
 
