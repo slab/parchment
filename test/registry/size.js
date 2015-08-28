@@ -1,2 +1,2 @@
-var SizeAttributor = new StyleAttributor('size', 'fontSize');
+var SizeAttributor = new StyleAttributor('size', 'font-size');
 Registry.define(SizeAttributor);

@@ -13,17 +13,6 @@ export enum Type {
 }
 
 
-function camelize(name: string): string {
-  if (name.length === 0) return name;
-  var parts = name.split('-');
-  var rest = parts.slice(1).map(function(part) {
-    if (part.length == 0) return part;
-    return part[0].toUpperCase() + part.slice(1);
-  }).join('');
-  return parts[0] + rest;
-}
-
-
 function create(name: Node);
 function create(name: string, value?: any);
 function create(name: any, value?: any): any {
@@ -54,7 +43,7 @@ function define(Definition) {
       tags[tag.toUpperCase()] = Definition;
     });
   } else if (typeof Definition.keyName === 'string') {
-    attributes[camelize(Definition.keyName)] = Definition;
+    attributes[Definition.keyName] = Definition;
   }
   return Definition;
 }
@@ -64,7 +53,7 @@ function match(query: string | Node, type: Type = Type.BLOT) {
     if (type === Type.BLOT) {
       return types[query];
     } else {
-      let match = types[query] || attributes[camelize(query)];
+      let match = types[query] || attributes[query];
       // Check type mismatch
       if (match != null && typeof match.blotName === 'string') return null;
       return match;
