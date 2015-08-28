@@ -6,8 +6,8 @@ import * as Registry from '../../registry';
 import * as Util from '../../util';
 
 
-class RootBlot extends ParentBlot {
-  static blotName = 'root';
+class ContainerBlot extends ParentBlot {
+  static blotName = 'container';
   static tagName = 'DIV';
 
   children: LinkedList<BlockBlot>;
@@ -38,4 +38,4 @@ class RootBlot extends ParentBlot {
 }
 
 
-export default RootBlot;
+export default ContainerBlot;

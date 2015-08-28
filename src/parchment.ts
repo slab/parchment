@@ -3,7 +3,7 @@ import BlockBlot from './blot/parent/block';
 import EmbedBlot from './blot/leaf/embed';
 import InlineBlot from './blot/parent/inline';
 import ParentBlot from './blot/parent/parent';
-import RootBlot from './blot/parent/root';
+import ContainerBlot from './blot/parent/container';
 import TextBlot from './blot/leaf/text';
 
 import StyleAttributor from './attributor/style';
@@ -14,7 +14,7 @@ import * as Registry from './registry';
 var Parchment = {
   PREFIX: Registry.PREFIX,
 
-  Root: RootBlot,
+  Container: ContainerBlot,
   Block: BlockBlot,
   Parent: ParentBlot,
   Inline: InlineBlot,

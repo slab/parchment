@@ -4,7 +4,7 @@ import Blot from '../src/blot/blot';
 import EmbedBlot from '../src/blot/leaf/embed';
 import TextBlot from '../src/blot/leaf/text';
 import ParentBlot from '../src/blot/parent/parent';
-import RootBlot from '../src/blot/parent/root';
+import ContainerBlot from '../src/blot/parent/container';
 import BlockBlot from '../src/blot/parent/block';
 import InlineBlot from '../src/blot/parent/inline';
 
@@ -26,7 +26,7 @@ window['TextBlot'] = TextBlot;
 window['ParentBlot'] = ParentBlot;
 window['BlockBlot'] = BlockBlot;
 window['InlineBlot'] = InlineBlot;
-window['RootBlot'] = RootBlot;
+window['ContainerBlot'] = ContainerBlot;
 
 window['LinkedList'] = LinkedList;
 
