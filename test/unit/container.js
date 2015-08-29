@@ -1,4 +1,4 @@
-describe('Container', function() {
+xdescribe('Container', function() {
   describe('findPath()', function() {
     beforeEach(function() {
       var containerNode = document.createElement('div');

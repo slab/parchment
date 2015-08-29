@@ -36,11 +36,13 @@ module.exports = function(config) {
       'test/unit/linked-list.js',   // Control test order
       'test/unit/registry.js',
       'test/unit/blot.js',
+      'test/unit/block.js',
+      'test/unit/inline.js',
       'test/unit/text.js',
       'test/unit/embed.js',
-      'test/unit/inline.js',
-      'test/unit/root.js',
-      'test/unit/attributor.js'
+      'test/unit/container.js',
+      'test/unit/attributor.js',
+      'test/unit/merge.js'
     ],
     preprocessors: {
       'test/registry/*.js': ['babel'],

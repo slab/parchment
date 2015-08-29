@@ -18,8 +18,7 @@ function create(name: string, value?: any);
 function create(name: any, value?: any): any {
   var BlotClass = match(name);
   if (typeof BlotClass !== 'function') {
-    console.error('Unable to create', name);
-    return null;
+    throw new Error(`[Parchment] Unable to create ${name}`);
   }
   if (typeof name === 'string') {
     return new BlotClass(value);
@@ -32,8 +31,7 @@ function create(name: any, value?: any): any {
 // Only support real classes since calling superclass definitions are so important
 function define(Definition) {
   if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
-    console.error('Invalid definition');
-    return null;
+    throw new Error('[Parchment] Invalid definition');
   }
   types[Definition.blotName || Definition.attrName] = Definition;
   if (typeof Definition.tagName === 'string') {
@@ -61,9 +59,9 @@ function match(query: string | Node, type: Type = Type.BLOT) {
   } else if (query instanceof Node && type === Type.BLOT) {
     if (query instanceof HTMLElement) {
       let names = query.className.split(' ');
-      for (name in names) {
-        if (name.indexOf(PREFIX) === 0) {
-          return types[name.slice(PREFIX.length)];
+      for (let i in names) {
+        if (names[i].indexOf(PREFIX) === 0) {
+          return types[names[i].slice(PREFIX.length)];
         }
       }
       return tags[query.tagName];
