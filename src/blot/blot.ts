@@ -1,6 +1,7 @@
 import * as Registry from '../registry';
 import Attributor from '../attributor/attributor';
 import Attributable from '../attributor/attributable';
+import ParentBlot from './parent';
 import ShadowNode, { ShadowParent } from './shadow';
 import * as Util from '../util';
 
@@ -9,7 +10,7 @@ const DATA_KEY = '__blot_data';
 
 
 interface Attributors {
-  [index: string]: Attributor
+  [index: string]: Attributor;
 }
 
 export interface Position {
@@ -31,6 +32,7 @@ class Blot extends ShadowNode implements Attributable {
 
   prev: Blot;
   next: Blot;
+  parent: ParentBlot;
   attributes: Attributors;
 
   constructor(node: any) {
@@ -61,7 +63,7 @@ class Blot extends ShadowNode implements Attributable {
     if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
       this.attribute(name, value);
     } else if (Registry.match(name) && value) {
-      mergeTarget = <any>this.wrap(name, value);
+      mergeTarget = <ParentBlot>this.wrap(name, value);
     }
     if (mergeTarget.prev != null) {
       mergeTarget.prev.merge();
@@ -87,7 +89,7 @@ class Blot extends ShadowNode implements Attributable {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    var target = this.split(index);
+    var target = <Blot>this.split(index);
     var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     this.parent.insertBefore(blot, target);
   }
@@ -102,7 +104,7 @@ class Blot extends ShadowNode implements Attributable {
     if (root == null) {
       return this.parent.children.offset(this);
     } else {
-      return this.parent.children.offset(this) + (<any>this.parent).offset(root);
+      return this.parent.children.offset(this) + this.parent.offset(root);
     }
   }
 

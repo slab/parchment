@@ -1,13 +1,17 @@
 import Blot from './blot';
+import LeafBlot from './leaf';
 import ParentBlot from './parent';
 import * as Registry from '../registry';
 import { ShadowParent } from './shadow';
+import LinkedList from '../collection/linked-list';
 import * as util from '../util';
 
 
 class InlineBlot extends ParentBlot {
   static blotName = 'inline';
   static tagName = 'SPAN';
+
+  children: LinkedList<InlineBlot | LeafBlot> = new LinkedList<InlineBlot | LeafBlot>();
 
   static compare = function(thisName: string, otherName: string): boolean {
     return thisName <= otherName;
@@ -22,7 +26,7 @@ class InlineBlot extends ParentBlot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.match(name, Registry.Type.ATTRIBUTE) ||
-        this.statics.compare(this.statics.blotName, name)) {
+        InlineBlot.compare(this.statics.blotName, name)) {
       var formats = this.getFormat();
       if (value && formats[name] === value) return;
       if (!value && !formats[name]) return;
@@ -35,7 +39,7 @@ class InlineBlot extends ParentBlot {
 
   getFormat() {
     var formats = super.getFormat();
-    if (this.statics.blotName !== 'inline') {
+    if (this.statics.blotName !== InlineBlot.blotName) {
       formats[this.statics.blotName] = true;
     }
     return formats;

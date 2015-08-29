@@ -10,7 +10,7 @@ class ContainerBlot extends ParentBlot {
   static blotName = 'container';
   static tagName = 'DIV';
 
-  children: LinkedList<BlockBlot>;
+  children: LinkedList<BlockBlot | ContainerBlot>;
 
   findPath(index: number, inclusive: boolean = false): Position[] {
     return super.findPath(index, inclusive).slice(1);    // Exclude ourself from result

@@ -1,8 +1,9 @@
 import Blot from './blot';
+import LeafBlot from './leaf';
 import InlineBlot from './inline';
 import * as Registry from '../registry';
 
-class TextBlot extends Blot {
+class TextBlot extends LeafBlot {
   static blotName = 'text';
 
   domNode: Text;

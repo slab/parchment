@@ -5,7 +5,6 @@ import * as Registry from '../registry';
 interface ShadowStatic {
   blotName: string;
   tagName: string;
-  compare?: (self:string, other:string) => boolean;
 }
 
 interface ShadowParent extends ShadowNode {
@@ -36,8 +35,7 @@ class ShadowNode implements LinkedNode {
     var statics = <any>this.constructor;
     return {
       blotName: statics.blotName,
-      tagName: statics.tagName,
-      compare: statics.compare
+      tagName: statics.tagName
     };
   }
 

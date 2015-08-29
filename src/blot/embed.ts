@@ -1,8 +1,8 @@
-import Blot from './blot';
+import LeafBlot from './leaf';
 import * as Registry from '../registry';
 
 
-class EmbedBlot extends Blot {
+class EmbedBlot extends LeafBlot {
   static blotName = 'embed';
 
   getValue(): any {
