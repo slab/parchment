@@ -3,8 +3,17 @@ describe('Attributor', function() {
     var blot = Registry.create('inline');
     blot.domNode.style.color = 'red';
     blot.domNode.style.fontSize = '24px';
+    blot.domNode.id = 'blot-test'
     blot.build();
-    expect(Object.keys(blot.attributes)).toEqual(['color', 'size']);
+    expect(Object.keys(blot.attributes).sort()).toEqual(['color', 'size', 'id'].sort());
+  });
+
+  it('add to inline', function() {
+    var container = Registry.create('block');
+    var boldBlot = Registry.create('bold');
+    container.appendChild(boldBlot);
+    boldBlot.format('id', 'test-add');
+    expect(boldBlot.domNode.id).toEqual('test-add');
   });
 
   it('add to text', function() {
@@ -32,6 +41,7 @@ describe('Attributor', function() {
     node.innerHTML = 'Bold';
     node.style.color = 'red';
     node.style.fontSize = '24px';
+    node.id = 'test-remove';
     var boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
@@ -40,6 +50,8 @@ describe('Attributor', function() {
     container.formatAt(1, 2, 'size', false);
     expect(boldBlot.next.domNode.style.fontSize).toEqual('');
     expect(boldBlot.next.domNode.getAttribute('style')).toEqual(null);
+    container.formatAt(1, 2, 'id', false);
+    expect(boldBlot.next.domNode.id).toBeFalsy();
   });
 
   it('remove nonexistent', function() {

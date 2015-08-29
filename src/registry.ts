@@ -16,16 +16,15 @@ export enum Type {
 function create(name: Node);
 function create(name: string, value?: any);
 function create(name: any, value?: any): any {
-  var BlotClass = match(name);
+  var BlotClass = match(name, Type.BLOT);
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${name}`);
   }
   if (typeof name === 'string') {
     return new BlotClass(value);
-  } else if (name instanceof Node) {
+  } else {
     return new BlotClass(name);
   }
-  return null;
 }
 
 // Only support real classes since calling superclass definitions are so important
