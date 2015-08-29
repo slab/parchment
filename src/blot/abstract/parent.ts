@@ -1,7 +1,7 @@
 import Blot, { Position } from './blot';
-import LinkedList from '../collection/linked-list';
+import LinkedList from '../../collection/linked-list';
 import { ShadowParent } from './shadow';
-import * as Registry from '../registry';
+import * as Registry from '../../registry';
 
 
 class ParentBlot extends Blot implements ShadowParent {
@@ -73,22 +73,25 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
+  getDescendants<T>(type: any): T[] {
+    return this.children.reduce(function(memo, child) {
+      if (child instanceof type) {
+        memo.push(child);
+        return memo;
+      } else if (child instanceof ParentBlot) {
+        return memo.concat(child.getDescendants<T>(type));
+      }
+    }, []);
+  }
+
+  getFormat(): Object {
+    return {};
+  }
+
   getLength(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.getLength();
     }, 0);
-  }
-
-  getValue(): any[] {
-    return this.children.reduce(function(memo, child) {
-      var value = child.getValue();
-      if (value instanceof Array) {
-        memo = memo.concat(value);
-      } else if (value != null) {
-        memo.push(value);
-      }
-      return memo;
-    }, []);
   }
 
   insertAt(index: number, value: string, def?: any): void {

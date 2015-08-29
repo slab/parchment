@@ -1,6 +1,6 @@
-import Attributor from '../attributor/attributor';
+import Attributor from '../../attributor/attributor';
 import ParentBlot from './parent';
-import * as Registry from '../registry';
+import * as Registry from '../../registry';
 
 
 interface Attributors {

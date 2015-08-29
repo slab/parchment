@@ -1,6 +1,6 @@
-import LinkedList from '../collection/linked-list';
-import LinkedNode from '../collection/linked-node';
-import * as Registry from '../registry';
+import LinkedList from '../../collection/linked-list';
+import LinkedNode from '../../collection/linked-node';
+import * as Registry from '../../registry';
 
 interface ShadowStatic {
   blotName: string;

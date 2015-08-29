@@ -1,4 +1,4 @@
-import Blot from './blot/blot';
+import Blot from './blot/abstract/blot';
 import BlockBlot from './blot/block';
 import EmbedBlot from './blot/embed';
 import InlineBlot from './blot/inline';
@@ -30,9 +30,10 @@ var Parchment = {
 };
 
 
-Parchment.define(TextBlot);
+Parchment.define(ContainerBlot);
 Parchment.define(BlockBlot);
 Parchment.define(InlineBlot);
+Parchment.define(TextBlot);
 
 
 // ES6 export will not correctly expose an object { default: Parchment }

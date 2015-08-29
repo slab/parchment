@@ -35,8 +35,7 @@ describe('Attributor', function() {
     var boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
-    expect(boldBlot.getValue()).toEqual(['B']);
-    expect(boldBlot.next.getValue()).toEqual(['ol']);
+    expect(container.getValue()).toEqual(['B', 'ol', 'd']);
     expect(boldBlot.next.domNode.style.color).toEqual('');
     container.formatAt(1, 2, 'size', false);
     expect(boldBlot.next.domNode.style.fontSize).toEqual('');
@@ -70,15 +69,14 @@ describe('Attributor', function() {
   });
 
   it('move attribute', function() {
-    var container = Registry.create('inline');
+    var container = Registry.create('block');
     node = document.createElement('strong');
     node.innerHTML = 'Bold';
     node.style.color = 'red';
     var boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'bold', false);
-    expect(boldBlot.getValue()).toEqual(['B']);
-    expect(boldBlot.next.getValue()).toEqual(['ol']);
+    expect(container.getValue()).toEqual(['B', 'ol', 'd']);
     expect(boldBlot.next.statics.blotName).toEqual('inline');
     expect(boldBlot.next.getFormat().color).toEqual('red');
   });

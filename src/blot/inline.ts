@@ -1,9 +1,9 @@
-import AttributableBlot from './attributable';
-import Blot from './blot';
-import LeafBlot from './leaf';
-import ParentBlot from './parent';
+import AttributableBlot from './abstract/attributable';
+import Blot from './abstract/blot';
+import LeafBlot from './abstract/leaf';
+import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
-import { ShadowParent } from './shadow';
+import { ShadowParent } from './abstract/shadow';
 import LinkedList from '../collection/linked-list';
 
 
@@ -58,11 +58,10 @@ class InlineBlot extends AttributableBlot {
 
   merge(target: Blot = this.next): boolean {
     if (!this.parent) return false;
-    if (target != null &&
-        this.statics.blotName === target.statics.blotName &&
+    if (target instanceof InlineBlot &&
         isEqual(target.getFormat(), this.getFormat())) {
       var nextTarget = this.children.tail;
-      (<ParentBlot>target).moveChildren(this);
+      target.moveChildren(this);
       target.remove();
       nextTarget.merge();
       return true;

@@ -1,4 +1,4 @@
-import * as Registry from '../registry';
+import * as Registry from '../../registry';
 import ParentBlot from './parent';
 import ShadowNode from './shadow';
 
@@ -41,7 +41,7 @@ class Blot extends ShadowNode {
     target.remove();
   }
 
-  findPath(index: number, inclusive: boolean = false): Position[] {
+  findPath(index: number, inclusive: boolean): Position[] {
     return [{
       blot: this,
       offset: Math.min(index, this.getLength())
@@ -61,14 +61,6 @@ class Blot extends ShadowNode {
   formatAt(index: number, length: number, name: string, value: any): void {
     var target = <Blot>this.isolate(index, length);
     target.format(name, value);
-  }
-
-  getFormat(): any {
-    return {};
-  }
-
-  getValue(): any {
-    return {};
   }
 
   insertAt(index: number, value: string, def?: any): void {

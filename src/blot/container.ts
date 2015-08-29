@@ -1,7 +1,7 @@
 import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
-import ParentBlot from './parent';
-import { Position } from './blot';
+import ParentBlot from './abstract/parent';
+import { Position } from './abstract/blot';
 import * as Registry from '../registry';
 
 
@@ -11,19 +11,19 @@ class ContainerBlot extends ParentBlot {
 
   children: LinkedList<BlockBlot | ContainerBlot>;
 
-  findPath(index: number, inclusive: boolean = false): Position[] {
-    return super.findPath(index, inclusive).slice(1);    // Exclude ourself from result
+  getBlocks(): BlockBlot[] {
+    return this.getDescendants<BlockBlot>(BlockBlot);
   }
 
   getFormat(): any[] {
-    return this.children.map(function(child) {
-      return child.getFormat();
+    return this.getBlocks().map(function(block) {
+      return block.getFormat();
     });
   }
 
   getValue(): any[] {
-    return this.children.map(function(child) {
-      return child.getValue();
+    return this.getBlocks().map(function(block) {
+      return block.getValue();
     });
   }
 

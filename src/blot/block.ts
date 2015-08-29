@@ -1,8 +1,8 @@
-import AttributableBlot from './attributable';
+import AttributableBlot from './abstract/attributable';
 import InlineBlot from './inline';
-import LeafBlot from './leaf';
+import LeafBlot from './abstract/leaf';
 import LinkedList from '../collection/linked-list';
-import ParentBlot from './parent';
+import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
 
 
@@ -23,6 +23,16 @@ class BlockBlot extends AttributableBlot {
     } else {
       super.format(name, value);
     }
+  }
+
+  getLeaves(): LeafBlot[] {
+    return this.getDescendants<LeafBlot>(LeafBlot);
+  }
+
+  getValue(): (Object | string)[] {
+    return [].concat.apply([], this.getLeaves().map(function(leaf) {
+      return leaf.getValue();
+    }));
   }
 }
 

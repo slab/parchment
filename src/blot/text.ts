@@ -1,5 +1,5 @@
-import Blot from './blot';
-import LeafBlot from './leaf';
+import Blot from './abstract/blot';
+import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
 import * as Registry from '../registry';
 

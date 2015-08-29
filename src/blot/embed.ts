@@ -1,12 +1,12 @@
-import LeafBlot from './leaf';
+import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
 
 class EmbedBlot extends LeafBlot {
   static blotName = 'embed';
 
-  getValue(): any {
-    var value = {};
+  getValue(): Object {
+    var value = super.getValue();
     value[this.statics.blotName] = true;
     return value;
   }
