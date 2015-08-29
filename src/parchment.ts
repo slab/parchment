@@ -1,10 +1,10 @@
 import Blot from './blot/blot';
-import BlockBlot from './blot/parent/block';
-import EmbedBlot from './blot/leaf/embed';
-import InlineBlot from './blot/parent/inline';
-import ParentBlot from './blot/parent/parent';
-import ContainerBlot from './blot/parent/container';
-import TextBlot from './blot/leaf/text';
+import BlockBlot from './blot/block';
+import EmbedBlot from './blot/embed';
+import InlineBlot from './blot/inline';
+import ParentBlot from './blot/parent';
+import ContainerBlot from './blot/container';
+import TextBlot from './blot/text';
 
 import StyleAttributor from './attributor/style';
 

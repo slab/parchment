@@ -1,8 +1,8 @@
-import Blot from '../blot';
+import Blot from './blot';
 import ParentBlot from './parent';
-import * as Registry from '../../registry';
-import { ShadowParent } from '../shadow';
-import * as util from '../../util';
+import * as Registry from '../registry';
+import { ShadowParent } from './shadow';
+import * as util from '../util';
 
 
 class InlineBlot extends ParentBlot {

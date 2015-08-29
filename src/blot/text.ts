@@ -1,6 +1,6 @@
-import Blot from '../blot';
-import InlineBlot from '../parent/inline';
-import * as Registry from '../../registry';
+import Blot from './blot';
+import InlineBlot from './inline';
+import * as Registry from '../registry';
 
 class TextBlot extends Blot {
   static blotName = 'text';

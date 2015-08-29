@@ -1,9 +1,9 @@
-import Blot, { Position } from '../blot';
+import Blot, { Position } from './blot';
 import BlockBlot from './block';
-import LinkedList from '../../collection/linked-list';
+import LinkedList from '../collection/linked-list';
 import ParentBlot from './parent';
-import * as Registry from '../../registry';
-import * as Util from '../../util';
+import * as Registry from '../registry';
+import * as Util from '../util';
 
 
 class ContainerBlot extends ParentBlot {

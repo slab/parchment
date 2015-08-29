@@ -1,6 +1,6 @@
 import ParentBlot from './parent';
-import * as Util from '../../util';
-import * as Registry from '../../registry';
+import * as Util from '../util';
+import * as Registry from '../registry';
 
 
 class BlockBlot extends ParentBlot {

@@ -1,5 +1,5 @@
-import Blot from '../blot';
-import * as Registry from '../../registry';
+import Blot from './blot';
+import * as Registry from '../registry';
 
 
 class EmbedBlot extends Blot {

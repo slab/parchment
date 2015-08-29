@@ -1,7 +1,7 @@
-import Blot, { Position } from '../blot';
-import LinkedList from '../../collection/linked-list';
-import { ShadowParent } from '../shadow';
-import * as Registry from '../../registry';
+import Blot, { Position } from './blot';
+import LinkedList from '../collection/linked-list';
+import { ShadowParent } from './shadow';
+import * as Registry from '../registry';
 
 
 class ParentBlot extends Blot implements ShadowParent {
