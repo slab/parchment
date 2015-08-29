@@ -5,7 +5,17 @@ import ParentBlot from './parent';
 import * as Registry from '../registry';
 import { ShadowParent } from './shadow';
 import LinkedList from '../collection/linked-list';
-import * as util from '../util';
+
+
+// Shallow object comparison
+function isEqual(obj1, obj2) {
+  if (obj1 === obj2) return true;
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+  for (let prop in obj1) {
+    if (obj1[prop] !== obj2[prop]) return false;
+  }
+  return true;
+}
 
 
 class InlineBlot extends AttributableBlot {
@@ -50,7 +60,7 @@ class InlineBlot extends AttributableBlot {
     if (!this.parent) return false;
     if (target != null &&
         this.statics.blotName === target.statics.blotName &&
-        util.isEqual(target.getFormat(), this.getFormat())) {
+        isEqual(target.getFormat(), this.getFormat())) {
       var nextTarget = this.children.tail;
       (<ParentBlot>target).moveChildren(this);
       target.remove();

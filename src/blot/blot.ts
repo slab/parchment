@@ -1,7 +1,6 @@
 import * as Registry from '../registry';
 import ParentBlot from './parent';
 import ShadowNode from './shadow';
-import * as Util from '../util';
 
 
 const DATA_KEY = '__blot_data';
