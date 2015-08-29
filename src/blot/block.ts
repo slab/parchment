@@ -2,7 +2,6 @@ import InlineBlot from './inline';
 import LeafBlot from './leaf';
 import LinkedList from '../collection/linked-list';
 import ParentBlot from './parent';
-import * as Util from '../util';
 import * as Registry from '../registry';
 
 

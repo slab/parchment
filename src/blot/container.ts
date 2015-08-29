@@ -1,16 +1,15 @@
-import Blot, { Position } from './blot';
 import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
 import ParentBlot from './parent';
+import { Position } from './blot';
 import * as Registry from '../registry';
-import * as Util from '../util';
 
 
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
   static tagName = 'DIV';
 
-  children: LinkedList<BlockBlot | ContainerBlot>;
+  children: LinkedList<BlockBlot | ContainerBlot> = new LinkedList<BlockBlot | ContainerBlot>();
 
   findPath(index: number, inclusive: boolean = false): Position[] {
     return super.findPath(index, inclusive).slice(1);    // Exclude ourself from result
