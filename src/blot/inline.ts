@@ -1,3 +1,4 @@
+import AttributableBlot from './attributable';
 import Blot from './blot';
 import LeafBlot from './leaf';
 import ParentBlot from './parent';
@@ -7,11 +8,11 @@ import LinkedList from '../collection/linked-list';
 import * as util from '../util';
 
 
-class InlineBlot extends ParentBlot {
+class InlineBlot extends AttributableBlot {
   static blotName = 'inline';
   static tagName = 'SPAN';
 
-  children: LinkedList<InlineBlot | LeafBlot> = new LinkedList<InlineBlot | LeafBlot>();
+  children: LinkedList<InlineBlot | LeafBlot>;
 
   static compare = function(thisName: string, otherName: string): boolean {
     return thisName <= otherName;
@@ -77,7 +78,7 @@ class InlineBlot extends ParentBlot {
     } else if (this.statics.blotName === InlineBlot.blotName) {
       return this.replace(name, value);
     } else {
-      let wrapper = <ParentBlot>super.wrap(name, value);
+      let wrapper = <InlineBlot>super.wrap(name, value);
       this.moveAttributes(wrapper);
       return wrapper;
     }

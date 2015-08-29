@@ -7,11 +7,3 @@ export function isEqual(obj1, obj2) {
   }
   return true;
 }
-
-export function mixin(derivedClass: any, baseClasses: any[]) {
-  baseClasses.forEach(baseClass => {
-    Object.getOwnPropertyNames(baseClass.prototype).forEach(name => {
-      derivedClass.prototype[name] = baseClass.prototype[name];
-    });
-  });
-}

@@ -3,7 +3,7 @@ describe('Attributor', function() {
     var blot = Registry.create('inline');
     blot.domNode.style.color = 'red';
     blot.domNode.style.fontSize = '24px';
-    blot.buildAttributes();
+    blot.build();
     expect(Object.keys(blot.attributes)).toEqual(['color', 'size']);
   });
 

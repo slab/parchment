@@ -8,11 +8,12 @@ class ParentBlot extends Blot implements ShadowParent {
   static blotName = 'parent';
 
   domNode: HTMLElement;
-  parent: ParentBlot = null;
-  children: LinkedList<Blot> = new LinkedList<Blot>();
+  parent: ParentBlot;
+  children: LinkedList<Blot>;
 
-  constructor(value: HTMLElement) {
+  constructor(value) {
     super(value);
+    this.children = new LinkedList<Blot>();
     this.build();
   }
 
@@ -127,7 +128,6 @@ class ParentBlot extends Blot implements ShadowParent {
     }
     var replacement = <ParentBlot>super.replace(name, value);
     this.moveChildren(replacement);
-    this.moveAttributes(replacement);
     return replacement;
   }
 

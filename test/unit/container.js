@@ -1,13 +1,13 @@
-describe('Root', function() {
+describe('Container', function() {
   describe('findPath()', function() {
     beforeEach(function() {
-      var rootNode = document.createElement('div');
-      rootNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
-      this.root = new RootBlot(rootNode);
+      var containerNode = document.createElement('div');
+      containerNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
+      this.container = new ContainerBlot(containerNode);
     });
 
     it('middle', function() {
-      var path = this.root.findPath(7);
+      var path = this.container.findPath(7);
       var expected = [
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
@@ -21,7 +21,7 @@ describe('Root', function() {
     });
 
     it('between blots', function() {
-      var path = this.root.findPath(5);
+      var path = this.container.findPath(5);
       var expected = [
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
@@ -35,7 +35,7 @@ describe('Root', function() {
     });
 
     it('inclusive', function() {
-      var path = this.root.findPath(3, true);
+      var path = this.container.findPath(3, true);
       var expected = [
         { blotName: 'block', offset: 0 },
         { blotName: 'bold', offset: 0 },
@@ -48,7 +48,7 @@ describe('Root', function() {
     });
 
     it('last', function() {
-      var path = this.root.findPath(9);
+      var path = this.container.findPath(9);
       var expected = [
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
