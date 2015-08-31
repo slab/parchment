@@ -71,12 +71,6 @@ class InlineBlot extends FormatBlot {
 
   wrap(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName) {
-      if (this.getFormat()[name] == value) {
-        return this;
-      } else {
-        return this.replace(name, value);
-      }
-    } else if (this.statics.blotName === InlineBlot.blotName) {
       return this.replace(name, value);
     } else {
       let wrapper = <InlineBlot>super.wrap(name, value);

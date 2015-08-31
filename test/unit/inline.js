@@ -1,16 +1,4 @@
 describe('InlineBlot', function() {
-  beforeEach(function() {
-    this.oldCompare = InlineBlot.compare;
-    InlineBlot.compare = function(thisName, otherName) {
-      var order = ['bold', 'italic', 'inline'];
-      return order.indexOf(thisName) <= order.indexOf(otherName);
-    }
-  });
-
-  afterEach(function() {
-    InlineBlot.compare = this.oldCompare;
-  });
-
   it('format ordering', function() {
     var container1 = Registry.create('block');
     container1.appendChild(Registry.create('text', 'Test'));
@@ -113,5 +101,14 @@ describe('InlineBlot', function() {
     var blot = Registry.create(italic);
     var formats = blot.getFormat();
     expect(formats).toEqual({ italic: true, color: 'red' });
+  });
+
+  it('change', function() {
+    var container = Registry.create('block');
+    var script = Registry.create('script', 'sup');
+    container.appendChild(script);
+    script.format('script', 'sub');
+    expect(container.domNode.innerHTML).toEqual('<sub></sub>');
+    expect(container.children.head.getFormat()).toEqual({ script: 'sub' });
   });
 });
