@@ -1,6 +1,7 @@
 import Blot from './blot/abstract/blot';
 import BlockBlot from './blot/block';
 import EmbedBlot from './blot/embed';
+import LeafBlot from './blot/abstract/leaf';
 import InlineBlot from './blot/inline';
 import ContainerBlot from './blot/container';
 import TextBlot from './blot/text';
@@ -16,6 +17,7 @@ var Parchment = {
   Container: ContainerBlot,
   Block: BlockBlot,
   Inline: InlineBlot,
+  Leaf: LeafBlot,
   Embed: EmbedBlot,
 
   Style: StyleAttributor,
