@@ -13,4 +13,13 @@ describe('EmbedBlot', function() {
     imageBlot.insertAt(1, '!');
     expect(container.children.tail.getValue()).toEqual('!');
   });
+
+  it('split()', function() {
+    var blockNode = document.createElement('p');
+    blockNode.innerHTML = '<em>Te</em><img><strong>st</strong>';
+    var blockBlot = Registry.create(blockNode);
+    var imageBlot = blockBlot.children.head.next;
+    expect(imageBlot.split(0)).toBe(imageBlot);
+    expect(imageBlot.split(1)).toBe(blockBlot.children.tail);
+  });
 });
