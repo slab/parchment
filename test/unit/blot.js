@@ -1,4 +1,21 @@
 describe('Blot', function() {
+  it('findBlot()', function() {
+    var blockNode = document.createElement('p');
+    blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
+    var blockBlot = new BlockBlot(blockNode);
+    expect(Blot.findBlot(document.body)).toBe(null);
+    expect(Blot.findBlot(blockNode)).toBe(blockBlot);
+    expect(Blot.findBlot(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
+    expect(Blot.findBlot(blockNode.querySelector('em'))).toBe(blockBlot.children.tail);
+    expect(Blot.findBlot(blockNode.querySelector('strong'))).toBe(blockBlot.children.tail.children.tail);
+    var text01 = blockBlot.children.head.children.head;
+    var text23 = blockBlot.children.tail.children.head;
+    var text45 = blockBlot.children.tail.children.tail.children.head;
+    expect(Blot.findBlot(text01.domNode)).toBe(text01);
+    expect(Blot.findBlot(text23.domNode)).toBe(text23);
+    expect(Blot.findBlot(text45.domNode)).toBe(text45);
+  });
+
   it('offset()', function() {
     var blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
