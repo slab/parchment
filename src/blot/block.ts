@@ -1,4 +1,4 @@
-import AttributableBlot from './abstract/attributable';
+import FormatBlot from './abstract/format';
 import InlineBlot from './inline';
 import LeafBlot from './abstract/leaf';
 import LinkedList from '../collection/linked-list';
@@ -6,7 +6,7 @@ import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
 
 
-class BlockBlot extends AttributableBlot {
+class BlockBlot extends FormatBlot {
   static blotName = 'block';
   static tagName = 'P';
 

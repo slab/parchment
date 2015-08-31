@@ -5,6 +5,8 @@ import ShadowNode from './shadow';
 
 const DATA_KEY = '__blot_data';
 
+export const DEFAULT_SCOPE = ['container', 'block', 'inline', 'leaf'];
+
 
 export interface Position {
   blot: Blot;
@@ -29,9 +31,12 @@ class Blot extends ShadowNode {
 
   constructor(node: any) {
     if (!(node instanceof Node)) {
-      node = document.createElement(this.statics.tagName);
+      if (Array.isArray(this.statics.tagName) && this.statics.tagName.indexOf(node) > -1) {
+        node = document.createElement(node);
+      } else {
+        node = document.createElement(this.statics.tagName);
+      }
     }
-    this.prev = this.next = null;
     super(node);
     this.domNode[DATA_KEY] = this;
   }

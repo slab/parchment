@@ -1,5 +1,5 @@
-import AttributableBlot from './abstract/attributable';
 import Blot from './abstract/blot';
+import FormatBlot from './abstract/format';
 import LeafBlot from './abstract/leaf';
 import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
@@ -18,7 +18,7 @@ function isEqual(obj1, obj2) {
 }
 
 
-class InlineBlot extends AttributableBlot {
+class InlineBlot extends FormatBlot {
   static blotName = 'inline';
   static tagName = 'SPAN';
 
@@ -46,14 +46,6 @@ class InlineBlot extends AttributableBlot {
     } else {
       super.formatAt(index, length, name, value);
     }
-  }
-
-  getFormat() {
-    var formats = super.getFormat();
-    if (this.statics.blotName !== InlineBlot.blotName) {
-      formats[this.statics.blotName] = true;
-    }
-    return formats;
   }
 
   merge(target: Blot = this.next): boolean {

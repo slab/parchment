@@ -1,4 +1,5 @@
 import Attributor from '../../attributor/attributor';
+import { DEFAULT_SCOPE } from './blot';
 import ParentBlot from './parent';
 import * as Registry from '../../registry';
 
@@ -8,7 +9,7 @@ interface Attributors {
 }
 
 
-class AttributableBlot extends ParentBlot {
+class FormatBlot extends ParentBlot {
   attributes: Attributors;
 
   constructor(value) {
@@ -58,15 +59,19 @@ class AttributableBlot extends ParentBlot {
   }
 
   getFormat(): Object {
-    return Object.keys(this.attributes).reduce((formats, name) => {
+    var formats = Object.keys(this.attributes).reduce((formats, name) => {
       if (this.domNode instanceof HTMLElement) {
         formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
       }
       return formats;
     }, super.getFormat());
+    if (DEFAULT_SCOPE.indexOf(this.statics.blotName) < 0) {
+      formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;
+    }
+    return formats;
   }
 
-  moveAttributes(target: AttributableBlot) {
+  moveAttributes(target: FormatBlot) {
     Object.keys(this.attributes).forEach(key => {
       var value = this.attributes[key].value(this.domNode);
       target.format(key, value);
@@ -74,12 +79,12 @@ class AttributableBlot extends ParentBlot {
     });
   }
 
-  replace(name: string, value: any): AttributableBlot {
-    var replacement = <AttributableBlot>super.replace(name, value);
+  replace(name: string, value: any): FormatBlot {
+    var replacement = <FormatBlot>super.replace(name, value);
     this.moveAttributes(replacement);
     return replacement;
   }
 }
 
 
-export default AttributableBlot;
+export default FormatBlot;

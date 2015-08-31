@@ -13,6 +13,7 @@ export enum Type {
 }
 
 
+
 function create(name: Node);
 function create(name: string, value?: any);
 function create(name: any, value?: any): any {
