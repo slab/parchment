@@ -6,3 +6,6 @@ Registry.define(SizeAttributor);
 
 var IdAttributor = new Attributor('id', 'id');
 Registry.define(IdAttributor);
+
+var AlignAttributor = new StyleAttributor('align', 'text-align');
+Registry.define(AlignAttributor);

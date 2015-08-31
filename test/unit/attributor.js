@@ -92,4 +92,13 @@ describe('Attributor', function() {
     expect(boldBlot.next.statics.blotName).toEqual('inline');
     expect(boldBlot.next.getFormat().color).toEqual('red');
   });
+
+  it('block', function() {
+    var container = Registry.create('container');
+    var block = Registry.create('header', 'h1');
+    container.appendChild(block);
+    block.format('align', 'right');
+    expect(container.domNode.innerHTML).toBe('<h1 style="text-align: right;"></h1>');
+    expect(container.children.head.getFormat()).toEqual({ header: 'h1', align: 'right' });
+  });
 });
