@@ -28,5 +28,5 @@ describe('Block', function() {
       expect(container.children.head.statics.blotName).toBe('header');
       expect(container.children.head.getFormat()).toEqual({ header: 'h2' });
     });
-  })
+  });
 });

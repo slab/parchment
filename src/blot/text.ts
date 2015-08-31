@@ -36,11 +36,6 @@ class TextBlot extends LeafBlot {
     }
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
-    var target = <TextBlot>this.isolate(index, length);
-    target.format(name, value);
-  }
-
   getLength(): number {
     return this.text.length;
   }
