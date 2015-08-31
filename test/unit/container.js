@@ -1,4 +1,4 @@
-xdescribe('Container', function() {
+describe('Container', function() {
   describe('findPath()', function() {
     beforeEach(function() {
       var containerNode = document.createElement('div');
@@ -9,6 +9,7 @@ xdescribe('Container', function() {
     it('middle', function() {
       var path = this.container.findPath(7);
       var expected = [
+        { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
         { blotName: 'bold', offset: 0 },
@@ -23,6 +24,7 @@ xdescribe('Container', function() {
     it('between blots', function() {
       var path = this.container.findPath(5);
       var expected = [
+        { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
         { blotName: 'bold', offset: 0 },
@@ -37,6 +39,7 @@ xdescribe('Container', function() {
     it('inclusive', function() {
       var path = this.container.findPath(3, true);
       var expected = [
+        { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 0 },
         { blotName: 'bold', offset: 0 },
         { blotName: 'text', offset: 3 }
@@ -50,6 +53,7 @@ xdescribe('Container', function() {
     it('last', function() {
       var path = this.container.findPath(9);
       var expected = [
+        { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
         { blotName: 'bold', offset: 0 },
