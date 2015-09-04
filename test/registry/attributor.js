@@ -1,11 +1,11 @@
 var ColorAttributor = new StyleAttributor('color', 'color');
-Registry.define(ColorAttributor);
+Registry.register(ColorAttributor);
 
 var SizeAttributor = new StyleAttributor('size', 'font-size');
-Registry.define(SizeAttributor);
+Registry.register(SizeAttributor);
 
 var IdAttributor = new Attributor('id', 'id');
-Registry.define(IdAttributor);
+Registry.register(IdAttributor);
 
 var AlignAttributor = new StyleAttributor('align', 'text-align');
-Registry.define(AlignAttributor);
+Registry.register(AlignAttributor);

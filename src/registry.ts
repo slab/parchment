@@ -28,24 +28,6 @@ function create(name: any, value?: any): any {
   }
 }
 
-// Only support real classes since calling superclass definitions are so important
-function define(Definition) {
-  if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
-    throw new Error('[Parchment] Invalid definition');
-  }
-  types[Definition.blotName || Definition.attrName] = Definition;
-  if (typeof Definition.tagName === 'string') {
-    tags[Definition.tagName.toUpperCase()] = Definition;
-  } else if (Array.isArray(Definition.tagName)) {
-    Definition.tagName.forEach(function(tag) {
-      tags[tag.toUpperCase()] = Definition;
-    });
-  } else if (typeof Definition.keyName === 'string') {
-    attributes[Definition.keyName] = Definition;
-  }
-  return Definition;
-}
-
 function match(query: string | Node, type: Type = Type.BLOT) {
   if (typeof query === 'string') {
     if (type === Type.BLOT) {
@@ -72,4 +54,22 @@ function match(query: string | Node, type: Type = Type.BLOT) {
   return null;
 }
 
-export { create, define, match };
+// Only support real classes since calling superclass definitions are so important
+function register(Definition) {
+  if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
+    throw new Error('[Parchment] Invalid definition');
+  }
+  types[Definition.blotName || Definition.attrName] = Definition;
+  if (typeof Definition.tagName === 'string') {
+    tags[Definition.tagName.toUpperCase()] = Definition;
+  } else if (Array.isArray(Definition.tagName)) {
+    Definition.tagName.forEach(function(tag) {
+      tags[tag.toUpperCase()] = Definition;
+    });
+  } else if (typeof Definition.keyName === 'string') {
+    attributes[Definition.keyName] = Definition;
+  }
+  return Definition;
+}
+
+export { create, match, register };

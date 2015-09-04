@@ -23,19 +23,19 @@ var Parchment = {
   Style: StyleAttributor,
 
   create: Registry.create,
-  define: Registry.define,
   match: Registry.match,
+  register: Registry.register,
 
-  types: Registry.Type,    // TODO: Do we want this named differently?
+  Type: Registry.Type,
 
   findBlot: Blot.findBlot
 };
 
 
-Parchment.define(ContainerBlot);
-Parchment.define(BlockBlot);
-Parchment.define(InlineBlot);
-Parchment.define(TextBlot);
+Parchment.register(ContainerBlot);
+Parchment.register(BlockBlot);
+Parchment.register(InlineBlot);
+Parchment.register(TextBlot);
 
 
 // ES6 export will not correctly expose an object { default: Parchment }
