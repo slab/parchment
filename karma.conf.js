@@ -70,7 +70,7 @@ module.exports = function(config) {
         version: '43'
       }
     },
-    port: 9876,
+    port: 10876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,

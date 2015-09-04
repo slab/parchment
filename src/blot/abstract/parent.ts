@@ -24,10 +24,11 @@ class ParentBlot extends Blot implements ShadowParent {
   build(): void {
     var childNodes = Array.prototype.slice.call(this.domNode.childNodes);
     this.children.empty();
-    childNodes.forEach((node) => {
+    // Need to be reversed for if DOM nodes already in order
+    childNodes.reverse().forEach((node) => {
       var child = Registry.create(node);
       if (child != null) {
-        this.appendChild(child);
+        this.insertBefore(child, this.children.head);
       } else if (node.parentNode != null) {
         node.parentNode.removeChild(node);
       }
@@ -80,6 +81,8 @@ class ParentBlot extends Blot implements ShadowParent {
         return memo;
       } else if (child instanceof ParentBlot) {
         return memo.concat(child.getDescendants<T>(type));
+      } else {
+        return memo;
       }
     }, []);
   }
@@ -129,8 +132,12 @@ class ParentBlot extends Blot implements ShadowParent {
     if (name === this.statics.blotName && this.getFormat[name] === value) {
       return this;
     }
-    var replacement = <ParentBlot>super.replace(name, value);
+    // Implementation very similar to shadow.replace() but vitally important moveChildren
+    // happens before remove() for proper merge
+    var replacement = Registry.create(name, value);
+    this.parent.insertBefore(replacement, this.next);
     this.moveChildren(replacement);
+    this.remove();
     return replacement;
   }
 
