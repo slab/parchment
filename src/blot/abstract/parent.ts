@@ -47,8 +47,7 @@ class ParentBlot extends Blot implements ShadowParent {
 
   findPath(index: number, inclusive: boolean = false): Position[] {
     var length = this.getLength();
-    var arr = this.children.find(index, inclusive);
-    var child = arr[0], offset = arr[1];
+    var [child, offset] = this.children.find(index, inclusive);
     if (child == null) {
       child = this.children.tail;
       offset = child.getLength();
@@ -104,8 +103,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    var _arr = this.children.find(index);
-    var child = _arr[0], offset = _arr[1];
+    var [child, offset] = this.children.find(index);
     if (child) {
       child.insertAt(offset, value, def);
     } else {
