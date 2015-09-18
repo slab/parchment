@@ -74,17 +74,23 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  getDescendants<T>(type: any): T[] {
-    return this.children.reduce(function(memo, child) {
+  getDescendants<T>(type: any): T[];
+  getDescendants<T>(index: number, length: number, type: any): T[];
+  getDescendants<T>(index: any, length?: number, type?: any): T[] {
+    if (typeof length !== 'number') {
+      type = index;
+      index = 0;
+      length = this.getLength();
+    }
+    var descendants = [];
+    this.children.forEachAt(index, length, function(child) {
       if (child instanceof type) {
-        memo.push(child);
-        return memo;
+        descendants.push(child);
       } else if (child instanceof ParentBlot) {
-        return memo.concat(child.getDescendants<T>(type));
-      } else {
-        return memo;
+        descendants = descendants.concat(child.getDescendants<T>(type));
       }
-    }, []);
+    });
+    return descendants;
   }
 
   getFormat(): Object {
