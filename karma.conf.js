@@ -1,10 +1,11 @@
 var Buffer = require('buffer').Buffer;
 var through = require('through');
+var webpackConfig = require('./webpack.conf');
 
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['browserify', 'jasmine'],
+    frameworks: ['jasmine'],
     files: [
       'test/parchment.ts',
       'test/registry/*.js',
@@ -20,24 +21,37 @@ module.exports = function(config) {
       'test/unit/merge.js'
     ],
     preprocessors: {
+      'test/registry/*.js': ['babel'],
       'test/parchment.ts': ['webpack']
+    },
+    webpack: webpackConfig,
+    webpackMiddleware: {
+      stats: {
+        assets: false,
+        chunks: false,
+        colors: true,
+        errorDetails: true,
+        hash: false,
+        timings: false,
+        version: false
+      }
     },
     exclude: [],
     reporters: ['progress'],
-    coverageReporter: {
-      dir: '.build/coverage',
-      reporters: [
-        { type: 'html' },
-        { type: 'text' }
-      ]
-    },
+    // coverageReporter: {
+    //   dir: '.build/coverage',
+    //   reporters: [
+    //     { type: 'html' },
+    //     { type: 'text' }
+    //   ]
+    // },
     browsers: ['Chrome'],
     customLaunchers: {
       'saucelabs-chrome': {
         base: 'SauceLabs',
         browserName: 'Chrome',
-        platform: 'Mac 10.10',
-        version: '43'
+        platform: 'Mac 10.11',
+        version: '45'
       }
     },
     port: 10876,

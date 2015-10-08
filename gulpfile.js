@@ -1,44 +1,25 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var karma = require('karma').server;
-var path = require('path');
 var source = require('vinyl-source-stream');
 var webpack = require('webpack');
+var webpackConfig = require('./webpack.conf');
 
 
 gulp.task('default', ['build']);
 
 gulp.task('build', function(callback) {
-  webpack({
-    entry: './src/parchment.ts',
-    output: {
-      filename: 'parchment.js',
-      library: 'Parchment',
-      libraryTarget: 'umd',
-      path: path.join(__dirname, 'dist')
-    },
-    resolve: {
-      extensions: ['', '.js', '.ts']
-    },
-    module: {
-      loaders: [
-        { test: /\.ts$/, loader: 'ts-loader' }
-      ]
-    }
-  }, function(err, stats, el) {
+  webpack(webpackConfig, function(err, stats, el) {
     if (err) throw new gutil.PluginError('webpack', err);
     callback();
   });
 });
 
-// gulp.task('test', function(done) {
-//   karma.start({
-//     configFile: __dirname + '/karma.conf.js',
-//     browserify: {
-//       plugin: [['tsify']]
-//     },
-//   }, done);
-// });
+gulp.task('test', function(done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js'
+  }, done);
+});
 
 // gulp.task('test:coverage', function(done) {
 //   karma.start({
@@ -47,15 +28,12 @@ gulp.task('build', function(callback) {
 //   }, done);
 // });
 
-// gulp.task('test:server', function(done) {
-//   karma.start({
-//     configFile: __dirname + '/karma.conf.js',
-//     browserify: {
-//       plugin: [['tsify']]
-//     },
-//     singleRun: false
-//   }, done);
-// });
+gulp.task('test:server', function(done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: false
+  }, done);
+});
 
 // gulp.task('test:travis', function(done) {
 //   karma.start({
