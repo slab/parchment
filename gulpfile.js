@@ -1,6 +1,8 @@
+var _ = require('lodash');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var karma = require('karma');
+var path = require('path');
 var source = require('vinyl-source-stream');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.conf');
@@ -22,9 +24,14 @@ gulp.task('test', function(done) {
 });
 
 gulp.task('test:coverage', function(done) {
+  var config = _.clone(webpackConfig);
+  config.module.postLoaders = [
+    { test: /src\/.*\.ts$/, loader: 'istanbul-instrumenter' }
+  ];
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
-    reporters: ['progress', 'coverage']
+    reporters: ['progress', 'coverage'],
+    webpack: config
   }, done).start();
 });
 
@@ -38,9 +45,6 @@ gulp.task('test:server', function(done) {
 gulp.task('test:travis', function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
-    browserify: {
-      plugin: [['tsify']]
-    },
     browsers: ['saucelabs-chrome'],
     reporters: ['dots', 'saucelabs'],
     sauceLabs: {

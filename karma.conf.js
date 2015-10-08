@@ -1,5 +1,3 @@
-var Buffer = require('buffer').Buffer;
-var through = require('through');
 var webpackConfig = require('./webpack.conf');
 
 module.exports = function(config) {
@@ -38,13 +36,13 @@ module.exports = function(config) {
     },
     exclude: [],
     reporters: ['progress'],
-    // coverageReporter: {
-    //   dir: '.build/coverage',
-    //   reporters: [
-    //     { type: 'html' },
-    //     { type: 'text' }
-    //   ]
-    // },
+    coverageReporter: {
+      dir: '.build/coverage',
+      reporters: [
+        { type: 'html' },
+        { type: 'text' }
+      ]
+    },
     browsers: ['Chrome'],
     customLaunchers: {
       'saucelabs-chrome': {
