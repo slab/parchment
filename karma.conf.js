@@ -2,31 +2,6 @@ var Buffer = require('buffer').Buffer;
 var through = require('through');
 
 module.exports = function(config) {
-  var cacheSource = function(file) {
-    // Hack to give karma-coverage the source files for html reporter
-    // since we do not actually use karma to instrument in order to
-    // map to pre-browserified code
-    var store = require('karma-coverage/lib/source-cache').get(config.basePath);
-    var chunks = [];
-    var tsExtends = /^var __extends =/;
-    return through(function(buff) {
-      var str = buff.toString();
-      // More hacks for ignoring typescript's __extend
-      if (Buffer.isBuffer(buff) && tsExtends.test(str)) {
-        buff = Buffer.concat([
-          new Buffer(str.split('\n')[0]),
-          new Buffer('\n    /* istanbul ignore next */\n'),
-          new Buffer(str.split('\n').slice(1).join('\n'))
-        ])
-      }
-      chunks.push(buff);
-      this.queue(buff);
-    }, function() {
-      store[file] = chunks.join('');
-      this.queue(null);
-    });
-  };
-
   config.set({
     basePath: '',
     frameworks: ['browserify', 'jasmine'],
@@ -45,12 +20,7 @@ module.exports = function(config) {
       'test/unit/merge.js'
     ],
     preprocessors: {
-      'test/registry/*.js': ['babel'],
-      'test/parchment.ts': ['browserify']
-    },
-    browserify: {
-      transform: [cacheSource, 'browserify-istanbul'],
-      plugin: [['tsify']]
+      'test/parchment.ts': ['webpack']
     },
     exclude: [],
     reporters: ['progress'],

@@ -6,21 +6,20 @@
   "homepage": "http://quilljs.com/docs/parchment",
   "main": "dist/parchment.js",
   "devDependencies": {
-    "browserify": "~11.0.0",
-    "browserify-istanbul": "~0.2.1",
     "gulp": "~3.9.0",
-    "gulp-derequire": "~2.1.0",
+    "gulp-util": "^3.0.6",
     "jasmine-core": "~2.3.4",
     "karma": "~0.13.3",
     "karma-babel-preprocessor": "~5.2.1",
-    "karma-browserify": "~4.3.0",
     "karma-chrome-launcher": "~0.2.0",
     "karma-coverage": "~0.5.1",
     "karma-jasmine": "~0.3.6",
     "karma-sauce-launcher": "~0.2.14",
     "through": "~2.3.8",
-    "tsify": "~0.11.10",
-    "vinyl-source-stream": "~1.1.0"
+    "ts-loader": "^0.5.6",
+    "typescript": "^1.6.2",
+    "vinyl-source-stream": "~1.1.0",
+    "webpack": "^1.12.2"
   },
   "license": "BSD-3-Clause",
   "repository": {
