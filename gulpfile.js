@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var karma = require('karma').server;
+var karma = require('karma');
 var source = require('vinyl-source-stream');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.conf');
@@ -16,42 +16,42 @@ gulp.task('build', function(callback) {
 });
 
 gulp.task('test', function(done) {
-  karma.start({
+  new karma.Server({
     configFile: __dirname + '/karma.conf.js'
-  }, done);
+  }, done).start();
 });
 
-// gulp.task('test:coverage', function(done) {
-//   karma.start({
-//     configFile: __dirname + '/karma.conf.js',
-//     reporters: ['progress', 'coverage']
-//   }, done);
-// });
+gulp.task('test:coverage', function(done) {
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    reporters: ['progress', 'coverage']
+  }, done).start();
+});
 
 gulp.task('test:server', function(done) {
-  karma.start({
+  new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: false
-  }, done);
+  }, done).start();
 });
 
-// gulp.task('test:travis', function(done) {
-//   karma.start({
-//     configFile: __dirname + '/karma.conf.js',
-//     browserify: {
-//       plugin: [['tsify']]
-//     },
-//     browsers: ['saucelabs-chrome'],
-//     reporters: ['dots', 'saucelabs'],
-//     sauceLabs: {
-//       testName: 'Parchment Unit Tests',
-//       username: process.env.SAUCE_USER || 'quill',
-//       accessKey: process.env.SAUCE_KEY || 'adc0c0cf-221b-46f1-81b9-a4429b722c2e',
-//       build: process.env.TRAVIS_BUILD_ID,
-//       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
-//     }
-//   }, done);
-// });
+gulp.task('test:travis', function(done) {
+  new karma.Server({
+    configFile: __dirname + '/karma.conf.js',
+    browserify: {
+      plugin: [['tsify']]
+    },
+    browsers: ['saucelabs-chrome'],
+    reporters: ['dots', 'saucelabs'],
+    sauceLabs: {
+      testName: 'Parchment Unit Tests',
+      username: process.env.SAUCE_USER || 'quill',
+      accessKey: process.env.SAUCE_KEY || 'adc0c0cf-221b-46f1-81b9-a4429b722c2e',
+      build: process.env.TRAVIS_BUILD_ID,
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+    }
+  }, done).start();
+});
 
 gulp.task('watch', function() {
   gulp.watch('**/*.ts', ['build']);

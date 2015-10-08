@@ -1,12 +1,10 @@
-var path = require('path');
-
 module.exports = {
   entry: ['./src/parchment.ts'],
   output: {
     filename: 'parchment.js',
     library: 'Parchment',
     libraryTarget: 'umd',
-    path: path.join(__dirname, 'dist')
+    path: __dirname + '/dist'
   },
   resolve: {
     extensions: ['', '.js', '.ts']
