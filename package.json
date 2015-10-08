@@ -29,6 +29,7 @@
     "url": "https://github.com/quilljs/parchment"
   },
   "scripts": {
+    "prepublish": "gulp build",
     "test": "gulp test"
   },
   "bugs": {
