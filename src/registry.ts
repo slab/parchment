@@ -29,12 +29,14 @@ function create(name: any, value?: any): any {
 
 function match(query: string | Node, type: Type = Type.BLOT) {
   if (typeof query === 'string') {
+    let match = types[query] || attributes[query];
+    if (match == null) return match;
+    // Check type mismatch
     if (type === Type.BLOT) {
-      return types[query];
+      return typeof match.blotName === 'string' ? match : null;
+    } else if (type === Type.ATTRIBUTE) {
+      return typeof match.attrName === 'string' ? match : null;
     } else {
-      let match = types[query] || attributes[query];
-      // Check type mismatch
-      if (match != null && typeof match.blotName === 'string') return null;
       return match;
     }
   } else if (query instanceof Node && type === Type.BLOT) {
