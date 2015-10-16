@@ -18,14 +18,20 @@ interface ShadowParent extends ShadowNode {
 }
 
 class ShadowNode implements LinkedNode {
+  static blotName = 'shadow';
+
   prev: ShadowNode;
   next: ShadowNode;
   parent: ShadowParent;
   domNode: Node;
 
-  constructor(node: Node) {
+  constructor(node: any) {
     if (!(node instanceof Node)) {
-      throw new Error(`Shadow must be initialized with DOM Node but got: ${node}`);
+      if (Array.isArray(this.statics.tagName) && this.statics.tagName.indexOf(node) > -1) {
+        node = document.createElement(node);
+      } else {
+        node = document.createElement(this.statics.tagName);
+      }
     }
     this.domNode = node;
   }

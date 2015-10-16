@@ -20,11 +20,13 @@ function create(name: any, value?: any): any {
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${name}`);
   }
+  let blot;
   if (typeof name === 'string') {
-    return new BlotClass(value);
+    blot = new BlotClass(value);
   } else {
-    return new BlotClass(name);
+    blot = new BlotClass(name);
   }
+  return blot;
 }
 
 function match(query: string | Node, type: Type = Type.BLOT) {

@@ -13,7 +13,7 @@ import TextBlot from '../src/blot/text';
 import LinkedList from '../src/collection/linked-list';
 
 import * as Registry from '../src/registry';
-import Parchment = require('../src/parchment');
+import Parchment = require('../src/index');
 
 
 window['Attributor'] = Attributor;

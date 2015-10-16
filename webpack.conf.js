@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['./src/parchment.ts'],
+  entry: ['./src/index.ts'],
   output: {
     filename: 'parchment.js',
     library: 'Parchment',

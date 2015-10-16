@@ -17,10 +17,10 @@ export interface Position {
 class Blot extends ShadowNode {
   static blotName = 'blot';
 
-  static findBlot(node: Node): Blot {
+  static findBlot(node: Node, bubble: boolean = false): Blot {
     while (true) {
       if (node == null) return null;
-      if (node[DATA_KEY]) return node[DATA_KEY];
+      if (node[DATA_KEY] || !bubble) return node[DATA_KEY];
       node = node.parentNode;
     }
   }
@@ -30,13 +30,6 @@ class Blot extends ShadowNode {
   parent: ParentBlot;
 
   constructor(node: any) {
-    if (!(node instanceof Node)) {
-      if (Array.isArray(this.statics.tagName) && this.statics.tagName.indexOf(node) > -1) {
-        node = document.createElement(node);
-      } else {
-        node = document.createElement(this.statics.tagName);
-      }
-    }
     super(node);
     this.domNode[DATA_KEY] = this;
   }
@@ -57,7 +50,10 @@ class Blot extends ShadowNode {
     var mergeTarget = this;
     if (Registry.match(name) && value) {
       mergeTarget = <ParentBlot>this.wrap(name, value);
-    }
+    } else if (Registry.match(name, Registry.Type.ATTRIBUTE) && value) {
+      mergeTarget = <ParentBlot>this.wrap('inline', true);
+      mergeTarget.format(name, value);
+    };
     if (mergeTarget.prev != null) {
       mergeTarget.prev.merge();
     }
@@ -95,6 +91,8 @@ class Blot extends ShadowNode {
       this.prev.merge();
     }
   }
+
+  update(mutation: MutationRecord) { }
 }
 
 

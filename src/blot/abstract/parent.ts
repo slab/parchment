@@ -26,12 +26,8 @@ class ParentBlot extends Blot implements ShadowParent {
     this.children.empty();
     // Need to be reversed for if DOM nodes already in order
     childNodes.reverse().forEach((node) => {
-      var child = Registry.create(node);
-      if (child != null) {
-        this.insertBefore(child, this.children.head);
-      } else if (node.parentNode != null) {
-        node.parentNode.removeChild(node);
-      }
+      var child = Blot.findBlot(node) || Registry.create(node);
+      this.insertBefore(child, this.children.head);
     });
   }
 
@@ -127,7 +123,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
-    this.children.forEach((child) => {
+    this.children.forEach(function(child) {
       targetParent.insertBefore(child, refNode);
     });
   }
@@ -164,6 +160,20 @@ class ParentBlot extends Blot implements ShadowParent {
   unwrap(): void {
     this.moveChildren(this.parent, this.next);
     this.remove();
+  }
+
+  update(mutation: MutationRecord) {
+    if (mutation.type === 'childList') {
+      if (mutation.addedNodes.length > 0) {
+        this.build();
+      }
+      [].forEach.call(mutation.removedNodes, function(node) {
+        let removed = Blot.findBlot(node);
+        if (removed != null && node === removed.domNode && removed.domNode.parentNode == null) {
+          removed.remove();
+        }
+      });
+    }
   }
 }
 

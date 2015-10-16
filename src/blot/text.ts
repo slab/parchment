@@ -27,15 +27,6 @@ class TextBlot extends LeafBlot {
     }
   }
 
-  format(name: string, value: any): void {
-    if (Registry.match(name, Registry.Type.ATTRIBUTE) !== null) {
-      let target = <InlineBlot>this.wrap(InlineBlot.blotName, true);
-      target.format(name, value);
-    } else {
-      super.format(name, value);
-    }
-  }
-
   getLength(): number {
     return this.text.length;
   }
@@ -72,6 +63,12 @@ class TextBlot extends LeafBlot {
     this.parent.insertBefore(after, this.next);
     this.text = this.domNode.data;
     return after;
+  }
+
+  update(mutation: MutationRecord) {
+    if (mutation.type === 'characterData') {
+      this.text = this.domNode.data;
+    }
   }
 }
 

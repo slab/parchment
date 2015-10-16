@@ -12,14 +12,13 @@ interface Attributors {
 class FormatBlot extends ParentBlot {
   attributes: Attributors;
 
-  constructor(value) {
+  build(): void {
     this.attributes = {};
-    super(value);
+    super.build();
+    this.buildAttributes();
   }
 
-  build(): void {
-    super.build();
-    if (!(this.domNode instanceof HTMLElement)) return;
+  buildAttributes(): void {
     var attributes = [], classes = [], styles = [];
     Array.prototype.slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
@@ -83,6 +82,14 @@ class FormatBlot extends ParentBlot {
     var replacement = <FormatBlot>super.replace(name, value);
     this.moveAttributes(replacement);
     return replacement;
+  }
+
+  update(mutation: MutationRecord) {
+    if (mutation.target === this.domNode && mutation.type === 'attributes') {
+      this.buildAttributes();
+    } else {
+      super.update(mutation);
+    }
   }
 }
 
