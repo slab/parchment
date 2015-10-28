@@ -29,7 +29,7 @@ function create(name: any, value?: any): any {
   return blot;
 }
 
-function match(query: string | Node, type: Type = Type.BLOT) {
+function match(query: string | Node, type?: Type) {
   if (typeof query === 'string') {
     let match = types[query] || attributes[query];
     if (match == null) return match;
@@ -41,7 +41,7 @@ function match(query: string | Node, type: Type = Type.BLOT) {
     } else {
       return match;
     }
-  } else if (query instanceof Node && type === Type.BLOT) {
+  } else if (query instanceof Node && type !== Type.ATTRIBUTE) {
     if (query instanceof HTMLElement) {
       let names = query.className.split(' ');
       for (let i in names) {
@@ -50,7 +50,7 @@ function match(query: string | Node, type: Type = Type.BLOT) {
         }
       }
       return tags[query.tagName];
-    } else if (query instanceof Text) {
+    } else if (query instanceof Text && type !== Type.ATTRIBUTE) {
       return types['text'];
     }
   }

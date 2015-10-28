@@ -14,7 +14,7 @@ class BlockBlot extends FormatBlot {
 
   format(name: string, value: any): void {
     let blot = Registry.match(name, Registry.Type.BLOT);
-    if (blot != null && blot.prototype instanceof BlockBlot) {
+    if (blot != null && !(blot.prototype instanceof InlineBlot)) {
       if (value) {
         this.replace(name, value);
       } else {
