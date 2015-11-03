@@ -1,5 +1,5 @@
 module.exports = {
-  entry: ['./src/index.ts'],
+  entry: ['./src/parchment.ts'],
   output: {
     filename: 'parchment.js',
     library: 'Parchment',
@@ -16,5 +16,6 @@ module.exports = {
   },
   ts: {
     silent: true
-  }
+  },
+  devtool: 'source-map'
 };

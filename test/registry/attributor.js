@@ -9,3 +9,6 @@ Registry.register(IdAttributor);
 
 var AlignAttributor = new StyleAttributor('align', 'text-align');
 Registry.register(AlignAttributor);
+
+var IndentAttributor = new ClassAttributor('indent', 'indent');
+Registry.register(IndentAttributor);

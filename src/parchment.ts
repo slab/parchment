@@ -4,39 +4,42 @@ import EmbedBlot from './blot/embed';
 import LeafBlot from './blot/abstract/leaf';
 import InlineBlot from './blot/inline';
 import ContainerBlot from './blot/container';
-import ParchmentBlot from './blot/parchment';
 import TextBlot from './blot/text';
 
+import ClassAttributor from './attributor/class';
 import StyleAttributor from './attributor/style';
 
 import * as Registry from './registry';
 
-class Parchment extends ParchmentBlot {
-  static PREFIX = Registry.PREFIX;
 
-  static Container = ContainerBlot;
-  static Block = BlockBlot;
-  static Inline = InlineBlot;
-  static Leaf = LeafBlot;
-  static Embed = EmbedBlot;
+var Parchment = {
+  PREFIX: Registry.PREFIX,
 
-  static Style = StyleAttributor;
+  Container: ContainerBlot,
+  Block: BlockBlot,
+  Inline: InlineBlot,
+  Leaf: LeafBlot,
+  Embed: EmbedBlot,
 
-  static create = Registry.create;
-  static match = Registry.match;
-  static register = Registry.register;
+  Attributor: {
+    Class: ClassAttributor,
+    Style: StyleAttributor
+  },
 
-  static Type = Registry.Type;
+  create: Registry.create,
+  match: Registry.match,
+  register: Registry.register,
 
-  static findBlot = Blot.findBlot;
-}
+  Type: Registry.Type,
+
+  findBlot: Blot.findBlot
+};
 
 
 Parchment.register(ContainerBlot);
 Parchment.register(BlockBlot);
 Parchment.register(InlineBlot);
 Parchment.register(TextBlot);
-Parchment.register(Parchment);
 
 
 export default Parchment;

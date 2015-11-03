@@ -1,4 +1,5 @@
 import Attributor from '../src/attributor/attributor';
+import ClassAttributor from '../src/attributor/class';
 import StyleAttributor from '../src/attributor/style';
 
 import Blot from '../src/blot/abstract/blot';
@@ -13,10 +14,11 @@ import TextBlot from '../src/blot/text';
 import LinkedList from '../src/collection/linked-list';
 
 import * as Registry from '../src/registry';
-import Parchment = require('../src/index');
+import Parchment from '../src/parchment';
 
 
 window['Attributor'] = Attributor;
+window['ClassAttributor'] = ClassAttributor;
 window['StyleAttributor'] = StyleAttributor;
 
 window['Blot'] = Blot;

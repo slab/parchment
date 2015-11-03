@@ -22,7 +22,9 @@ class FormatBlot extends ParentBlot {
     var attributes = [], classes = [], styles = [];
     Array.prototype.slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
-        classes = item.value.split(/\s+/);
+        classes = item.value.split(/\s+/).map(function(name) {
+          return name.split('-')[0] || '';
+        });
       } else if (item.name === 'style') {
         styles = item.value.split(';').map(function(val) {
           var arr = val.split(':');
