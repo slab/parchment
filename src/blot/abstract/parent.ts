@@ -22,7 +22,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   build(): void {
-    var childNodes = Array.prototype.slice.call(this.domNode.childNodes);
+    var childNodes = [].slice.call(this.domNode.childNodes);
     this.children.empty();
     // Need to be reversed for if DOM nodes already in order
     childNodes.reverse().forEach((node) => {

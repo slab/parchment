@@ -11,6 +11,7 @@ class ClassAttributor extends Attributor {
   keyName: string;
 
   add(node: HTMLElement, value: string) {
+    if (!this.canAdd(node, value)) return;
     this.remove(node);
     node.classList.add(`${this.keyName}-${value}`);
   }

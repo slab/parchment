@@ -7,10 +7,10 @@ var types = {};
 
 export const PREFIX = 'blot-';
 
-export enum Type {
-  ATTRIBUTE = 1,
-  BLOT = 2
-}
+export const Type = {
+  ATTRIBUTE: 'attribute',
+  BLOT: 'blot'
+};
 
 
 function create(name: Node);
@@ -29,18 +29,28 @@ function create(name: any, value?: any): any {
   return blot;
 }
 
-function match(query: string | Node, type?: Type) {
+// match(node)
+// match(node, Type.ATTRIBUTE)
+// match(node, BlockBlot, Type.ATTRIBUTE)
+// match(node, Type.ATTRIBUTE, BlockBlot)
+// match(node, BlockBlot)
+function match(query: string | Node, type?: string, scope?: any);
+function match(query: string | Node, scope?: any, type?: string);
+function match(query: string | Node, type?: any, scope?:any) {
+  if (type != null && typeof type !== 'string') {
+    [type, scope] = [scope, type];
+  }
   if (typeof query === 'string') {
     let match = types[query] || attributes[query];
     if (match == null) return match;
     // Check type mismatch
-    if (type === Type.BLOT) {
-      return typeof match.blotName === 'string' ? match : null;
-    } else if (type === Type.ATTRIBUTE) {
-      return typeof match.attrName === 'string' ? match : null;
-    } else {
-      return match;
+    if (type === Type.BLOT && match.blotName == null) return null;
+    if (type === Type.ATTRIBUTE && match.attrName == null) return null;
+    if (scope != null) {
+      if (match.blotName != null && !(match.prototype instanceof scope)) return null;
+      if (match.attrName != null && !(match.scope.prototype != scope)) return null;
     }
+    return match;
   } else if (query instanceof Node && type !== Type.ATTRIBUTE) {
     if (query instanceof HTMLElement) {
       let names = query.className.split(' ');

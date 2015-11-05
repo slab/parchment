@@ -17,6 +17,7 @@ class StyleAttributor extends Attributor {
   keyName: string;
 
   add(node: HTMLElement, value: string): void {
+    if (!this.canAdd(node, value)) return;
     node.style[camelize(this.keyName)] = value;
   }
 

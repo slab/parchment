@@ -20,10 +20,10 @@ class FormatBlot extends ParentBlot {
 
   buildAttributes(): void {
     var attributes = [], classes = [], styles = [];
-    Array.prototype.slice.call(this.domNode.attributes).forEach(item => {
+    [].slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
         classes = item.value.split(/\s+/).map(function(name) {
-          return name.split('-')[0] || '';
+          return name.split('-').slice(0, -1).join('-') || '';
         });
       } else if (item.name === 'style') {
         styles = item.value.split(';').map(function(val) {
