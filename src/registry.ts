@@ -20,13 +20,11 @@ function create(name: any, value?: any): any {
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${name}`);
   }
-  let blot;
   if (typeof name === 'string') {
-    blot = new BlotClass(value);
+    return new BlotClass(value);
   } else {
-    blot = new BlotClass(name);
+    return new BlotClass(name);
   }
-  return blot;
 }
 
 // match(node)
@@ -44,16 +42,18 @@ function match(query: string | Node, type?: any, scope?:any) {
     let match = types[query] || attributes[query];
     if (match == null) return match;
     // Check type mismatch
-    if (type === Type.BLOT && match.blotName == null) return null;
-    if (type === Type.ATTRIBUTE && match.attrName == null) return null;
+    if (type != null) {
+      if (type === Type.BLOT && match.blotName == null) return null;
+      if (type === Type.ATTRIBUTE && match.attrName == null) return null;
+    }
     if (scope != null) {
       if (match.blotName != null && !(match.prototype instanceof scope)) return null;
-      if (match.attrName != null && !(match.scope.prototype != scope)) return null;
+      if (match.attrName != null && (match.scope != scope)) return null;
     }
     return match;
   } else if (query instanceof Node && type !== Type.ATTRIBUTE) {
     if (query instanceof HTMLElement) {
-      let names = query.className.split(' ');
+      let names = query.className.split(/\s+/);
       for (let i in names) {
         if (names[i].indexOf(PREFIX) === 0) {
           return types[names[i].slice(PREFIX.length)];
