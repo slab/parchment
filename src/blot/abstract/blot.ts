@@ -39,11 +39,19 @@ class Blot extends ShadowNode {
     target.remove();
   }
 
+  findNode(index: number): [Node, number] {
+    return [this.domNode, 0];
+  }
+
   findPath(index: number, inclusive: boolean): Position[] {
     return [{
       blot: this,
       offset: Math.min(index, this.getLength())
     }];
+  }
+
+  findOffset(node: Node): number {
+    return node === this.domNode ? 0 : -1;
   }
 
   format(name: string, value: any): void {

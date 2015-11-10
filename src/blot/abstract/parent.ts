@@ -1,4 +1,5 @@
 import Blot, { Position } from './blot';
+import LeafBlot from './leaf';
 import LinkedList from '../../collection/linked-list';
 import { ShadowParent } from './shadow';
 import * as Registry from '../../registry';
@@ -39,6 +40,18 @@ class ParentBlot extends Blot implements ShadowParent {
         child.deleteAt(offset, length);
       });
     }
+  }
+
+  findNode(index: number): [Node, number] {
+    var [child, offset] = this.children.find(index, true);
+    return child.findNode(offset);
+  }
+
+  findOffset(node: Node): number {
+    if (node === this.domNode) return 0;
+    let blot = Blot.findBlot(node);
+    if (blot == null || blot.parent !== this) return -1;
+    return this.children.offset(blot);
   }
 
   findPath(index: number, inclusive: boolean = false): Position[] {
@@ -89,6 +102,16 @@ class ParentBlot extends Blot implements ShadowParent {
       }
     });
     return descendants;
+  }
+
+  getLeaves(): LeafBlot[] {
+    return this.getDescendants<LeafBlot>(LeafBlot);
+  }
+
+  getValue(): (Object | string)[] {
+    return [].concat.apply([], this.getLeaves().map(function(leaf) {
+      return leaf.getValue();
+    }));
   }
 
   getFormat(): Object {

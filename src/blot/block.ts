@@ -24,16 +24,6 @@ class BlockBlot extends FormatBlot {
       super.format(name, value);
     }
   }
-
-  getLeaves(): LeafBlot[] {
-    return this.getDescendants<LeafBlot>(LeafBlot);
-  }
-
-  getValue(): (Object | string)[] {
-    return [].concat.apply([], this.getLeaves().map(function(leaf) {
-      return leaf.getValue();
-    }));
-  }
 }
 
 
