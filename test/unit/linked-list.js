@@ -96,12 +96,11 @@ describe('LinkedList', function() {
       expect(this.list.tail).toBeUndefined();
     });
 
-    it('empty', function() {
+    it('contains', function() {
       this.list.append(this.a, this.b);
-      this.list.empty();
-      expect(this.list.length).toBe(0);
-      expect(this.list.head).toBeUndefined();
-      expect(this.list.tail).toBeUndefined();
+      expect(this.list.contains(this.a)).toBe(true);
+      expect(this.list.contains(this.b)).toBe(true);
+      expect(this.list.contains(this.c)).toBe(false);
     });
 
     it('move', function() {
