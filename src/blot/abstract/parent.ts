@@ -24,7 +24,7 @@ class ParentBlot extends Blot implements ShadowParent {
 
   build(): void {
     var childNodes = [].slice.call(this.domNode.childNodes);
-    this.children.empty();
+    this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     childNodes.reverse().forEach((node) => {
       var child = Blot.findBlot(node) || Registry.create(node);

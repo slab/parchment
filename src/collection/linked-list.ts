@@ -7,7 +7,8 @@ class LinkedList<T extends LinkedNode> {
   length: number;
 
   constructor() {
-    this.empty();
+    this.head = this.tail = undefined;
+    this.length = 0;
   }
 
   append(...nodes: T[]): void {
@@ -17,9 +18,12 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  empty(): void {
-    this.head = this.tail = undefined;
-    this.length = 0;
+  contains(node: T): boolean {
+    let cur, next = this.iterator();
+    while (cur = next()) {
+      if (cur === node) return true;
+    }
+    return false;
   }
 
   insertBefore(node: T, refNode: T): void {
@@ -56,6 +60,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   remove(node: T): void {
+    if (!this.contains(node)) return;
     if (node.prev != null) node.prev.next = node.next;
     if (node.next != null) node.next.prev = node.prev
     if (node === this.head) this.head = <T>node.next;
