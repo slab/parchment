@@ -1,3 +1,5 @@
+"use strict"
+
 class BoldBlot extends InlineBlot {}
 BoldBlot.blotName = 'bold';
 BoldBlot.tagName = 'STRONG';

@@ -1,3 +1,5 @@
+"use strict"
+
 var ColorAttributor = new StyleAttributor('color', 'color');
 Registry.register(ColorAttributor);
 
