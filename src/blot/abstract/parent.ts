@@ -12,8 +12,8 @@ class ParentBlot extends Blot implements ShadowParent {
   parent: ParentBlot;
   children: LinkedList<Blot>;
 
-  constructor(value) {
-    super(value);
+  constructor(node: Node) {
+    super(node);
     this.children = new LinkedList<Blot>();
     this.build();
   }

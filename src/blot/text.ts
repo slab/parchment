@@ -9,12 +9,15 @@ class TextBlot extends LeafBlot {
   domNode: Text;
   private text: string;
 
-  constructor(value: string | Node) {
-    if (typeof value === 'string') {
-      super(document.createTextNode(value));
-    } else {
-      super(value);
+  static create(value: string): Text {
+    if (typeof value !== 'string') {
+      console.trace()
     }
+    return document.createTextNode(value);
+  }
+
+  constructor(node: Node) {
+    super(node);
     this.text = this.domNode.data;
   }
 
@@ -59,7 +62,7 @@ class TextBlot extends LeafBlot {
       if (index === 0) return this;
       if (index === this.getLength()) return this.next;
     }
-    var after = Registry.create(this.statics.blotName, this.domNode.splitText(index));
+    var after = Registry.create(this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
     this.text = this.domNode.data;
     return after;

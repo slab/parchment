@@ -1,10 +1,4 @@
 describe('TextBlot', function() {
-  it('constructor(string)', function() {
-    var blot = new TextBlot('Test');
-    expect(blot.text).toEqual('Test');
-    expect(blot.domNode.data).toEqual('Test');
-  });
-
   it('constructor(node)', function() {
     var node = document.createTextNode('Test');
     var blot = new TextBlot(node);
@@ -13,7 +7,7 @@ describe('TextBlot', function() {
   });
 
   it('deleteAt() partial', function() {
-    var blot = new TextBlot('Test');
+    var blot = Registry.create('text', 'Test');
     blot.deleteAt(1, 2);
     expect(blot.getValue()).toEqual('Tt');
     expect(blot.getLength()).toEqual(2);
@@ -21,7 +15,7 @@ describe('TextBlot', function() {
 
   it('deleteAt() all', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     expect(container.domNode.firstChild).toEqual(textBlot.domNode);
     textBlot.deleteAt(0, 4);
@@ -30,14 +24,14 @@ describe('TextBlot', function() {
   });
 
   it('insertAt() text', function() {
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     textBlot.insertAt(1, 'ough');
     expect(textBlot.getValue()).toEqual('Toughest');
   });
 
   it('insertAt() other', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.insertAt(2, 'image', {});
     expect(textBlot.getValue()).toEqual('Te');
@@ -47,7 +41,7 @@ describe('TextBlot', function() {
 
   it('split() middle', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     var after = textBlot.split(2);
     expect(textBlot.getValue()).toEqual('Te');
@@ -58,7 +52,7 @@ describe('TextBlot', function() {
 
   it('split() noop', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     var before = textBlot.split(0);
     var after = textBlot.split(4);
@@ -68,7 +62,7 @@ describe('TextBlot', function() {
 
   it('split() force', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     var after = textBlot.split(4, true);
     expect(after).not.toEqual(textBlot);
@@ -79,7 +73,7 @@ describe('TextBlot', function() {
 
   it('format wrap', function() {
     var container = Registry.create('inline');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.formatAt(0, 4, 'bold', true);
     expect(textBlot.domNode.parentNode.tagName).toEqual('STRONG');
@@ -88,7 +82,7 @@ describe('TextBlot', function() {
 
   it('format split', function() {
     var container = Registry.create('block');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.formatAt(1, 2, 'bold', true);
     expect(container.domNode.innerHTML).toEqual('T<strong>es</strong>t');

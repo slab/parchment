@@ -21,7 +21,7 @@ describe('Attributor', function() {
 
   it('add to text', function() {
     var container = Registry.create('block');
-    var textBlot = new TextBlot('Test');
+    var textBlot = Registry.create('text', 'Test')
     container.appendChild(textBlot);
     textBlot.format('color', 'red');
     expect(textBlot.domNode.parentNode.style.color).toEqual('red');

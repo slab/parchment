@@ -13,18 +13,15 @@ export const Type = {
 };
 
 
-function create(name: Node);
-function create(name: string, value?: any);
-function create(name: any, value?: any): any {
-  var BlotClass = match(name, Type.BLOT);
+function create(node: Node | string, value?: any) {
+  var BlotClass = match(node, Type.BLOT);
   if (typeof BlotClass !== 'function') {
-    throw new Error(`[Parchment] Unable to create ${name}`);
+    throw new Error(`[Parchment] Unable to create ${node}`);
   }
-  if (typeof name === 'string') {
-    return new BlotClass(value);
-  } else {
-    return new BlotClass(name);
+  if (typeof node === 'string') {
+    node = BlotClass.create(value);
   }
+  return new BlotClass(node);
 }
 
 // match(node)

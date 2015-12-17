@@ -25,14 +25,7 @@ class ShadowNode implements LinkedNode {
   parent: ShadowParent;
   domNode: Node;
 
-  constructor(node: any) {
-    if (!(node instanceof Node)) {
-      if (Array.isArray(this.statics.tagName) && this.statics.tagName.indexOf(node) > -1) {
-        node = document.createElement(node);
-      } else {
-        node = document.createElement(this.statics.tagName);
-      }
-    }
+  constructor(node: Node) {
     this.domNode = node;
   }
 
