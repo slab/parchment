@@ -4,6 +4,8 @@ import * as Registry from '../../registry';
 
 interface ShadowStatic {
   blotName: string;
+  className: string;
+  scope: Registry.Scope;
   tagName: string;
 }
 
@@ -18,7 +20,7 @@ interface ShadowParent extends ShadowNode {
 }
 
 class ShadowNode implements LinkedNode {
-  static blotName = 'shadow';
+  static blotName: string;
 
   prev: ShadowNode;
   next: ShadowNode;
@@ -34,6 +36,8 @@ class ShadowNode implements LinkedNode {
     var statics = <any>this.constructor;
     return {
       blotName: statics.blotName,
+      className: statics.className,
+      scope: statics.scope,
       tagName: statics.tagName
     };
   }

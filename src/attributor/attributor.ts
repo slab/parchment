@@ -2,14 +2,14 @@ import * as Registry from '../registry';
 
 
 interface AttributorOptions {
-  scope?: any;
+  scope?: Registry.Scope;
   whitelist?: string[];
 }
 
 class Attributor {
   attrName: string;
   keyName: string;
-  scope: any;
+  scope: Registry.Scope;
   whitelist: string[];
 
   constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
@@ -24,7 +24,7 @@ class Attributor {
   }
 
   canAdd(node: HTMLElement, value: string): boolean {
-    if ((this.scope != null && !Registry.match(node, this.scope)) ||
+    if ((Registry.match(node, Registry.Type.BLOT, this.scope) == null) ||
         (this.whitelist != null && this.whitelist.indexOf(value) < 0)) {
       return false;
     }

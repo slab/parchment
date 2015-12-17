@@ -6,15 +6,18 @@ import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
 
 
+type ChildBlot = BlockBlot | InlineBlot | LeafBlot;
+
 class BlockBlot extends FormatBlot {
   static blotName = 'block';
+  static scope = Registry.Scope.BLOCK;
   static tagName = 'P';
 
-  children: LinkedList<InlineBlot | LeafBlot>;
+  children: LinkedList<ChildBlot>;
 
   format(name: string, value: any): void {
-    let blot = Registry.match(name, Registry.Type.BLOT);
-    if (blot != null && !(blot.prototype instanceof InlineBlot)) {
+    let blot = Registry.match(name, Registry.Type.BLOT, this.statics.scope);
+    if (blot != null) {
       if (value) {
         this.replace(name, value);
       } else {
@@ -23,6 +26,10 @@ class BlockBlot extends FormatBlot {
     } else {
       super.format(name, value);
     }
+  }
+
+  insertBefore(childBlot: ChildBlot, refBlot?: ChildBlot): void {
+    super.insertBefore(childBlot, refBlot);
   }
 }
 

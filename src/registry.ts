@@ -7,6 +7,13 @@ var types = {};
 
 export const PREFIX = 'blot-';
 
+export enum Scope {
+  CONTAINER = 1,
+  BLOCK = 2,
+  INLINE = 3,
+  LEAF = 4
+};
+
 export const Type = {
   ATTRIBUTE: 'attribute',
   BLOT: 'blot'
@@ -29,9 +36,9 @@ function create(node: Node | string, value?: any) {
 // match(node, BlockBlot, Type.ATTRIBUTE)
 // match(node, Type.ATTRIBUTE, BlockBlot)
 // match(node, BlockBlot)
-function match(query: string | Node, type?: string, scope?: any);
-function match(query: string | Node, scope?: any, type?: string);
-function match(query: string | Node, type?: any, scope?:any) {
+function match(query: string | Node, type?: string, scope?: Scope);
+function match(query: string | Node, scope?: Scope, type?: string);
+function match(query: string | Node, type?: any, scope?: any) {
   if (type != null && typeof type !== 'string') {
     [type, scope] = [scope, type];
   }
@@ -43,9 +50,8 @@ function match(query: string | Node, type?: any, scope?:any) {
       if (type === Type.BLOT && match.blotName == null) return null;
       if (type === Type.ATTRIBUTE && match.attrName == null) return null;
     }
-    if (scope != null) {
-      if (match.blotName != null && !(match.prototype instanceof scope)) return null;
-      if (match.attrName != null && (match.scope != scope)) return null;
+    if (scope != null && match.scope !== scope) {
+      return null;
     }
     return match;
   } else if (query instanceof Node && type !== Type.ATTRIBUTE) {

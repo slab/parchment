@@ -6,6 +6,7 @@ import * as Registry from '../registry';
 import { ShadowParent } from './abstract/shadow';
 import LinkedList from '../collection/linked-list';
 
+type ChildBlot = InlineBlot | LeafBlot;
 
 // Shallow object comparison
 function isEqual(obj1, obj2) {
@@ -20,9 +21,10 @@ function isEqual(obj1, obj2) {
 
 class InlineBlot extends FormatBlot {
   static blotName = 'inline';
+  static scope = Registry.Scope.INLINE;
   static tagName = 'SPAN';
 
-  children: LinkedList<InlineBlot | LeafBlot>;
+  children: LinkedList<ChildBlot>;
 
   static compare = function(thisName: string, otherName: string): boolean {
     return thisName <= otherName;
@@ -46,6 +48,10 @@ class InlineBlot extends FormatBlot {
     } else {
       super.formatAt(index, length, name, value);
     }
+  }
+
+  insertBefore(childBlot: ChildBlot, refBlot?: ChildBlot): void {
+    super.insertBefore(childBlot, refBlot);
   }
 
   merge(target: Blot = this.next): boolean {

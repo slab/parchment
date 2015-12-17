@@ -14,6 +14,7 @@ const OBSERVER_CONFIG = {
 
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
+  static scope = Registry.Scope.CONTAINER;
   static tagName = 'DIV';
 
   children: LinkedList<BlockBlot>;
@@ -64,6 +65,10 @@ class ContainerBlot extends ParentBlot {
     return this.getBlocks().map(function(block) {
       return block.getValue();
     });
+  }
+
+  insertBefore(childBlot: BlockBlot, refBlot?: BlockBlot): void {
+    super.insertBefore(childBlot, refBlot);
   }
 
   insertAt(index: number, value: string, def?: any) {

@@ -1,5 +1,4 @@
 import Attributor from '../../attributor/attributor';
-import { DEFAULT_SCOPE } from './blot';
 import ParentBlot from './parent';
 import * as Registry from '../../registry';
 
@@ -43,15 +42,13 @@ class FormatBlot extends ParentBlot {
   }
 
   format(name: string, value: any): void {
-    if (Registry.match(name, Registry.Type.ATTRIBUTE) != null) {
+    let attribute = Registry.match(name, Registry.Type.ATTRIBUTE);
+    if (attribute != null) {
       if (value) {
-        this.attributes[name] = Registry.match(name, Registry.Type.ATTRIBUTE);
+        this.attributes[name] = attribute;
         this.attributes[name].add(this.domNode, value);
       } else if (this.attributes[name] != null) {
         this.attributes[name].remove(this.domNode);
-      }
-      if (!this.attributes[name].value(this.domNode)) {
-        // Add falsy value may end up removing
         delete this.attributes[name];
       }
     } else {
@@ -66,7 +63,8 @@ class FormatBlot extends ParentBlot {
       }
       return formats;
     }, super.getFormat());
-    if (DEFAULT_SCOPE.indexOf(this.statics.blotName) < 0) {
+    // TODO fix
+    if (['container', 'block', 'inline', 'leaf'].indexOf(this.statics.blotName) < 0) {
       formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;
     }
     return formats;

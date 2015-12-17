@@ -1,7 +1,9 @@
 import Blot from './blot';
+import * as Registry from '../../registry';
 
 class LeafBlot extends Blot {
   static blotName = 'leaf';
+  static scope = Registry.Scope.LEAF;
 
   findNode(index: number): [Node, number] {
     return [this.domNode, index];

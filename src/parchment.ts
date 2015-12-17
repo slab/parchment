@@ -30,6 +30,7 @@ var Parchment = {
   match: Registry.match,
   register: Registry.register,
 
+  Scope: Registry.Scope,
   Type: Registry.Type,
 
   findBlot: Blot.findBlot
