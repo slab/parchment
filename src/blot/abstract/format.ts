@@ -34,7 +34,7 @@ class FormatBlot extends ParentBlot {
       }
     });
     attributes.concat(classes).concat(styles).forEach(name => {
-      var attr = Registry.match(name, Registry.Type.ATTRIBUTE);
+      var attr = Registry.match(name, Registry.Scope.ATTRIBUTE);
       if (attr != null) {
         this.attributes[attr.attrName] = attr;
       }
@@ -42,7 +42,7 @@ class FormatBlot extends ParentBlot {
   }
 
   format(name: string, value: any): void {
-    let attribute = Registry.match(name, Registry.Type.ATTRIBUTE);
+    let attribute = Registry.match(name, Registry.Scope.ATTRIBUTE);
     if (attribute != null) {
       if (value) {
         this.attributes[name] = attribute;

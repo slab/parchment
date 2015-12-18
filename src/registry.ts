@@ -8,20 +8,21 @@ var types = {};
 export const PREFIX = 'blot-';
 
 export enum Scope {
-  CONTAINER = 1,
-  BLOCK = 2,
-  INLINE = 3,
-  LEAF = 4
-};
+  ATTRIBUTE = 1,
+  BLOT = 2,
+  CONTAINER = 4,
+  BLOCK = 8,
+  INLINE = 16,
+  LEAF = 32,
 
-export const Type = {
-  ATTRIBUTE: 'attribute',
-  BLOT: 'blot'
+  TYPE = ATTRIBUTE | BLOT,
+  LEVEL = CONTAINER | BLOCK | INLINE | LEAF,
+  ANY = TYPE | LEVEL
 };
 
 
 function create(node: Node | string, value?: any) {
-  var BlotClass = match(node, Type.BLOT);
+  var BlotClass = match(node, Scope.BLOT);
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${node}`);
   }
@@ -31,46 +32,28 @@ function create(node: Node | string, value?: any) {
   return new BlotClass(node);
 }
 
-// match(node)
-// match(node, Type.ATTRIBUTE)
-// match(node, BlockBlot, Type.ATTRIBUTE)
-// match(node, Type.ATTRIBUTE, BlockBlot)
-// match(node, BlockBlot)
-function match(query: string | Node, type?: string, scope?: Scope);
-function match(query: string | Node, scope?: Scope, type?: string);
-function match(query: string | Node, type?: any, scope?: any) {
-  if (type != null && typeof type !== 'string') {
-    [type, scope] = [scope, type];
-  }
+function match(query: string | Node, scope: Scope = Scope.ANY) {
+  let match;
   if (typeof query === 'string') {
-    let match = types[query] || attributes[query];
-    if (match == null) return match;
-    // Check type mismatch
-    if (type != null) {
-      if (type === Type.BLOT && match.blotName == null) return null;
-      if (type === Type.ATTRIBUTE && match.attrName == null) return null;
-    }
-    if (scope != null && match.scope !== scope) {
-      return null;
-    }
-    return match;
-  } else if (query instanceof Node && type !== Type.ATTRIBUTE) {
-    if (query instanceof HTMLElement) {
-      let names = query.className.split(/\s+/);
-      for (let i in names) {
-        if (names[i].indexOf(PREFIX) === 0) {
-          return types[names[i].slice(PREFIX.length)];
-        }
+    match = types[query] || attributes[query];
+  } else if (query instanceof Text) {
+    match = types['text'];
+  } else if (query instanceof HTMLElement) {
+    let names = query.className.split(/\s+/);
+    for (let i in names) {
+      if (names[i].indexOf(PREFIX) === 0) {
+        match = types[names[i].slice(PREFIX.length)];
+        break;
       }
-      return tags[query.tagName];
-    } else if (query instanceof Text && type !== Type.ATTRIBUTE) {
-      return types['text'];
     }
+    match = match || tags[query.tagName];
   }
-  return null;
+  if (match == null) return null;
+  if (scope & Scope.LEVEL && !(match.scope & Scope.LEVEL & scope)) return null;
+  if (scope & Scope.TYPE && !(match.scope & Scope.TYPE & scope)) return null;
+  return match;
 }
 
-// Only support real classes since calling superclass definitions are so important
 function register(Definition) {
   if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
     throw new Error('[Parchment] Invalid definition');

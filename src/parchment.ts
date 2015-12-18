@@ -14,6 +14,11 @@ import * as Registry from './registry';
 
 var Parchment = {
   PREFIX: Registry.PREFIX,
+  Scope: Registry.Scope,
+
+  create: Registry.create,
+  match: Registry.match,
+  register: Registry.register,
 
   Container: ContainerBlot,
   Block: BlockBlot,
@@ -25,13 +30,6 @@ var Parchment = {
     Class: ClassAttributor,
     Style: StyleAttributor
   },
-
-  create: Registry.create,
-  match: Registry.match,
-  register: Registry.register,
-
-  Scope: Registry.Scope,
-  Type: Registry.Type,
 
   findBlot: Blot.findBlot
 };

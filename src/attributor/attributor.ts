@@ -15,7 +15,7 @@ class Attributor {
   constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
     this.attrName = attrName;
     this.keyName = keyName;
-    if (options.scope != null) this.scope = options.scope;
+    this.scope = (options.scope || Registry.Scope.LEVEL) | Registry.Scope.ATTRIBUTE;
     if (options.whitelist != null) this.whitelist = options.whitelist;
   }
 
@@ -24,7 +24,7 @@ class Attributor {
   }
 
   canAdd(node: HTMLElement, value: string): boolean {
-    if ((Registry.match(node, Registry.Type.BLOT, this.scope) == null) ||
+    if ((Registry.match(node, Registry.Scope.BLOT | this.scope) == null) ||
         (this.whitelist != null && this.whitelist.indexOf(value) < 0)) {
       return false;
     }

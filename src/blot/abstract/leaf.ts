@@ -3,7 +3,7 @@ import * as Registry from '../../registry';
 
 class LeafBlot extends Blot {
   static blotName = 'leaf';
-  static scope = Registry.Scope.LEAF;
+  static scope = Registry.Scope.LEAF | Registry.Scope.BLOT;
 
   findNode(index: number): [Node, number] {
     return [this.domNode, index];

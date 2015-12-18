@@ -76,9 +76,9 @@ class Blot extends ShadowNode {
 
   format(name: string, value: any): void {
     var mergeTarget = this;
-    if (Registry.match(name, Registry.Type.BLOT) && value) {
+    if (Registry.match(name, Registry.Scope.BLOT) && value) {
       mergeTarget = <ParentBlot>this.wrap(name, value);
-    } else if (Registry.match(name, Registry.Type.ATTRIBUTE) && value) {
+    } else if (Registry.match(name, Registry.Scope.ATTRIBUTE) && value) {
       mergeTarget = <ParentBlot>this.wrap('inline', true);
       mergeTarget.format(name, value);
     };
