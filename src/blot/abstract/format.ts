@@ -7,6 +7,7 @@ interface Attributors {
   [index: string]: Attributor;
 }
 
+const REQUIRED_BLOTS = ['container', 'block', 'inline', 'leaf'];
 
 class FormatBlot extends ParentBlot {
   attributes: Attributors;
@@ -63,8 +64,7 @@ class FormatBlot extends ParentBlot {
       }
       return formats;
     }, super.getFormat());
-    // TODO fix
-    if (['container', 'block', 'inline', 'leaf'].indexOf(this.statics.blotName) < 0) {
+    if (REQUIRED_BLOTS.indexOf(this.statics.blotName) < 0) {
       formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;
     }
     return formats;

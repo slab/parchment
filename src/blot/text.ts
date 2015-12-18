@@ -10,9 +10,6 @@ class TextBlot extends LeafBlot {
   private text: string;
 
   static create(value: string): Text {
-    if (typeof value !== 'string') {
-      console.trace()
-    }
     return document.createTextNode(value);
   }
 
