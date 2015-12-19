@@ -30,7 +30,7 @@ class InlineBlot extends FormatBlot {
     return thisName <= otherName;
   }
 
-  format(name: string, value: any): void {
+  format(name: string, value: any) {
     super.format(name, value);
     if (Object.keys(this.getFormat()).length === 0) {
       this.unwrap();

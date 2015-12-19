@@ -32,13 +32,16 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  deleteAt(index: number, length: number): void {
+  deleteAt(index: number, length: number): Blot[] | void {
     if (index === 0 && length === this.getLength()) {
       this.remove();
     } else {
+      let children = [];
       this.children.forEachAt(index, length, function(child, offset, length) {
         child.deleteAt(offset, length);
+        children.push(child);
       });
+      return children;
     }
   }
 
@@ -71,18 +74,24 @@ class ParentBlot extends Blot implements ShadowParent {
     return pos.concat(child.findPath(offset, inclusive));
   }
 
-  format(name: string, value: any): void {
+  format(name: string, value: any): Blot[] | void {
     if (!value && name === this.statics.blotName) {
       this.unwrap();
+      return this.children.map(function(child) {
+        return child;
+      });
     } else {
       super.format(name, value);
     }
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
+  formatAt(index: number, length: number, name: string, value: any): Blot[] | void {
+    let children = [];
     this.children.forEachAt(index, length, function(child, offset, length) {
       child.formatAt(offset, length, name, value);
+      children.push(child);
     });
+    return children;
   }
 
   getDescendants<T>(type: any): T[];
@@ -124,13 +133,15 @@ class ParentBlot extends Blot implements ShadowParent {
     }, 0);
   }
 
-  insertAt(index: number, value: string, def?: any): void {
+  insertAt(index: number, value: string, def?: any): Blot[] | void {
     var [child, offset] = this.children.find(index);
     if (child) {
       child.insertAt(offset, value, def);
+      return [child];
     } else {
       let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
       this.insertBefore(blot);
+      return [blot]
     }
   }
 
@@ -153,6 +164,8 @@ class ParentBlot extends Blot implements ShadowParent {
       targetParent.insertBefore(child, refNode);
     });
   }
+
+  optimize() { }
 
   replace(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName && this.getFormat[name] === value) {

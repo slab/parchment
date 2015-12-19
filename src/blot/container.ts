@@ -19,7 +19,6 @@ class ContainerBlot extends ParentBlot {
 
   children: LinkedList<BlockBlot>;
   observer: MutationObserver;
-  dirty: boolean;
 
   constructor(node: Node) {
     super(node);
@@ -27,28 +26,28 @@ class ContainerBlot extends ParentBlot {
       this.update(mutations);
     });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
-    this.dirty = false;
   }
 
-  deleteAt(index: number, length: number) {
-    this.dirty = true;
-    this.observer.disconnect();
-    super.deleteAt(index, length);
+  edit(method, ...params): Blot[] {
+    this.observer.disconnect()
+    let children = method.apply(this, params) || [];
+    children.forEach(function(child: Blot) {
+      child.optimize();
+    });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
+    return children;
   }
 
-  format(name: string, value: any) {
-    this.dirty = true;
-    this.observer.disconnect();
-    super.format(name, value);
-    this.observer.observe(this.domNode, OBSERVER_CONFIG);
+  deleteAt(index: number, length: number): Blot[] {
+    return this.edit(super.deleteAt, index, length);
   }
 
-  formatAt(index: number, length: number, name: string, value: any) {
-    this.dirty = true;
-    this.observer.disconnect();
-    super.formatAt(index, length, name, value);
-    this.observer.observe(this.domNode, OBSERVER_CONFIG);
+  format(name: string, value: any): Blot[] {
+    return this.edit(super.format, name, value);
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): Blot[] {
+    return this.edit(super.formatAt, index, length, name, value);
   }
 
   getBlocks(): BlockBlot[] {
@@ -71,11 +70,8 @@ class ContainerBlot extends ParentBlot {
     super.insertBefore(childBlot, refBlot);
   }
 
-  insertAt(index: number, value: string, def?: any) {
-    this.dirty = true;
-    this.observer.disconnect();
-    super.insertAt(index, value, def);
-    this.observer.observe(this.domNode, OBSERVER_CONFIG);
+  insertAt(index: number, value: string, def?: any): Blot[] {
+    return this.edit(super.insertAt, index, value, def);
   }
 
   update(mutations: MutationRecord);
@@ -94,7 +90,6 @@ class ContainerBlot extends ParentBlot {
       }
     });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
-    this.dirty = false;
   }
 }
 

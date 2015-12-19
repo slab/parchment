@@ -112,6 +112,8 @@ class Blot extends ShadowNode {
     }
   }
 
+  optimize() { }
+
   remove(): void {
     delete this.domNode[DATA_KEY];
     super.remove();
