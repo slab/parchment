@@ -28,22 +28,22 @@ class ContainerBlot extends ParentBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
-  edit(method, ...params): void {
+  deleteAt(index: number, length: number): void {
     this.update(this.observer.takeRecords());
-    method.apply(this, params);
+    super.deleteAt(index, length);
     this.optimize();
   }
 
-  deleteAt(index: number, length: number): void {
-    this.edit(super.deleteAt, index, length);
-  }
-
   format(name: string, value: any): void {
-    this.edit(super.format, name, value);
+    this.update(this.observer.takeRecords());
+    this.format(name, value);
+    this.optimize();
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    this.edit(super.formatAt, index, length, name, value);
+    this.update(this.observer.takeRecords());
+    super.formatAt(index, length, name, value);
+    this.optimize();
   }
 
   getBlocks(): BlockBlot[] {
@@ -63,14 +63,16 @@ class ContainerBlot extends ParentBlot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    this.edit(super.insertAt, index, value, def);
+    this.update(this.observer.takeRecords());
+    super.insertAt(index, value, def);
+    this.optimize();
   }
 
   insertBefore(childBlot: BlockBlot, refBlot?: BlockBlot): void {
     super.insertBefore(childBlot, refBlot);
   }
 
-  optimize() {
+  optimize(): void {
     // TODO use WeakMap
     let mutations = this.observer.takeRecords();
     this.observer.disconnect();
@@ -87,7 +89,7 @@ class ContainerBlot extends ParentBlot {
         }
       }
     });
-    let traverse = function(blot: Blot) {  // Post-order
+    let traverse = function(blot: Blot): void {  // Post-order
       if (blot instanceof ParentBlot) {
         blot.children.forEach(function(child) {
           if (blot.domNode[DATA_KEY].mutations != null) {
@@ -101,7 +103,7 @@ class ContainerBlot extends ParentBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
-  update(mutations: MutationRecord[]) {
+  update(mutations: MutationRecord[]): void {
     // TODO use WeakMap
     mutations.map((mutation: MutationRecord) => {
       let blot = Blot.findBlot(mutation.target, true);

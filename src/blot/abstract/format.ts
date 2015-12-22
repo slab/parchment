@@ -70,7 +70,7 @@ class FormatBlot extends ParentBlot {
     return formats;
   }
 
-  moveAttributes(target: FormatBlot) {
+  moveAttributes(target: FormatBlot): void {
     Object.keys(this.attributes).forEach(key => {
       var value = this.attributes[key].value(this.domNode);
       target.format(key, value);
@@ -84,7 +84,7 @@ class FormatBlot extends ParentBlot {
     return replacement;
   }
 
-  update(mutations: MutationRecord[]) {
+  update(mutations: MutationRecord[]): void {
     super.update(mutations);
     mutations.forEach((mutation) => {
       if (mutation.target !== this.domNode) return;
