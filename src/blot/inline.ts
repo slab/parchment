@@ -47,6 +47,22 @@ class InlineBlot extends FormatBlot {
     super.insertBefore(childBlot, refBlot);
   }
 
+  optimize(): void {
+    if (this.children.length === 0) {
+      return this.unwrap();  // unformatted span
+    }
+    let formats = this.getFormat();
+    if (Object.keys(formats).length === 0) {
+      return this.unwrap();
+    }
+    let prev = this.prev;
+    if (prev instanceof InlineBlot && isEqual(formats, prev.getFormat()) {
+      prev.moveChildren(this, this.children.head);
+      prev.remove();
+    }
+    super.optimize();
+  }
+
   unwrap(): void {
     if (Object.keys(this.attributes).length) {
       this.replace(InlineBlot.blotName, true);

@@ -44,6 +44,18 @@ class TextBlot extends LeafBlot {
     }
   }
 
+  optimize(): void {
+    this.text = this.domNode.data;
+    if (this.text.length === 0) {
+      this.remove();
+    } else if (this.prev instanceof TextBlot) {
+      this.prev.insertAt(this.prev.getLength(), this.text);
+      this.remove();
+    } else {
+      super.optimize();
+    }
+  }
+
   split(index: number, force: boolean = false): Blot {
     if (!force) {
       if (index === 0) return this;
@@ -55,7 +67,7 @@ class TextBlot extends LeafBlot {
     return after;
   }
 
-  update(mutations: MutationRecord[]) {
+  update(mutations: MutationRecord[]): void {
     mutations.forEach((mutation) => {
       if (mutation.target !== this.domNode && mutation.type === 'characterData') {
         this.text = this.domNode.data;

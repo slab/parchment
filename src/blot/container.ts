@@ -118,7 +118,4 @@ class ContainerBlot extends ParentBlot {
 }
 
 
-export
-
-
 export default ContainerBlot;

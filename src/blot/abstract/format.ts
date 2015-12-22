@@ -42,7 +42,7 @@ class FormatBlot extends ParentBlot {
     });
   }
 
-  format(name: string, value: any): Blot[] | void {
+  format(name: string, value: any): void {
     let attribute = Registry.match(name, Registry.Scope.ATTRIBUTE);
     if (attribute != null) {
       if (value) {
@@ -52,7 +52,6 @@ class FormatBlot extends ParentBlot {
         this.attributes[name].remove(this.domNode);
         delete this.attributes[name];
       }
-      return [this];
     } else {
       super.format(name, value);
     }
