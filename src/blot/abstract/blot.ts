@@ -3,7 +3,7 @@ import ParentBlot from './parent';
 import ShadowNode from './shadow';
 
 
-const DATA_KEY = '__blot_data';
+export const DATA_KEY = '__blot';
 
 
 export interface Position {
@@ -27,6 +27,8 @@ class Blot extends ShadowNode {
         node = document.createElement(this.tagName[value - 1]);
       } else if (this.tagName.indexOf(value) > -1) {
         node = document.createElement(value);
+      } else {
+        node = document.createElement(this.tagName[0]);
       }
     } else {
       node = document.createElement(this.tagName);
@@ -38,11 +40,10 @@ class Blot extends ShadowNode {
   }
 
   static findBlot(node: Node, bubble: boolean = false): Blot {
-    while (true) {
-      if (node == null) return null;
-      if (node[DATA_KEY] || !bubble) return node[DATA_KEY];
-      node = node.parentNode;
-    }
+    if (node == null) return null;
+    if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
+    if (bubble) return this.findBlot(node.parentNode, bubble);
+    return null;
   }
 
   prev: Blot;
@@ -51,7 +52,7 @@ class Blot extends ShadowNode {
 
   constructor(node: Node) {
     super(node);
-    this.domNode[DATA_KEY] = this;
+    this.domNode[DATA_KEY] = { blot: this };
   }
 
   deleteAt(index: number, length: number): void {
@@ -63,6 +64,10 @@ class Blot extends ShadowNode {
     return [this.domNode, 0];
   }
 
+  findOffset(node: Node): number {
+    return node === this.domNode ? 0 : -1;
+  }
+
   findPath(index: number, inclusive: boolean): Position[] {
     return [{
       blot: this,
@@ -70,21 +75,13 @@ class Blot extends ShadowNode {
     }];
   }
 
-  findOffset(node: Node): number {
-    return node === this.domNode ? 0 : -1;
-  }
-
   format(name: string, value: any): void {
-    var mergeTarget = this;
-    if (Registry.match(name, Registry.Scope.BLOT) && value) {
-      mergeTarget = <ParentBlot>this.wrap(name, value);
+    if (!value) return;
+    if (Registry.match(name, Registry.Scope.BLOT)) {
+      this.wrap(name, value);
     } else if (Registry.match(name, Registry.Scope.ATTRIBUTE) && value) {
-      mergeTarget = <ParentBlot>this.wrap('inline', true);
-      mergeTarget.format(name, value);
+      this.wrap('inline', true);
     };
-    if (mergeTarget.prev != null) {
-      mergeTarget.prev.merge();
-    }
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -98,10 +95,6 @@ class Blot extends ShadowNode {
     this.parent.insertBefore(blot, target);
   }
 
-  merge(target: Blot = this.next): boolean {
-    return false;
-  }
-
   offset(root?: Blot): number {
     if (this.parent == null || root == this) return 0;
     // TODO rewrite this when we properly define parent as a BlotParent
@@ -112,17 +105,11 @@ class Blot extends ShadowNode {
     }
   }
 
-  optimize() { }
-
-  remove(): void {
-    delete this.domNode[DATA_KEY];
-    super.remove();
-    if (this.prev != null) {
-      this.prev.merge();
-    }
+  optimize() {
+    delete this.domNode[DATA_KEY].mutations;
   }
 
-  update(mutation: MutationRecord) { }
+  update(mutations: MutationRecord[]) { }    // Descendents implement
 }
 
 

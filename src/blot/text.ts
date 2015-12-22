@@ -44,16 +44,6 @@ class TextBlot extends LeafBlot {
     }
   }
 
-  merge(target:Blot = this.next): boolean {
-    if (target instanceof TextBlot) {
-      this.text = this.text + target.text;
-      this.domNode.data = this.text;
-      target.remove();
-      return true;
-    }
-    return false;
-  }
-
   split(index: number, force: boolean = false): Blot {
     if (!force) {
       if (index === 0) return this;
@@ -65,10 +55,12 @@ class TextBlot extends LeafBlot {
     return after;
   }
 
-  update(mutation: MutationRecord) {
-    if (mutation.type === 'characterData') {
-      this.text = this.domNode.data;
-    }
+  update(mutations: MutationRecord[]) {
+    mutations.forEach((mutation) => {
+      if (mutation.target !== this.domNode && mutation.type === 'characterData') {
+        this.text = this.domNode.data;
+      }
+    });
   }
 }
 

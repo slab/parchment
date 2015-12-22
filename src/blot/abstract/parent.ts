@@ -32,16 +32,13 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  deleteAt(index: number, length: number): Blot[] | void {
+  deleteAt(index: number, length: number): void {
     if (index === 0 && length === this.getLength()) {
       this.remove();
     } else {
-      let children = [];
       this.children.forEachAt(index, length, function(child, offset, length) {
         child.deleteAt(offset, length);
-        children.push(child);
       });
-      return children;
     }
   }
 
@@ -165,8 +162,6 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  optimize() { }
-
   replace(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName && this.getFormat[name] === value) {
       return this;
@@ -201,18 +196,29 @@ class ParentBlot extends Blot implements ShadowParent {
     this.remove();
   }
 
-  update(mutation: MutationRecord) {
-    if (mutation.type === 'childList') {
-      if (mutation.addedNodes.length > 0) {
-        this.build();
-      }
-      [].forEach.call(mutation.removedNodes, function(node) {
-        let removed = Blot.findBlot(node);
-        if (removed != null && node === removed.domNode && removed.domNode.parentNode == null) {
-          removed.remove();
+  update(mutations: MutationRecord[]) {
+    let updated = mutations.some((mutation) => {
+      return mutation.target === this.domNode && mutation.type === 'childList';
+    });
+    if (updated) {
+      let childNode = this.domNode.firstChild;
+      this.children.forEach((child) => {
+        while (childNode !== child.domNode) {
+          if (child.domNode.parentNode === this.domNode) {
+            let blot = Blot.findBlot(childNode) || Registry.create(childNode);
+            this.children.insertBefore(blot, child);
+          } else {
+            child.remove();
+          }
         }
+        childNode = childNode.nextSibling;
       });
+      while (childNode != null) {
+        let blot = Blot.findBlot(childNode) || Registry.create(childNode);
+        this.children.append(blot);
+      }
     }
+    super.update(mutations);
   }
 }
 

@@ -30,13 +30,6 @@ class InlineBlot extends FormatBlot {
     return thisName <= otherName;
   }
 
-  format(name: string, value: any) {
-    super.format(name, value);
-    if (Object.keys(this.getFormat()).length === 0) {
-      this.unwrap();
-    }
-  }
-
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.match(name, Registry.Scope.ATTRIBUTE) ||
         InlineBlot.compare(this.statics.blotName, name)) {
@@ -52,19 +45,6 @@ class InlineBlot extends FormatBlot {
 
   insertBefore(childBlot: ChildBlot, refBlot?: ChildBlot): void {
     super.insertBefore(childBlot, refBlot);
-  }
-
-  merge(target: Blot = this.next): boolean {
-    if (!this.parent) return false;
-    if (target instanceof InlineBlot &&
-        isEqual(target.getFormat(), this.getFormat())) {
-      var nextTarget = this.children.tail;
-      target.moveChildren(this);
-      target.remove();
-      nextTarget.merge();
-      return true;
-    }
-    return false;
   }
 
   unwrap(): void {

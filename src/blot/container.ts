@@ -1,4 +1,4 @@
-import Blot, { Position } from './abstract/blot';
+import Blot, { Position, DATA_KEY } from './abstract/blot';
 import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
 import ParentBlot from './abstract/parent';
@@ -28,26 +28,22 @@ class ContainerBlot extends ParentBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
-  edit(method, ...params): Blot[] {
-    this.observer.disconnect()
-    let children = method.apply(this, params) || [];
-    children.forEach(function(child: Blot) {
-      child.optimize();
-    });
-    this.observer.observe(this.domNode, OBSERVER_CONFIG);
-    return children;
+  edit(method, ...params): void {
+    this.update(this.observer.takeRecords());
+    method.apply(this, params);
+    this.optimize();
   }
 
-  deleteAt(index: number, length: number): Blot[] {
-    return this.edit(super.deleteAt, index, length);
+  deleteAt(index: number, length: number): void {
+    this.edit(super.deleteAt, index, length);
   }
 
-  format(name: string, value: any): Blot[] {
-    return this.edit(super.format, name, value);
+  format(name: string, value: any): void {
+    this.edit(super.format, name, value);
   }
 
-  formatAt(index: number, length: number, name: string, value: any): Blot[] {
-    return this.edit(super.formatAt, index, length, name, value);
+  formatAt(index: number, length: number, name: string, value: any): void {
+    this.edit(super.formatAt, index, length, name, value);
   }
 
   getBlocks(): BlockBlot[] {
@@ -66,32 +62,63 @@ class ContainerBlot extends ParentBlot {
     });
   }
 
+  insertAt(index: number, value: string, def?: any): void {
+    this.edit(super.insertAt, index, value, def);
+  }
+
   insertBefore(childBlot: BlockBlot, refBlot?: BlockBlot): void {
     super.insertBefore(childBlot, refBlot);
   }
 
-  insertAt(index: number, value: string, def?: any): Blot[] {
-    return this.edit(super.insertAt, index, value, def);
-  }
-
-  update(mutations: MutationRecord);
-  update(mutations?: MutationRecord[]);
-  update(mutations: any) {
-    if (mutations instanceof MutationRecord) {
-      return super.update(mutations);
-    } else if (mutations == null) {
-      mutations = this.observer.takeRecords();
-    }
+  optimize() {
+    // TODO use WeakMap
+    let mutations = this.observer.takeRecords();
     this.observer.disconnect();
     mutations.forEach((mutation: MutationRecord) => {
       let blot = Blot.findBlot(mutation.target, true);
-      if (blot != null) {
-        blot.update(mutation);
+      while (blot != null && blot != this) {
+        if (blot.domNode === mutation.target) {
+          blot.domNode[DATA_KEY].mutations = blot.domNode[DATA_KEY].mutations || [];
+          blot.domNode[DATA_KEY].mutations.push(mutation);
+        } else if (blot.domNode[DATA_KEY].mutations == null) {
+          blot.domNode[DATA_KEY].mutations = [];
+        } else {
+          break;
+        }
       }
     });
+    let traverse = function(blot: Blot) {  // Post-order
+      if (blot instanceof ParentBlot) {
+        blot.children.forEach(function(child) {
+          if (blot.domNode[DATA_KEY].mutations != null) {
+            traverse(child);
+          }
+        });
+      }
+      blot.optimize();
+    }
+    this.children.forEach(traverse);
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
+
+  update(mutations: MutationRecord[]) {
+    // TODO use WeakMap
+    mutations.map((mutation: MutationRecord) => {
+      let blot = Blot.findBlot(mutation.target, true);
+      if (blot == null || blot === this) return null;
+      blot.domNode[DATA_KEY].mutations = blot.domNode[DATA_KEY].mutations || [];
+      blot.domNode[DATA_KEY].mutations.push(mutation);
+    }).forEach((blot: Blot) => {
+      if (blot == null || blot.domNode[DATA_KEY].mutations == null) return;
+      blot.update(blot[DATA_KEY].mutations);
+      Blot.prototype.optimize.call(blot);
+    });
+    this.optimize();
+  }
 }
+
+
+export
 
 
 export default ContainerBlot;

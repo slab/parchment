@@ -42,7 +42,7 @@ class FormatBlot extends ParentBlot {
     });
   }
 
-  format(name: string, value: any): void {
+  format(name: string, value: any): Blot[] | void {
     let attribute = Registry.match(name, Registry.Scope.ATTRIBUTE);
     if (attribute != null) {
       if (value) {
@@ -52,6 +52,7 @@ class FormatBlot extends ParentBlot {
         this.attributes[name].remove(this.domNode);
         delete this.attributes[name];
       }
+      return [this];
     } else {
       super.format(name, value);
     }
@@ -84,12 +85,14 @@ class FormatBlot extends ParentBlot {
     return replacement;
   }
 
-  update(mutation: MutationRecord) {
-    if (mutation.target === this.domNode && mutation.type === 'attributes') {
-      this.buildAttributes();
-    } else {
-      super.update(mutation);
-    }
+  update(mutations: MutationRecord[]) {
+    super.update(mutations);
+    mutations.forEach((mutation) => {
+      if (mutation.target !== this.domNode) return;
+      if (mutation.type === 'attributes') {
+        this.buildAttributes();
+      }
+    });
   }
 }
 

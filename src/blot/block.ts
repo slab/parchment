@@ -15,7 +15,7 @@ class BlockBlot extends FormatBlot {
 
   children: LinkedList<ChildBlot>;
 
-  format(name: string, value: any): void {
+  format(name: string, value: any): Blot[] {
     let blot = Registry.match(name, this.statics.scope);
     if (blot != null) {
       if (value) {
@@ -23,8 +23,9 @@ class BlockBlot extends FormatBlot {
       } else {
         this.replace(BlockBlot.blotName, true);
       }
+      return [this];
     } else {
-      super.format(name, value);
+      return super.format(name, value);
     }
   }
 
