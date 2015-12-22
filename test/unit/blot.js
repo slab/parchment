@@ -3,7 +3,7 @@ describe('Blot', function() {
     var blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
     var blockBlot = new BlockBlot(blockNode);
-    expect(Blot.findBlot(document.body)).toBe(undefined);
+    expect(Blot.findBlot(document.body)).not.toBeTruthy();
     expect(Blot.findBlot(blockNode)).toBe(blockBlot);
     expect(Blot.findBlot(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
     expect(Blot.findBlot(blockNode.querySelector('em'))).toBe(blockBlot.children.tail);

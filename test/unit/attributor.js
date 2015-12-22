@@ -80,22 +80,6 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.outerHTML).toEqual('<strong>Bold</strong>');
   });
 
-  it('remove with unwrap', function() {
-    var container = Registry.create('block');
-    italic = document.createElement('em');
-    italic.innerHTML = '!';
-    var italicBlot = Registry.create(italic);
-    inline = document.createElement('span');
-    inline.innerHTML = 'Test';
-    inline.style.color = 'red';
-    var inlineBlot = Registry.create(inline);
-    container.appendChild(inlineBlot);
-    container.appendChild(italicBlot);
-    container.formatAt(0, 4, 'color', false);
-    expect(container.children.head instanceof TextBlot).toEqual(true);
-    expect(container.domNode.innerHTML).toEqual('Test<em>!</em>');
-  });
-
   it('move attribute', function() {
     var container = Registry.create('block');
     node = document.createElement('strong');

@@ -15,8 +15,7 @@ module.exports = function(config) {
       'test/unit/text.js',
       'test/unit/embed.js',
       'test/unit/container.js',
-      'test/unit/attributor.js',
-      'test/unit/merge.js'
+      'test/unit/attributor.js'
     ],
     preprocessors: {
       'test/registry/*.js': ['babel'],

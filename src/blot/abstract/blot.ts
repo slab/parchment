@@ -80,7 +80,8 @@ class Blot extends ShadowNode {
     if (Registry.match(name, Registry.Scope.BLOT)) {
       this.wrap(name, value);
     } else if (Registry.match(name, Registry.Scope.ATTRIBUTE) && value) {
-      this.wrap('inline', true);
+      let blot = <ParentBlot>this.wrap('inline', true);
+      blot.format(name, value);
     };
   }
 
