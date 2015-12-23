@@ -87,8 +87,10 @@ class ContainerBlot extends ParentBlot {
         } else {
           break;
         }
+        blot = blot.parent;
       }
     });
+    let container = this;
     let traverse = function(blot: Blot): void {  // Post-order
       if (blot instanceof ParentBlot) {
         blot.children.forEach(function(child) {

@@ -57,8 +57,10 @@ class InlineBlot extends FormatBlot {
     }
     let prev = this.prev;
     if (prev instanceof InlineBlot && isEqual(formats, prev.getFormat())) {
+      let head = this.children.head;
       prev.moveChildren(this, this.children.head);
       prev.remove();
+      head.optimize();
     }
     super.optimize();
   }
