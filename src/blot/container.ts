@@ -14,7 +14,7 @@ const OBSERVER_CONFIG = {
 
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
-  static scope = Registry.Scope.CONTAINER | Registry.Scope.BLOT;
+  static scope = Registry.Scope.CONTAINER & Registry.Scope.BLOT;
   static tagName = 'DIV';
 
   children: LinkedList<BlockBlot>;

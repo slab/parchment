@@ -34,5 +34,35 @@ describe('Registry', function() {
       node.setAttribute('class', 'blot-bold');
       expect(Registry.match(node)).toBe(BoldBlot);
     });
+
+    it('type mismatch', function() {
+      var match = Registry.match('italic', Registry.Scope.ATTRIBUTE);
+      expect(match).not.toBeTruthy();
+    });
+
+    it('level mismatch', function() {
+      var match = Registry.match('italic', Registry.Scope.BLOCK);
+      expect(match).not.toBeTruthy();
+    });
+
+    it('either level', function() {
+      var match = Registry.match('italic', Registry.Scope.BLOCK | Registry.Scope.INLINE);
+      expect(match).toBe(ItalicBlot);
+    });
+
+    it('level and type match', function() {
+      var match = Registry.match('italic', Registry.Scope.INLINE & Registry.Scope.BLOT);
+      expect(match).toBe(ItalicBlot);
+    });
+
+    it('level and type mismatch', function() {
+      var match = Registry.match('italic', Registry.Scope.INLINE & Registry.Scope.ATTRIBUTE);
+      expect(match).not.toBeTruthy();
+    });
+
+    it('level and type mismatch', function() {
+      var match = Registry.match('italic', Registry.Scope.BLOCK & Registry.Scope.BLOT);
+      expect(match).not.toBeTruthy();
+    });
   });
 });

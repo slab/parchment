@@ -10,7 +10,7 @@ type ChildBlot = BlockBlot | InlineBlot | LeafBlot;
 
 class BlockBlot extends FormatBlot {
   static blotName = 'block';
-  static scope = Registry.Scope.BLOCK | Registry.Scope.BLOT;
+  static scope = Registry.Scope.BLOCK & Registry.Scope.BLOT;
   static tagName = 'P';
 
   children: LinkedList<ChildBlot>;

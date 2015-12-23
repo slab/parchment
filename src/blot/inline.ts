@@ -21,7 +21,7 @@ function isEqual(obj1, obj2) {
 
 class InlineBlot extends FormatBlot {
   static blotName = 'inline';
-  static scope = Registry.Scope.INLINE | Registry.Scope.BLOT;
+  static scope = Registry.Scope.INLINE & Registry.Scope.BLOT;
   static tagName = 'SPAN';
 
   children: LinkedList<ChildBlot>;

@@ -8,16 +8,17 @@ var types = {};
 export const PREFIX = 'blot-';
 
 export enum Scope {
-  ATTRIBUTE = 1,
-  BLOT = 2,
-  CONTAINER = 4,
-  BLOCK = 8,
-  INLINE = 16,
-  LEAF = 32,
+  TYPE = (1 << 2) - 1,          // 000011 Lower two bits
+  LEVEL = ((1 << 4) - 1) << 2,  // 111100 Higher four bits
 
-  TYPE = ATTRIBUTE | BLOT,
-  LEVEL = CONTAINER | BLOCK | INLINE | LEAF,
-  ANY = TYPE | LEVEL
+  ATTRIBUTE = (1 << 0) | LEVEL, // 111101
+  BLOT = (1 << 1) | LEVEL,      // 111110
+  CONTAINER = (1 << 2) | TYPE,  // 000111
+  BLOCK = (1 << 3) | TYPE,      // 001011
+  INLINE = (1 << 4) | TYPE,     // 010011
+  LEAF = (1 << 5) | TYPE,       // 100011
+
+  ANY = TYPE | LEVEL            // 111111
 };
 
 
@@ -49,9 +50,8 @@ function match(query: string | Node, scope: Scope = Scope.ANY) {
     match = match || tags[query.tagName];
   }
   if (match == null) return null;
-  if (scope & Scope.LEVEL && !(match.scope & Scope.LEVEL & scope)) return null;
-  if (scope & Scope.TYPE && !(match.scope & Scope.TYPE & scope)) return null;
-  return match;
+  if ((scope & Scope.LEVEL & match.scope) && (scope & Scope.TYPE & match.scope)) return match;
+  return null;
 }
 
 function register(Definition) {

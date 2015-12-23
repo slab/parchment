@@ -15,7 +15,7 @@ class Attributor {
   constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
     this.attrName = attrName;
     this.keyName = keyName;
-    this.scope = (options.scope || Registry.Scope.LEVEL) | Registry.Scope.ATTRIBUTE;
+    this.scope = options.scope || Registry.Scope.ATTRIBUTE;
     if (options.whitelist != null) this.whitelist = options.whitelist;
   }
 
@@ -24,11 +24,11 @@ class Attributor {
   }
 
   canAdd(node: HTMLElement, value: string): boolean {
-    if ((Registry.match(node, Registry.Scope.BLOT | this.scope) == null) ||
-        (this.whitelist != null && this.whitelist.indexOf(value) < 0)) {
-      return false;
+    let match = Registry.match(node, Registry.Scope.BLOT & (this.scope | Registry.Scope.TYPE));
+    if (match != null && (this.whitelist == null || this.whitelist.indexOf(value) > -1)) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   remove(node: HTMLElement) {
@@ -39,5 +39,6 @@ class Attributor {
     return node.getAttribute(this.keyName);
   }
 }
+
 
 export default Attributor;
