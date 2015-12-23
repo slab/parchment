@@ -168,6 +168,22 @@ describe('LinkedList', function() {
       expect(result).toBe('abc');
     });
 
+    it('destructive modification', function() {
+      this.list.append(this.a, this.b, this.c);
+      var arr = [];
+      this.list.forEach((node) => {
+        arr.push(node.str);
+        if (node === this.a) {
+          this.list.remove(this.a);
+        }
+        if (node === this.b) {
+          this.list.append(this.a);
+          this.list.remove(this.b);
+        }
+      });
+      expect(arr).toEqual(['a', 'b', 'c', 'a']);
+    });
+
     it('map', function() {
       this.list.append(this.a, this.b, this.c);
       var arr = this.list.map(function(node) {
