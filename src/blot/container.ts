@@ -12,6 +12,9 @@ const OBSERVER_CONFIG = {
   subtree: true
 };
 
+const MAX_CLEAN_ITERATIONS = 10000;
+
+
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
   static scope = Registry.Scope.CONTAINER & Registry.Scope.BLOT;
@@ -76,32 +79,39 @@ class ContainerBlot extends ParentBlot {
     // TODO use WeakMap
     let mutations = this.observer.takeRecords();
     this.observer.disconnect();
-    mutations.forEach((mutation: MutationRecord) => {
-      let blot = Blot.findBlot(mutation.target, true);
-      while (blot != null && blot != this) {
-        if (blot.domNode === mutation.target) {
-          blot.domNode[DATA_KEY].mutations = blot.domNode[DATA_KEY].mutations || [];
-          blot.domNode[DATA_KEY].mutations.push(mutation);
-        } else if (blot.domNode[DATA_KEY].mutations == null) {
-          blot.domNode[DATA_KEY].mutations = [];
-        } else {
-          break;
-        }
-        blot = blot.parent;
+    let mark = (blot: Blot) => {
+      if (blot != null && blot != this && blot.domNode[DATA_KEY].mutations == null) {
+        blot.domNode[DATA_KEY].mutations = [];
+        mark(blot.parent);
       }
-    });
-    let container = this;
-    let traverse = function(blot: Blot): void {  // Post-order
-      if (blot instanceof ParentBlot) {
-        blot.children.forEach(function(child) {
-          if (blot.domNode[DATA_KEY].mutations != null) {
-            traverse(child);
-          }
-        });
-      }
-      blot.optimize();
     }
-    this.children.forEach(traverse);
+    let dirtyBlots = mutations.map(function(mutation: MutationRecord) {
+      return Blot.findBlot(mutation.target, true);
+    });
+    let iterations = 0;
+    let traverse = function(blot: Blot): boolean {  // Post-order
+      iterations += 1;
+      if (iterations >= MAX_CLEAN_ITERATIONS) return true;
+      if (blot instanceof ParentBlot) {
+        let exit = blot.children.reduce(function(exit, child) {
+          if (exit) return exit;
+          if (blot.domNode[DATA_KEY].mutations == null) return false;
+          return traverse(child);
+        }, false);
+        if (exit) return exit;
+      }
+      let blots = blot.optimize();
+      if (Array.isArray(blots) && blots.length > 0) {
+        dirtyBlots = blots;
+        return true;
+      }
+      return false;
+    }
+    while (dirtyBlots.length > 0 && iterations <= MAX_CLEAN_ITERATIONS) {
+      dirtyBlots.forEach(mark);
+      dirtyBlots = [];
+      this.children.forEach(traverse);
+    }
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 

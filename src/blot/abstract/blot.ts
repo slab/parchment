@@ -106,8 +106,9 @@ class Blot extends ShadowNode {
     }
   }
 
-  optimize(): void {
+  optimize(): void | Blot[] {
     delete this.domNode[DATA_KEY].mutations;
+    return [];
   }
 
   update(mutations: MutationRecord[]): void { }    // Descendents implement

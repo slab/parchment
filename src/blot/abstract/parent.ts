@@ -198,6 +198,9 @@ class ParentBlot extends Blot implements ShadowParent {
         while (childNode !== child.domNode) {
           if (child.domNode.parentNode === this.domNode) {
             let blot = Blot.findBlot(childNode) || Registry.create(childNode);
+            if (blot.parent != null) {
+              blot.parent.children.remove(blot);
+            }
             this.children.insertBefore(blot, child);
           } else {
             child.remove();

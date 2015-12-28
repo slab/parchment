@@ -37,7 +37,7 @@ class LinkedList<T extends LinkedNode> {
       if (refNode === this.head) {
         this.head = node;
       }
-    } else if (this.tail) {
+    } else if (this.tail != null) {
       this.tail.next = node;
       node.prev = this.tail;
       this.tail = node;
@@ -71,7 +71,7 @@ class LinkedList<T extends LinkedNode> {
   iterator(curNode: T = this.head): () => T {
     // TODO use yield when we can
     return function(): T {
-      var ret = curNode;
+      let ret = curNode;
       if (curNode != null) curNode = <T>curNode.next;
       return ret;
     }

@@ -175,10 +175,8 @@ describe('LinkedList', function() {
         arr.push(node.str);
         if (node === this.a) {
           this.list.remove(this.a);
-        }
-        if (node === this.b) {
-          this.list.append(this.a);
           this.list.remove(this.b);
+          this.list.append(this.a);
         }
       });
       expect(arr).toEqual(['a', 'b', 'c', 'a']);

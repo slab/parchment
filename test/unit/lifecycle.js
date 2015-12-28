@@ -74,7 +74,7 @@ describe('Lifecycle', function() {
       expect(node.querySelector('em').childNodes.length).toBe(1);
     });
 
-    xit('unwrap + recursive merge', function() {
+    it('unwrap + recursive merge', function() {
       var node = document.createElement('div');
       node.innerHTML = '<p><strong>T</strong><em style="color: red;"><strong>es</strong></em><strong>t</strong></p>';
       var container = Registry.create(node);
