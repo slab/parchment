@@ -49,8 +49,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   offset(target: T): number {
-    var offset = 0;
-    var cur = this.head;
+    let offset = 0, cur = this.head;
     while (cur != null) {
       if (cur === target) return offset;
       offset += cur.getLength()
@@ -78,7 +77,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   find(index: number, inclusive: boolean = false): [T, number] {
-    var cur, next = this.iterator();
+    let cur, next = this.iterator();
     while (cur = next()) {
       let length = cur.getLength();
       if (index < length || (index === length && inclusive)) {
@@ -90,7 +89,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   forEach(callback: (cur: T) => void): void {
-    var cur, next = this.iterator();
+    let cur, next = this.iterator();
     while (cur = next()) {
       callback(cur);
     }
@@ -98,8 +97,8 @@ class LinkedList<T extends LinkedNode> {
 
   forEachAt(index: number, length: number, callback: (cur: T, offset: number, length: number) => void): void {
     if (length <= 0) return;
-    var [startNode, offset] = this.find(index);
-    var cur, curIndex = index - offset, next = this.iterator(startNode);
+    let [startNode, offset] = this.find(index);
+    let cur, curIndex = index - offset, next = this.iterator(startNode);
     while ((cur = next()) && curIndex < index + length) {
       let curLength = cur.getLength();
       if (index <= curIndex) {
@@ -119,7 +118,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {
-    var cur, next = this.iterator();
+    let cur, next = this.iterator();
     while (cur = next()) {
       memo = callback(memo, cur);
     }

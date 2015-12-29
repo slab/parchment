@@ -19,7 +19,7 @@ class FormatBlot extends ParentBlot {
   }
 
   buildAttributes(): void {
-    var attributes = [], classes = [], styles = [];
+    let attributes = [], classes = [], styles = [];
     [].slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
         classes = item.value.split(/\s+/).map(function(name) {
@@ -27,7 +27,7 @@ class FormatBlot extends ParentBlot {
         });
       } else if (item.name === 'style') {
         styles = item.value.split(';').map(function(val) {
-          var arr = val.split(':');
+          let arr = val.split(':');
           return arr[0].trim();
         });
       } else {
@@ -35,7 +35,7 @@ class FormatBlot extends ParentBlot {
       }
     });
     attributes.concat(classes).concat(styles).forEach(name => {
-      var attr = Registry.match(name, Registry.Scope.ATTRIBUTE);
+      let attr = Registry.match(name, Registry.Scope.ATTRIBUTE);
       if (attr != null) {
         this.attributes[attr.attrName] = attr;
       }
@@ -58,7 +58,7 @@ class FormatBlot extends ParentBlot {
   }
 
   getFormat(): Object {
-    var formats = Object.keys(this.attributes).reduce((formats, name) => {
+    let formats = Object.keys(this.attributes).reduce((formats, name) => {
       if (this.domNode instanceof HTMLElement) {
         formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
       }
@@ -72,14 +72,14 @@ class FormatBlot extends ParentBlot {
 
   moveAttributes(target: FormatBlot): void {
     Object.keys(this.attributes).forEach(key => {
-      var value = this.attributes[key].value(this.domNode);
+      let value = this.attributes[key].value(this.domNode);
       target.format(key, value);
       this.format(key, false);
     });
   }
 
   replaceWith(name: string, value: any): FormatBlot {
-    var replacement = <FormatBlot>super.replaceWith(name, value);
+    let replacement = <FormatBlot>super.replaceWith(name, value);
     this.moveAttributes(replacement);
     return replacement;
   }

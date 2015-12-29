@@ -1,9 +1,9 @@
 import Attributor from './attributor/attributor';
 
-var attributes = {};
-var classes = {};
-var tags = {};
-var types = {};
+let attributes = {};
+let classes = {};
+let tags = {};
+let types = {};
 
 export const PREFIX = 'blot-';
 
@@ -23,7 +23,7 @@ export enum Scope {
 
 
 function create(node: Node | string, value?: any) {
-  var BlotClass = match(node, Scope.BLOT);
+  let BlotClass = match(node, Scope.BLOT);
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${node}`);
   }

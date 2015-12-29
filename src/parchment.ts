@@ -12,7 +12,7 @@ import StyleAttributor from './attributor/style';
 import * as Registry from './registry';
 
 
-var Parchment = {
+let Parchment = {
   PREFIX: Registry.PREFIX,
   Scope: Registry.Scope,
 

@@ -56,7 +56,7 @@ class Blot extends ShadowNode {
   }
 
   deleteAt(index: number, length: number): void {
-    var target = this.isolate(index, length);
+    let target = this.isolate(index, length);
     target.remove();
   }
 
@@ -86,13 +86,13 @@ class Blot extends ShadowNode {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    var target = <Blot>this.isolate(index, length);
+    let target = <Blot>this.isolate(index, length);
     target.format(name, value);
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    var target = <Blot>this.split(index);
-    var blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+    let target = <Blot>this.split(index);
+    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     this.parent.insertBefore(blot, target);
   }
 

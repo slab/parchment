@@ -23,11 +23,11 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   build(): void {
-    var childNodes = [].slice.call(this.domNode.childNodes);
+    let childNodes = [].slice.call(this.domNode.childNodes);
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     childNodes.reverse().forEach((node) => {
-      var child = Blot.findBlot(node) || Registry.create(node);
+      let child = Blot.findBlot(node) || Registry.create(node);
       this.insertBefore(child, this.children.head);
     });
   }
@@ -43,7 +43,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   findNode(index: number): [Node, number] {
-    var [child, offset] = this.children.find(index, true);
+    let [child, offset] = this.children.find(index, true);
     return child.findNode(offset);
   }
 
@@ -55,8 +55,8 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   findPath(index: number, inclusive: boolean = false): Position[] {
-    var length = this.getLength();
-    var [child, offset] = this.children.find(index, inclusive);
+    let length = this.getLength();
+    let [child, offset] = this.children.find(index, inclusive);
     if (child == null) {
       child = this.children.tail;
       if (child == null) {
@@ -64,7 +64,7 @@ class ParentBlot extends Blot implements ShadowParent {
       }
       offset = child.getLength();
     }
-    var pos: Position[] = [{
+    let pos: Position[] = [{
       blot: this,
       offset: index - offset
     }];
@@ -93,7 +93,7 @@ class ParentBlot extends Blot implements ShadowParent {
       index = 0;
       length = this.getLength();
     }
-    var descendants = [];
+    let descendants = [];
     this.children.forEachAt(index, length, function(child) {
       if (child instanceof type) {
         descendants.push(child);
@@ -125,7 +125,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    var [child, offset] = this.children.find(index);
+    let [child, offset] = this.children.find(index);
     if (child) {
       child.insertAt(offset, value, def);
     } else {
@@ -156,13 +156,11 @@ class ParentBlot extends Blot implements ShadowParent {
       if (index === 0) return this;
       if (index === this.getLength()) return this.next;
     }
-    var after = <ParentBlot>this.clone();
+    let after = <ParentBlot>this.clone();
     this.parent.insertBefore(after, this.next);
     this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
-      var child = <Blot>child.split(offset, force);
-      if (child) {
-        after.appendChild(child);
-      }
+      child = <Blot>child.split(offset, force);
+      after.appendChild(child);
     });
     return after;
   }

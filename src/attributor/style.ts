@@ -3,8 +3,8 @@ import Attributor from './attributor';
 
 function camelize(name: string): string {
   if (name.length === 0) return name;
-  var parts = name.split('-');
-  var rest = parts.slice(1).map(function(part) {
+  let parts = name.split('-');
+  let rest = parts.slice(1).map(function(part) {
     if (part.length == 0) return part;
     return part[0].toUpperCase() + part.slice(1);
   }).join('');

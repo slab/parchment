@@ -33,7 +33,7 @@ class ShadowNode implements LinkedNode {
 
   // TODO: Hack for accessing inherited static methods
   get statics(): ShadowStatic {
-    var statics = <any>this.constructor;
+    let statics = <any>this.constructor;
     return {
       blotName: statics.blotName,
       className: statics.className,
@@ -43,7 +43,7 @@ class ShadowNode implements LinkedNode {
   }
 
   clone(): ShadowNode {
-    var domNode = this.domNode.cloneNode();
+    let domNode = this.domNode.cloneNode();
     return Registry.create(domNode);
   }
 
@@ -52,7 +52,7 @@ class ShadowNode implements LinkedNode {
   }
 
   isolate(index: number, length: number): ShadowNode {
-    var target = this.split(index);
+    let target = this.split(index);
     target.split(length);
     return target;
   }
@@ -83,7 +83,7 @@ class ShadowNode implements LinkedNode {
   }
 
   wrap(name: string, value: any): ShadowParent {
-    var wrapper = Registry.create(name, value);
+    let wrapper = Registry.create(name, value);
     this.parent.insertBefore(wrapper, this.next);
     wrapper.appendChild(this);
     return wrapper;

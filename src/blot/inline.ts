@@ -33,7 +33,7 @@ class InlineBlot extends FormatBlot {
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.match(name, Registry.Scope.ATTRIBUTE) ||
         InlineBlot.compare(this.statics.blotName, name)) {
-      var formats = this.getFormat();
+      let formats = this.getFormat();
       if (value && formats[name] === value) return;
       if (!value && !formats[name]) return;
       let target = <Blot>this.isolate(index, length);
