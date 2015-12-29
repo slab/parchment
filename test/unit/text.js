@@ -1,21 +1,23 @@
+"use strict"
+
 describe('TextBlot', function() {
   it('constructor(node)', function() {
-    var node = document.createTextNode('Test');
-    var blot = new TextBlot(node);
+    let node = document.createTextNode('Test');
+    let blot = new TextBlot(node);
     expect(blot.text).toEqual('Test');
     expect(blot.domNode.data).toEqual('Test');
   });
 
   it('deleteAt() partial', function() {
-    var blot = Registry.create('text', 'Test');
+    let blot = Registry.create('text', 'Test');
     blot.deleteAt(1, 2);
     expect(blot.getValue()).toEqual('Tt');
     expect(blot.getLength()).toEqual(2);
   });
 
   it('deleteAt() all', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     expect(container.domNode.firstChild).toEqual(textBlot.domNode);
     textBlot.deleteAt(0, 4);
@@ -24,14 +26,14 @@ describe('TextBlot', function() {
   });
 
   it('insertAt() text', function() {
-    var textBlot = Registry.create('text', 'Test');
+    let textBlot = Registry.create('text', 'Test');
     textBlot.insertAt(1, 'ough');
     expect(textBlot.getValue()).toEqual('Toughest');
   });
 
   it('insertAt() other', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.insertAt(2, 'image', {});
     expect(textBlot.getValue()).toEqual('Te');
@@ -40,10 +42,10 @@ describe('TextBlot', function() {
   });
 
   it('split() middle', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
-    var after = textBlot.split(2);
+    let after = textBlot.split(2);
     expect(textBlot.getValue()).toEqual('Te');
     expect(after.getValue()).toEqual('st');
     expect(textBlot.next).toEqual(after);
@@ -51,20 +53,20 @@ describe('TextBlot', function() {
   });
 
   it('split() noop', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
-    var before = textBlot.split(0);
-    var after = textBlot.split(4);
+    let before = textBlot.split(0);
+    let after = textBlot.split(4);
     expect(before).toEqual(textBlot);
     expect(after).toEqual(undefined);
   });
 
   it('split() force', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
-    var after = textBlot.split(4, true);
+    let after = textBlot.split(4, true);
     expect(after).not.toEqual(textBlot);
     expect(after.getValue()).toEqual('');
     expect(textBlot.next).toEqual(after);
@@ -72,8 +74,8 @@ describe('TextBlot', function() {
   });
 
   it('format wrap', function() {
-    var container = Registry.create('inline');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.formatAt(0, 4, 'bold', true);
     expect(textBlot.domNode.parentNode.tagName).toEqual('STRONG');
@@ -81,8 +83,8 @@ describe('TextBlot', function() {
   });
 
   it('format split', function() {
-    var container = Registry.create('block');
-    var textBlot = Registry.create('text', 'Test');
+    let container = Registry.create('block');
+    let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.formatAt(1, 2, 'bold', true);
     expect(container.domNode.innerHTML).toEqual('T<strong>es</strong>t');

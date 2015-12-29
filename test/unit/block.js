@@ -1,8 +1,10 @@
+"use strict"
+
 describe('Block', function() {
   describe('format', function() {
     it('add', function() {
-      var container = Registry.create('container');
-      var block = Registry.create('block');
+      let container = Registry.create('container');
+      let block = Registry.create('block');
       container.appendChild(block);
       block.format('header', 'h1');
       expect(container.domNode.innerHTML).toBe('<h1></h1>');
@@ -11,8 +13,8 @@ describe('Block', function() {
     });
 
     it('remove', function() {
-      var container = Registry.create('container');
-      var block = Registry.create('header', 'h1');
+      let container = Registry.create('container');
+      let block = Registry.create('header', 'h1');
       container.appendChild(block);
       block.format('header', false);
       expect(container.domNode.innerHTML).toBe('<p></p>');
@@ -20,8 +22,8 @@ describe('Block', function() {
     });
 
     it('change', function() {
-      var container = Registry.create('container');
-      var block = Registry.create('header', 'h1');
+      let container = Registry.create('container');
+      let block = Registry.create('header', 'h1');
       container.appendChild(block);
       block.format('header', 'h2');
       expect(container.domNode.innerHTML).toBe('<h2></h2>');

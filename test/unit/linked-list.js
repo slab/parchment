@@ -1,3 +1,5 @@
+"use strict"
+
 describe('LinkedList', function() {
   beforeEach(function() {
     this.list = new LinkedList();
@@ -131,10 +133,10 @@ describe('LinkedList', function() {
 
     it('iterate non-head start', function() {
       this.list.append(this.a, this.b, this.c);
-      var next = this.list.iterator(this.b);
-      var b = next();
-      var c = next();
-      var d = next();
+      let next = this.list.iterator(this.b);
+      let b = next();
+      let c = next();
+      let d = next();
       expect(b).toBe(this.b);
       expect(c).toBe(this.c);
       expect(d).toBeUndefined();
@@ -162,7 +164,7 @@ describe('LinkedList', function() {
       this.list.append(this.a, this.b, this.c);
       this.list.forEach(this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(3);
-      var result = this.spy.callback.calls.all().reduce(function(memo, call) {
+      let result = this.spy.callback.calls.all().reduce(function(memo, call) {
         return memo + call.args[0].str;
       }, '');
       expect(result).toBe('abc');
@@ -170,7 +172,7 @@ describe('LinkedList', function() {
 
     it('destructive modification', function() {
       this.list.append(this.a, this.b, this.c);
-      var arr = [];
+      let arr = [];
       this.list.forEach((node) => {
         arr.push(node.str);
         if (node === this.a) {
@@ -184,7 +186,7 @@ describe('LinkedList', function() {
 
     it('map', function() {
       this.list.append(this.a, this.b, this.c);
-      var arr = this.list.map(function(node) {
+      let arr = this.list.map(function(node) {
         return node.str;
       });
       expect(arr).toEqual(['a', 'b', 'c']);
@@ -192,7 +194,7 @@ describe('LinkedList', function() {
 
     it('reduce', function() {
       this.list.append(this.a, this.b, this.c);
-      var memo = this.list.reduce(function(memo, node) {
+      let memo = this.list.reduce(function(memo, node) {
         return memo + node.str;
       }, '');
       expect(memo).toBe('abc');
@@ -215,7 +217,7 @@ describe('LinkedList', function() {
       this.list.append(this.a, this.b, this.c);
       this.list.forEachAt(1, 7, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(3);
-      var calls = this.spy.callback.calls.all();
+      let calls = this.spy.callback.calls.all();
       expect(calls[0].args).toEqual([this.a, 1, 2]);
       expect(calls[1].args).toEqual([this.b, 0, 3]);
       expect(calls[2].args).toEqual([this.c, 0, 2]);

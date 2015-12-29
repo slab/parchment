@@ -1,16 +1,16 @@
 "use strict"
 
-var ColorAttributor = new StyleAttributor('color', 'color');
+let ColorAttributor = new StyleAttributor('color', 'color');
 Registry.register(ColorAttributor);
 
-var SizeAttributor = new StyleAttributor('size', 'font-size');
+let SizeAttributor = new StyleAttributor('size', 'font-size');
 Registry.register(SizeAttributor);
 
-var IdAttributor = new Attributor('id', 'id');
+let IdAttributor = new Attributor('id', 'id');
 Registry.register(IdAttributor);
 
-var AlignAttributor = new StyleAttributor('align', 'text-align');
+let AlignAttributor = new StyleAttributor('align', 'text-align');
 Registry.register(AlignAttributor);
 
-var IndentAttributor = new ClassAttributor('indent', 'indent');
+let IndentAttributor = new ClassAttributor('indent', 'indent');
 Registry.register(IndentAttributor);

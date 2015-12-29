@@ -1,14 +1,16 @@
+"use strict"
+
 describe('Container', function() {
   describe('findPath()', function() {
     beforeEach(function() {
-      var containerNode = document.createElement('div');
+      let containerNode = document.createElement('div');
       containerNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
       this.container = new ContainerBlot(containerNode);
     });
 
     it('middle', function() {
-      var path = this.container.findPath(7);
-      var expected = [
+      let path = this.container.findPath(7);
+      let expected = [
         { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
@@ -22,8 +24,8 @@ describe('Container', function() {
     });
 
     it('between blots', function() {
-      var path = this.container.findPath(5);
-      var expected = [
+      let path = this.container.findPath(5);
+      let expected = [
         { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
@@ -37,8 +39,8 @@ describe('Container', function() {
     });
 
     it('inclusive', function() {
-      var path = this.container.findPath(3, true);
-      var expected = [
+      let path = this.container.findPath(3, true);
+      let expected = [
         { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 0 },
         { blotName: 'bold', offset: 0 },
@@ -51,8 +53,8 @@ describe('Container', function() {
     });
 
     it('last', function() {
-      var path = this.container.findPath(9);
-      var expected = [
+      let path = this.container.findPath(9);
+      let expected = [
         { blotName: 'container', offset: 0 },
         { blotName: 'block', offset: 5 },
         { blotName: 'italic', offset: 0 },
