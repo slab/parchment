@@ -64,11 +64,16 @@ class ShadowNode implements LinkedNode {
     }
   }
 
-  replaceWith(name: string, value: any): ShadowParent {
-    if (this.parent == null) return;
-    var replacement = Registry.create(name, value);
-    this.parent.insertBefore(replacement, this.next);
+  replace(target: ShadowNode) {
+    if (target.parent == null) return;
     this.remove();
+    target.parent.insertBefore(this, target.next);
+    target.remove();
+  }
+
+  replaceWith(name: string, value: any): ShadowParent {
+    let replacement = Registry.create(name, value);
+    replacement.replace(this);
     return replacement;
   }
 
