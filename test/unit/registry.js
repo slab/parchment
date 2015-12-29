@@ -39,12 +39,12 @@ describe('Registry', function() {
 
     it('type mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.ATTRIBUTE);
-      expect(match).not.toBeTruthy();
+      expect(match).toBeFalsy();
     });
 
     it('level mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.BLOCK);
-      expect(match).not.toBeTruthy();
+      expect(match).toBeFalsy();
     });
 
     it('either level', function() {
@@ -59,12 +59,12 @@ describe('Registry', function() {
 
     it('level and type mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.INLINE & Registry.Scope.ATTRIBUTE);
-      expect(match).not.toBeTruthy();
+      expect(match).toBeFalsy();
     });
 
     it('level and type mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.BLOCK & Registry.Scope.BLOT);
-      expect(match).not.toBeTruthy();
+      expect(match).toBeFalsy();
     });
   });
 });

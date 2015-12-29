@@ -49,6 +49,18 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.classList.contains('indent-3')).toBe(true);
   });
 
+  it('add whitelist style', function() {
+    let blockBlot = Registry.create('block');
+    blockBlot.format('align', 'right');
+    expect(blockBlot.domNode.style.textAlign).toBe('right');
+  });
+
+  it('add non-whitelisted style', function() {
+    let blockBlot = Registry.create('block');
+    blockBlot.format('align', 'justify');
+    expect(blockBlot.domNode.style.textAlign).toBeFalsy();
+  });
+
   it('remove', function() {
     let container = Registry.create('block');
     let node = document.createElement('strong');
