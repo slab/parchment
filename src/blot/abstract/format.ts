@@ -78,8 +78,8 @@ class FormatBlot extends ParentBlot {
     });
   }
 
-  replace(name: string, value: any): FormatBlot {
-    var replacement = <FormatBlot>super.replace(name, value);
+  replaceWith(name: string, value: any): FormatBlot {
+    var replacement = <FormatBlot>super.replaceWith(name, value);
     this.moveAttributes(replacement);
     return replacement;
   }

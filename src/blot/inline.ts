@@ -67,7 +67,7 @@ class InlineBlot extends FormatBlot {
 
   unwrap(): void {
     if (Object.keys(this.attributes).length) {
-      this.replace(InlineBlot.blotName, true);
+      this.replaceWith(InlineBlot.blotName, true);
     } else {
       super.unwrap();
     }
@@ -75,7 +75,7 @@ class InlineBlot extends FormatBlot {
 
   wrap(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName) {
-      return this.replace(name, value);
+      return this.replaceWith(name, value);
     } else {
       let wrapper = <InlineBlot>super.wrap(name, value);
       this.moveAttributes(wrapper);

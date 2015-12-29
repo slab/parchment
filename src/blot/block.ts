@@ -19,9 +19,9 @@ class BlockBlot extends FormatBlot {
     let blot = Registry.match(name, this.statics.scope);
     if (blot != null) {
       if (value) {
-        this.replace(name, value);
+        this.replaceWith(name, value);
       } else {
-        this.replace(BlockBlot.blotName, true);
+        this.replaceWith(BlockBlot.blotName, true);
       }
     } else {
       super.format(name, value);

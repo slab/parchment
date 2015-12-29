@@ -154,16 +154,10 @@ class ParentBlot extends Blot implements ShadowParent {
     });
   }
 
-  replace(name: string, value: any): ParentBlot {
-    if (name === this.statics.blotName && this.getFormat[name] === value) {
-      return this;
-    }
-    // Implementation very similar to shadow.replace() but vitally important moveChildren
-    // happens before remove() for proper merge
-    var replacement = Registry.create(name, value);
-    this.parent.insertBefore(replacement, this.next);
+  replaceWith(name: string, value: any): ParentBlot {
+    if (name === this.statics.blotName && this.getFormat[name] === value) return this;
+    let replacement = <ParentBlot>super.replaceWith(name, value);
     this.moveChildren(replacement);
-    this.remove();
     return replacement;
   }
 
