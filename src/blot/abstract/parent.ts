@@ -135,17 +135,7 @@ class ParentBlot extends Blot implements ShadowParent {
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
-    if (childBlot.parent != null) {
-      childBlot.parent.children.remove(childBlot);
-    }
-    this.children.insertBefore(childBlot, refBlot);
-    if (refBlot != null) {
-      var refDomNode = refBlot.domNode;
-    }
-    if (childBlot.next == null || childBlot.domNode.nextSibling != refDomNode) {
-      this.domNode.insertBefore(childBlot.domNode, refDomNode);
-    }
-    childBlot.parent = this;
+    childBlot.insertInto(this, refBlot);
   }
 
   moveChildren(targetParent: ParentBlot, refNode?: Blot): void {

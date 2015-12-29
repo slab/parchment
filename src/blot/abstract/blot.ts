@@ -96,6 +96,20 @@ class Blot extends ShadowNode {
     this.parent.insertBefore(blot, target);
   }
 
+  insertInto(parentBlot: ParentBlot, refBlot?: Blot): void {
+    if (this.parent != null) {
+      this.parent.children.remove(this);
+    }
+    parentBlot.children.insertBefore(this, refBlot);
+    if (refBlot != null) {
+      var refDomNode = refBlot.domNode;
+    }
+    if (this.next == null || this.domNode.nextSibling != refDomNode) {
+      parentBlot.domNode.insertBefore(this.domNode, refDomNode);
+    }
+    this.parent = parentBlot;
+  }
+
   offset(root?: Blot): number {
     if (this.parent == null || root == this) return 0;
     // TODO rewrite this when we properly define parent as a BlotParent
