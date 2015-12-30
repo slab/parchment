@@ -71,14 +71,6 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     return pos.concat(child.findPath(offset, inclusive));
   }
 
-  format(name: string, value: any): void {
-    if (!value && name === this.statics.blotName) {
-      this.unwrap();
-    } else {
-      super.format(name, value);
-    }
-  }
-
   formatAt(index: number, length: number, name: string, value: any): void {
     this.children.forEachAt(index, length, function(child, offset, length) {
       child.formatAt(offset, length, name, value);
@@ -114,10 +106,6 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     }));
   }
 
-  getFormat(): Object {
-    return {};
-  }
-
   getLength(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.getLength();
@@ -145,7 +133,7 @@ abstract class ParentBlot extends Blot implements ShadowParent {
   }
 
   replaceWith(name: string, value: any): ParentBlot {
-    if (name === this.statics.blotName && this.getFormat[name] === value) return this;
+    if (name === this.statics.blotName && this.getFormat()[name] === value) return this;
     let replacement = <ParentBlot>super.replaceWith(name, value);
     this.moveChildren(replacement);
     return replacement;

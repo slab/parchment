@@ -16,8 +16,7 @@ class BlockBlot extends FormatBlot {
   children: LinkedList<ChildBlot>;
 
   format(name: string, value: any): void {
-    let blot = Registry.match(name, this.statics.scope);
-    if (blot != null) {
+    if (Registry.match(name, this.statics.scope) != null) {
       if (value) {
         this.replaceWith(name, value);
       } else {

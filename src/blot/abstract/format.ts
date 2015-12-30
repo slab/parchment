@@ -51,8 +51,6 @@ abstract class FormatBlot extends ParentBlot {
         this.attributes[name].remove(this.domNode);
         delete this.attributes[name];
       }
-    } else {
-      super.format(name, value);
     }
   }
 
@@ -62,7 +60,7 @@ abstract class FormatBlot extends ParentBlot {
         formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
       }
       return formats;
-    }, super.getFormat());
+    }, {});
     formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;
     return formats;
   }

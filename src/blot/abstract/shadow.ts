@@ -48,10 +48,6 @@ abstract class ShadowNode implements LinkedNode {
     return Registry.create(domNode);
   }
 
-  getLength(): number {
-    return 1;
-  }
-
   isolate(index: number, length: number): ShadowNode {
     let target = this.split(index);
     target.split(length);
@@ -89,6 +85,8 @@ abstract class ShadowNode implements LinkedNode {
     wrapper.appendChild(this);
     return wrapper;
   }
+
+  abstract getLength(): number;
 }
 
 

@@ -55,47 +55,6 @@ abstract class Blot extends ShadowNode {
     this.domNode[DATA_KEY] = { blot: this };
   }
 
-  deleteAt(index: number, length: number): void {
-    let target = this.isolate(index, length);
-    target.remove();
-  }
-
-  findNode(index: number): [Node, number] {
-    return [this.domNode, 0];
-  }
-
-  findOffset(node: Node): number {
-    return node === this.domNode ? 0 : -1;
-  }
-
-  findPath(index: number, inclusive: boolean): Position[] {
-    return [{
-      blot: this,
-      offset: Math.min(index, this.getLength())
-    }];
-  }
-
-  format(name: string, value: any): void {
-    if (!value) return;
-    if (Registry.match(name, Registry.Scope.BLOT)) {
-      this.wrap(name, value);
-    } else if (Registry.match(name, Registry.Scope.ATTRIBUTE)) {
-      let blot = <ParentBlot>this.wrap('inline', true);
-      blot.format(name, value);
-    }
-  }
-
-  formatAt(index: number, length: number, name: string, value: any): void {
-    let target = <Blot>this.isolate(index, length);
-    target.format(name, value);
-  }
-
-  insertAt(index: number, value: string, def?: any): void {
-    let target = <Blot>this.split(index);
-    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
-    this.parent.insertBefore(blot, target);
-  }
-
   insertInto(parentBlot: ParentBlot, refBlot?: Blot): void {
     if (this.parent != null) {
       this.parent.children.remove(this);
@@ -108,6 +67,10 @@ abstract class Blot extends ShadowNode {
       parentBlot.domNode.insertBefore(this.domNode, refDomNode);
     }
     this.parent = parentBlot;
+  }
+
+  isolate(index: number, length: number): Blot {
+    return <Blot>super.isolate(index, length);
   }
 
   offset(root?: Blot): number {
@@ -125,6 +88,21 @@ abstract class Blot extends ShadowNode {
     return [];
   }
 
+  split(index: number, force?: boolean): Blot {
+    return <Blot>super.split(index, force);
+  }
+
+
+  abstract deleteAt(index: number, length: number): void;
+  abstract format(name: string, value: any): void;
+  abstract formatAt(index: number, length: number, name: string, value: any): void;
+  abstract insertAt(index: number, value: string, def ?: any): void;
+
+  abstract getFormat(): Object;
+  abstract getValue(): Object | string;
+  abstract findNode(index: number): [Node, number];
+  abstract findOffset(node: Node): number;
+  abstract findPath(index: number, inclusive: boolean): Position[];
   abstract update(mutations: MutationRecord[]): void;
 }
 

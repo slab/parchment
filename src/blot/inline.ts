@@ -29,6 +29,18 @@ class InlineBlot extends FormatBlot {
     return thisName <= otherName;
   }
 
+  format(name: string, value: any): void {
+    if (Registry.match(name, this.statics.scope) != null) {
+      if (value) {
+        this.wrap(name, value);
+      } else {
+        this.unwrap();
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.match(name, Registry.Scope.ATTRIBUTE) ||
         InlineBlot.compare(this.statics.blotName, name)) {
