@@ -12,7 +12,7 @@ export interface Position {
 }
 
 
-class Blot extends ShadowNode {
+abstract class Blot extends ShadowNode {
   static blotName: string;
   static className: string;
   static tagName: string;
@@ -125,7 +125,7 @@ class Blot extends ShadowNode {
     return [];
   }
 
-  update(mutations: MutationRecord[]): void { }    // Descendents implement
+  abstract update(mutations: MutationRecord[]): void;
 }
 
 

@@ -17,6 +17,8 @@ class EmbedBlot extends LeafBlot {
     let ref = (index === 0) ? this : this.next;
     this.parent.insertBefore(blot, ref);
   }
+
+  update(mutations: MutationRecord[]): void { }    // Nothing to do
 }
 
 

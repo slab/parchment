@@ -8,7 +8,7 @@ interface Attributors {
 }
 
 
-class FormatBlot extends ParentBlot {
+abstract class FormatBlot extends ParentBlot {
   attributes: Attributors;
 
   build(): void {

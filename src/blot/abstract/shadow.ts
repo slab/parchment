@@ -20,7 +20,7 @@ interface ShadowParent extends ShadowNode {
   unwrap(): void;
 }
 
-class ShadowNode implements LinkedNode {
+abstract class ShadowNode implements LinkedNode {
   static blotName: string;
 
   prev: ShadowNode;
@@ -90,5 +90,6 @@ class ShadowNode implements LinkedNode {
     return wrapper;
   }
 }
+
 
 export { ShadowParent, ShadowNode as default };

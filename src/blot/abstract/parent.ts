@@ -5,7 +5,7 @@ import { ShadowParent } from './shadow';
 import * as Registry from '../../registry';
 
 
-class ParentBlot extends Blot implements ShadowParent {
+abstract class ParentBlot extends Blot implements ShadowParent {
   static blotName = 'parent';
 
   domNode: HTMLElement;
@@ -195,7 +195,6 @@ class ParentBlot extends Blot implements ShadowParent {
         this.children.append(blot);
       }
     }
-    super.update(mutations);
   }
 }
 
