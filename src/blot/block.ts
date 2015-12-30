@@ -28,6 +28,12 @@ class BlockBlot extends FormatBlot {
     }
   }
 
+  getFormat(): Object {
+    let format = super.getFormat();
+    if (this.statics.blotName === BlockBlot.blotName) delete format[BlockBlot.blotName];
+    return format;
+  }
+
   insertBefore(childBlot: ChildBlot, refBlot?: ChildBlot): void {
     super.insertBefore(childBlot, refBlot);
   }

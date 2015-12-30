@@ -1,4 +1,5 @@
 import LeafBlot from './abstract/leaf';
+import TextBlot from './text';
 import * as Registry from '../registry';
 
 
@@ -12,7 +13,7 @@ class EmbedBlot extends LeafBlot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+    let blot = (def == null) ? Registry.create(TextBlot.blotName, value) : Registry.create(value, def);
     let ref = (index === 0) ? this : this.next;
     this.parent.insertBefore(blot, ref);
   }

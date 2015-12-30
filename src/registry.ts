@@ -1,5 +1,6 @@
 import Attributor from './attributor/attributor';
 
+
 let attributes = {};
 let classes = {};
 let tags = {};

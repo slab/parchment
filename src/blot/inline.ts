@@ -1,10 +1,9 @@
 import Blot from './abstract/blot';
 import FormatBlot from './abstract/format';
 import LeafBlot from './abstract/leaf';
-import ParentBlot from './abstract/parent';
 import * as Registry from '../registry';
-import { ShadowParent } from './abstract/shadow';
 import LinkedList from '../collection/linked-list';
+
 
 type ChildBlot = InlineBlot | LeafBlot;
 
@@ -43,6 +42,12 @@ class InlineBlot extends FormatBlot {
     }
   }
 
+  getFormat(): Object {
+    let format = super.getFormat();
+    if (this.statics.blotName === InlineBlot.blotName) delete format[InlineBlot.blotName];
+    return format;
+  }
+
   insertBefore(childBlot: ChildBlot, refBlot?: ChildBlot): void {
     super.insertBefore(childBlot, refBlot);
   }
@@ -73,9 +78,9 @@ class InlineBlot extends FormatBlot {
     }
   }
 
-  wrap(name: string, value: any): ParentBlot {
+  wrap(name: string, value: any): InlineBlot {
     if (name === this.statics.blotName) {
-      return this.replaceWith(name, value);
+      return <InlineBlot>this.replaceWith(name, value);
     } else {
       let wrapper = <InlineBlot>super.wrap(name, value);
       this.moveAttributes(wrapper);

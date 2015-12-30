@@ -1,7 +1,7 @@
 import Blot from './abstract/blot';
 import LeafBlot from './abstract/leaf';
-import InlineBlot from './inline';
 import * as Registry from '../registry';
+
 
 class TextBlot extends LeafBlot {
   static blotName = 'text';
