@@ -19,7 +19,7 @@ class Attributor {
     if (options.whitelist != null) this.whitelist = options.whitelist;
   }
 
-  add(node: HTMLElement, value: string) {
+  add(node: HTMLElement, value: string): void {
     node.setAttribute(this.keyName, value);
   }
 
@@ -31,7 +31,7 @@ class Attributor {
     return false;
   }
 
-  remove(node: HTMLElement) {
+  remove(node: HTMLElement): void {
     node.removeAttribute(this.keyName);
   }
 

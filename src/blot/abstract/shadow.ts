@@ -65,7 +65,7 @@ class ShadowNode implements LinkedNode {
     }
   }
 
-  replace(target: ShadowNode) {
+  replace(target: ShadowNode): void {
     if (target.parent == null) return;
     this.remove();
     target.parent.insertBefore(this, target.next);

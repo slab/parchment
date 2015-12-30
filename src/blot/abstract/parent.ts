@@ -71,7 +71,7 @@ class ParentBlot extends Blot implements ShadowParent {
     return pos.concat(child.findPath(offset, inclusive));
   }
 
-  format(name: string, value: any) {
+  format(name: string, value: any): void {
     if (!value && name === this.statics.blotName) {
       this.unwrap();
     } else {

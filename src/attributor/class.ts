@@ -10,13 +10,13 @@ class ClassAttributor extends Attributor {
   attrName: string;
   keyName: string;
 
-  add(node: HTMLElement, value: string) {
+  add(node: HTMLElement, value: string): void {
     if (!this.canAdd(node, value)) return;
     this.remove(node);
     node.classList.add(`${this.keyName}-${value}`);
   }
 
-  remove(node: HTMLElement) {
+  remove(node: HTMLElement): void {
     let matches = match(node, this.keyName);
     matches.forEach(function(name) {
       node.classList.remove(name);
