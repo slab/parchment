@@ -88,6 +88,14 @@ abstract class FormatBlot extends ParentBlot {
       }
     });
   }
+
+  wrap(name: string, value: any): ParentBlot {
+    let wrapper = super.wrap(name, value);
+    if (wrapper !== this && wrapper instanceof FormatBlot && wrapper.statics.scope === this.statics.scope) {
+      this.moveAttributes(wrapper);
+    }
+    return wrapper;
+  }
 }
 
 

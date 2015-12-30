@@ -7,6 +7,11 @@ abstract class LeafBlot extends Blot {
   static blotName = 'leaf';
   static scope = Registry.Scope.LEAF & Registry.Scope.BLOT;
 
+  deleteAt(index: number, length: number): void {
+    let blot = this.isolate(index, length);
+    blot.remove();
+  }
+
   findNode(index: number): [Node, number] {
     return [this.domNode, index];
   }
@@ -20,11 +25,6 @@ abstract class LeafBlot extends Blot {
       blot: this,
       offset: Math.min(index, this.getLength())
     }];
-  }
-
-  deleteAt(index: number, length: number): void {
-    let blot = this.isolate(index, length);
-    blot.remove();
   }
 
   format(name: string, value: any): void {
@@ -42,15 +42,14 @@ abstract class LeafBlot extends Blot {
     blot.format(name, value);
   }
 
+  getFormat(): Object {
+    return {}
+  }
+
   insertAt(index: number, value: string, def?: any): void {
     let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     let ref = this.split(index);
     this.parent.insertBefore(blot, ref);
-  }
-
-
-  getFormat(): Object {
-    return {}
   }
 }
 

@@ -184,6 +184,14 @@ abstract class ParentBlot extends Blot implements ShadowParent {
       }
     }
   }
+
+  wrap(name: string, value: any): ParentBlot {
+    if (name === this.statics.blotName) {
+      return this.replaceWith(name, value);
+    } else {
+      return <ParentBlot>super.wrap(name, value);
+    }
+  }
 }
 
 

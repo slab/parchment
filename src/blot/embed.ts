@@ -6,6 +6,14 @@ import * as Registry from '../registry';
 class EmbedBlot extends LeafBlot {
   static blotName = 'embed';
 
+  deleteAt(index: number, length: number): void {
+    this.remove();
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    this.format(name, value);
+  }
+
   getLength(): number {
     return 1;
   }
@@ -14,14 +22,6 @@ class EmbedBlot extends LeafBlot {
     let value = {};
     value[this.statics.blotName] = true;
     return value;
-  }
-
-  deleteAt(index: number, length: number): void {
-    this.remove();
-  }
-
-  formatAt(index: number, length: number, name: string, value: any): void {
-    this.format(name, value);
   }
 
   insertAt(index: number, value: string, def?: any): void {

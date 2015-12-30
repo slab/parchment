@@ -47,7 +47,7 @@ class InlineBlot extends FormatBlot {
       let formats = this.getFormat();
       if (value && formats[name] === value) return;
       if (!value && !formats[name]) return;
-      let target = <Blot>this.isolate(index, length);
+      let target = <InlineBlot>this.isolate(index, length);
       target.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
@@ -87,16 +87,6 @@ class InlineBlot extends FormatBlot {
       this.replaceWith(InlineBlot.blotName, true);
     } else {
       super.unwrap();
-    }
-  }
-
-  wrap(name: string, value: any): InlineBlot {
-    if (name === this.statics.blotName) {
-      return <InlineBlot>this.replaceWith(name, value);
-    } else {
-      let wrapper = <InlineBlot>super.wrap(name, value);
-      this.moveAttributes(wrapper);
-      return wrapper;
     }
   }
 }
