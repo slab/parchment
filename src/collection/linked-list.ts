@@ -49,10 +49,10 @@ class LinkedList<T extends LinkedNode> {
   }
 
   offset(target: T): number {
-    let offset = 0, cur = this.head;
+    let index = 0, cur = this.head;
     while (cur != null) {
-      if (cur === target) return offset;
-      offset += cur.getLength()
+      if (cur === target) return index;
+      index += cur.getLength()
       cur = <T>cur.next;
     }
     return -1;
