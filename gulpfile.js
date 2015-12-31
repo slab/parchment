@@ -11,7 +11,14 @@ var webpackConfig = require('./webpack.conf');
 gulp.task('default', ['build']);
 
 gulp.task('build', function(callback) {
-  webpack(webpackConfig, function(err, stats, el) {
+  webpack(webpackConfig, function(err, stats) {
+    var json = stats.toJson();
+    (json.warnings || []).forEach(function(warning) {
+      gutil.log(gutil.colors.yellow("[webpack] " + warning));
+    });
+    (json.errors || []).forEach(function(error) {
+      gutil.log(error);
+    });
     if (err) throw new gutil.PluginError('webpack', err);
     callback();
   });
