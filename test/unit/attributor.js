@@ -94,6 +94,14 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.outerHTML).toEqual('<strong>Bold</strong>');
   });
 
+  it('keep class attribute after removal', function() {
+    let boldBlot = Registry.create('bold');
+    boldBlot.domNode.classList.add('blot');
+    boldBlot.format('indent', 2);
+    boldBlot.format('indent', false);
+    expect(boldBlot.domNode.classList.contains('blot')).toBe(true);
+  });
+
   it('move attribute', function() {
     let container = Registry.create('block');
     let node = document.createElement('strong');

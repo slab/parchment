@@ -101,10 +101,10 @@ class LinkedList<T extends LinkedNode> {
     let cur, curIndex = index - offset, next = this.iterator(startNode);
     while ((cur = next()) && curIndex < index + length) {
       let curLength = cur.getLength();
-      if (index <= curIndex) {
-        callback(cur, 0, Math.min(curLength, index + length - curIndex));
-      } else if (index < curIndex + curLength) {
+      if (index > curIndex) {
         callback(cur, index - curIndex, Math.min(length, curIndex + curLength - index));
+      } else {
+        callback(cur, 0, Math.min(curLength, index + length - curIndex));
       }
       curIndex += curLength;
     }

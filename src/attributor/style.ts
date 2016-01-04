@@ -2,7 +2,6 @@ import Attributor from './attributor';
 
 
 function camelize(name: string): string {
-  if (name.length === 0) return name;
   let parts = name.split('-');
   let rest = parts.slice(1).map(function(part) {
     if (part.length == 0) return part;
