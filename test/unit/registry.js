@@ -57,12 +57,12 @@ describe('Registry', function() {
       expect(match).toBe(ItalicBlot);
     });
 
-    it('level and type mismatch', function() {
+    it('level match and type mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.INLINE & Registry.Scope.ATTRIBUTE);
       expect(match).toBeFalsy();
     });
 
-    it('level and type mismatch', function() {
+    it('type match and level mismatch', function() {
       let match = Registry.match('italic', Registry.Scope.BLOCK & Registry.Scope.BLOT);
       expect(match).toBeFalsy();
     });
