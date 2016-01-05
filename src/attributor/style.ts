@@ -4,7 +4,6 @@ import Attributor from './attributor';
 function camelize(name: string): string {
   let parts = name.split('-');
   let rest = parts.slice(1).map(function(part) {
-    if (part.length == 0) return part;
     return part[0].toUpperCase() + part.slice(1);
   }).join('');
   return parts[0] + rest;

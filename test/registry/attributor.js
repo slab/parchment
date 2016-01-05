@@ -19,5 +19,7 @@ let AlignAttributor = new StyleAttributor('align', 'text-align', {
 });
 Registry.register(AlignAttributor);
 
-let IndentAttributor = new ClassAttributor('indent', 'indent');
+let IndentAttributor = new ClassAttributor('indent', 'indent', {
+  scope: Registry.Scope.BLOCK
+});
 Registry.register(IndentAttributor);

@@ -16,9 +16,7 @@ describe('Attributor', function() {
     let boldBlot = Registry.create('bold');
     container.appendChild(boldBlot);
     boldBlot.format('id', 'test-add');
-    boldBlot.format('indent', '2');
     expect(boldBlot.domNode.id).toEqual('test-add');
-    expect(boldBlot.domNode.classList.contains('indent-2')).toBe(true);
   });
 
   it('add to text', function() {
@@ -40,13 +38,13 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.outerHTML).toEqual(original);
   });
 
-  it('add existing class', function() {
-    let boldBlot = Registry.create('bold');
-    boldBlot.format('indent', 2);
-    expect(boldBlot.domNode.classList.contains('indent-2')).toBe(true);
-    boldBlot.format('indent', 3);
-    expect(boldBlot.domNode.classList.contains('indent-2')).toBe(false);
-    expect(boldBlot.domNode.classList.contains('indent-3')).toBe(true);
+  it('replace existing class', function() {
+    let blockBlot = Registry.create('block');
+    blockBlot.format('indent', 2);
+    expect(blockBlot.domNode.classList.contains('indent-2')).toBe(true);
+    blockBlot.format('indent', 3);
+    expect(blockBlot.domNode.classList.contains('indent-2')).toBe(false);
+    expect(blockBlot.domNode.classList.contains('indent-3')).toBe(true);
   });
 
   it('add whitelist style', function() {
@@ -115,12 +113,25 @@ describe('Attributor', function() {
     expect(boldBlot.next.getFormat().color).toEqual('red');
   });
 
-  it('block', function() {
+  it('add to block', function() {
     let container = Registry.create('container');
     let block = Registry.create('header', 'h1');
     container.appendChild(block);
     block.format('align', 'right');
     expect(container.domNode.innerHTML).toBe('<h1 style="text-align: right;"></h1>');
     expect(container.children.head.getFormat()).toEqual({ header: 'h1', align: 'right' });
+  });
+
+  it('invalid class scope', function() {
+    let inline = Registry.create('inline');
+    let blockAttributor = Registry.match('indent');
+    blockAttributor.add(inline.domNode, 1);
+    expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
+  });
+
+  it('missing class value', function() {
+    let block = Registry.create('block');
+    let indentAttributor = Registry.match('indent');
+    expect(indentAttributor.value(block.domNode)).toBeFalsy();
   });
 });
