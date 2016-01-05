@@ -22,7 +22,7 @@ abstract class FormatBlot extends ParentBlot {
     [].slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {
         classes = item.value.split(/\s+/).map(function(name) {
-          return name.split('-').slice(0, -1).join('-') || '';
+          return name.split('-').slice(0, -1).join('-');
         });
       } else if (item.name === 'style') {
         styles = item.value.split(';').map(function(val) {
@@ -47,8 +47,8 @@ abstract class FormatBlot extends ParentBlot {
       if (value) {
         this.attributes[name] = attribute;
         this.attributes[name].add(this.domNode, value);
-      } else if (this.attributes[name] != null) {
-        this.attributes[name].remove(this.domNode);
+      } else {
+        attribute.remove(this.domNode);
         delete this.attributes[name];
       }
     }
@@ -56,9 +56,7 @@ abstract class FormatBlot extends ParentBlot {
 
   getFormat(): Object {
     let formats = Object.keys(this.attributes).reduce((formats, name) => {
-      if (this.domNode instanceof HTMLElement) {
-        formats[name] = this.attributes[name].value(<HTMLElement>this.domNode);
-      }
+      formats[name] = this.attributes[name].value(this.domNode);
       return formats;
     }, {});
     formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;

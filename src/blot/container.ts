@@ -75,9 +75,9 @@ class ContainerBlot extends ParentBlot {
     super.insertBefore(childBlot, refBlot);
   }
 
-  optimize(): void {
+  optimize(mutations: MutationRecord[] = []): void {
     // TODO use WeakMap
-    let mutations = this.observer.takeRecords();
+    mutations = mutations.concat(this.observer.takeRecords());
     this.observer.disconnect();
     let mark = (blot: Blot) => {
       if (blot != null && blot != this && blot.domNode[DATA_KEY].mutations == null) {
@@ -122,12 +122,13 @@ class ContainerBlot extends ParentBlot {
       if (blot == null || blot === this) return null;
       blot.domNode[DATA_KEY].mutations = blot.domNode[DATA_KEY].mutations || [];
       blot.domNode[DATA_KEY].mutations.push(mutation);
+      return blot;
     }).forEach((blot: Blot) => {
       if (blot == null || blot.domNode[DATA_KEY].mutations == null) return;
-      blot.update(blot[DATA_KEY].mutations);
+      blot.update(blot.domNode[DATA_KEY].mutations);
       Blot.prototype.optimize.call(blot);
     });
-    this.optimize();
+    this.optimize(mutations);
   }
 }
 

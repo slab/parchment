@@ -19,6 +19,7 @@ describe('Block', function() {
       block.format('header', false);
       expect(container.domNode.innerHTML).toBe('<p></p>');
       expect(container.children.head.statics.blotName).toBe('block');
+      expect(container.children.head.getFormat()).toEqual({});
     });
 
     it('change', function() {
