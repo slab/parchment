@@ -2,6 +2,7 @@ var _ = require('lodash');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var karma = require('karma');
+var istanbul = require('istanbul');
 var path = require('path');
 var source = require('vinyl-source-stream');
 var webpack = require('webpack');
@@ -33,7 +34,7 @@ gulp.task('test', function(done) {
 gulp.task('test:coverage', function(done) {
   var config = _.clone(webpackConfig);
   config.module.postLoaders = [
-    { test: /src\/.*\.ts$/, loader: 'istanbul-instrumenter' }
+    { test: /src\/.*\.ts$/, loader: __dirname + '/gulpfile.js' }  // webpack insists on 'real' loader file
   ];
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
@@ -67,3 +68,13 @@ gulp.task('test:travis', function(done) {
 gulp.task('watch', function() {
   gulp.watch('**/*.ts', ['build']);
 });
+
+
+// Only for test:coverage
+module.exports = function(source) {
+  var instrumenter = new istanbul.Instrumenter({ embedSource: true, noAutoWrap: true });
+  if (this.cacheable) this.cacheable();
+  source = source.replace('for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];', '/* istanbul ignore next */\n    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];');
+  source = source.replace('d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());', 'd.prototype = b === null ? /* istanbul ignore next */ Object.create(b) : (__.prototype = b.prototype, new __());');
+  return instrumenter.instrumentSync(source, this.resourcePath);
+};
