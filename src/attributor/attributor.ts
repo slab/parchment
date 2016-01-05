@@ -15,7 +15,13 @@ class Attributor {
   constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
     this.attrName = attrName;
     this.keyName = keyName;
-    this.scope = options.scope || Registry.Scope.ATTRIBUTE;
+    let attributeBit = Registry.Scope.TYPE & Registry.Scope.ATTRIBUTE;
+    if (options.scope != null) {
+      // Ignore type bits, force attribute bit
+      this.scope = (options.scope & Registry.Scope.LEVEL) | attributeBit;
+    } else {
+      this.scope = Registry.Scope.ATTRIBUTE;
+    }
     if (options.whitelist != null) this.whitelist = options.whitelist;
   }
 
