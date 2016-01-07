@@ -92,30 +92,4 @@ describe('TextBlot', function() {
     expect(textBlot.next.statics.blotName).toEqual('bold');
     expect(textBlot.getValue()).toEqual('T');
   });
-
-  it('update()', function() {
-    let container = Registry.create('container');
-    let blockBlot = Registry.create('block');
-    let textBlot = Registry.create('text', 'Test');
-    container.appendChild(blockBlot);
-    blockBlot.appendChild(textBlot);
-    container.update()
-    textBlot.domNode.data = 'Tested!';
-    container.update();
-    expect(textBlot.getValue()).toEqual('Tested!');
-  });
-
-  it('optimize() removal', function() {
-    let container = Registry.create('container');
-    let blockBlot = Registry.create('block');
-    container.appendChild(blockBlot);
-    blockBlot.insertAt(0, 'image', {});
-    let textBlot = Registry.create('text', 'Test');
-    blockBlot.appendChild(textBlot);
-    container.update()
-    textBlot.domNode.data = '';
-    container.update();
-    expect(blockBlot.children.length).toBe(1);
-    expect(textBlot.domNode.parentNode).toBeFalsy();
-  });
 });

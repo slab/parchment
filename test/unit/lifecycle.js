@@ -131,6 +131,16 @@ describe('Lifecycle', function() {
       expect(node.innerHTML).toEqual('<p><strong>Test</strong></p>');
       expect(node.querySelector('strong').childNodes.length).toBe(1);
     });
+
+    it('remove text + recursive merge', function() {
+      let node = document.createElement('div');
+      node.innerHTML = '<p><em>Te</em>|<em>st</em></p>';
+      let container = Registry.create(node);
+      node.firstChild.childNodes[1].data = '';
+      container.optimize();
+      expect(node.innerHTML).toEqual('<p><em>Test</em></p>');
+      expect(node.firstChild.firstChild.childNodes.length).toBe(1);
+    });
   });
 
   describe('update()', function() {
@@ -181,12 +191,27 @@ describe('Lifecycle', function() {
     });
 
     describe('dom', function() {
+      it('change text', function() {
+        let textBlot = this.descendants[3];
+        textBlot.domNode.data = 'Te|st';
+        this.container.update();
+        this.checkUpdateCalls(textBlot);
+        expect(textBlot.getValue()).toEqual('Te|st');
+      });
+
       it('add attribute', function() {
         let attrBlot = this.descendants[1];
         attrBlot.domNode.setAttribute('id', 'blot');
         this.container.update();
         this.checkUpdateCalls(attrBlot);
         expect(attrBlot.getFormat()).toEqual({ color: 'red', italic: true, id: 'blot' });
+      });
+
+      it('add embed attribute', function() {
+        let imageBlot = this.descendants[4];
+        imageBlot.domNode.setAttribute('alt', 'image');
+        this.container.update();
+        this.checkUpdateCalls(imageBlot);
       });
 
       it('change attributes', function() {

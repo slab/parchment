@@ -44,17 +44,4 @@ describe('EmbedBlot', function() {
     expect(imageBlot.split(0)).toBe(imageBlot);
     expect(imageBlot.split(1)).toBe(blockBlot.children.tail);
   });
-
-  it('update()', function() {
-    let container = Registry.create('container');
-    let blockBlot = Registry.create('block');
-    let imageBlot = Registry.create('image');
-    container.appendChild(blockBlot);
-    blockBlot.appendChild(imageBlot);
-    container.update();
-    spyOn(imageBlot, 'update').and.callThrough();
-    imageBlot.domNode.setAttribute('alt', 'image');
-    container.update();
-    expect(imageBlot.update).toHaveBeenCalled();
-  });
 });
