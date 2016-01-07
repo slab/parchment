@@ -99,9 +99,9 @@ describe('TextBlot', function() {
     let textBlot = Registry.create('text', 'Test');
     container.appendChild(blockBlot);
     blockBlot.appendChild(textBlot);
-    container.observer.takeRecords()
+    container.update()
     textBlot.domNode.data = 'Tested!';
-    container.update(container.observer.takeRecords());
+    container.update();
     expect(textBlot.getValue()).toEqual('Tested!');
   });
 
@@ -112,9 +112,9 @@ describe('TextBlot', function() {
     blockBlot.insertAt(0, 'image', {});
     let textBlot = Registry.create('text', 'Test');
     blockBlot.appendChild(textBlot);
-    container.observer.takeRecords()
+    container.update()
     textBlot.domNode.data = '';
-    container.update(container.observer.takeRecords());
+    container.update();
     expect(blockBlot.children.length).toBe(1);
     expect(textBlot.domNode.parentNode).toBeFalsy();
   });

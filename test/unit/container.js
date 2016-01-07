@@ -67,4 +67,12 @@ describe('Container', function() {
       });
     });
   });
+
+  it('getters', function() {
+    let div = document.createElement('div');
+    div.innerHTML = '<p><strong>Test</strong><em style="color: red;">ing</em></p><p><em>!</em></p>';
+    let blot = Registry.create(div);
+    expect(blot.getValue()).toEqual(['Test', 'ing', '!']);
+    expect(blot.getFormat()).toEqual({});
+  });
 });

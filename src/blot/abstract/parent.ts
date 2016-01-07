@@ -27,8 +27,10 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     childNodes.reverse().forEach((node) => {
-      let child = Blot.findBlot(node) || Registry.create(node);
-      this.insertBefore(child, this.children.head);
+      try {
+        let child = Blot.findBlot(node) || Registry.create(node);
+        this.insertBefore(child, this.children.head);
+      } catch (skipBlot) {}
     });
   }
 

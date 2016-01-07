@@ -21,7 +21,7 @@ describe('InlineBlot', function() {
     let original = boldBlot.domNode.outerHTML;
     expect(function() {
       boldBlot.format('nonexistent', true);
-    }).not.toThrow();
+    }).not.toThrowError(/\[Parchment\]/);
     expect(boldBlot.domNode.outerHTML).toEqual(original);
   });
 
@@ -34,7 +34,7 @@ describe('InlineBlot', function() {
     expect(function() {
       italicBlot.formatAt(0, 4, 'bold', true);
       italicBlot.formatAt(0, 4, 'italic', true);
-    }).not.toThrow();
+    }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
   });
 
@@ -46,7 +46,7 @@ describe('InlineBlot', function() {
     let original = italicBlot.domNode.outerHTML;
     expect(function() {
       italicBlot.formatAt(0, 4, 'bold', false);
-    }).not.toThrow();
+    }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
   });
 

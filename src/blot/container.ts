@@ -49,20 +49,15 @@ class ContainerBlot extends ParentBlot {
     this.optimize();
   }
 
-  getBlocks(): BlockBlot[] {
-    return this.getDescendants<BlockBlot>(BlockBlot);
+  getFormat(): Object {
+    return {};
   }
 
-  getFormat(): any[] {
-    return this.getBlocks().map(function(block) {
-      return block.getFormat();
-    });
-  }
-
-  getValue(): any[] {
-    return this.getBlocks().map(function(block) {
+  getValue(): (string|Object)[] {
+    let values = this.getDescendants<BlockBlot>(BlockBlot).map(function(block) {
       return block.getValue();
     });
+    return [].concat.apply([], values);
   }
 
   insertAt(index: number, value: string, def?: any): void {
@@ -115,7 +110,8 @@ class ContainerBlot extends ParentBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
-  update(mutations: MutationRecord[]): void {
+  update(mutations?: MutationRecord[]): void {
+    mutations = mutations || this.observer.takeRecords();
     // TODO use WeakMap
     mutations.map((mutation: MutationRecord) => {
       let blot = Blot.findBlot(mutation.target, true);

@@ -113,6 +113,16 @@ describe('Attributor', function() {
     expect(boldBlot.next.getFormat().color).toEqual('red');
   });
 
+  it('wrap with block', function() {
+    let container = Registry.create('block');
+    let node = document.createElement('strong');
+    node.style.color = 'red';
+    let boldBlot = Registry.create(node);
+    container.appendChild(boldBlot);
+    boldBlot.wrap('block');
+    expect(node.style.color).toBe('red');
+  });
+
   it('add to block', function() {
     let container = Registry.create('container');
     let block = Registry.create('header', 'h1');

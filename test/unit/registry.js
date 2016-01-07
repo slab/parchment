@@ -18,7 +18,7 @@ describe('Registry', function() {
     it('invalid', function() {
       expect(function() {
         Registry.create(BoldBlot);
-      }).toThrow();
+      }).toThrowError(/\[Parchment\]/);
     });
   });
 
@@ -26,7 +26,7 @@ describe('Registry', function() {
     it('invalid', function() {
       expect(function() {
         Registry.register({});
-      }).toThrow();
+      }).toThrowError(/\[Parchment\]/);
     });
   });
 

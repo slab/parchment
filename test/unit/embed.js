@@ -51,10 +51,10 @@ describe('EmbedBlot', function() {
     let imageBlot = Registry.create('image');
     container.appendChild(blockBlot);
     blockBlot.appendChild(imageBlot);
-    container.observer.takeRecords();
+    container.update();
     spyOn(imageBlot, 'update').and.callThrough();
     imageBlot.domNode.setAttribute('alt', 'image');
-    container.update(container.observer.takeRecords());
+    container.update();
     expect(imageBlot.update).toHaveBeenCalled();
   });
 });

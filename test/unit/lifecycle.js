@@ -1,6 +1,50 @@
 "use strict"
 
 describe('Lifecycle', function() {
+  describe('create()', function() {
+    it('specific tagName', function() {
+      let node = BoldBlot.create();
+      expect(node).toBeTruthy();
+      expect(node.tagName).toEqual(BoldBlot.tagName.toUpperCase());
+    });
+
+    it('array tagName index', function() {
+      let node = HeaderBlot.create(2);
+      expect(node).toBeTruthy();
+      let blot = Registry.create(node);
+      expect(blot.getFormat()).toEqual({ header: 'h2' });
+    });
+
+    it('array tagName value', function() {
+      let node = HeaderBlot.create('h2');
+      expect(node).toBeTruthy();
+      let blot = Registry.create(node);
+      expect(blot.getFormat()).toEqual({ header: 'h2' });
+    });
+
+    it('array tagName default', function() {
+      let node = HeaderBlot.create();
+      expect(node).toBeTruthy();
+      let blot = Registry.create(node);
+      expect(blot.getFormat()).toEqual({ header: 'h1' });
+    });
+
+    it('null tagName', function() {
+      class NullBlot extends Blot {}
+      expect(NullBlot.create).toThrowError(/\[Parchment\]/);
+    });
+
+    it('className', function() {
+      class ClassBlot extends Blot {}
+      ClassBlot.className = 'test';
+      ClassBlot.tagName = 'span';
+      let node = ClassBlot.create();
+      expect(node).toBeTruthy();
+      expect(node.classList.contains(Registry.PREFIX + 'test')).toBe(true);
+      expect(node.tagName).toBe('SPAN');
+    });
+  });
+
   describe('optimize()', function() {
     it('unwrap empty inline', function() {
       let node = document.createElement('div');
@@ -86,6 +130,6 @@ describe('Lifecycle', function() {
       container.optimize();
       expect(node.innerHTML).toEqual('<p><strong>Test</strong></p>');
       expect(node.querySelector('strong').childNodes.length).toBe(1);
-    })
+    });
   });
 });
