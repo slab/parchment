@@ -12,7 +12,7 @@ const OBSERVER_CONFIG = {
   subtree: true
 };
 
-const MAX_CLEAN_ITERATIONS = 10000;
+const MAX_CLEAN_ITERATIONS = 5;
 
 
 class ContainerBlot extends ParentBlot {
@@ -37,11 +37,7 @@ class ContainerBlot extends ParentBlot {
     this.optimize();
   }
 
-  format(name: string, value: any): void {
-    this.update(this.observer.takeRecords());
-    this.format(name, value);
-    this.optimize();
-  }
+  format(name: string, value: any): void { }
 
   formatAt(index: number, length: number, name: string, value: any): void {
     this.update(this.observer.takeRecords());
@@ -54,7 +50,7 @@ class ContainerBlot extends ParentBlot {
   }
 
   getValue(): (string|Object)[] {
-    let values = this.getDescendants<BlockBlot>(BlockBlot).map(function(block) {
+    let values = this.children.map(function(block) {
       return block.getValue();
     });
     return [].concat.apply([], values);
@@ -73,41 +69,33 @@ class ContainerBlot extends ParentBlot {
   optimize(mutations: MutationRecord[] = []): void {
     // TODO use WeakMap
     mutations = mutations.concat(this.observer.takeRecords());
-    this.observer.disconnect();
     let mark = (blot: Blot) => {
-      if (blot != null && blot != this && blot.domNode[DATA_KEY].mutations == null) {
+      if (blot == null || blot === this) return;
+      if (blot.domNode[DATA_KEY].mutations == null) {
         blot.domNode[DATA_KEY].mutations = [];
-        mark(blot.parent);
       }
+      mark(blot.parent);
     }
-    let dirtyBlots = mutations.map(function(mutation: MutationRecord) {
-      return Blot.findBlot(mutation.target, true);
-    });
-    let iterations = 0;
-    let traverse = function(blot: Blot): boolean {  // Post-order
-      iterations += 1;
-      if (iterations >= MAX_CLEAN_ITERATIONS) return true;
+    let optimize = function(blot: Blot) {  // Post-order traversal
       if (blot instanceof ParentBlot) {
-        let exit = blot.children.reduce(function(exit, child) {
-          if (exit) return exit;
-          if (blot.domNode[DATA_KEY].mutations == null) return false;
-          return traverse(child);
-        }, false);
-        if (exit) return exit;
+        blot.children.forEach(function(child) {
+          if (blot.domNode[DATA_KEY].mutations == null) return;
+          optimize(child);
+        });
       }
-      let blots = blot.optimize();
-      if (Array.isArray(blots) && blots.length > 0) {
-        dirtyBlots = blots;
-        return true;
-      }
-      return false;
+      blot.optimize();
     }
-    while (dirtyBlots.length > 0 && iterations <= MAX_CLEAN_ITERATIONS) {
-      dirtyBlots.forEach(mark);
-      dirtyBlots = [];
-      this.children.forEach(traverse);
+    for (let i = 0; i < MAX_CLEAN_ITERATIONS && mutations.length > 0; i += 1) {
+      mutations.forEach(function(mutation) {
+        let blot = Blot.findBlot(mutation.target, true);
+        if (blot != null && blot.domNode === mutation.target && mutation.type === 'childList') {
+          mark(Blot.findBlot(mutation.previousSibling, false));
+        }
+        mark(blot);
+      });
+      this.children.forEach(optimize);
+      mutations = this.observer.takeRecords();
     }
-    this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
   update(mutations?: MutationRecord[]): void {
@@ -122,7 +110,6 @@ class ContainerBlot extends ParentBlot {
     }).forEach((blot: Blot) => {
       if (blot == null || blot.domNode[DATA_KEY].mutations == null) return;
       blot.update(blot.domNode[DATA_KEY].mutations);
-      Blot.prototype.optimize.call(blot);
     });
     this.optimize(mutations);
   }

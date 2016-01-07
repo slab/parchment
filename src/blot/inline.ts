@@ -63,22 +63,21 @@ class InlineBlot extends FormatBlot {
     super.insertBefore(childBlot, refBlot);
   }
 
-  optimize(): void | Blot[] {
+  optimize(): void {
+    super.optimize();
     if (this.children.length === 0) {
-      return this.unwrap();  // unformatted span
+      return this.unwrap();  // empty span
     }
     let formats = this.getFormat();
     if (Object.keys(formats).length === 0) {
-      return this.unwrap();
+      return this.unwrap();  // unformatted span
     }
-    let prev = this.prev;
-    if (prev instanceof InlineBlot && isEqual(formats, prev.getFormat())) {
-      let head = this.children.head;
-      prev.moveChildren(this, head);
-      prev.remove();
-      return [head];
+    let next = this.next;
+    if (next instanceof InlineBlot && isEqual(formats, next.getFormat())) {
+      let tail = this.children.tail;
+      next.moveChildren(this);
+      next.remove();
     }
-    super.optimize();
   }
 
   unwrap(): void {

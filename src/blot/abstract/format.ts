@@ -12,12 +12,12 @@ abstract class FormatBlot extends ParentBlot {
   attributes: Attributors;
 
   build(): void {
-    this.attributes = {};
     super.build();
     this.buildAttributes();
   }
 
   buildAttributes(): void {
+    this.attributes = {};
     let attributes = [], classes = [], styles = [];
     [].slice.call(this.domNode.attributes).forEach(item => {
       if (item.name === 'class') {

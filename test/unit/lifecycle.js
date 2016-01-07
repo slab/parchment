@@ -132,4 +132,110 @@ describe('Lifecycle', function() {
       expect(node.querySelector('strong').childNodes.length).toBe(1);
     });
   });
+
+  describe('update()', function() {
+    beforeEach(function() {
+      let div = document.createElement('div');
+      div.innerHTML = '<p><em style="color: red;"><strong>Test</strong><img>ing</em></p><p><em>!</em></p>'
+      this.container = Registry.create(div);
+      // [p, em, strong, text, image, text, p, em, text]
+      this.descendants = this.container.getDescendants(Blot);
+      this.descendants.forEach(function(blot) {
+        spyOn(blot, 'update').and.callThrough();
+      });
+      this.checkUpdateCalls = (called) => {
+        this.descendants.forEach(function(blot) {
+          if (called === blot || (Array.isArray(called) && called.indexOf(blot) > -1)) {
+            expect(blot.update).toHaveBeenCalled();
+          } else {
+            expect(blot.update).not.toHaveBeenCalled();
+          }
+        });
+      };
+    });
+
+    describe('api', function() {
+      it('insert text', function() {
+        this.container.insertAt(2, '|');
+        expect(this.container.getValue()).toEqual(['Te|st', { image: true }, 'ing', '!']);
+        expect(this.container.observer.takeRecords()).toEqual([]);
+      });
+
+      it('insert embed', function() {
+        this.container.insertAt(2, 'image', 'irrelevant');
+        expect(this.container.getValue()).toEqual(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
+        expect(this.container.observer.takeRecords()).toEqual([]);
+      });
+
+      it('delete', function() {
+        this.container.deleteAt(2, 5);
+        expect(this.container.getValue()).toEqual(['Te', 'g', '!']);
+        expect(this.container.observer.takeRecords()).toEqual([]);
+      });
+
+      it('format', function() {
+        this.container.formatAt(2, 5, 'size', '24px');
+        expect(this.container.getValue()).toEqual(['Te', 'st', { image: true }, 'in', 'g', '!']);
+        expect(this.container.observer.takeRecords()).toEqual([]);
+      });
+    });
+
+    describe('dom', function() {
+      it('add attribute', function() {
+        let attrBlot = this.descendants[1];
+        attrBlot.domNode.setAttribute('id', 'blot');
+        this.container.update();
+        this.checkUpdateCalls(attrBlot);
+        expect(attrBlot.getFormat()).toEqual({ color: 'red', italic: true, id: 'blot' });
+      });
+
+      it('change attributes', function() {
+        let attrBlot = this.descendants[1];
+        attrBlot.domNode.style.color = 'blue';
+        this.container.update();
+        this.checkUpdateCalls(attrBlot);
+        expect(attrBlot.getFormat()).toEqual({ color: 'blue', italic: true });
+      });
+
+      it('remove attribute', function() {
+        let attrBlot = this.descendants[1];
+        attrBlot.domNode.removeAttribute('style');
+        this.container.update();
+        this.checkUpdateCalls(attrBlot);
+        expect(attrBlot.getFormat()).toEqual({ italic: true });
+      });
+
+      it('add child node', function() {
+        let italicBlot = this.descendants[1];
+        italicBlot.domNode.appendChild(document.createTextNode('|'));
+        this.container.update();
+        this.checkUpdateCalls(italicBlot);
+        expect(this.container.getValue()).toEqual(['Test', { image: true }, 'ing|', '!']);
+      });
+
+      it('remove child node', function() {
+        let imageBlot = this.descendants[4];
+        imageBlot.domNode.parentNode.removeChild(imageBlot.domNode);
+        this.container.update();
+        this.checkUpdateCalls(this.descendants[1]);
+        expect(this.container.getValue()).toEqual(['Test', 'ing', '!'])
+      });
+
+      it('different changes to same blot', function() {
+        let attrBlot = this.descendants[1];
+        attrBlot.domNode.style.color = 'blue';
+        attrBlot.domNode.insertBefore(document.createTextNode('|'), attrBlot.domNode.childNodes[1]);
+        this.container.update();
+        this.checkUpdateCalls(attrBlot);
+        expect(attrBlot.getFormat()).toEqual({ color: 'blue', italic: true });
+        expect(this.container.getValue()).toEqual(['Test', '|', { image: true } , 'ing', '!']);
+      });
+
+      it('complex changes to tree', function() {
+
+      });
+
+      // Remove empty text node (or make it empty) between two nodes that can merge
+    });
+  });
 });

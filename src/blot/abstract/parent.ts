@@ -9,7 +9,6 @@ abstract class ParentBlot extends Blot implements ShadowParent {
   static blotName = 'parent';
 
   domNode: HTMLElement;
-  parent: ParentBlot;
   children: LinkedList<Blot>;
 
   constructor(node: Node) {
@@ -91,7 +90,8 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     this.children.forEachAt(index, length, function(child) {
       if (child instanceof type) {
         descendants.push(child);
-      } else if (child instanceof ParentBlot) {
+      }
+      if (child instanceof ParentBlot) {
         descendants = descendants.concat(child.getDescendants<T>(type));
       }
     });
@@ -169,20 +169,24 @@ abstract class ParentBlot extends Blot implements ShadowParent {
       this.children.forEach((child) => {
         while (childNode !== child.domNode) {
           if (child.domNode.parentNode === this.domNode) {
+            // New child inserted
             let blot = Blot.findBlot(childNode) || Registry.create(childNode);
             if (blot.parent != null) {
               blot.parent.children.remove(blot);
             }
-            this.children.insertBefore(blot, child);
+            this.insertBefore(blot, child);
+            childNode = childNode.nextSibling;
           } else {
-            child.remove();
+            // Existing child removed
+            return child.remove();
           }
         }
         childNode = childNode.nextSibling;
       });
       while (childNode != null) {
         let blot = Blot.findBlot(childNode) || Registry.create(childNode);
-        this.children.append(blot);
+        this.insertBefore(blot);
+        childNode = childNode.nextSibling;
       }
     }
   }

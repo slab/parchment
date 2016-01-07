@@ -83,9 +83,8 @@ abstract class Blot extends ShadowNode {
     }
   }
 
-  optimize(): void | Blot[] {
+  optimize(mutations: MutationRecord[] = []): void {
     delete this.domNode[DATA_KEY].mutations;
-    return [];
   }
 
   split(index: number, force?: boolean): Blot {

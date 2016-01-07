@@ -45,14 +45,13 @@ class TextBlot extends LeafBlot {
   }
 
   optimize(): void {
+    super.optimize();
     this.text = this.domNode.data;
     if (this.text.length === 0) {
       this.remove();
-    } else if (this.prev instanceof TextBlot) {
-      this.prev.insertAt(this.prev.getLength(), this.text);
-      this.remove();
-    } else {
-      super.optimize();
+    } else if (this.next instanceof TextBlot) {
+      this.insertAt(this.getLength(), (<TextBlot>this.next).getValue());
+      this.next.remove();
     }
   }
 
