@@ -68,7 +68,7 @@ class TextBlot extends LeafBlot {
 
   update(mutations: MutationRecord[]): void {
     mutations.forEach((mutation) => {
-      if (mutation.target === this.domNode && mutation.type === 'characterData') {
+      if (mutation.type === 'characterData') {
         this.text = this.domNode.data;
       }
     });

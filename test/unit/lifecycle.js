@@ -238,12 +238,66 @@ describe('Lifecycle', function() {
         expect(this.container.getValue()).toEqual(['Test', { image: true }, 'ing|', '!']);
       });
 
+      it('add empty child', function() {
+        let blockBlot = this.descendants[0];
+        let boldNode = document.createElement('strong');
+        let html = this.container.innerHTML;
+        boldNode.appendChild(document.createTextNode(''));
+        blockBlot.domNode.appendChild(boldNode);
+        this.container.update();
+        this.checkUpdateCalls(blockBlot);
+        expect(this.container.innerHTML).toBe(html);
+        expect(this.container.getDescendants(Blot).length).toEqual(this.descendants.length);
+      });
+
+      it('add and remove consecutive nodes', function() {
+        let italicBlot = this.descendants[1];
+        let imageNode = document.createElement('img');
+        let textNode = document.createTextNode('|');
+        let refNode = italicBlot.domNode.childNodes[1]
+        italicBlot.domNode.insertBefore(textNode, refNode);
+        italicBlot.domNode.insertBefore(imageNode, textNode);
+        italicBlot.domNode.removeChild(refNode);
+        this.container.update();
+        this.checkUpdateCalls(italicBlot);
+        expect(this.container.getValue()).toEqual(['Test', '|', { image: true }, 'ing', '!'])
+      });
+
+      it('add then remove same node', function() {
+        let italicBlot = this.descendants[1];
+        let textNode = document.createTextNode('|');
+        italicBlot.domNode.appendChild(textNode);
+        italicBlot.domNode.removeChild(textNode);
+        this.container.update();
+        this.checkUpdateCalls(italicBlot);
+        expect(this.container.getValue()).toEqual(['Test', { image: true }, 'ing', '!']);
+      });
+
       it('remove child node', function() {
         let imageBlot = this.descendants[4];
         imageBlot.domNode.parentNode.removeChild(imageBlot.domNode);
         this.container.update();
         this.checkUpdateCalls(this.descendants[1]);
         expect(this.container.getValue()).toEqual(['Test', 'ing', '!'])
+      });
+
+      it('change and remove node', function() {
+        let italicBlot = this.descendants[1];
+        italicBlot.domNode.color = 'blue';
+        italicBlot.domNode.parentNode.removeChild(italicBlot.domNode);
+        this.container.update();
+        this.checkUpdateCalls(italicBlot.parent);
+        expect(this.container.getValue()).toEqual(['!']);
+      });
+
+      it('change and remove parent', function() {
+        let blockBlot = this.descendants[0];
+        let italicBlot = this.descendants[1];
+        italicBlot.domNode.color = 'blue';
+        this.container.domNode.removeChild(blockBlot.domNode)
+        this.container.update();
+        this.checkUpdateCalls([]);
+        expect(this.container.getValue()).toEqual(['!']);
       });
 
       it('different changes to same blot', function() {
@@ -255,12 +309,6 @@ describe('Lifecycle', function() {
         expect(attrBlot.getFormat()).toEqual({ color: 'blue', italic: true });
         expect(this.container.getValue()).toEqual(['Test', '|', { image: true } , 'ing', '!']);
       });
-
-      it('complex changes to tree', function() {
-
-      });
-
-      // Remove empty text node (or make it empty) between two nodes that can merge
     });
   });
 });

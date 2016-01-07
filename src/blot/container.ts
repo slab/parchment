@@ -12,7 +12,7 @@ const OBSERVER_CONFIG = {
   subtree: true
 };
 
-const MAX_CLEAN_ITERATIONS = 5;
+const MAX_CLEAN_ITERATIONS = 1000;
 
 
 class ContainerBlot extends ParentBlot {
@@ -101,15 +101,17 @@ class ContainerBlot extends ParentBlot {
   update(mutations?: MutationRecord[]): void {
     mutations = mutations || this.observer.takeRecords();
     // TODO use WeakMap
-    mutations.map((mutation: MutationRecord) => {
+    mutations.map(function(mutation: MutationRecord) {
       let blot = Blot.findBlot(mutation.target, true);
-      if (blot == null || blot === this) return null;
       blot.domNode[DATA_KEY].mutations = blot.domNode[DATA_KEY].mutations || [];
       blot.domNode[DATA_KEY].mutations.push(mutation);
       return blot;
     }).forEach((blot: Blot) => {
-      if (blot == null || blot.domNode[DATA_KEY].mutations == null) return;
-      blot.update(blot.domNode[DATA_KEY].mutations);
+      if (blot === this) {
+        super.update(blot.domNode[DATA_KEY].mutations);
+      } else {
+        blot.update(blot.domNode[DATA_KEY].mutations);
+      }
     });
     this.optimize(mutations);
   }

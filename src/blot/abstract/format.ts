@@ -80,8 +80,7 @@ abstract class FormatBlot extends ParentBlot {
   update(mutations: MutationRecord[]): void {
     super.update(mutations);
     mutations.forEach((mutation) => {
-      if (mutation.target !== this.domNode) return;
-      if (mutation.type === 'attributes') {
+      if (mutation.target === this.domNode && mutation.type === 'attributes') {
         this.buildAttributes();
       }
     });
