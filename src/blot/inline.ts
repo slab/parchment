@@ -73,7 +73,7 @@ class InlineBlot extends FormatBlot {
       return this.unwrap();  // unformatted span
     }
     let next = this.next;
-    if (next instanceof InlineBlot && isEqual(formats, next.getFormat())) {
+    if (next instanceof InlineBlot && next.prev === this && isEqual(formats, next.getFormat())) {
       let tail = this.children.tail;
       next.moveChildren(this);
       next.remove();
