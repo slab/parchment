@@ -18,7 +18,16 @@ describe('EmbedBlot', function() {
     expect(imageBlot.domNode.parentNode).toBeFalsy();
   });
 
-  it('formatAt', function() {
+  it('format()', function() {
+    let container = Registry.create('block');
+    let imageBlot = Registry.create('image');
+    container.appendChild(imageBlot);
+    imageBlot.format('id', 'blot');
+    expect(imageBlot.getFormat()).toEqual({});
+    expect(imageBlot.parent.getFormat()).toEqual({ id: 'blot' });
+  });
+
+  it('formatAt()', function() {
     let container = Registry.create('block');
     let imageBlot = Registry.create('image');
     container.appendChild(imageBlot);
@@ -31,9 +40,9 @@ describe('EmbedBlot', function() {
     let imageBlot = Registry.create('image');
     container.appendChild(imageBlot);
     imageBlot.insertAt(0, 'image', true);
-    expect(container.children.head.getValue()).toEqual({ image: true });
+    imageBlot.insertAt(0, '|');
     imageBlot.insertAt(1, '!');
-    expect(container.children.tail.getValue()).toEqual('!');
+    expect(container.getValue()).toEqual([{ image: true }, '|', { image: true }, '!']);
   });
 
   it('split()', function() {

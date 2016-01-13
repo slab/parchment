@@ -24,12 +24,6 @@ class EmbedBlot extends LeafBlot {
     return value;
   }
 
-  insertAt(index: number, value: string, def?: any): void {
-    let blot = (def == null) ? Registry.create(TextBlot.blotName, value) : Registry.create(value, def);
-    let ref = (index === 0) ? this : this.next;
-    this.parent.insertBefore(blot, ref);
-  }
-
   update(mutations: MutationRecord[]): void { }    // Nothing to do
 }
 

@@ -32,7 +32,7 @@ class ContainerBlot extends ParentBlot {
   }
 
   deleteAt(index: number, length: number): void {
-    this.update(this.observer.takeRecords());
+    this.update();
     super.deleteAt(index, length);
     this.optimize();
   }
@@ -40,7 +40,7 @@ class ContainerBlot extends ParentBlot {
   format(name: string, value: any): void { }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    this.update(this.observer.takeRecords());
+    this.update();
     super.formatAt(index, length, name, value);
     this.optimize();
   }
@@ -57,7 +57,7 @@ class ContainerBlot extends ParentBlot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    this.update(this.observer.takeRecords());
+    this.update();
     super.insertAt(index, value, def);
     this.optimize();
   }

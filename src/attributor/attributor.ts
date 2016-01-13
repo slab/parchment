@@ -25,8 +25,9 @@ class Attributor {
     if (options.whitelist != null) this.whitelist = options.whitelist;
   }
 
-  add(node: HTMLElement, value: string): void {
+  add(node: HTMLElement, value: string): boolean {
     node.setAttribute(this.keyName, value);
+    return true;
   }
 
   canAdd(node: HTMLElement, value: string): boolean {

@@ -132,11 +132,19 @@ describe('Attributor', function() {
     expect(container.children.head.getFormat()).toEqual({ header: 'h1', align: 'right' });
   });
 
-  it('invalid class scope', function() {
+  it('invalid class scope add', function() {
     let inline = Registry.create('inline');
     let blockAttributor = Registry.match('indent');
     blockAttributor.add(inline.domNode, 1);
     expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
+    expect(inline.attributes['indent']).toBe(undefined);
+  });
+
+  it('invalid scope format', function() {
+    let inline = Registry.create('inline');
+    inline.format('indent', 1);
+    expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
+    expect(inline.attributes['indent']).toBe(undefined);
   });
 
   it('missing class value', function() {

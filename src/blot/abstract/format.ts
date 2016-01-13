@@ -45,8 +45,9 @@ abstract class FormatBlot extends ParentBlot {
     let attribute = Registry.match(name, Registry.Scope.ATTRIBUTE);
     if (attribute != null) {
       if (value) {
-        this.attributes[name] = attribute;
-        this.attributes[name].add(this.domNode, value);
+        if (attribute.add(this.domNode, value)) {
+          this.attributes[name] = attribute;
+        }
       } else {
         attribute.remove(this.domNode);
         delete this.attributes[name];
