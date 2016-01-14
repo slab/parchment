@@ -5,7 +5,7 @@ describe('Container', function() {
     beforeEach(function() {
       let containerNode = document.createElement('div');
       containerNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
-      this.container = new ContainerBlot(containerNode);
+      this.container = Registry.create(containerNode);
     });
 
     it('middle', function() {

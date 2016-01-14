@@ -5,7 +5,7 @@ describe('Blot', function() {
     it('exact', function() {
       let blockNode = document.createElement('p');
       blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
-      let blockBlot = new BlockBlot(blockNode);
+      let blockBlot = Registry.create(blockNode);
       expect(Blot.findBlot(document.body)).toBeFalsy();
       expect(Blot.findBlot(blockNode)).toBe(blockBlot);
       expect(Blot.findBlot(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
@@ -38,7 +38,7 @@ describe('Blot', function() {
   it('offset()', function() {
     let blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
-    let blockBlot = new BlockBlot(blockNode);
+    let blockBlot = Registry.create(blockNode);
     let boldBlot = blockBlot.children.tail.children.tail;
     expect(boldBlot.offset()).toEqual(2);
     expect(boldBlot.offset(blockBlot)).toEqual(4);

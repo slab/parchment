@@ -17,6 +17,7 @@ const MAX_CLEAN_ITERATIONS = 1000;
 
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
+  static childName = 'block';
   static scope = Registry.Scope.CONTAINER & Registry.Scope.BLOT;
   static tagName = 'DIV';
 
@@ -67,6 +68,7 @@ class ContainerBlot extends ParentBlot {
   }
 
   optimize(mutations: MutationRecord[] = []): void {
+    super.optimize(mutations);
     // TODO use WeakMap
     mutations = mutations.concat(this.observer.takeRecords());
     let mark = (blot: Blot) => {

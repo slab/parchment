@@ -13,7 +13,6 @@ abstract class ParentBlot extends Blot implements ShadowParent {
 
   constructor(node: Node) {
     super(node);
-    this.children = new LinkedList<Blot>();
     this.build();
   }
 
@@ -132,6 +131,15 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     this.children.forEach(function(child) {
       targetParent.insertBefore(child, refNode);
     });
+  }
+
+  optimize(mutation: MutationRecord[] = []) {
+    if (this.children.length === 0 && this.statics.child != null) {
+      let args = typeof this.statics.child === 'string' ? [this.statics.child] : this.statics.child;
+      let child = Registry.create.apply(Registry, args);
+      this.appendChild(child);
+      child.optimize();
+    }
   }
 
   replaceWith(name: string, value: any): ParentBlot {

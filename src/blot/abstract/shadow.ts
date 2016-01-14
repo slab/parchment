@@ -6,6 +6,7 @@ import * as Registry from '../../registry';
 interface ShadowStatic {
   blotName: string;
   className: string;
+  child?: string | [string, any];
   scope: Registry.Scope;
   tagName: string;
 }
@@ -37,6 +38,7 @@ abstract class ShadowNode implements LinkedNode {
     let statics = <any>this.constructor;
     return {
       blotName: statics.blotName,
+      child: statics.child,
       className: statics.className,
       scope: statics.scope,
       tagName: statics.tagName
