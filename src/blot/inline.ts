@@ -74,7 +74,6 @@ class InlineBlot extends FormatBlot {
     }
     let next = this.next;
     if (next instanceof InlineBlot && next.prev === this && isEqual(formats, next.getFormat())) {
-      let tail = this.children.tail;
       next.moveChildren(this);
       next.remove();
     }

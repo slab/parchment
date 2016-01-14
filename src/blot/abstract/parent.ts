@@ -142,11 +142,14 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     }
   }
 
+  replace(target: ParentBlot): void {
+    target.moveChildren(this);
+    super.replace(target);
+  }
+
   replaceWith(name: string, value: any): ParentBlot {
     if (name === this.statics.blotName && this.getFormat()[name] === value) return this;
-    let replacement = <ParentBlot>super.replaceWith(name, value);
-    this.moveChildren(replacement);
-    return replacement;
+    return <ParentBlot>super.replaceWith(name, value);
   }
 
   split(index: number, force: boolean = false): Blot {
