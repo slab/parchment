@@ -31,7 +31,7 @@ function create(node: Node | string, value?: any) {
   if (typeof node === 'string') {
     node = BlotClass.create(value);
   }
-  return new BlotClass(node);
+  return new BlotClass(node, value);
 }
 
 function match(query: string | Node, scope: Scope = Scope.ANY) {

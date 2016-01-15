@@ -23,8 +23,6 @@ class EmbedBlot extends LeafBlot {
     value[this.statics.blotName] = true;
     return value;
   }
-
-  update(mutations: MutationRecord[]): void { }    // Nothing to do
 }
 
 

@@ -51,6 +51,8 @@ abstract class LeafBlot extends Blot {
     let ref = this.split(index);
     this.parent.insertBefore(blot, ref);
   }
+
+  update(mutations: MutationRecord[]): void { }    // Nothing to do
 }
 
 export default LeafBlot;
