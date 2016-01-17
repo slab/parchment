@@ -183,13 +183,13 @@ describe('Lifecycle', function() {
     describe('api', function() {
       it('insert text', function() {
         this.container.insertAt(2, '|');
-        this.checkValues(['Te|st', { image: true }, 'ing', '!']);
+        this.checkValues(['Te|st', true, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('insert embed', function() {
         this.container.insertAt(2, 'image', 'irrelevant');
-        this.checkValues(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
+        this.checkValues(['Te', true, 'st', true, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
@@ -201,7 +201,7 @@ describe('Lifecycle', function() {
 
       it('format', function() {
         this.container.formatAt(2, 5, 'size', '24px');
-        this.checkValues(['Te', 'st', { image: true }, 'in', 'g', '!']);
+        this.checkValues(['Te', 'st', true, 'in', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
     });
@@ -251,7 +251,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', { image: true }, 'ing|', '!']);
+        this.checkValues(['Test', true, 'ing|', '!']);
       });
 
       it('add empty child', function() {
@@ -276,7 +276,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(refNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', '|', { image: true }, 'ing', '!'])
+        this.checkValues(['Test', '|', true, 'ing', '!'])
       });
 
       it('add then remove same node', function() {
@@ -286,7 +286,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(textNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', { image: true }, 'ing', '!']);
+        this.checkValues(['Test', true, 'ing', '!']);
       });
 
       it('remove child node', function() {
@@ -323,7 +323,7 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(attrBlot);
         expect(attrBlot.getFormat()).toEqual({ color: 'blue', italic: true });
-        this.checkValues(['Test', '|', { image: true } , 'ing', '!']);
+        this.checkValues(['Test', '|', true , 'ing', '!']);
       });
     });
   });

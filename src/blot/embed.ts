@@ -18,10 +18,8 @@ class EmbedBlot extends LeafBlot {
     return 1;
   }
 
-  getValue(): Object {
-    let value = {};
-    value[this.statics.blotName] = true;
-    return value;
+  getValue(): boolean {
+    return true;
   }
 }
 

@@ -3,7 +3,7 @@
 describe('EmbedBlot', function() {
   it('getValue()', function() {
     let imageBlot = Registry.create('image');
-    expect(imageBlot.getValue()).toEqual({ image: true });
+    expect(imageBlot.getValue()).toEqual(true);
   });
 
   it('deleteAt()', function() {
