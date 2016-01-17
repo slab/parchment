@@ -38,20 +38,6 @@ describe('Container', function() {
       });
     });
 
-    it('inclusive', function() {
-      let path = this.container.findPath(3, true);
-      let expected = [
-        { blotName: 'container', offset: 0 },
-        { blotName: 'block', offset: 0 },
-        { blotName: 'bold', offset: 0 },
-        { blotName: 'text', offset: 3 }
-      ];
-      path.forEach(function(position, i) {
-        expect(position.blot.statics.blotName).toEqual(expected[i].blotName);
-        expect(position.offset).toEqual(expected[i].offset);
-      });
-    });
-
     it('last', function() {
       let path = this.container.findPath(9);
       let expected = [

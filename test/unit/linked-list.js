@@ -6,6 +6,10 @@ describe('LinkedList', function() {
     this.a = { str: 'a' };
     this.b = { str: 'b' };
     this.c = { str: 'c' };
+    this.zero = {
+      str: '!',
+      getLength: function() { return 0; }
+    };
     this.a.getLength = this.b.getLength = this.c.getLength = function() {
       return 3;
     };
@@ -146,7 +150,6 @@ describe('LinkedList', function() {
       this.list.append(this.a, this.b, this.c);
       expect(this.list.find(0)).toEqual([this.a, 0]);
       expect(this.list.find(2)).toEqual([this.a, 2]);
-      expect(this.list.find(3, true)).toEqual([this.a, 3]);
       expect(this.list.find(3)).toEqual([this.b, 0]);
       expect(this.list.find(4)).toEqual([this.b, 1]);
       expect(this.list.find(10)).toEqual([null, 0]);
@@ -205,6 +208,16 @@ describe('LinkedList', function() {
       this.list.forEachAt(3, 3, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(1);
       expect(this.spy.callback.calls.first().args).toEqual([this.b, 0, 3]);
+    });
+
+    it('forEachAt zero length nodes', function() {
+      this.list.append(this.a, this.zero, this.c);
+      this.list.forEachAt(2, 2, this.spy.callback);
+      expect(this.spy.callback.calls.count()).toBe(3);
+      let calls = this.spy.callback.calls.all();
+      expect(calls[0].args).toEqual([this.a, 2, 1]);
+      expect(calls[1].args).toEqual([this.zero, 0, 0]);
+      expect(calls[2].args).toEqual([this.c, 0, 1]);
     });
 
     it('forEachAt none', function() {

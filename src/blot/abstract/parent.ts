@@ -43,7 +43,7 @@ abstract class ParentBlot extends Blot implements ShadowParent {
   }
 
   findNode(index: number): [Node, number] {
-    let [child, offset] = this.children.find(index, true);
+    let [child, offset] = this.children.find(index);
     return child.findNode(offset);
   }
 
@@ -56,7 +56,7 @@ abstract class ParentBlot extends Blot implements ShadowParent {
 
   findPath(index: number, inclusive: boolean = false): Position[] {
     let length = this.getLength();
-    let [child, offset] = this.children.find(index, inclusive);
+    let [child, offset] = this.children.find(index);
     if (child == null) {
       child = this.children.tail;
       if (child == null) {

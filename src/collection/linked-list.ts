@@ -76,11 +76,11 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  find(index: number, inclusive: boolean = false): [T, number] {
+  find(index: number): [T, number] {
     let cur, next = this.iterator();
     while (cur = next()) {
       let length = cur.getLength();
-      if (index < length || (index === length && inclusive)) {
+      if (index < length) {
         return [cur, index];
       }
       index -= length;
