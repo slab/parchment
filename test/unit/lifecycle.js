@@ -172,30 +172,36 @@ describe('Lifecycle', function() {
           }
         });
       };
+      this.checkValues = (expected) => {
+        let values = this.container.getDescendants(LeafBlot).map(function(leaf) {
+          return leaf.getValue();
+        });
+        expect(values).toEqual(expected);
+      }
     });
 
     describe('api', function() {
       it('insert text', function() {
         this.container.insertAt(2, '|');
-        expect(this.container.getValue()).toEqual(['Te|st', { image: true }, 'ing', '!']);
+        this.checkValues(['Te|st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('insert embed', function() {
         this.container.insertAt(2, 'image', 'irrelevant');
-        expect(this.container.getValue()).toEqual(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
+        this.checkValues(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('delete', function() {
         this.container.deleteAt(2, 5);
-        expect(this.container.getValue()).toEqual(['Te', 'g', '!']);
+        this.checkValues(['Te', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('format', function() {
         this.container.formatAt(2, 5, 'size', '24px');
-        expect(this.container.getValue()).toEqual(['Te', 'st', { image: true }, 'in', 'g', '!']);
+        this.checkValues(['Te', 'st', { image: true }, 'in', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
     });
@@ -245,7 +251,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        expect(this.container.getValue()).toEqual(['Test', { image: true }, 'ing|', '!']);
+        this.checkValues(['Test', { image: true }, 'ing|', '!']);
       });
 
       it('add empty child', function() {
@@ -270,7 +276,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(refNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        expect(this.container.getValue()).toEqual(['Test', '|', { image: true }, 'ing', '!'])
+        this.checkValues(['Test', '|', { image: true }, 'ing', '!'])
       });
 
       it('add then remove same node', function() {
@@ -280,7 +286,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(textNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        expect(this.container.getValue()).toEqual(['Test', { image: true }, 'ing', '!']);
+        this.checkValues(['Test', { image: true }, 'ing', '!']);
       });
 
       it('remove child node', function() {
@@ -288,7 +294,7 @@ describe('Lifecycle', function() {
         imageBlot.domNode.parentNode.removeChild(imageBlot.domNode);
         this.container.update();
         this.checkUpdateCalls(this.descendants[1]);
-        expect(this.container.getValue()).toEqual(['Test', 'ing', '!'])
+        this.checkValues(['Test', 'ing', '!'])
       });
 
       it('change and remove node', function() {
@@ -297,7 +303,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.parentNode.removeChild(italicBlot.domNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot.parent);
-        expect(this.container.getValue()).toEqual(['!']);
+        this.checkValues(['!']);
       });
 
       it('change and remove parent', function() {
@@ -307,7 +313,7 @@ describe('Lifecycle', function() {
         this.container.domNode.removeChild(blockBlot.domNode)
         this.container.update();
         this.checkUpdateCalls([]);
-        expect(this.container.getValue()).toEqual(['!']);
+        this.checkValues(['!']);
       });
 
       it('different changes to same blot', function() {
@@ -317,7 +323,7 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(attrBlot);
         expect(attrBlot.getFormat()).toEqual({ color: 'blue', italic: true });
-        expect(this.container.getValue()).toEqual(['Test', '|', { image: true } , 'ing', '!']);
+        this.checkValues(['Test', '|', { image: true } , 'ing', '!']);
       });
     });
   });

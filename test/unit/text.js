@@ -88,7 +88,6 @@ describe('TextBlot', function() {
     container.appendChild(textBlot);
     textBlot.formatAt(1, 2, 'bold', true);
     expect(container.domNode.innerHTML).toEqual('T<strong>es</strong>t');
-    expect(container.getValue()).toEqual(['T', 'es', 't']);
     expect(textBlot.next.statics.blotName).toEqual('bold');
     expect(textBlot.getValue()).toEqual('T');
   });

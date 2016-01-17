@@ -70,7 +70,7 @@ describe('Attributor', function() {
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
-    expect(container.getValue()).toEqual(['B', 'ol', 'd']);
+    expect(container.children.length).toEqual(3);
     let targetNode = boldBlot.next.domNode;
     expect(targetNode.style.color).toEqual('');
     container.formatAt(1, 2, 'size', false);
@@ -108,7 +108,7 @@ describe('Attributor', function() {
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'bold', false);
-    expect(container.getValue()).toEqual(['B', 'ol', 'd']);
+    expect(container.children.length).toEqual(3);
     expect(boldBlot.next.statics.blotName).toEqual('inline');
     expect(boldBlot.next.getFormat().color).toEqual('red');
   });

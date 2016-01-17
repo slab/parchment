@@ -50,13 +50,6 @@ class ContainerBlot extends ParentBlot {
     return {};
   }
 
-  getValue(): (string|Object)[] {
-    let values = this.children.map(function(block) {
-      return block.getValue();
-    });
-    return [].concat.apply([], values);
-  }
-
   insertAt(index: number, value: string, def?: any): void {
     this.update();
     super.insertAt(index, value, def);

@@ -41,7 +41,7 @@ describe('EmbedBlot', function() {
     imageBlot.insertAt(0, 'image', true);
     imageBlot.insertAt(0, '|');
     imageBlot.insertAt(1, '!');
-    expect(container.getValue()).toEqual([{ image: true }, '|', { image: true }, '!']);
+    expect(container.domNode.innerHTML).toEqual('<img>|<img>!');
   });
 
   it('split()', function() {

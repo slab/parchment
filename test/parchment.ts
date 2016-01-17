@@ -4,6 +4,7 @@ import StyleAttributor from '../src/attributor/style';
 
 import Blot from '../src/blot/abstract/blot';
 import ParentBlot from '../src/blot/abstract/parent';
+import LeafBlot from '../src/blot/abstract/leaf';
 
 import ContainerBlot from '../src/blot/container';
 import BlockBlot from '../src/blot/block';
@@ -23,6 +24,7 @@ window['StyleAttributor'] = StyleAttributor;
 
 window['Blot'] = Blot;
 window['ParentBlot'] = ParentBlot;
+window['LeafBlot'] = LeafBlot;
 
 window['ContainerBlot'] = ContainerBlot;
 window['BlockBlot'] = BlockBlot;

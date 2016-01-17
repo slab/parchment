@@ -56,7 +56,7 @@ describe('InlineBlot', function() {
     let container = Registry.create(node);
     container.deleteAt(0, 4);
     expect(container.children.length).toEqual(1);
-    expect(container.getValue()).toEqual(['!']);
+    expect(container.children.head.getValue()).toEqual('!');
   });
 
   it('getFormat()', function() {

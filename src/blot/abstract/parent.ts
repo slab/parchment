@@ -101,12 +101,6 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     return this.getDescendants<LeafBlot>(LeafBlot);
   }
 
-  getValue(): (Object | string)[] {
-    return [].concat.apply([], this.getLeaves().map(function(leaf) {
-      return leaf.getValue();
-    }));
-  }
-
   getLength(): number {
     return this.children.reduce(function(memo, child) {
       return memo + child.getLength();
