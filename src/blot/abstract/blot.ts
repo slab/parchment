@@ -99,7 +99,7 @@ abstract class Blot extends ShadowNode {
 
   abstract findNode(index: number): [Node, number];
   abstract findOffset(node: Node): number;
-  abstract findPath(index: number, inclusive: boolean): Position[];
+  abstract findPath(index: number): Position[];
   abstract update(mutations: MutationRecord[]): void;
 }
 

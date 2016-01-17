@@ -20,7 +20,7 @@ abstract class LeafBlot extends Blot {
     return node === this.domNode ? 0 : -1;
   }
 
-  findPath(index: number, inclusive: boolean = false): Position[] {
+  findPath(index: number): Position[] {
     return [{
       blot: this,
       offset: Math.min(index, this.getLength())
