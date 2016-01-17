@@ -42,10 +42,6 @@ abstract class LeafBlot extends Blot {
     blot.format(name, value);
   }
 
-  getFormat(): Object {
-    return {}
-  }
-
   insertAt(index: number, value: string, def?: any): void {
     let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
     let ref = this.split(index);
@@ -53,6 +49,8 @@ abstract class LeafBlot extends Blot {
   }
 
   update(mutations: MutationRecord[]): void { }    // Nothing to do
+
+  abstract getValue(): any;
 }
 
 export default LeafBlot;

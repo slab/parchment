@@ -23,7 +23,6 @@ describe('EmbedBlot', function() {
     let imageBlot = Registry.create('image');
     container.appendChild(imageBlot);
     imageBlot.format('id', 'blot');
-    expect(imageBlot.getFormat()).toEqual({});
     expect(imageBlot.parent.getFormat()).toEqual({ id: 'blot' });
   });
 

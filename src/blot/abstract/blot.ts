@@ -97,8 +97,6 @@ abstract class Blot extends ShadowNode {
   abstract formatAt(index: number, length: number, name: string, value: any): void;
   abstract insertAt(index: number, value: string, def ?: any): void;
 
-  abstract getFormat(): Object;
-  abstract getValue(): Object | string;
   abstract findNode(index: number): [Node, number];
   abstract findOffset(node: Node): number;
   abstract findPath(index: number, inclusive: boolean): Position[];

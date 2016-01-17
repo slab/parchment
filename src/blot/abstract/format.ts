@@ -73,6 +73,7 @@ abstract class FormatBlot extends ParentBlot {
   }
 
   replaceWith(name: string, value: any): FormatBlot {
+    if (name === this.statics.blotName && this.getFormat()[name] === value) return this;
     let replacement = <FormatBlot>super.replaceWith(name, value);
     this.moveAttributes(replacement);
     return replacement;
