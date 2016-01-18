@@ -1,95 +1,48 @@
 import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
-import * as Registry from '../../registry';
 
 
-interface ShadowStatic {
-  blotName: string;
-  className: string;
-  child?: string | [string, any];
-  scope: Registry.Scope;
-  tagName: string;
-}
+interface ParentBlot {
+  children: LinkedList<ShadowBlot>;
 
-interface ShadowParent extends ShadowNode {
-  children: LinkedList<ShadowNode>;
-  domNode: HTMLElement;
-
-  appendChild(child: ShadowNode): void;
-  insertBefore(child: ShadowNode, refNode?: ShadowNode): void;
-  moveChildren(parent: ShadowParent, refNode?: ShadowNode): void;
+  appendChild(child: ShadowBlot): void;
+  build(): void;
+  findPath(index: number): [ShadowBlot, number][];
+  insertBefore(child: ShadowBlot, refNode?: ShadowBlot): void;
+  moveChildren(parent: ParentBlot, refNode?: ShadowBlot): void;
   unwrap(): void;
 }
 
-abstract class ShadowNode implements LinkedNode {
-  static blotName: string;
-
-  prev: ShadowNode;
-  next: ShadowNode;
-  parent: ShadowParent;
+abstract class ShadowBlot implements LinkedNode {
+  prev: ShadowBlot;
+  next: ShadowBlot;
+  parent: ParentBlot;
   domNode: Node;
 
-  constructor(node: Node) {
-    this.domNode = node;
+  static blotName = 'abstract';
+  static isBlot<T>(blot, T): blot is T {
+    return blot instanceof T;
   }
 
-  // TODO: Hack for accessing inherited static methods
-  get statics(): ShadowStatic {
-    let statics = <any>this.constructor;
-    return {
-      blotName: statics.blotName,
-      child: statics.child,
-      className: statics.className,
-      scope: statics.scope,
-      tagName: statics.tagName
-    };
-  }
-
-  clone(): ShadowNode {
-    let domNode = this.domNode.cloneNode();
-    return Registry.create(domNode);
-  }
-
-  isolate(index: number, length: number): ShadowNode {
-    let target = this.split(index);
-    target.split(length);
-    return target;
-  }
-
-  remove(): void {
-    if (this.parent == null) return;
-    this.parent.children.remove(this);
-    if (this.domNode.parentNode != null) {
-      this.domNode.parentNode.removeChild(this.domNode);
-    }
-  }
-
-  replace(target: ShadowNode): void {
-    if (target.parent == null) return;
-    this.remove();
-    target.parent.insertBefore(this, target.next);
-    target.remove();
-  }
-
-  replaceWith(name: string, value: any): ShadowParent {
-    let replacement = Registry.create(name, value);
-    replacement.replace(this);
-    return replacement;
-  }
-
-  split(index: number, force?: boolean): ShadowNode {
-    return index === 0 ? this : this.next;
-  }
-
-  wrap(name: string, value: any): ShadowParent {
-    let wrapper = Registry.create(name, value);
-    this.parent.insertBefore(wrapper, this.next);
-    wrapper.appendChild(this);
-    return wrapper;
-  }
-
+  abstract clone(): ShadowBlot;
+  abstract findNode(index: number): [Node, number];
+  abstract findOffset(node: Node): number;
   abstract getLength(): number;
+  abstract insertInto(parentBlot: ParentBlot, refBlot?: ShadowBlot): void;
+  abstract isolate(index: number, length: number): ShadowBlot;
+  abstract offset(root?: ShadowBlot): number;
+  abstract remove(): void;
+  abstract replace(target: ShadowBlot): void;
+  abstract replaceWith(name: string, value: any): ParentBlot;
+  abstract split(index: number, force?: boolean): ShadowBlot;
+  abstract wrap(name: string, value: any): ParentBlot;
+
+  abstract deleteAt(index: number, length: number): void;
+  abstract formatAt(index: number, length: number, name: string, value: any): void;
+  abstract insertAt(index: number, value: string, def?: any): void;
+  abstract optimize(mutations: MutationRecord[]): void;
+  abstract update(mutations: MutationRecord[]): void;
 }
 
 
-export { ShadowParent, ShadowNode as default };
+export { ParentBlot, ShadowBlot as default };

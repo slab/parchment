@@ -1,27 +1,27 @@
-import LeafBlot from './abstract/leaf';
-import TextBlot from './text';
-import * as Registry from '../registry';
+// import LeafBlot from './abstract/leaf';
+// import TextBlot from './text';
+// import * as Registry from '../registry';
 
 
-class EmbedBlot extends LeafBlot {
-  static blotName = 'embed';
+// class EmbedBlot extends LeafBlot {
+//   static blotName = 'embed';
 
-  deleteAt(index: number, length: number): void {
-    this.remove();
-  }
+//   deleteAt(index: number, length: number): void {
+//     this.remove();
+//   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
-    this.format(name, value);
-  }
+//   formatAt(index: number, length: number, name: string, value: any): void {
+//     this.format(name, value);
+//   }
 
-  getLength(): number {
-    return 1;
-  }
+//   getLength(): number {
+//     return 1;
+//   }
 
-  getValue(): boolean {
-    return true;
-  }
-}
+//   getValue(): boolean {
+//     return true;
+//   }
+// }
 
 
-export default EmbedBlot;
+// export default EmbedBlot;

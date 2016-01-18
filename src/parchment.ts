@@ -1,10 +1,10 @@
 import Blot from './blot/abstract/blot';
-import BlockBlot from './blot/block';
-import EmbedBlot from './blot/embed';
+// import EmbedBlot from './blot/embed';
 import LeafBlot from './blot/abstract/leaf';
-import InlineBlot from './blot/inline';
-import ContainerBlot from './blot/container';
-import TextBlot from './blot/text';
+import FormatBlot from './blot/abstract/format';
+// import ScrollBlot from './blot/scroll';
+import ContainerBlot from './blot/abstract/container';
+// import TextBlot from './blot/text';
 
 import ClassAttributor from './attributor/class';
 import StyleAttributor from './attributor/style';
@@ -21,10 +21,10 @@ let Parchment = {
   register: Registry.register,
 
   Container: ContainerBlot,
-  Block: BlockBlot,
-  Inline: InlineBlot,
+  Format: FormatBlot,
+  // Scroll: ScrollBlot,
   Leaf: LeafBlot,
-  Embed: EmbedBlot,
+  // Embed: EmbedBlot,
 
   Attributor: {
     Class: ClassAttributor,
@@ -35,10 +35,8 @@ let Parchment = {
 };
 
 
-Parchment.register(ContainerBlot);
-Parchment.register(BlockBlot);
-Parchment.register(InlineBlot);
-Parchment.register(TextBlot);
+// Parchment.register(ContainerBlot);
+// Parchment.register(TextBlot);
 
 
 export default Parchment;

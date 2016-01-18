@@ -1,21 +1,34 @@
 import * as Registry from '../../registry';
-import ParentBlot from './parent';
-import ShadowNode from './shadow';
+import ShadowBlot, { ParentBlot } from './shadow';
 
 
 export const DATA_KEY = '__blot';
 
-
-export interface Position {
-  blot: Blot;
-  offset: number;
+interface ShadowStatic {
+  blotName: string;
+  className: string;
+  child?: string | [string, any];
+  scope: Registry.Scope;
+  tagName: string;
 }
 
 
-abstract class Blot extends ShadowNode {
+abstract class Blot extends ShadowBlot {
   static blotName: string;
   static className: string;
   static tagName: string;
+
+  // TODO: Hack for accessing inherited static methods
+  get statics(): ShadowStatic {
+    let statics = <any>this.constructor;
+    return {
+      blotName: statics.blotName,
+      child: statics.child,
+      className: statics.className,
+      scope: statics.scope,
+      tagName: statics.tagName
+    };
+  }
 
   static create(value: any): Node {
     if (this.tagName == null) {
@@ -39,23 +52,25 @@ abstract class Blot extends ShadowNode {
     return node;
   }
 
-  static findBlot(node: Node, bubble: boolean = false): Blot {
+  static findBlot(node: Node, bubble: boolean = false): ShadowBlot {
     if (node == null) return null;
     if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
     if (bubble) return this.findBlot(node.parentNode, bubble);
     return null;
   }
 
-  prev: Blot;
-  next: Blot;
-  parent: ParentBlot;
-
   constructor(node: Node) {
-    super(node);
+    super();
+    this.domNode = node;
     this.domNode[DATA_KEY] = { blot: this };
   }
 
-  insertInto(parentBlot: ParentBlot, refBlot?: Blot): void {
+  clone(): ShadowBlot {
+    let domNode = this.domNode.cloneNode();
+    return Registry.create(domNode);
+  }
+
+  insertInto(parentBlot: ParentBlot, refBlot?: ShadowBlot): void {
     if (this.parent != null) {
       this.parent.children.remove(this);
     }
@@ -69,11 +84,13 @@ abstract class Blot extends ShadowNode {
     this.parent = parentBlot;
   }
 
-  isolate(index: number, length: number): Blot {
-    return <Blot>super.isolate(index, length);
+  isolate(index: number, length: number): ShadowBlot {
+    let target = this.split(index);
+    target.split(length);
+    return target;
   }
 
-  offset(root?: Blot): number {
+  offset(root?: ShadowBlot): number {
     if (this.parent == null || root == this) return 0;
     // TODO rewrite this when we properly define parent as a BlotParent
     if (root == null) {
@@ -87,20 +104,37 @@ abstract class Blot extends ShadowNode {
     delete this.domNode[DATA_KEY].mutations;
   }
 
-  split(index: number, force?: boolean): Blot {
-    return <Blot>super.split(index, force);
+  remove(): void {
+    if (this.parent == null) return;
+    this.parent.children.remove(this);
+    if (this.domNode.parentNode != null) {
+      this.domNode.parentNode.removeChild(this.domNode);
+    }
   }
 
+  replace(target: ShadowBlot): void {
+    if (target.parent == null) return;
+    this.remove();
+    target.parent.insertBefore(this, target.next);
+    target.remove();
+  }
 
-  abstract deleteAt(index: number, length: number): void;
-  abstract format(name: string, value: any): void;
-  abstract formatAt(index: number, length: number, name: string, value: any): void;
-  abstract insertAt(index: number, value: string, def ?: any): void;
+  replaceWith(name: string, value: any): ParentBlot {
+    let replacement = <ParentBlot>Registry.create(name, value);
+    replacement.replace(this);
+    return replacement;
+  }
 
-  abstract findNode(index: number): [Node, number];
-  abstract findOffset(node: Node): number;
-  abstract findPath(index: number): Position[];
-  abstract update(mutations: MutationRecord[]): void;
+  split(index: number, force?: boolean): ShadowBlot {
+    return index === 0 ? this : this.next;
+  }
+
+  wrap(name: string, value: any): ParentBlot {
+    let wrapper = <ParentBlot>Registry.create(name, value);
+    this.parent.insertBefore(wrapper, this.next);
+    wrapper.appendChild(this);
+    return wrapper;
+  }
 }
 
 

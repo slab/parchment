@@ -8,9 +8,6 @@ function match(node: HTMLElement, prefix: string): string[] {
 }
 
 class ClassAttributor extends Attributor {
-  attrName: string;
-  keyName: string;
-
   add(node: HTMLElement, value: string): boolean {
     if (!this.canAdd(node, value)) return false;
     this.remove(node);

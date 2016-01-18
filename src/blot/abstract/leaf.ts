@@ -1,56 +1,57 @@
-import Blot, { Position } from './blot';
-import ParentBlot from './parent';
+import Blot from './blot';
 import * as Registry from '../../registry';
 
 
+// TODO docs
+// adds getValue();
 abstract class LeafBlot extends Blot {
-  static blotName = 'leaf';
-  static scope = Registry.Scope.LEAF & Registry.Scope.BLOT;
+  static scope = Registry.Scope.INLINE_BLOT;
 
-  deleteAt(index: number, length: number): void {
-    let blot = this.isolate(index, length);
-    blot.remove();
-  }
+  abstract value(): any;
 
-  findNode(index: number): [Node, number] {
-    return [this.domNode, index];
-  }
+  // deleteAt(index: number, length: number): void {
+  //   let blot = this.isolate(index, length);
+  //   blot.remove();
+  // }
 
-  findOffset(node: Node): number {
-    return node === this.domNode ? 0 : -1;
-  }
+  // findNode(index: number): [Node, number] {
+  //   return [this.domNode, index];
+  // }
 
-  findPath(index: number): Position[] {
-    return [{
-      blot: this,
-      offset: Math.min(index, this.getLength())
-    }];
-  }
+  // findOffset(node: Node): number {
+  //   return node === this.domNode ? 0 : -1;
+  // }
 
-  format(name: string, value: any): void {
-    if (!value) return;
-    if (Registry.match(name, Registry.Scope.BLOT)) {
-      this.wrap(name, value);
-    } else if (Registry.match(name, Registry.Scope.ATTRIBUTE)) {
-      let blot = <ParentBlot>this.wrap('inline', true);
-      blot.format(name, value);
-    }
-  }
+  // findPath(index: number): Position[] {
+  //   return [{
+  //     blot: this,
+  //     offset: Math.min(index, this.getLength())
+  //   }];
+  // }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
-    let blot = this.isolate(index, length);
-    blot.format(name, value);
-  }
+  // format(name: string, value: any): void {
+  //   if (!value) return;
+  //   if (Registry.match(name, Registry.Scope.BLOT)) {
+  //     this.wrap(name, value);
+  //   } else if (Registry.match(name, Registry.Scope.ATTRIBUTE)) {
+  //     let blot = <ParentBlot>this.wrap('inline', true);
+  //     blot.format(name, value);
+  //   }
+  // }
 
-  insertAt(index: number, value: string, def?: any): void {
-    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
-    let ref = this.split(index);
-    this.parent.insertBefore(blot, ref);
-  }
+  // formatAt(index: number, length: number, name: string, value: any): void {
+  //   let blot = this.isolate(index, length);
+  //   blot.format(name, value);
+  // }
 
-  update(mutations: MutationRecord[]): void { }    // Nothing to do
+  // insertAt(index: number, value: string, def?: any): void {
+  //   let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+  //   let ref = this.split(index);
+  //   this.parent.insertBefore(blot, ref);
+  // }
 
-  abstract getValue(): any;
+  // update(mutations: MutationRecord[]): void { }    // Nothing to do
 }
+
 
 export default LeafBlot;

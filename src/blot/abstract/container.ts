@@ -1,30 +1,31 @@
-import Blot, { Position } from './blot';
-import LeafBlot from './leaf';
+import Blot from './blot';
 import LinkedList from '../../collection/linked-list';
-import { ShadowParent } from './shadow';
+import ShadowBlot, { ParentBlot } from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class ParentBlot extends Blot implements ShadowParent {
-  static blotName = 'parent';
-
+abstract class ContainerBlot extends Blot implements ParentBlot {
+  children: LinkedList<ShadowBlot>;
   domNode: HTMLElement;
-  children: LinkedList<Blot>;
 
-  constructor(node: Node) {
-    super(node);
+  static isBlot<T>(blot, T): blot is T {
+    if (T === ParentBlot && blot instanceof ContainerBlot) return true;
+    return super.isBlot<T>(blot, T);
+  }
+
+  constructor(domNode: HTMLElement) {
+    super(domNode);
     this.build();
   }
 
-  appendChild(other: Blot): void {
+  appendChild(other: ShadowBlot): void {
     this.insertBefore(other);
   }
 
   build(): void {
-    let childNodes = [].slice.call(this.domNode.childNodes);
-    this.children = new LinkedList<Blot>();
+    this.children = new LinkedList<ShadowBlot>();
     // Need to be reversed for if DOM nodes already in order
-    childNodes.reverse().forEach((node) => {
+    [].slice.call(this.domNode.childNodes).reverse().forEach((node) => {
       try {
         let child = Blot.findBlot(node) || Registry.create(node);
         this.insertBefore(child, this.children.head);
@@ -54,21 +55,14 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     return this.children.offset(blot);
   }
 
-  findPath(index: number): Position[] {
-    let length = this.getLength();
+  findPath(index: number): [ShadowBlot, number][] {
     let [child, offset] = this.children.find(index);
-    if (child == null) {
-      child = this.children.tail;
-      if (child == null) {
-        return [{ blot: this, offset: index }];
-      }
-      offset = child.getLength();
+    if (child == null) return [[this, index]];
+    let position: [ShadowBlot, number][] = [[this, index - offset]];
+    if (child instanceof ContainerBlot) {
+      return position.concat(child.findPath(offset));
     }
-    let pos: Position[] = [{
-      blot: this,
-      offset: index - offset
-    }];
-    return pos.concat(child.findPath(offset));
+    return position;
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -90,15 +84,11 @@ abstract class ParentBlot extends Blot implements ShadowParent {
       if (child instanceof type) {
         descendants.push(child);
       }
-      if (child instanceof ParentBlot) {
+      if (child instanceof ContainerBlot) {
         descendants = descendants.concat(child.getDescendants<T>(type));
       }
     });
     return descendants;
-  }
-
-  getLeaves(): LeafBlot[] {
-    return this.getDescendants<LeafBlot>(LeafBlot);
   }
 
   getLength(): number {
@@ -117,11 +107,11 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     }
   }
 
-  insertBefore(childBlot: Blot, refBlot?: Blot): void {
+  insertBefore(childBlot: ShadowBlot, refBlot?: ShadowBlot): void {
     childBlot.insertInto(this, refBlot);
   }
 
-  moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
+  moveChildren(targetParent: ParentBlot, refNode?: ShadowBlot): void {
     this.children.forEach(function(child) {
       targetParent.insertBefore(child, refNode);
     });
@@ -141,7 +131,7 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     super.replace(target);
   }
 
-  split(index: number, force: boolean = false): Blot {
+  split(index: number, force: boolean = false): ShadowBlot {
     if (!force) {
       if (index === 0) return this;
       if (index === this.getLength()) return this.next;
@@ -149,7 +139,7 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     let after = <ParentBlot>this.clone();
     this.parent.insertBefore(after, this.next);
     this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
-      child = <Blot>child.split(offset, force);
+      child = child.split(offset, force);
       after.appendChild(child);
     });
     return after;
@@ -191,14 +181,14 @@ abstract class ParentBlot extends Blot implements ShadowParent {
     }
   }
 
-  wrap(name: string, value: any): ParentBlot {
-    if (name === this.statics.blotName) {
-      return <ParentBlot>this.replaceWith(name, value);
-    } else {
-      return <ParentBlot>super.wrap(name, value);
-    }
-  }
+  // wrap(name: string, value: any): ParentBlot {
+  //   if (name === this.statics.blotName) {
+  //     return this.replaceWith(name, value);
+  //   } else {
+  //     return super.wrap(name, value);
+  //   }
+  // }
 }
 
 
-export default ParentBlot;
+export default ContainerBlot;

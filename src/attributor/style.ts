@@ -11,9 +11,6 @@ function camelize(name: string): string {
 
 
 class StyleAttributor extends Attributor {
-  attrName: string;
-  keyName: string;
-
   add(node: HTMLElement, value: string): boolean {
     if (!this.canAdd(node, value)) return false;
     node.style[camelize(this.keyName)] = value;
