@@ -5,7 +5,7 @@ import * as Registry from '../../registry';
 
 
 abstract class ContainerBlot extends ShadowBlot implements Parent {
-  static terminal: string;
+  static child: string;
 
   children: LinkedList<Blot>;
   domNode: HTMLElement;

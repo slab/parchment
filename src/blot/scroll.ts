@@ -11,12 +11,12 @@ const OBSERVER_CONFIG = {
   subtree: true
 };
 
-const MAX_CLEAN_ITERATIONS = 1000;
+const MAX_OPTIMIZE_ITERATIONS = 100;
 
 
 class ScrollBlot extends ContainerBlot {
   static blotName = 'scroll';
-  static scope = Registry.Scope.CONTAINER & Registry.Scope.BLOT;
+  static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'DIV';
   static terminal = 'block';
 
@@ -69,7 +69,11 @@ class ScrollBlot extends ContainerBlot {
       }
       blot.optimize();
     }
-    for (let i = 0; i < MAX_CLEAN_ITERATIONS && mutations.length > 0; i += 1) {
+    for (let i = 0; mutations.length > 0; i += 1) {
+      if (i >= MAX_OPTIMIZE_ITERATIONS) {
+        throw new Error('[Parchment] Maximum optimize iterations reached');
+        break;
+      }
       mutations.forEach(function(mutation) {
         let blot = Registry.find(mutation.target, true);
         if (blot != null && blot.domNode === mutation.target && mutation.type === 'childList') {

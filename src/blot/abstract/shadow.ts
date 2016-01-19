@@ -13,7 +13,6 @@ abstract class ShadowBlot implements Blot {
   parent: Parent;
 
   abstract length(): number;
-  abstract update(mutations: MutationRecord[]): void;
 
 
   // Hack for accessing inherited static methods
@@ -137,6 +136,10 @@ abstract class ShadowBlot implements Blot {
 
   split(index: number, force?: boolean): Blot {
     return index === 0 ? this : this.next;
+  }
+
+  update(mutations: MutationRecord[] = []): void {
+    // Nothing to do by default
   }
 
   wrap(name: string, value: any): Parent {

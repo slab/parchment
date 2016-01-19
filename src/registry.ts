@@ -1,5 +1,5 @@
 import Attributor from './attributor/attributor';
-import { Blot } from './blot/blot';
+import { Blot } from './blot/abstract/blot';
 
 
 let attributes: { [key: string]: Attributor } = {};
@@ -11,17 +11,20 @@ export const DATA_KEY = '__blot';
 export const PREFIX = 'blot-';
 
 export enum Scope {
-  TYPE = (1 << 2) - 1,          // 000011 Lower two bits
-  LEVEL = ((1 << 4) - 1) << 2,  // 111100 Higher four bits
+  TYPE = (1 << 2) - 1,          // 0011 Lower two bits
+  LEVEL = ((1 << 4) - 1) << 2,  // 1100 Higher two bits
 
-  ATTRIBUTE = (1 << 0) | LEVEL, // 111101
-  BLOT = (1 << 1) | LEVEL,      // 111110
-  CONTAINER = (1 << 2) | TYPE,  // 000111
-  BLOCK = (1 << 3) | TYPE,      // 001011
-  INLINE = (1 << 4) | TYPE,     // 010011
-  LEAF = (1 << 5) | TYPE,       // 100011
+  ATTRIBUTE = (1 << 0) | LEVEL, // 1101
+  BLOT = (1 << 1) | LEVEL,      // 1110
+  BLOCK = (1 << 2) | TYPE,      // 1011
+  INLINE = (1 << 3) | TYPE,     // 0111
 
-  ANY = TYPE | LEVEL            // 111111
+  BLOCK_BLOT = BLOCK & BLOT,
+  INLINE_BLOT = INLINE & BLOT,
+  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE,
+  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE,
+
+  ANY = TYPE | LEVEL
 };
 
 

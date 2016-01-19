@@ -48,9 +48,9 @@ interface Formattable extends Blot {
 }
 
 
-interface Terminal extends Blot {
+interface Leaf extends Blot {
   value(): any;
 }
 
 
-export { Blot, Parent, Formattable, Terminal };
+export { Blot, Parent, Formattable, Leaf };

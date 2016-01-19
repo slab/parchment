@@ -1,11 +1,11 @@
-import { Formattable, Terminal } from './blot';
+import { Formattable, Leaf } from './blot';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class LeafBlot extends ShadowBlot implements Formattable, Terminal {
+abstract class EmbedBlot extends ShadowBlot implements Formattable, Leaf {
   static blotName = 'leaf';
-  static scope = Registry.Scope.LEAF & Registry.Scope.BLOT;
+  static scope = Registry.Scope.INLINE_BLOT;
 
   abstract format(name: string, value: any);
   abstract formats(): { [index: string]: any };
@@ -17,11 +17,7 @@ abstract class LeafBlot extends ShadowBlot implements Formattable, Terminal {
   value(): boolean {
     return true;
   }
-
-  update(mutations: MutationRecord[] = []): void {
-    // Nothing to do
-  }
 }
 
 
-export default LeafBlot;
+export default EmbedBlot;

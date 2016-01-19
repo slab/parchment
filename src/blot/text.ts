@@ -1,9 +1,9 @@
-import { Terminal } from './abstract/blot';
+import { Leaf } from './abstract/blot';
 import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
 
 
-class TextBlot extends ShadowBlot implements Terminal {
+class TextBlot extends ShadowBlot implements Leaf {
   static blotName = 'text';
 
   domNode: Text;
@@ -19,12 +19,7 @@ class TextBlot extends ShadowBlot implements Terminal {
   }
 
   deleteAt(index: number, length: number): void {
-    this.text = this.text.slice(0, index) + this.text.slice(index + length);
-    if (this.text.length > 0) {
-      this.domNode.data = this.text;
-    } else {
-      this.remove();
-    }
+    this.domNode.data = this.text = this.text.slice(0, index) + this.text.slice(index + length);
   }
 
   findNode(index: number): [Node, number] {
