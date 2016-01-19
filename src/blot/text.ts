@@ -1,4 +1,4 @@
-import { Leaf } from './abstract/blot';
+import { Blot, Leaf } from './abstract/blot';
 import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
 
@@ -6,8 +6,8 @@ import * as Registry from '../registry';
 class TextBlot extends ShadowBlot implements Leaf {
   static blotName = 'text';
 
-  domNode: Text;
-  private text: string;
+  public domNode: Text;
+  protected text: string;
 
   static create(value: string): Text {
     return document.createTextNode(value);

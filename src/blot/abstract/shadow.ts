@@ -109,7 +109,7 @@ abstract class ShadowBlot implements Blot {
   }
 
   optimize(mutations: MutationRecord[] = []): void {
-    // TODO fix
+    // TODO clean up
     delete this.domNode[Registry.DATA_KEY].mutations;
   }
 
@@ -128,8 +128,8 @@ abstract class ShadowBlot implements Blot {
     target.remove();
   }
 
-  replaceWith(name: string, value: any): Parent {
-    let replacement = <Parent>Registry.create(name, value);
+  replaceWith(name: string | Blot, value?: any): Blot {
+    let replacement = typeof name === 'string' ? Registry.create(name, value) : name;
     replacement.replace(this);
     return replacement;
   }
@@ -142,8 +142,8 @@ abstract class ShadowBlot implements Blot {
     // Nothing to do by default
   }
 
-  wrap(name: string, value: any): Parent {
-    let wrapper = <Parent>Registry.create(name, value);
+  wrap(name: string | Parent, value?: any): Parent {
+    let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
     this.parent.insertBefore(wrapper, this.next);
     wrapper.appendChild(this);
     return wrapper;

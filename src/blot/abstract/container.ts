@@ -1,4 +1,4 @@
-import { Blot, Parent, Terminal } from './blot';
+import { Blot, Parent } from './blot';
 import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';

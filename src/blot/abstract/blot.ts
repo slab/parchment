@@ -16,9 +16,11 @@ interface Blot extends LinkedNode {
   offset(root?: Blot): number;
   remove(): void;
   replace(target: Blot): void;
-  replaceWith(name: string, value: any): Parent;
+  replaceWith(name: string, value: any): Blot;
+  replaceWith(replacement: Blot): Blot;
   split(index: number, force?: boolean): Blot;
   wrap(name: string, value: any): Parent;
+  wrap(wrapper: Parent): Parent;
 
   deleteAt(index: number, length: number): void;
   formatAt(index: number, length: number, name: string, value: any): void;

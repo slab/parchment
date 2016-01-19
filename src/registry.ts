@@ -2,10 +2,15 @@ import Attributor from './attributor/attributor';
 import { Blot } from './blot/abstract/blot';
 
 
+interface BlotConstructor {
+  new(node: Node, value?: any): Blot;
+  create(value?): Node;
+}
+
 let attributes: { [key: string]: Attributor } = {};
-let classes = {};
+let classes: { [key: string]: BlotConstructor } = {};
 let tags: { [key: string]: String } = {};
-let types = {};
+let types: { [key: string]: Attributor | BlotConstructor } = {};
 
 export const DATA_KEY = '__blot';
 export const PREFIX = 'blot-';
@@ -28,14 +33,12 @@ export enum Scope {
 };
 
 
-export function create(node: Node | string, value?: any): Blot {
-  let BlotClass = query(node, Scope.BLOT);
+export function create(input: Node | string | Scope, value?: any): Blot {
+  let BlotClass = <BlotConstructor>query(input, Scope.BLOT);
   if (typeof BlotClass !== 'function') {
-    throw new Error(`[Parchment] Unable to create ${node}`);
+    throw new Error(`[Parchment] Unable to create ${input}`);
   }
-  if (typeof node === 'string') {
-    node = BlotClass.create(value);
-  }
+  let node = input instanceof Node ? input : BlotClass.create(value);
   return new BlotClass(node, value);
 }
 
@@ -46,12 +49,16 @@ export function find(node: Node, bubble: boolean = false): Blot {
   return null;
 }
 
-export function query(query: string | Node, scope: Scope = Scope.ANY) {
+export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): Attributor | BlotConstructor {
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
   } else if (query instanceof Text) {
     match = types['text'];
+  } else if (query === Scope.BLOCK_BLOT) {
+    match = types['block'];
+  } else if (query === Scope.INLINE_BLOT) {
+    match = types['inline'];
   } else if (query instanceof HTMLElement) {
     let names = query.className.split(/\s+/);
     for (let i in names) {
