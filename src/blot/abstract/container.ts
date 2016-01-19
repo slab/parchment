@@ -8,9 +8,10 @@ abstract class ContainerBlot extends Blot implements ParentBlot {
   children: LinkedList<ShadowBlot>;
   domNode: HTMLElement;
 
-  static isBlot<T>(blot, T): blot is T {
+  // TODO fix
+  static isBlot<T>(blot: any, T): blot is T {
     if (T === ParentBlot && blot instanceof ContainerBlot) return true;
-    return super.isBlot<T>(blot, T);
+    return super.isBlot(blot, T);
   }
 
   constructor(domNode: HTMLElement) {
@@ -34,13 +35,23 @@ abstract class ContainerBlot extends Blot implements ParentBlot {
   }
 
   deleteAt(index: number, length: number): void {
-    if (index === 0 && length === this.getLength()) {
-      this.remove();
-    } else {
-      this.children.forEachAt(index, length, function(child, offset, length) {
-        child.deleteAt(offset, length);
-      });
-    }
+    if (index === 0 && length === this.length()) return this.remove();
+    this.children.forEachAt(index, length, function(child, offset, length) {
+      child.deleteAt(offset, length);
+    });
+  }
+
+  descendants<T>(type: { new (): T; }, index: number = 0, length: number = this.length()): T[] {
+    let descendants = [];
+    this.children.forEachAt(index, length, function(child) {
+      if (child instanceof type) {
+        descendants.push(child);
+      }
+      if (child instanceof ContainerBlot) {
+        descendants = descendants.concat(child.descendants(type));
+      }
+    });
+    return descendants;
   }
 
   findNode(index: number): [Node, number] {
@@ -71,32 +82,6 @@ abstract class ContainerBlot extends Blot implements ParentBlot {
     });
   }
 
-  getDescendants<T>(type: any): T[];
-  getDescendants<T>(index: number, length: number, type: any): T[];
-  getDescendants<T>(index: any, length?: number, type?: any): T[] {
-    if (typeof length !== 'number') {
-      type = index;
-      index = 0;
-      length = this.getLength();
-    }
-    let descendants = [];
-    this.children.forEachAt(index, length, function(child) {
-      if (child instanceof type) {
-        descendants.push(child);
-      }
-      if (child instanceof ContainerBlot) {
-        descendants = descendants.concat(child.getDescendants<T>(type));
-      }
-    });
-    return descendants;
-  }
-
-  getLength(): number {
-    return this.children.reduce(function(memo, child) {
-      return memo + child.getLength();
-    }, 0);
-  }
-
   insertAt(index: number, value: string, def?: any): void {
     let [child, offset] = this.children.find(index);
     if (child) {
@@ -109,6 +94,12 @@ abstract class ContainerBlot extends Blot implements ParentBlot {
 
   insertBefore(childBlot: ShadowBlot, refBlot?: ShadowBlot): void {
     childBlot.insertInto(this, refBlot);
+  }
+
+  length(): number {
+    return this.children.reduce(function(memo, child) {
+      return memo + child.length();
+    }, 0);
   }
 
   moveChildren(targetParent: ParentBlot, refNode?: ShadowBlot): void {
@@ -134,11 +125,11 @@ abstract class ContainerBlot extends Blot implements ParentBlot {
   split(index: number, force: boolean = false): ShadowBlot {
     if (!force) {
       if (index === 0) return this;
-      if (index === this.getLength()) return this.next;
+      if (index === this.length()) return this.next;
     }
-    let after = <ParentBlot>this.clone();
+    let after = <ContainerBlot>this.clone();
     this.parent.insertBefore(after, this.next);
-    this.children.forEachAt(index, this.getLength(), function(child, offset, length) {
+    this.children.forEachAt(index, this.length(), function(child, offset, length) {
       child = child.split(offset, force);
       after.appendChild(child);
     });

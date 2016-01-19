@@ -65,9 +65,9 @@ abstract class Blot extends ShadowBlot {
     this.domNode[DATA_KEY] = { blot: this };
   }
 
-  clone(): ShadowBlot {
+  clone(): Blot {
     let domNode = this.domNode.cloneNode();
-    return Registry.create(domNode);
+    return <Blot>Registry.create(domNode);
   }
 
   insertInto(parentBlot: ParentBlot, refBlot?: ShadowBlot): void {

@@ -46,10 +46,16 @@ class AttributorStore {
     });
   }
 
-  move(target: FormatBlot): void {
+  copy(target: FormatBlot): void {
     Object.keys(this.attributes).forEach(key => {
       let value = this.attributes[key].value(this.domNode);
       target.format(key, value);
+    });
+  }
+
+  move(target: FormatBlot): void {
+    this.copy(target);
+    Object.keys(this.attributes).forEach(key => {
       this.attributes[key].remove(this.domNode);
     });
     this.attributes = {};
@@ -66,16 +72,23 @@ class AttributorStore {
 
 // TODO docs
 // adds format() and formats()
-abstract class FormatBlot extends ContainerBlot {
+class FormatBlot extends ContainerBlot {
   private attributes: AttributorStore;
 
-  constructor(node: HTMLElement) {
-    super(node);
-    this.attributes = new AttributorStore(this.domNode);
+  static compare(first: string, second: string): number {
+    let one = Registry.match(first), two = Registry.match(second);
+    let scopeOne = one.scope || one.statics.scope;
+    let scopeTwo = two.scope || two.statics.scope;
+    if (scopeOne !== scopeTwo) {
+      return scopeOne - scopeTwo;
+    } else {
+
+    }
   }
 
   build(): void {
     super.build();
+    this.attributes = new AttributorStore(this.domNode);
     this.attributes.build();
   }
 
@@ -83,6 +96,18 @@ abstract class FormatBlot extends ContainerBlot {
     let attribute = Registry.match(name, Registry.Scope.ATTRIBUTE);
     if (attribute != null) {
       this.attributes.attribute(attribute, value);
+    }
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    let order = FormatBlot.compare(this.statics.blotName, name);
+    if (order < 0) {
+      let target = <FormatBlot>this.isolate(index, length);
+      target.format(name, value);
+    } else if (order === 0) {
+
+    } else {
+      super.formatAt(index, length, name, value);
     }
   }
 
@@ -99,20 +124,12 @@ abstract class FormatBlot extends ContainerBlot {
 //     return formats;
 //   }
 
-//   moveAttributes(target: FormatBlot): void {
-//     Object.keys(this.attributes).forEach(key => {
-//       let value = this.attributes[key].value(this.domNode);
-//       target.format(key, value);
-//       this.format(key, false);
-//     });
-//   }
-
-//   replaceWith(name: string, value: any): FormatBlot {
-//     if (name === this.statics.blotName && this.getFormat()[name] === value) return this;
-//     let replacement = <FormatBlot>super.replaceWith(name, value);
-//     this.moveAttributes(replacement);
-//     return replacement;
-//   }
+  replaceWith(name: string, value: any): FormatBlot {
+    if (name === this.statics.blotName && this.formats()[name] === value) return this;
+    let replacement = <FormatBlot>super.replaceWith(name, value);
+    this.attributes.copy(replacement);
+    return replacement;
+  }
 
   update(mutations: MutationRecord[]): void {
     super.update(mutations);
@@ -123,13 +140,13 @@ abstract class FormatBlot extends ContainerBlot {
     });
   }
 
-//   wrap(name: string, value: any): ContainerBlot {
-//     let wrapper = super.wrap(name, value);
-//     if (wrapper !== this && wrapper instanceof FormatBlot && wrapper.statics.scope === this.statics.scope) {
-//       this.moveAttributes(wrapper);
-//     }
-//     return wrapper;
-//   }
+  wrap(name: string, value: any): FormatBlot {
+    let wrapper = <FormatBlot>super.wrap(name, value);
+    if (wrapper !== this && wrapper instanceof FormatBlot && wrapper.statics.scope === this.statics.scope) {
+      this.attributes.move(wrapper);
+    }
+    return wrapper;
+  }
 }
 
 

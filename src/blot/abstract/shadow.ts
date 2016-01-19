@@ -2,17 +2,6 @@ import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
 
 
-interface ParentBlot {
-  children: LinkedList<ShadowBlot>;
-
-  appendChild(child: ShadowBlot): void;
-  build(): void;
-  findPath(index: number): [ShadowBlot, number][];
-  insertBefore(child: ShadowBlot, refNode?: ShadowBlot): void;
-  moveChildren(parent: ParentBlot, refNode?: ShadowBlot): void;
-  unwrap(): void;
-}
-
 abstract class ShadowBlot implements LinkedNode {
   prev: ShadowBlot;
   next: ShadowBlot;
@@ -27,9 +16,9 @@ abstract class ShadowBlot implements LinkedNode {
   abstract clone(): ShadowBlot;
   abstract findNode(index: number): [Node, number];
   abstract findOffset(node: Node): number;
-  abstract getLength(): number;
   abstract insertInto(parentBlot: ParentBlot, refBlot?: ShadowBlot): void;
   abstract isolate(index: number, length: number): ShadowBlot;
+  abstract length(): number;
   abstract offset(root?: ShadowBlot): number;
   abstract remove(): void;
   abstract replace(target: ShadowBlot): void;
@@ -42,6 +31,20 @@ abstract class ShadowBlot implements LinkedNode {
   abstract insertAt(index: number, value: string, def?: any): void;
   abstract optimize(mutations: MutationRecord[]): void;
   abstract update(mutations: MutationRecord[]): void;
+}
+
+
+abstract class ParentBlot extends ShadowBlot {
+  children: LinkedList<ShadowBlot>;
+  domNode: HTMLElement;
+
+  abstract appendChild(child: ShadowBlot): void;
+  abstract build(): void;
+  abstract descendants<T>(type: { new (): T; }, index: number, length: number): T[];
+  abstract findPath(index: number): [ShadowBlot, number][];
+  abstract insertBefore(child: ShadowBlot, refNode?: ShadowBlot): void;
+  abstract moveChildren(parent: ParentBlot, refNode?: ShadowBlot): void;
+  abstract unwrap(): void;
 }
 
 
