@@ -1,51 +1,151 @@
-import LinkedList from '../../collection/linked-list';
-import LinkedNode from '../../collection/linked-node';
+import { Blot, Parent } from './blot';
+import * as Registry from '../../registry';
 
 
-abstract class ShadowBlot implements LinkedNode {
-  prev: ShadowBlot;
-  next: ShadowBlot;
-  parent: ParentBlot;
-  domNode: Node;
-
+abstract class ShadowBlot implements Blot {
   static blotName = 'abstract';
-  static isBlot<T>(blot, T): blot is T {
-    return blot instanceof T;
+  static className: string;
+  static scope: Registry.Scope;
+  static tagName: string;
+
+  prev: Blot;
+  next: Blot;
+  parent: Parent;
+
+  abstract length(): number;
+  abstract update(mutations: MutationRecord[]): void;
+
+
+  // Hack for accessing inherited static methods
+  get statics(): any {
+    let statics = <any>this.constructor;
+    return {
+      blotName: statics.blotName,
+      child: statics.child,
+      className: statics.className,
+      scope: statics.scope,
+      tagName: statics.tagName
+    };
   }
 
-  abstract clone(): ShadowBlot;
-  abstract findNode(index: number): [Node, number];
-  abstract findOffset(node: Node): number;
-  abstract insertInto(parentBlot: ParentBlot, refBlot?: ShadowBlot): void;
-  abstract isolate(index: number, length: number): ShadowBlot;
-  abstract length(): number;
-  abstract offset(root?: ShadowBlot): number;
-  abstract remove(): void;
-  abstract replace(target: ShadowBlot): void;
-  abstract replaceWith(name: string, value: any): ParentBlot;
-  abstract split(index: number, force?: boolean): ShadowBlot;
-  abstract wrap(name: string, value: any): ParentBlot;
+  static create(value: any): Node {
+    if (this.tagName == null) {
+      throw new Error('[Parchment] Blot definition missing tagName');
+    }
+    let node;
+    if (Array.isArray(this.tagName)) {
+      if (typeof value === 'number') {
+        node = document.createElement(this.tagName[value - 1]);
+      } else if (this.tagName.indexOf(value) > -1) {
+        node = document.createElement(value);
+      } else {
+        node = document.createElement(this.tagName[0]);
+      }
+    } else {
+      node = document.createElement(this.tagName);
+    }
+    if (this.className) {
+      node.classList.add(Registry.PREFIX + this.className);
+    }
+    return node;
+  }
 
-  abstract deleteAt(index: number, length: number): void;
-  abstract formatAt(index: number, length: number, name: string, value: any): void;
-  abstract insertAt(index: number, value: string, def?: any): void;
-  abstract optimize(mutations: MutationRecord[]): void;
-  abstract update(mutations: MutationRecord[]): void;
+
+  constructor(public domNode: Node) {
+    this.domNode[Registry.DATA_KEY] = { blot: this };
+  }
+
+  clone(): Blot {
+    let domNode = this.domNode.cloneNode();
+    return <Blot>Registry.create(domNode);
+  }
+
+  deleteAt(index: number, length: number): void {
+    let blot = this.isolate(index, length);
+    blot.remove();
+  }
+
+  findNode(index: number): [Node, number] {
+    return [this.domNode, 0];
+  }
+
+  findOffset(node: Node): number {
+    return node === this.domNode ? 0 : -1;
+  }
+
+  formatAt(index: number, length: number, name: string, value: any): void {
+    let blot = this.isolate(index, length);
+    blot.wrap(name, value);
+  }
+
+  insertAt(index: number, value: string, def?: any): void {
+    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+    let ref = this.split(index);
+    this.parent.insertBefore(blot, ref);
+  }
+
+  insertInto(parentBlot: Parent, refBlot?: Blot): void {
+    if (this.parent != null) {
+      this.parent.children.remove(this);
+    }
+    parentBlot.children.insertBefore(this, refBlot);
+    if (refBlot != null) {
+      var refDomNode = refBlot.domNode;
+    }
+    if (this.next == null || this.domNode.nextSibling != refDomNode) {
+      parentBlot.domNode.insertBefore(this.domNode, refDomNode);
+    }
+    this.parent = parentBlot;
+  }
+
+  isolate(index: number, length: number): Blot {
+    let target = this.split(index);
+    target.split(length);
+    return target;
+  }
+
+  offset(root: Blot = this.parent): number {
+    if (this.parent == null || this == root) return 0;
+    return this.parent.children.offset(this) + this.parent.offset(root);
+  }
+
+  optimize(mutations: MutationRecord[] = []): void {
+    // TODO fix
+    delete this.domNode[Registry.DATA_KEY].mutations;
+  }
+
+  remove(): void {
+    if (this.parent == null) return;
+    this.parent.children.remove(this);
+    if (this.domNode.parentNode != null) {
+      this.domNode.parentNode.removeChild(this.domNode);
+    }
+  }
+
+  replace(target: Blot): void {
+    if (target.parent == null) return;
+    this.remove();
+    target.parent.insertBefore(this, target.next);
+    target.remove();
+  }
+
+  replaceWith(name: string, value: any): Parent {
+    let replacement = <Parent>Registry.create(name, value);
+    replacement.replace(this);
+    return replacement;
+  }
+
+  split(index: number, force?: boolean): Blot {
+    return index === 0 ? this : this.next;
+  }
+
+  wrap(name: string, value: any): Parent {
+    let wrapper = <Parent>Registry.create(name, value);
+    this.parent.insertBefore(wrapper, this.next);
+    wrapper.appendChild(this);
+    return wrapper;
+  }
 }
 
 
-abstract class ParentBlot extends ShadowBlot {
-  children: LinkedList<ShadowBlot>;
-  domNode: HTMLElement;
-
-  abstract appendChild(child: ShadowBlot): void;
-  abstract build(): void;
-  abstract descendants<T>(type: { new (): T; }, index: number, length: number): T[];
-  abstract findPath(index: number): [ShadowBlot, number][];
-  abstract insertBefore(child: ShadowBlot, refNode?: ShadowBlot): void;
-  abstract moveChildren(parent: ParentBlot, refNode?: ShadowBlot): void;
-  abstract unwrap(): void;
-}
-
-
-export { ParentBlot, ShadowBlot as default };
+export default ShadowBlot;

@@ -1,46 +1,25 @@
-import Blot from './blot';
-import FormatBlot from './format';
+import { Formattable, Terminal } from './blot';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class LeafBlot extends Blot {
-  static scope = Registry.Scope.INLINE_BLOT;
+abstract class LeafBlot extends ShadowBlot implements Formattable, Terminal {
+  static blotName = 'leaf';
+  static scope = Registry.Scope.LEAF & Registry.Scope.BLOT;
 
-  abstract value(): any;
+  abstract format(name: string, value: any);
+  abstract formats(): { [index: string]: any };
 
-  deleteAt(index: number, length: number): void {
-    let blot = this.isolate(index, length);
-    blot.remove();
+  length(): number {
+    return 1;
   }
 
-  findNode(index: number): [Node, number] {
-    return [this.domNode, 0];
+  value(): boolean {
+    return true;
   }
 
-  findOffset(node: Node): number {
-    return node === this.domNode ? 0 : -1;
-  }
-
-  findPath(index: number): [ShadowBlot, number][] {
-    return [[this, Math.min(index, this.length())]];
-  }
-
-  formatAt(index: number, length: number, name: string, value: any): void {
-    if (!value) return;
-    let blot = this.isolate(index, length);
-    if (Registry.match(name, Registry.Scope.BLOT)) {
-      blot.wrap(name, value);
-    } else if (Registry.match(name, Registry.Scope.ATTRIBUTE)) {
-      let parent = <FormatBlot>blot.wrap('inline', true);
-      parent.format(name, value);
-    }
-  }
-
-  insertAt(index: number, value: string, def?: any): void {
-    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
-    let ref = this.split(index);
-    this.parent.insertBefore(blot, ref);
+  update(mutations: MutationRecord[] = []): void {
+    // Nothing to do
   }
 }
 

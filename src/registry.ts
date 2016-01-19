@@ -1,5 +1,5 @@
 import Attributor from './attributor/attributor';
-import ShadowBlot from './blot/abstract/shadow';
+import { Blot } from './blot/blot';
 
 
 let attributes: { [key: string]: Attributor } = {};
@@ -7,28 +7,26 @@ let classes = {};
 let tags: { [key: string]: String } = {};
 let types = {};
 
+export const DATA_KEY = '__blot';
 export const PREFIX = 'blot-';
 
 export enum Scope {
-  TYPE = (1 << 2) - 1,          // 0011 Lower two bits
-  LEVEL = ((1 << 2) - 1) << 2,  // 1100 Higher two bits
+  TYPE = (1 << 2) - 1,          // 000011 Lower two bits
+  LEVEL = ((1 << 4) - 1) << 2,  // 111100 Higher four bits
 
-  ATTRIBUTE = (1 << 0) | LEVEL, // 1101
-  BLOT = (1 << 1) | LEVEL,      // 1110
-  BLOCK = (1 << 2) | TYPE,      // 1011
-  INLINE = (1 << 3) | TYPE,     // 0111
+  ATTRIBUTE = (1 << 0) | LEVEL, // 111101
+  BLOT = (1 << 1) | LEVEL,      // 111110
+  CONTAINER = (1 << 2) | TYPE,  // 000111
+  BLOCK = (1 << 3) | TYPE,      // 001011
+  INLINE = (1 << 4) | TYPE,     // 010011
+  LEAF = (1 << 5) | TYPE,       // 100011
 
-  BLOCK_BLOT = BLOCK & BLOT,
-  INLINE_BLOT = INLINE & BLOT,
-  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE,
-  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE,
-
-  ANY = TYPE | LEVEL
+  ANY = TYPE | LEVEL            // 111111
 };
 
 
-function create(node: Node | string, value?: any): ShadowBlot {
-  let BlotClass = match(node, Scope.BLOT);
+export function create(node: Node | string, value?: any): Blot {
+  let BlotClass = query(node, Scope.BLOT);
   if (typeof BlotClass !== 'function') {
     throw new Error(`[Parchment] Unable to create ${node}`);
   }
@@ -38,7 +36,14 @@ function create(node: Node | string, value?: any): ShadowBlot {
   return new BlotClass(node, value);
 }
 
-function match(query: string | Node, scope: Scope = Scope.ANY) {
+export function find(node: Node, bubble: boolean = false): Blot {
+  if (node == null) return null;
+  if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
+  if (bubble) return find(node.parentNode, bubble);
+  return null;
+}
+
+export function query(query: string | Node, scope: Scope = Scope.ANY) {
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
@@ -59,7 +64,7 @@ function match(query: string | Node, scope: Scope = Scope.ANY) {
   return null;
 }
 
-function register(Definition) {
+export function register(Definition) {
   if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
     throw new Error('[Parchment] Invalid definition');
   } else if (Definition.blotName === 'abstract') {
@@ -77,6 +82,3 @@ function register(Definition) {
   }
   return Definition;
 }
-
-
-export { create, match, register };
