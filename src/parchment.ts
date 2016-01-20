@@ -1,11 +1,13 @@
-import Blot from './blot/abstract/blot';
-// import EmbedBlot from './blot/embed';
-import LeafBlot from './blot/abstract/leaf';
-import FormatBlot from './blot/abstract/format';
-// import ScrollBlot from './blot/scroll';
 import ContainerBlot from './blot/abstract/container';
-// import TextBlot from './blot/text';
+import FormatBlot from './blot/abstract/format';
+import EmbedBlot from './blot/abstract/embed';
 
+import ScrollBlot from './blot/scroll';
+import InlineBlot from './blot/inline';
+import BlockBlot from './blot/block';
+import TextBlot from './blot/text';
+
+import Attributor from './attributor/attributor';
 import ClassAttributor from './attributor/class';
 import StyleAttributor from './attributor/style';
 
@@ -17,26 +19,25 @@ let Parchment = {
   Scope: Registry.Scope,
 
   create: Registry.create,
-  match: Registry.match,
+  find: Registry.find,
+  query: Registry.query,
   register: Registry.register,
 
   Container: ContainerBlot,
   Format: FormatBlot,
-  // Scroll: ScrollBlot,
-  Leaf: LeafBlot,
-  // Embed: EmbedBlot,
+  Embed: EmbedBlot,
+
+  Scroll: ScrollBlot,
+  Block: BlockBlot,
+  Inline: InlineBlot,
+  Text: TextBlot,
 
   Attributor: {
+    Attributor: Attributor,
     Class: ClassAttributor,
     Style: StyleAttributor
-  },
-
-  findBlot: Blot.findBlot
+  }
 };
-
-
-// Parchment.register(ContainerBlot);
-// Parchment.register(TextBlot);
 
 
 export default Parchment;

@@ -1,6 +1,7 @@
 import Attributor from '../../attributor/attributor';
 import { Blot, Parent, Formattable } from './blot';
 import ContainerBlot from './container';
+import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
@@ -34,10 +35,6 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
     return formats;
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
-
-  }
-
   replaceWith(name: string | Blot, value?: any): Blot {
     let replacement = <FormatBlot>super.replaceWith(name, value);
     this.attributes.copy(replacement);
@@ -64,8 +61,8 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
 
 
 class AttributorStore {
-  attributes: { [key: string]: Attributor } = {};
-  domNode: HTMLElement;
+  private attributes: { [key: string]: Attributor } = {};
+  private domNode: HTMLElement;
 
   constructor(domNode: HTMLElement) {
     this.domNode = domNode;

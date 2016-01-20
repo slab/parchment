@@ -31,7 +31,7 @@ class Attributor {
   }
 
   canAdd(node: HTMLElement, value: string): boolean {
-    let match = Registry.match(node, Registry.Scope.BLOT & (this.scope | Registry.Scope.TYPE));
+    let match = Registry.query(node, Registry.Scope.BLOT & (this.scope | Registry.Scope.TYPE));
     if (match != null && (this.whitelist == null || this.whitelist.indexOf(value) > -1)) {
       return true;
     }

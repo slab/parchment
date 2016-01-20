@@ -2,7 +2,7 @@ import Attributor from './attributor/attributor';
 import { Blot } from './blot/abstract/blot';
 
 
-interface BlotConstructor {
+export interface BlotConstructor {
   new(node: Node, value?: any): Blot;
   create(value?): Node;
 }
