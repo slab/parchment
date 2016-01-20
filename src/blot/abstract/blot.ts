@@ -25,7 +25,7 @@ interface Blot extends LinkedNode {
   deleteAt(index: number, length: number): void;
   formatAt(index: number, length: number, name: string, value: any): void;
   insertAt(index: number, value: string, def?: any): void;
-  optimize(mutations?: MutationRecord[]): void;
+  optimize(): void;
   update(mutations?: MutationRecord[]): void;
 }
 

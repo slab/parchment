@@ -22,10 +22,16 @@ describe('Registry', function() {
     });
   });
 
-  describe('define()', function() {
+  describe('register()', function() {
     it('invalid', function() {
       expect(function() {
         Registry.register({});
+      }).toThrowError(/\[Parchment\]/);
+    });
+
+    it('abstract', function() {
+      expect(function() {
+        Registry.register(ShadowBlot);
       }).toThrowError(/\[Parchment\]/);
     });
   });

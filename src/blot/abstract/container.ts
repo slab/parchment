@@ -97,8 +97,8 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  optimize(mutations: MutationRecord[] = []) {
-    super.optimize(mutations);
+  optimize() {
+    super.optimize();
     if (this.children.length === 0) {
       if (this.statics.child != null) {
         let args = typeof this.statics.child === 'string' ? [this.statics.child] : this.statics.child;

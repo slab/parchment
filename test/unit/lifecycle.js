@@ -141,17 +141,6 @@ describe('Lifecycle', function() {
       expect(node.innerHTML).toEqual('<p><em>Test</em></p>');
       expect(node.firstChild.firstChild.childNodes.length).toBe(1);
     });
-
-    // TODO not sure what this is testing...
-    xit('unwrap + merge on removed blot', function() {
-      let node = document.createElement('div');
-      let html = node.innerHTML = '<p>1234</p>';
-      let container = Registry.create(node);
-      container.children.head.formatAt(1, 2, 'align', 'center');  // Will still isolate
-      container.optimize();
-      expect(node.innerHTML).toEqual(html);
-      expect(container.children.head.children.length).toBe(1);
-    });
   });
 
   describe('update()', function() {

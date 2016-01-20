@@ -19,7 +19,7 @@ class InlineBlot extends FormatBlot {
   static tagName = 'SPAN';
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (this.formats()[name] !== null) {
+    if (this.formats()[name] != null) {
       let blot = <InlineBlot>this.isolate(index, length);
       blot.format(name, value);
     } else {
@@ -27,8 +27,8 @@ class InlineBlot extends FormatBlot {
     }
   }
 
-  optimize(mutations: MutationRecord[] = []): void {
-    super.optimize(mutations);
+  optimize(): void {
+    super.optimize();
     let formats = this.formats();
     if (Object.keys(formats).length === 0) {
       return this.unwrap();  // unformatted span

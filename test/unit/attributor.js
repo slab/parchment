@@ -19,11 +19,11 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.id).toEqual('test-add');
   });
 
-  xit('add to text', function() {
+  it('add to text', function() {
     let container = Registry.create('block');
     let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
-    textBlot.format('color', 'red');
+    textBlot.formatAt(0, 4, 'color', 'red');
     expect(textBlot.domNode.parentNode.style.color).toEqual('red');
   });
 
@@ -66,7 +66,7 @@ describe('Attributor', function() {
     node.style.color = 'red';
     node.style.fontSize = '24px';
     container.domNode.classList.add('indent-5');
-    node.id = 'test-remove';
+    container.domNode.id = 'test-remove';
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
@@ -76,11 +76,10 @@ describe('Attributor', function() {
     container.formatAt(1, 2, 'size', false);
     expect(targetNode.style.fontSize).toEqual('');
     expect(targetNode.getAttribute('style')).toEqual(null);
-    // TODO no longer supports multiscope attributors
-    // container.formatAt(1, 2, 'id', false);
-    // expect(targetNode.id).toBeFalsy();
     container.formatAt(1, 2, 'indent', false);
     expect(targetNode.classList.contains('indent-5')).toBe(false);
+    container.formatAt(1, 2, 'id', false);
+    expect(container.domNode.id).toBeFalsy();
   });
 
   it('remove nonexistent', function() {
@@ -89,8 +88,8 @@ describe('Attributor', function() {
     node.innerHTML = 'Bold';
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
-    boldBlot.formatAt(1, 2, 'color', false);
-    expect(boldBlot.next.domNode.outerHTML).toEqual('<strong>ol</strong>');
+    boldBlot.format('color', false);
+    expect(container.domNode.innerHTML).toEqual('<strong>Bold</strong>');
   });
 
   it('keep class attribute after removal', function() {
@@ -114,6 +113,17 @@ describe('Attributor', function() {
     expect(boldBlot.next.formats().color).toEqual('red');
   });
 
+  it('wrap with inline', function() {
+    let container = Registry.create('block');
+    let node = document.createElement('strong');
+    node.style.color = 'red';
+    let boldBlot = Registry.create(node);
+    container.appendChild(boldBlot);
+    boldBlot.wrap('italic');
+    expect(node.style.color).toBeFalsy();
+    expect(node.parentNode.style.color).toBe('red');
+  });
+
   it('wrap with block', function() {
     let container = Registry.create('block');
     let node = document.createElement('strong');
@@ -122,6 +132,7 @@ describe('Attributor', function() {
     container.appendChild(boldBlot);
     boldBlot.wrap('block');
     expect(node.style.color).toBe('red');
+    expect(node.parentNode.style.color).toBeFalsy();
   });
 
   it('add to block', function() {

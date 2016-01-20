@@ -108,7 +108,7 @@ abstract class ShadowBlot implements Blot {
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  optimize(mutations: MutationRecord[] = []): void {
+  optimize(): void {
     // TODO clean up
     delete this.domNode[Registry.DATA_KEY].mutations;
   }

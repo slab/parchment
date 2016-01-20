@@ -1,20 +1,6 @@
 "use strict"
 
 describe('InlineBlot', function() {
-  xit('format ordering', function() {
-    let container1 = Registry.create('block');
-    container1.appendChild(Registry.create('text', 'Test'));
-    let container2 = Registry.create('block');
-    container2.appendChild(Registry.create('text', 'Test'));
-    container1.formatAt(1, 2, 'bold', true);
-    container1.formatAt(1, 2, 'italic', true);
-    container2.formatAt(1, 2, 'italic', true);
-    container2.formatAt(1, 2, 'bold', true);
-    let expected = 'T<em><strong>es</strong></em>t';
-    expect(container1.domNode.innerHTML).toEqual(expected);
-    expect(container2.domNode.innerHTML).toEqual(expected);
-  });
-
   it('format invalid', function() {
     let boldBlot = Registry.create('bold');
     boldBlot.appendChild(Registry.create('text', 'Test'));
@@ -25,14 +11,14 @@ describe('InlineBlot', function() {
     expect(boldBlot.domNode.outerHTML).toEqual(original);
   });
 
-  xit('format existing', function() {
+  it('format existing', function() {
     let italicBlot = Registry.create('italic');
     let boldBlot = Registry.create('bold');
     boldBlot.appendChild(Registry.create('text', 'Test'));
     italicBlot.appendChild(boldBlot);
     let original = italicBlot.domNode.outerHTML;
     expect(function() {
-      italicBlot.formatAt(0, 4, 'bold', true);
+      boldBlot.formatAt(0, 4, 'bold', true);
       italicBlot.formatAt(0, 4, 'italic', true);
     }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
@@ -45,7 +31,7 @@ describe('InlineBlot', function() {
     container.appendChild(italicBlot);
     let original = italicBlot.domNode.outerHTML;
     expect(function() {
-      italicBlot.formatAt(0, 4, 'bold', false);
+      italicBlot.format('bold', false);
     }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
   });

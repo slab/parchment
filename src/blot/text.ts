@@ -63,11 +63,11 @@ class TextBlot extends LeafBlot implements Leaf {
   }
 
   update(mutations: MutationRecord[]): void {
-    mutations.forEach((mutation) => {
-      if (mutation.type === 'characterData' && mutation.target === this.domNode) {
-        this.text = this.domNode.data;
-      }
-    });
+    if (mutations.some((mutation) => {
+      return mutation.type === 'characterData' && mutation.target === this.domNode;
+    })) {
+      this.text = this.domNode.data;
+    }
   }
 
   value(): string {

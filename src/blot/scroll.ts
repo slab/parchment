@@ -56,7 +56,7 @@ class ScrollBlot extends ContainerBlot {
   }
 
   optimize(mutations: MutationRecord[] = []): void {
-    super.optimize(mutations);
+    super.optimize();
     // TODO use WeakMap
     mutations = mutations.concat(this.observer.takeRecords());
     let mark = (blot: Blot) => {
