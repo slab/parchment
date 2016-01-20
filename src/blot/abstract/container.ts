@@ -30,6 +30,16 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
+  deleteAt(index: number, length: number): void {
+    if (index === 0 && length === this.length()) {
+      this.remove();
+    } else {
+      this.children.forEachAt(index, length, function(child, offset, length) {
+        child.deleteAt(offset, length);
+      });
+    }
+  }
+
   descendants<T>(type: { new (): T; }, index: number = 0, length: number = this.length()): T[] {
     let descendants = [];
     this.children.forEachAt(index, length, function(child) {
@@ -55,13 +65,19 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     return this.children.offset(blot);
   }
 
+  formatAt(index: number, length: number, name: string, value: any): void {
+    this.children.forEachAt(index, length, function(child, offset, length) {
+      child.formatAt(offset, length, name, value);
+    });
+  }
+
   insertAt(index: number, value: string, def?: any): void {
     let [child, offset] = this.children.find(index);
     if (child) {
       child.insertAt(offset, value, def);
     } else {
       let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
-      this.insertBefore(blot);
+      this.appendChild(blot);
     }
   }
 
@@ -81,14 +97,17 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  optimize(mutation: MutationRecord[] = []) {
-    if (this.children.length === 0 && this.statics.child != null) {
-      let args = typeof this.statics.child === 'string' ? [this.statics.child] : this.statics.child;
-      let child = Registry.create.apply(Registry, args);
-      this.appendChild(child);
-      child.optimize();
-    } else {
-      this.remove();
+  optimize(mutations: MutationRecord[] = []) {
+    super.optimize(mutations);
+    if (this.children.length === 0) {
+      if (this.statics.child != null) {
+        let args = typeof this.statics.child === 'string' ? [this.statics.child] : this.statics.child;
+        let child = Registry.create.apply(Registry, args);
+        this.appendChild(child);
+        child.optimize();
+      } else {
+        this.remove();
+      }
     }
   }
 
@@ -98,12 +117,10 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     let position: [Blot, number][] = [[this, index - offset]];
     if (child instanceof ContainerBlot) {
       return position.concat(child.path(offset));
+    } else {
+      position.push([child, offset]);
     }
     return position;
-  } formatAt(index: number, length: number, name: string, value: any): void {
-    this.children.forEachAt(index, length, function(child, offset, length) {
-      child.formatAt(offset, length, name, value);
-    });
   }
 
   replace(target: Parent): void {

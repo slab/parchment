@@ -8,7 +8,7 @@ describe('Attributor', function() {
     blot.domNode.id = 'blot-test'
     blot.domNode.classList.add('indent-2')
     blot.build();
-    expect(Object.keys(blot.attributes).sort()).toEqual(['color', 'size', 'id', 'indent'].sort());
+    expect(Object.keys(blot.attributes.attributes).sort()).toEqual(['color', 'size', 'id', 'indent'].sort());
   });
 
   it('add to inline', function() {
@@ -19,7 +19,7 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.id).toEqual('test-add');
   });
 
-  it('add to text', function() {
+  xit('add to text', function() {
     let container = Registry.create('block');
     let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
@@ -65,7 +65,7 @@ describe('Attributor', function() {
     node.innerHTML = 'Bold';
     node.style.color = 'red';
     node.style.fontSize = '24px';
-    node.classList.add('indent-5');
+    container.domNode.classList.add('indent-5');
     node.id = 'test-remove';
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
@@ -76,8 +76,9 @@ describe('Attributor', function() {
     container.formatAt(1, 2, 'size', false);
     expect(targetNode.style.fontSize).toEqual('');
     expect(targetNode.getAttribute('style')).toEqual(null);
-    container.formatAt(1, 2, 'id', false);
-    expect(targetNode.id).toBeFalsy();
+    // TODO no longer supports multiscope attributors
+    // container.formatAt(1, 2, 'id', false);
+    // expect(targetNode.id).toBeFalsy();
     container.formatAt(1, 2, 'indent', false);
     expect(targetNode.classList.contains('indent-5')).toBe(false);
   });
@@ -89,7 +90,7 @@ describe('Attributor', function() {
     let boldBlot = Registry.create(node);
     container.appendChild(boldBlot);
     boldBlot.formatAt(1, 2, 'color', false);
-    expect(boldBlot.domNode.outerHTML).toEqual('<strong>Bold</strong>');
+    expect(boldBlot.next.domNode.outerHTML).toEqual('<strong>ol</strong>');
   });
 
   it('keep class attribute after removal', function() {
@@ -110,7 +111,7 @@ describe('Attributor', function() {
     container.formatAt(1, 2, 'bold', false);
     expect(container.children.length).toEqual(3);
     expect(boldBlot.next.statics.blotName).toEqual('inline');
-    expect(boldBlot.next.getFormat().color).toEqual('red');
+    expect(boldBlot.next.formats().color).toEqual('red');
   });
 
   it('wrap with block', function() {
@@ -124,17 +125,17 @@ describe('Attributor', function() {
   });
 
   it('add to block', function() {
-    let container = Registry.create('container');
+    let container = Registry.create('scroll');
     let block = Registry.create('header', 'h1');
     container.appendChild(block);
     block.format('align', 'right');
     expect(container.domNode.innerHTML).toBe('<h1 style="text-align: right;"></h1>');
-    expect(container.children.head.getFormat()).toEqual({ header: 'h1', align: 'right' });
+    expect(container.children.head.formats()).toEqual({ header: 'h1', align: 'right' });
   });
 
   it('invalid class scope add', function() {
     let inline = Registry.create('inline');
-    let blockAttributor = Registry.match('indent');
+    let blockAttributor = Registry.query('indent');
     blockAttributor.add(inline.domNode, 1);
     expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
     expect(inline.attributes['indent']).toBe(undefined);
@@ -149,7 +150,7 @@ describe('Attributor', function() {
 
   it('missing class value', function() {
     let block = Registry.create('block');
-    let indentAttributor = Registry.match('indent');
+    let indentAttributor = Registry.query('indent');
     expect(indentAttributor.value(block.domNode)).toBeFalsy();
   });
 });

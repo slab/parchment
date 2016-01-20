@@ -1,10 +1,11 @@
 import { Blot, Leaf } from './abstract/blot';
-import ShadowBlot from './abstract/shadow';
+import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
 
-class TextBlot extends ShadowBlot implements Leaf {
+class TextBlot extends LeafBlot implements Leaf {
   static blotName = 'text';
+  static scope = Registry.Scope.INLINE_BLOT;
 
   public domNode: Text;
   protected text: string;

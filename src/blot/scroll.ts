@@ -33,7 +33,13 @@ class ScrollBlot extends ContainerBlot {
 
   deleteAt(index: number, length: number): void {
     this.update();
-    super.deleteAt(index, length);
+    if (index === 0 && length === this.length()) {
+      this.children.forEach(function(child) {
+        child.remove();
+      });
+    } else {
+      super.deleteAt(index, length)
+    }
     this.optimize();
   }
 

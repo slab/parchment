@@ -8,9 +8,9 @@ describe('LinkedList', function() {
     this.c = { str: 'c' };
     this.zero = {
       str: '!',
-      getLength: function() { return 0; }
+      length: function() { return 0; }
     };
-    this.a.getLength = this.b.getLength = this.c.getLength = function() {
+    this.a.length = this.b.length = this.c.length = function() {
       return 3;
     };
   });

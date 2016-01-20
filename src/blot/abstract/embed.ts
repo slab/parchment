@@ -1,12 +1,8 @@
-import { Formattable, Leaf } from './blot';
-import ShadowBlot from './shadow';
-import * as Registry from '../../registry';
+import { Formattable } from './blot';
+import LeafBlot from './leaf';
 
 
-abstract class EmbedBlot extends ShadowBlot implements Formattable, Leaf {
-  static blotName = 'leaf';
-  static scope = Registry.Scope.INLINE_BLOT;
-
+abstract class EmbedBlot extends LeafBlot implements Formattable {
   abstract format(name: string, value: any);
   abstract formats(): { [index: string]: any };
 

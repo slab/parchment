@@ -1,40 +1,6 @@
 "use strict"
 
 describe('Blot', function() {
-  describe('findBlot()', function() {
-    it('exact', function() {
-      let blockNode = document.createElement('p');
-      blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
-      let blockBlot = Registry.create(blockNode);
-      expect(Blot.findBlot(document.body)).toBeFalsy();
-      expect(Blot.findBlot(blockNode)).toBe(blockBlot);
-      expect(Blot.findBlot(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
-      expect(Blot.findBlot(blockNode.querySelector('em'))).toBe(blockBlot.children.tail);
-      expect(Blot.findBlot(blockNode.querySelector('strong'))).toBe(blockBlot.children.tail.children.tail);
-      let text01 = blockBlot.children.head.children.head;
-      let text23 = blockBlot.children.tail.children.head;
-      let text45 = blockBlot.children.tail.children.tail.children.head;
-      expect(Blot.findBlot(text01.domNode)).toBe(text01);
-      expect(Blot.findBlot(text23.domNode)).toBe(text23);
-      expect(Blot.findBlot(text45.domNode)).toBe(text45);
-    });
-
-    it('bubble', function() {
-      let blockBlot = Registry.create('block');
-      let textNode = document.createTextNode('Test');
-      blockBlot.domNode.appendChild(textNode);
-      expect(Blot.findBlot(textNode)).toBeFalsy();
-      expect(Blot.findBlot(textNode, true)).toEqual(blockBlot);
-    });
-
-    it('detached parent', function() {
-      let blockNode = document.createElement('p');
-      blockNode.appendChild(document.createTextNode('Test'));
-      expect(Blot.findBlot(blockNode.firstChild)).toBeFalsy();
-      expect(Blot.findBlot(blockNode.firstChild, true)).toBeFalsy();
-    });
-  });
-
   it('offset()', function() {
     let blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';

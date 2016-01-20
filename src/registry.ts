@@ -1,5 +1,5 @@
 import Attributor from './attributor/attributor';
-import { Blot } from './blot/abstract/blot';
+import { Blot, Formattable } from './blot/abstract/blot';
 
 
 export interface BlotConstructor {
@@ -17,27 +17,33 @@ export const PREFIX = 'blot-';
 
 export enum Scope {
   TYPE = (1 << 2) - 1,          // 0011 Lower two bits
-  LEVEL = ((1 << 4) - 1) << 2,  // 1100 Higher two bits
+  LEVEL = ((1 << 2) - 1) << 2,  // 1100 Higher two bits
 
   ATTRIBUTE = (1 << 0) | LEVEL, // 1101
   BLOT = (1 << 1) | LEVEL,      // 1110
-  BLOCK = (1 << 2) | TYPE,      // 1011
-  INLINE = (1 << 3) | TYPE,     // 0111
+  INLINE = (1 << 2) | TYPE,     // 0111
+  BLOCK = (1 << 3) | TYPE,      // 1011
 
-  BLOCK_BLOT = BLOCK & BLOT,
-  INLINE_BLOT = INLINE & BLOT,
-  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE,
-  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE,
+  BLOCK_BLOT = BLOCK & BLOT,              // 1010
+  INLINE_BLOT = INLINE & BLOT,            // 0110
+  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE,    // 1001
+  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE,  // 0101
 
   ANY = TYPE | LEVEL
 };
 
 
 export function create(input: Node | string | Scope, value?: any): Blot {
-  let BlotClass = <BlotConstructor>query(input, Scope.BLOT);
-  if (typeof BlotClass !== 'function') {
+  let match = query(input);
+  if (match == null) {
     throw new Error(`[Parchment] Unable to create ${input}`);
   }
+  if (match instanceof Attributor) {
+    let blot = <Formattable>create(match.scope & Scope.LEVEL);
+    blot.format(<string>input, value);
+    return blot;
+  }
+  let BlotClass = <BlotConstructor>match;
   let node = input instanceof Node ? input : BlotClass.create(value);
   return new BlotClass(node, value);
 }
@@ -55,10 +61,12 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
     match = types[query] || attributes[query];
   } else if (query instanceof Text) {
     match = types['text'];
-  } else if (query === Scope.BLOCK_BLOT) {
-    match = types['block'];
-  } else if (query === Scope.INLINE_BLOT) {
-    match = types['inline'];
+  } if (typeof query === 'number') {
+    if (query & Scope.LEVEL & Scope.BLOCK) {
+      match = types['block'];
+    } else if (query & Scope.LEVEL & Scope.INLINE) {
+      match = types['inline'];
+    }
   } else if (query instanceof HTMLElement) {
     let names = query.className.split(/\s+/);
     for (let i in names) {

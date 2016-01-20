@@ -11,8 +11,8 @@ describe('TextBlot', function() {
   it('deleteAt() partial', function() {
     let blot = Registry.create('text', 'Test');
     blot.deleteAt(1, 2);
-    expect(blot.getValue()).toEqual('Tt');
-    expect(blot.getLength()).toEqual(2);
+    expect(blot.value()).toEqual('Tt');
+    expect(blot.length()).toEqual(2);
   });
 
   it('deleteAt() all', function() {
@@ -21,14 +21,13 @@ describe('TextBlot', function() {
     container.appendChild(textBlot);
     expect(container.domNode.firstChild).toEqual(textBlot.domNode);
     textBlot.deleteAt(0, 4);
-    expect(textBlot.domNode.parentNode).toEqual(null);
-    expect(container.domNode.firstChild).toEqual(null);
+    expect(textBlot.domNode.data).toEqual('');
   });
 
   it('insertAt() text', function() {
     let textBlot = Registry.create('text', 'Test');
     textBlot.insertAt(1, 'ough');
-    expect(textBlot.getValue()).toEqual('Toughest');
+    expect(textBlot.value()).toEqual('Toughest');
   });
 
   it('insertAt() other', function() {
@@ -36,9 +35,9 @@ describe('TextBlot', function() {
     let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.insertAt(2, 'image', {});
-    expect(textBlot.getValue()).toEqual('Te');
+    expect(textBlot.value()).toEqual('Te');
     expect(textBlot.next.statics.blotName).toEqual('image');
-    expect(textBlot.next.next.getValue()).toEqual('st');
+    expect(textBlot.next.next.value()).toEqual('st');
   });
 
   it('split() middle', function() {
@@ -46,8 +45,8 @@ describe('TextBlot', function() {
     let textBlot = Registry.create('text', 'Test');
     container.appendChild(textBlot);
     let after = textBlot.split(2);
-    expect(textBlot.getValue()).toEqual('Te');
-    expect(after.getValue()).toEqual('st');
+    expect(textBlot.value()).toEqual('Te');
+    expect(after.value()).toEqual('st');
     expect(textBlot.next).toEqual(after);
     expect(after.prev).toEqual(textBlot);
   });
@@ -68,7 +67,7 @@ describe('TextBlot', function() {
     container.appendChild(textBlot);
     let after = textBlot.split(4, true);
     expect(after).not.toEqual(textBlot);
-    expect(after.getValue()).toEqual('');
+    expect(after.value()).toEqual('');
     expect(textBlot.next).toEqual(after);
     expect(after.prev).toEqual(textBlot);
   });
@@ -79,7 +78,7 @@ describe('TextBlot', function() {
     container.appendChild(textBlot);
     textBlot.formatAt(0, 4, 'bold', true);
     expect(textBlot.domNode.parentNode.tagName).toEqual('STRONG');
-    expect(textBlot.getValue()).toEqual('Test');
+    expect(textBlot.value()).toEqual('Test');
   });
 
   it('format split', function() {
@@ -89,6 +88,6 @@ describe('TextBlot', function() {
     textBlot.formatAt(1, 2, 'bold', true);
     expect(container.domNode.innerHTML).toEqual('T<strong>es</strong>t');
     expect(textBlot.next.statics.blotName).toEqual('bold');
-    expect(textBlot.getValue()).toEqual('T');
+    expect(textBlot.value()).toEqual('T');
   });
 });

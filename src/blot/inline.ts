@@ -15,25 +15,20 @@ function isEqual(obj1, obj2): boolean {
 
 class InlineBlot extends FormatBlot {
   static blotName = 'inline';
-  static order = [];
   static scope = Registry.Scope.INLINE_BLOT;
   static tagName = 'SPAN';
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    let thisOrder = this.statics.order.indexOf(this.statics.blotName);
-    let otherOrder = this.statics.order.indexOf(name);
-    if (thisOrder === otherOrder) {
+    if (this.formats()[name] !== null) {
       let blot = <InlineBlot>this.isolate(index, length);
       blot.format(name, value);
-    } else if (thisOrder > otherOrder) {
-      super.formatAt(index, length, name, value);
     } else {
-      ShadowBlot.prototype.formatAt.call(this, index, length, name, value);
+      super.formatAt(index, length, name, value);
     }
   }
 
-  optimize(): void {
-    super.optimize();
+  optimize(mutations: MutationRecord[] = []): void {
+    super.optimize(mutations);
     let formats = this.formats();
     if (Object.keys(formats).length === 0) {
       return this.unwrap();  // unformatted span

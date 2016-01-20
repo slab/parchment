@@ -11,15 +11,14 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
   build(): void {
     super.build();
     this.attributes = new AttributorStore(this.domNode);
-    this.attributes.build();
   }
 
   format(name: string, value: any): void {
-    let attribute = Registry.query(name, Registry.Scope.ATTRIBUTE);
-    if (attribute instanceof Attributor) {
-      this.attributes.attribute(attribute, value);
+    let format = Registry.query(name);
+    if (format instanceof Attributor) {
+      this.attributes.attribute(format, value);
     } else if (value) {
-      if (name !== this.statics.blotName || this.formats()[name] !== value) {
+      if (format != null && (name !== this.statics.blotName || this.formats()[name] !== value)) {
         this.replaceWith(name, value);
       }
     } else if (name === this.statics.blotName) {
@@ -66,22 +65,24 @@ class AttributorStore {
 
   constructor(domNode: HTMLElement) {
     this.domNode = domNode;
+    this.build();
   }
 
   attribute(attribute: Attributor, value: any): void {  // verb
     if (value) {
       if (attribute.add(this.domNode, value)) {
-        this.attributes[name] = attribute;
+        this.attributes[attribute.attrName] = attribute;
       }
     } else {
       attribute.remove(this.domNode);
-      delete this.attributes[name];
+      delete this.attributes[attribute.attrName];
     }
   }
 
   build(): void {
+    this.attributes = {};
     let attributes = [], classes = [], styles = [];
-    [].slice.call(this.domNode.attributes).forEach(item => {
+    [].slice.call(this.domNode.attributes).forEach((item) => {
       if (item.name === 'class') {
         classes = item.value.split(/\s+/).map(function(name) {
           return name.split('-').slice(0, -1).join('-');
@@ -95,7 +96,7 @@ class AttributorStore {
         attributes.push(item.name);
       }
     });
-    attributes.concat(classes).concat(styles).forEach(name => {
+    attributes.concat(classes).concat(styles).forEach((name) => {
       let attr = Registry.query(name, Registry.Scope.ATTRIBUTE);
       if (attr instanceof Attributor) {
         this.attributes[attr.attrName] = attr;
@@ -104,7 +105,7 @@ class AttributorStore {
   }
 
   copy(target: FormatBlot): void {
-    Object.keys(this.attributes).forEach(key => {
+    Object.keys(this.attributes).forEach((key) => {
       let value = this.attributes[key].value(this.domNode);
       target.format(key, value);
     });
@@ -112,7 +113,7 @@ class AttributorStore {
 
   move(target: FormatBlot): void {
     this.copy(target);
-    Object.keys(this.attributes).forEach(key => {
+    Object.keys(this.attributes).forEach((key) => {
       this.attributes[key].remove(this.domNode);
     });
     this.attributes = {};

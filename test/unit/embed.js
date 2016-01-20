@@ -1,9 +1,9 @@
 "use strict"
 
 describe('EmbedBlot', function() {
-  it('getValue()', function() {
-    let imageBlot = Registry.create('image');
-    expect(imageBlot.getValue()).toEqual(true);
+  it('value()', function() {
+    let imageBlot = Registry.create('image', 'http://quilljs.com/images/favicon.png');
+    expect(imageBlot.value()).toEqual('http://quilljs.com/images/favicon.png');
   });
 
   it('deleteAt()', function() {
@@ -11,9 +11,8 @@ describe('EmbedBlot', function() {
     let imageBlot = Registry.create('image');
     container.appendChild(imageBlot);
     container.insertAt(1, '!');
-    expect(container.getLength()).toBe(2);
     container.deleteAt(0, 1);
-    expect(container.getLength()).toBe(1);
+    expect(container.length()).toBe(1);
     expect(container.children.length).toBe(1);
     expect(imageBlot.domNode.parentNode).toBeFalsy();
   });
@@ -22,8 +21,8 @@ describe('EmbedBlot', function() {
     let container = Registry.create('block');
     let imageBlot = Registry.create('image');
     container.appendChild(imageBlot);
-    imageBlot.format('id', 'blot');
-    expect(imageBlot.parent.getFormat()).toEqual({ id: 'blot' });
+    imageBlot.format('alt', 'Quill Icon');
+    expect(imageBlot.formats()).toEqual({ alt: 'Quill Icon' });
   });
 
   it('formatAt()', function() {

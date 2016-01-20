@@ -9,13 +9,13 @@ module.exports = function(config) {
       'test/registry/*.js',
       'test/unit/linked-list.js',   // Control test order
       'test/unit/registry.js',
+      'test/unit/attributor.js',
       'test/unit/blot.js',
+      'test/unit/scroll.js',
       'test/unit/block.js',
       'test/unit/inline.js',
-      'test/unit/text.js',
       'test/unit/embed.js',
-      'test/unit/container.js',
-      'test/unit/attributor.js',
+      'test/unit/text.js',
       'test/unit/lifecycle.js'
     ],
     preprocessors: {
