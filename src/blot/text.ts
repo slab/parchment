@@ -23,10 +23,6 @@ class TextBlot extends LeafBlot implements Leaf {
     this.domNode.data = this.text = this.text.slice(0, index) + this.text.slice(index + length);
   }
 
-  findNode(index: number): [Node, number] {
-    return [this.domNode, index];
-  }
-
   insertAt(index: number, value: string, def?: any): void {
     if (def == null) {
       this.text = this.text.slice(0, index) + value + this.text.slice(index);

@@ -65,7 +65,7 @@ abstract class ShadowBlot implements Blot {
   }
 
   findNode(index: number, inclusive?: boolean): [Node, number] {
-    return [this.domNode, 0];
+    return [this.domNode, index];
   }
 
   findOffset(node: Node): number {
