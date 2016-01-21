@@ -19,7 +19,7 @@ class InlineBlot extends FormatBlot {
   static tagName = 'SPAN';
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (this.formats()[name] != null) {
+    if (this.formats()[name] != null || Registry.query(name, Registry.Scope.ATTRIBUTE)) {
       let blot = <InlineBlot>this.isolate(index, length);
       blot.format(name, value);
     } else {

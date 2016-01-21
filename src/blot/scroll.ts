@@ -78,7 +78,6 @@ class ScrollBlot extends ContainerBlot {
     for (let i = 0; mutations.length > 0; i += 1) {
       if (i >= MAX_OPTIMIZE_ITERATIONS) {
         throw new Error('[Parchment] Maximum optimize iterations reached');
-        break;
       }
       mutations.forEach(function(mutation) {
         let blot = Registry.find(mutation.target, true);

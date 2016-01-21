@@ -9,7 +9,7 @@ interface Blot extends LinkedNode {
   domNode: Node;
 
   clone(): Blot;
-  findNode(index: number): [Node, number];
+  findNode(index: number, inclusive?: boolean): [Node, number];
   findOffset(node: Node): number;
   insertInto(parentBlot: Parent, refBlot?: Blot): void;
   isolate(index: number, length: number): Blot;
@@ -39,7 +39,7 @@ interface Parent extends Blot {
   descendants<T>(type: { new (): T; }, index: number, length: number): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
-  path(index: number): [Blot, number][];
+  path(index: number, inclusive?: boolean): [Blot, number][];
   unwrap(): void;
 }
 

@@ -64,7 +64,7 @@ abstract class ShadowBlot implements Blot {
     blot.remove();
   }
 
-  findNode(index: number): [Node, number] {
+  findNode(index: number, inclusive?: boolean): [Node, number] {
     return [this.domNode, 0];
   }
 

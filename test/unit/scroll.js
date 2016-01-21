@@ -40,12 +40,11 @@ describe('Scroll', function() {
       });
     });
 
-    it('last exclusive', function() {
-      let path = this.container.path(8);
+    it('inclusive', function() {
+      let path = this.container.path(3, true);
       let expected = [
         [ 'scroll', 0 ],
-        [ 'block', 5 ],
-        [ 'italic', 0 ],
+        [ 'block', 0 ],
         [ 'bold', 0 ],
         [ 'text', 3 ]
       ];
@@ -56,7 +55,7 @@ describe('Scroll', function() {
       });
     });
 
-    it('last inclusive', function() {
+    it('last', function() {
       let path = this.container.path(9);
       let expected = [
         [ 'scroll', 9 ]

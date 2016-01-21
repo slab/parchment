@@ -19,6 +19,15 @@ describe('Attributor', function() {
     expect(boldBlot.domNode.id).toEqual('test-add');
   });
 
+  it('add multiple', function() {
+    let node = document.createElement('p');
+    node.innerHTML = '<em><strong>0</strong></em>';
+    let container = Registry.create(node);
+    container.formatAt(0, 1, 'color', 'red');
+    container.formatAt(0, 1, 'size', '18px');
+    expect(node.innerHTML).toEqual('<em style="color: red; font-size: 18px;"><strong>0</strong></em>')
+  });
+
   it('add to text', function() {
     let container = Registry.create('block');
     let textBlot = Registry.create('text', 'Test');

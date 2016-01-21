@@ -1,4 +1,4 @@
-import { Blot, Parent } from './blot';
+import { Blot, Parent, Leaf } from './blot';
 import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
@@ -53,9 +53,9 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     return descendants;
   }
 
-  findNode(index: number): [Node, number] {
-    let [child, offset] = this.children.find(index);
-    return child.findNode(offset);
+  findNode(index: number, inclusive: boolean = false): [Node, number] {
+    let [child, offset] = this.children.find(index, inclusive);
+    return child.findNode(offset, inclusive);
   }
 
   findOffset(node: Node): number {
@@ -111,12 +111,12 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
-  path(index: number): [Blot, number][] {
-    let [child, offset] = this.children.find(index);
+  path(index: number, inclusive: boolean = false): [Blot, number][] {
+    let [child, offset] = this.children.find(index, inclusive);
     if (child == null) return [[this, index]];
     let position: [Blot, number][] = [[this, index - offset]];
     if (child instanceof ContainerBlot) {
-      return position.concat(child.path(offset));
+      return position.concat(child.path(offset, inclusive));
     } else {
       position.push([child, offset]);
     }

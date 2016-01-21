@@ -150,6 +150,7 @@ describe('LinkedList', function() {
       this.list.append(this.a, this.b, this.c);
       expect(this.list.find(0)).toEqual([this.a, 0]);
       expect(this.list.find(2)).toEqual([this.a, 2]);
+      expect(this.list.find(3, true)).toEqual([this.a, 3]);
       expect(this.list.find(3)).toEqual([this.b, 0]);
       expect(this.list.find(4)).toEqual([this.b, 1]);
       expect(this.list.find(10)).toEqual([null, 0]);
