@@ -28,7 +28,8 @@ gulp.task('build', function(callback) {
 gulp.task('test', function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js'
-  }, done).start();
+  }).start();
+  done();
 });
 
 gulp.task('test:coverage', function(done) {
@@ -40,7 +41,8 @@ gulp.task('test:coverage', function(done) {
     configFile: __dirname + '/karma.conf.js',
     reporters: ['progress', 'coverage'],
     webpack: config
-  }, done).start();
+  }).start();
+  done();
 });
 
 gulp.task('test:server', function(done) {
@@ -62,7 +64,8 @@ gulp.task('test:travis', function(done) {
       build: process.env.TRAVIS_BUILD_ID,
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
     }
-  }, done).start();
+  }).start();
+  done();
 });
 
 gulp.task('watch', function() {

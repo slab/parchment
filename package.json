@@ -10,18 +10,18 @@
     "gulp-util": "^3.0.7",
     "istanbul": "~0.4.1",
     "jasmine-core": "^2.4.1",
-    "karma": "~0.13.15",
+    "karma": "~0.13.19",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "~0.2.2",
     "karma-coverage": "~0.5.3",
     "karma-jasmine": "~0.3.6",
     "karma-sauce-launcher": "~0.3.0",
     "karma-webpack": "^1.7.0",
-    "lodash": "^3.10.1",
-    "ts-loader": "^0.7.2",
+    "lodash": "^4.0.0",
+    "ts-loader": "^0.8.0",
     "typescript": "^1.7.5",
     "vinyl-source-stream": "^1.1.0",
-    "webpack": "^1.12.9"
+    "webpack": "^1.12.11"
   },
   "engines": {
     "node": "^5.3",
