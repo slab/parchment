@@ -34,6 +34,7 @@
   },
   "scripts": {
     "prepublish": "gulp build",
+    "start": "gulp test:server",
     "test": "gulp test"
   },
   "bugs": {

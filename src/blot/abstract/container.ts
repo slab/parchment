@@ -47,7 +47,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
-        descendants = descendants.concat(child.descendants(type));
+        descendants = descendants.concat(child.descendants(type, index, length));
       }
     });
     return descendants;

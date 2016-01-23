@@ -244,7 +244,7 @@ describe('Lifecycle', function() {
         this.checkValues(['Test', true, 'ing|', '!']);
       });
 
-      it('add empty child', function() {
+      it('add empty family', function() {
         let blockBlot = this.descendants[0];
         let boldNode = document.createElement('strong');
         let html = this.container.innerHTML;
