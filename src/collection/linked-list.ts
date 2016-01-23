@@ -80,7 +80,7 @@ class LinkedList<T extends LinkedNode> {
     let cur, next = this.iterator();
     while (cur = next()) {
       let length = cur.length();
-      if (index < length || (index === length && inclusive)) {
+      if (index < length || (inclusive && index === length && (cur.next == null || cur.next.length() !== 0))) {
         return [cur, index];
       }
       index -= length;
