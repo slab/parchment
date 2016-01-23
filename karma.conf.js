@@ -40,7 +40,7 @@ module.exports = function(config) {
     coverageReporter: {
       dir: '.build/coverage',
       reporters: [
-        { type: 'html' },
+        { type: 'lcov' },
         { type: 'text' }
       ]
     },
@@ -50,7 +50,7 @@ module.exports = function(config) {
         base: 'SauceLabs',
         browserName: 'Chrome',
         platform: 'Mac 10.11',
-        version: '45'
+        version: '47'
       }
     },
     port: 10876,

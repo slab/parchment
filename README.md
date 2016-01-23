@@ -1,1 +1,1 @@
-# Parchment [![Build Status](https://travis-ci.org/quilljs/parchment.svg?branch=master)](http://travis-ci.org/quilljs/parchment)
+# Parchment [![Build Status](https://travis-ci.org/quilljs/parchment.svg?branch=master)](http://travis-ci.org/quilljs/parchment) [![Coverage Status](https://coveralls.io/repos/github/quilljs/parchment/badge.svg?branch=master)](https://coveralls.io/github/quilljs/parchment?branch=master)

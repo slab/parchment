@@ -8,5 +8,7 @@ addons:
       - g++-4.8
 script:
   - gulp test:travis
+after_success:
+  - gulp test:coveralls
 env:
   - CXX=g++-4.8

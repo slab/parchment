@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var coveralls = require('gulp-coveralls');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var karma = require('karma');
@@ -28,8 +29,7 @@ gulp.task('build', function(callback) {
 gulp.task('test', function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js'
-  }).start();
-  done();
+  }, process.exit).start();   // passing done into constructor does not terminate anymore for some reason
 });
 
 gulp.task('test:coverage', function(done) {
@@ -41,15 +41,19 @@ gulp.task('test:coverage', function(done) {
     configFile: __dirname + '/karma.conf.js',
     reporters: ['progress', 'coverage'],
     webpack: config
-  }).start();
-  done();
+  }, process.exit).start();
+});
+
+gulp.task('test:coveralls', function(done) {
+  gulp.src('.build/coverage/**/lcov.info')
+    .pipe(coveralls());
 });
 
 gulp.task('test:server', function(done) {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: false
-  }, done).start();
+  }, process.exit).start();
 });
 
 gulp.task('test:travis', function(done) {
@@ -63,9 +67,12 @@ gulp.task('test:travis', function(done) {
       accessKey: process.env.SAUCE_KEY || 'adc0c0cf-221b-46f1-81b9-a4429b722c2e',
       build: process.env.TRAVIS_BUILD_ID,
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+    },
+    coverageReporter: {
+      dir: '.build/coverage',
+      reporters: [{ type: 'lcov' }]
     }
-  }).start();
-  done();
+  }, process.exit).start();
 });
 
 gulp.task('watch', function() {
