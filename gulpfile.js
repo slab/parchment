@@ -26,13 +26,13 @@ gulp.task('build', function(callback) {
   });
 });
 
-gulp.task('test', function(done) {
+gulp.task('test', function() {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js'
-  }, process.exit).start();   // passing done into constructor does not terminate anymore for some reason
+  }).start();
 });
 
-gulp.task('test:coverage', function(done) {
+gulp.task('test:coverage', function() {
   var config = _.clone(webpackConfig);
   config.module.postLoaders = [
     { test: /src\/.*\.ts$/, loader: __dirname + '/gulpfile.js' }  // webpack insists on 'real' loader file
@@ -41,22 +41,22 @@ gulp.task('test:coverage', function(done) {
     configFile: __dirname + '/karma.conf.js',
     reporters: ['progress', 'coverage'],
     webpack: config
-  }, process.exit).start();
+  }).start();
 });
 
-gulp.task('test:coveralls', function(done) {
+gulp.task('test:coveralls', function() {
   gulp.src('.build/coverage/**/lcov.info')
     .pipe(coveralls());
 });
 
-gulp.task('test:server', function(done) {
+gulp.task('test:server', function() {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: false
-  }, process.exit).start();
+  }).start();
 });
 
-gulp.task('test:travis', function(done) {
+gulp.task('test:travis', function() {
   new karma.Server({
     configFile: __dirname + '/karma.conf.js',
     browsers: ['saucelabs-chrome'],
@@ -72,7 +72,7 @@ gulp.task('test:travis', function(done) {
       dir: '.build/coverage',
       reporters: [{ type: 'lcov' }]
     }
-  }, process.exit).start();
+  }).start();
 });
 
 gulp.task('watch', function() {
