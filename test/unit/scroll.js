@@ -11,10 +11,10 @@ describe('Scroll', function() {
     it('middle', function() {
       let path = this.container.path(7);
       let expected = [
-        [ 'scroll', 0 ],
-        [ 'block', 5 ],
-        [ 'italic', 0 ],
-        [ 'bold', 0 ],
+        [ 'scroll', 7 ],
+        [ 'block', 7 ],
+        [ 'italic', 2 ],
+        [ 'bold', 2 ],
         [ 'text', 2 ]
       ];
       expect(path.length).toEqual(expected.length);
@@ -27,7 +27,7 @@ describe('Scroll', function() {
     it('between blots', function() {
       let path = this.container.path(5);
       let expected = [
-        [ 'scroll', 0 ],
+        [ 'scroll', 5 ],
         [ 'block', 5 ],
         [ 'italic', 0 ],
         [ 'bold', 0 ],
@@ -43,9 +43,9 @@ describe('Scroll', function() {
     it('inclusive', function() {
       let path = this.container.path(3, true);
       let expected = [
-        [ 'scroll', 0 ],
-        [ 'block', 0 ],
-        [ 'bold', 0 ],
+        [ 'scroll', 3 ],
+        [ 'block', 3 ],
+        [ 'bold', 3 ],
         [ 'text', 3 ]
       ];
       expect(path.length).toEqual(expected.length);
