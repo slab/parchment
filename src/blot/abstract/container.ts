@@ -32,12 +32,11 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
 
   deleteAt(index: number, length: number): void {
     if (index === 0 && length === this.length()) {
-      this.remove();
-    } else {
-      this.children.forEachAt(index, length, function(child, offset, length) {
-        child.deleteAt(offset, length);
-      });
+      return this.remove();
     }
+    this.children.forEachAt(index, length, function(child, offset, length) {
+      child.deleteAt(offset, length);
+    });
   }
 
   descendants<T>(type: { new (): T; }, index: number = 0, length: number = this.length()): T[] {

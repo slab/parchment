@@ -114,11 +114,11 @@ abstract class ShadowBlot implements Blot {
   }
 
   remove(): void {
-    if (this.parent == null) return;
-    this.parent.children.remove(this);
     if (this.domNode.parentNode != null) {
       this.domNode.parentNode.removeChild(this.domNode);
     }
+    if (this.parent == null) return;
+    this.parent.children.remove(this);
   }
 
   replace(target: Blot): void {
