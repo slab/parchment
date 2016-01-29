@@ -50,7 +50,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
-  descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_SAFE_INTEGER): T[] {
+  descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_VALUE): T[] {
     let descendants = [];
     this.children.forEachAt(index, length, function(child, index, length) {
       if (child instanceof type) {

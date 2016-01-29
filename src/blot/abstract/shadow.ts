@@ -109,10 +109,6 @@ abstract class ShadowBlot implements Blot {
     delete this.domNode[Registry.DATA_KEY].mutations;
   }
 
-  position(index: number, inclusive?: boolean): [Node, number] {
-    return [this.domNode, index];
-  }
-
   remove(): void {
     if (this.domNode.parentNode != null) {
       this.domNode.parentNode.removeChild(this.domNode);
