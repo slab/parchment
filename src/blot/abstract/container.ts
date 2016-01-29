@@ -39,7 +39,18 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  descendants<T>(type: { new (): T; }, index: number = 0, length: number = this.length()): T[] {
+  descendant<T>(type: { new (): T; }, index: number, inclusive: boolean = false): [T, number] {
+    let [child, offset] = this.children.find(index, inclusive);
+    if (child instanceof type) {
+      return [<any>child, offset];
+    } else if (child instanceof ContainerBlot) {
+      return child.descendant(type, offset, inclusive);
+    } else {
+      return [null, -1];
+    }
+  }
+
+  descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_SAFE_INTEGER): T[] {
     let descendants = [];
     this.children.forEachAt(index, length, function(child, index, length) {
       if (child instanceof type) {
@@ -50,18 +61,6 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
       }
     });
     return descendants;
-  }
-
-  findNode(index: number, inclusive: boolean = false): [Node, number] {
-    let [child, offset] = this.children.find(index, inclusive);
-    return child.findNode(offset, inclusive);
-  }
-
-  findOffset(node: Node): number {
-    if (node === this.domNode) return 0;
-    let blot = Registry.find(node);
-    if (blot == null || blot.parent !== this) return -1;
-    return this.children.offset(blot);
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -85,6 +84,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   length(): number {
+    // TODO can we use descendants?
     return this.children.reduce(function(memo, child) {
       return memo + child.length();
     }, 0);
@@ -175,14 +175,6 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
       }
     }
   }
-
-  // wrap(name: string, value: any): ParentBlot {
-  //   if (name === this.statics.blotName) {
-  //     return this.replaceWith(name, value);
-  //   } else {
-  //     return super.wrap(name, value);
-  //   }
-  // }
 }
 
 

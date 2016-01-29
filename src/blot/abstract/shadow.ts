@@ -64,10 +64,6 @@ abstract class ShadowBlot implements Blot {
     blot.remove();
   }
 
-  findNode(index: number, inclusive?: boolean): [Node, number] {
-    return [this.domNode, index];
-  }
-
   findOffset(node: Node): number {
     return node === this.domNode ? 0 : -1;
   }
@@ -111,6 +107,10 @@ abstract class ShadowBlot implements Blot {
   optimize(): void {
     // TODO clean up
     delete this.domNode[Registry.DATA_KEY].mutations;
+  }
+
+  position(index: number, inclusive?: boolean): [Node, number] {
+    return [this.domNode, index];
   }
 
   remove(): void {

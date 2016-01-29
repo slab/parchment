@@ -9,8 +9,6 @@ interface Blot extends LinkedNode {
   domNode: Node;
 
   clone(): Blot;
-  findNode(index: number, inclusive?: boolean): [Node, number];
-  findOffset(node: Node): number;
   insertInto(parentBlot: Parent, refBlot?: Blot): void;
   isolate(index: number, length: number): Blot;
   offset(root?: Blot): number;
@@ -36,6 +34,7 @@ interface Parent extends Blot {
 
   appendChild(child: Blot): void;
   build(): void;
+  descendant<T>(type: { new (): T; }, index: number, inclusive: boolean): [T, number];
   descendants<T>(type: { new (): T; }, index: number, length: number): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
@@ -51,6 +50,8 @@ interface Formattable extends Blot {
 
 
 interface Leaf extends Blot {
+  index(node: Node, offset: number): number;
+  position(index: number, inclusive: boolean): [Node, number];
   value(): any;
 }
 

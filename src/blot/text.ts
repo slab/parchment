@@ -23,6 +23,13 @@ class TextBlot extends LeafBlot implements Leaf {
     this.domNode.data = this.text = this.text.slice(0, index) + this.text.slice(index + length);
   }
 
+  index(node, offset): number {
+    if (this.domNode === node) {
+      return offset;
+    }
+    return -1;
+  }
+
   insertAt(index: number, value: string, def?: any): void {
     if (def == null) {
       this.text = this.text.slice(0, index) + value + this.text.slice(index);
@@ -45,6 +52,10 @@ class TextBlot extends LeafBlot implements Leaf {
       this.insertAt(this.length(), (<TextBlot>this.next).value());
       this.next.remove();
     }
+  }
+
+  position(index: number, inclusive: boolean = false): [Node, number] {
+    return [this.domNode, index];
   }
 
   split(index: number, force: boolean = false): Blot {
