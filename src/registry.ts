@@ -7,6 +7,20 @@ export interface BlotConstructor {
   create(value?): Node;
 }
 
+export class ParchmentError extends Error {
+  message: string;
+  name: string;
+  stack: string;
+
+  constructor(message) {
+    message = '[Parchment] ' + message;
+    super(message);
+    this.message = message;
+    this.name = (<any>this.constructor).name;
+    this.stack = (<any>new Error()).stack;
+  }
+}
+
 let attributes: { [key: string]: Attributor } = {};
 let classes: { [key: string]: BlotConstructor } = {};
 let tags: { [key: string]: String } = {};
@@ -36,7 +50,7 @@ export enum Scope {
 export function create(input: Node | string | Scope, value?: any): Blot {
   let match = query(input);
   if (match == null) {
-    throw new Error(`[Parchment] Unable to create ${input}`);
+    throw new ParchmentError(`Unable to create ${input}`);
   }
   if (match instanceof Attributor) {
     let blot = <Formattable>create(match.scope & Scope.LEVEL);
@@ -84,9 +98,9 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
 
 export function register(Definition) {
   if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
-    throw new Error('[Parchment] Invalid definition');
+    throw new ParchmentError('Invalid definition');
   } else if (Definition.blotName === 'abstract') {
-    throw new Error('[Parchment] Cannot register abstract class');
+    throw new ParchmentError('Cannot register abstract class');
   }
   types[Definition.blotName || Definition.attrName] = Definition;
   if (typeof Definition.tagName === 'string') {

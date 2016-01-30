@@ -26,7 +26,10 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
       try {
         let child = Registry.find(node) || Registry.create(node);
         this.insertBefore(child, this.children.head);
-      } catch (skipBlot) { }
+      } catch (err) {
+        if (err instanceof Registry.ParchmentError) return;
+        else throw err;
+      }
     });
   }
 

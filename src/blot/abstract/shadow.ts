@@ -29,7 +29,7 @@ abstract class ShadowBlot implements Blot {
 
   static create(value: any): Node {
     if (this.tagName == null) {
-      throw new Error('[Parchment] Blot definition missing tagName');
+      throw new Registry.ParchmentError('Blot definition missing tagName');
     }
     let node;
     if (Array.isArray(this.tagName)) {
