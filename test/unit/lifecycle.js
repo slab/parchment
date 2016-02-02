@@ -241,7 +241,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', true, 'ing|', '!']);
+        this.checkValues(['Test', true, 'ing', '|', '!']);
       });
 
       it('add empty family', function() {

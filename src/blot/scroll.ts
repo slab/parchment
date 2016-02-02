@@ -113,7 +113,6 @@ class ScrollBlot extends ContainerBlot {
         blot.update(blot.domNode[Registry.DATA_KEY].mutations);
       }
     });
-    this.optimize(mutations);
   }
 }
 
