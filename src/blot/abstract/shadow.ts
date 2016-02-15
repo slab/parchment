@@ -44,7 +44,7 @@ abstract class ShadowBlot implements Blot {
       node = document.createElement(this.tagName);
     }
     if (this.className) {
-      node.classList.add(Registry.PREFIX + this.className);
+      node.classList.add(this.className);
     }
     return node;
   }

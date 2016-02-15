@@ -28,7 +28,6 @@ let tags: { [key: string]: BlotConstructor } = {};
 let types: { [key: string]: Attributor | BlotConstructor } = {};
 
 export const DATA_KEY = '__blot';
-export const PREFIX = 'blot-';
 
 export enum Scope {
   TYPE = (1 << 2) - 1,          // 0011 Lower two bits
@@ -85,10 +84,7 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   } else if (query instanceof HTMLElement) {
     let names = query.className.split(/\s+/);
     for (let i in names) {
-      if (names[i].indexOf(PREFIX) === 0) {
-        match = types[names[i].slice(PREFIX.length)];
-        break;
-      }
+      if (match = types[names[i]]) break;
     }
     match = match || tags[query.tagName];
   }

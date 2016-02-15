@@ -73,7 +73,7 @@ describe('Registry', function() {
   describe('query()', function() {
     it('class', function() {
       let node = document.createElement('em');
-      node.setAttribute('class', 'blot-bold');
+      node.setAttribute('class', 'bold');
       expect(Registry.query(node)).toBe(BoldBlot);
     });
 

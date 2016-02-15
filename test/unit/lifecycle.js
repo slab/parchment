@@ -40,7 +40,7 @@ describe('Lifecycle', function() {
       ClassBlot.tagName = 'span';
       let node = ClassBlot.create();
       expect(node).toBeTruthy();
-      expect(node.classList.contains(Registry.PREFIX + 'test')).toBe(true);
+      expect(node.classList.contains('test')).toBe(true);
       expect(node.tagName).toBe('SPAN');
     });
   });

@@ -16,7 +16,6 @@ import * as Registry from './registry';
 
 
 let Parchment = {
-  PREFIX: Registry.PREFIX,
   Scope: Registry.Scope,
 
   create: Registry.create,
