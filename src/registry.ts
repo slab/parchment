@@ -3,6 +3,7 @@ import { Blot, Formattable } from './blot/abstract/blot';
 
 
 export interface BlotConstructor {
+  blotName: string;
   new(node: Node, value?: any): Blot;
   create(value?): Node;
 }
@@ -23,7 +24,7 @@ export class ParchmentError extends Error {
 
 let attributes: { [key: string]: Attributor } = {};
 let classes: { [key: string]: BlotConstructor } = {};
-let tags: { [key: string]: String } = {};
+let tags: { [key: string]: BlotConstructor } = {};
 let types: { [key: string]: Attributor | BlotConstructor } = {};
 
 export const DATA_KEY = '__blot';
@@ -103,14 +104,18 @@ export function register(Definition) {
     throw new ParchmentError('Cannot register abstract class');
   }
   types[Definition.blotName || Definition.attrName] = Definition;
-  if (typeof Definition.tagName === 'string') {
-    tags[Definition.tagName.toUpperCase()] = Definition;
-  } else if (Array.isArray(Definition.tagName)) {
-    Definition.tagName.forEach(function(tag) {
-      tags[tag.toUpperCase()] = Definition;
-    });
-  } else if (typeof Definition.keyName === 'string') {
+  if (typeof Definition.keyName === 'string') {
     attributes[Definition.keyName] = Definition;
+  } else if (Definition.tagName != null) {
+    let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
+    tagNames.forEach(function(tag) {
+      tag = tag.toUpperCase();
+      if (tags[tag] == null ||
+        Definition.blotName === 'inline' || Definition.blotName === 'block' ||
+        (tags[tag].blotName !== 'inline' && tags[tag].blotName !== 'block')) {
+        tags[tag] = Definition;
+      }
+    });
   }
   return Definition;
 }
