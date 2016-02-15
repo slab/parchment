@@ -106,9 +106,7 @@ export function register(Definition) {
     let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
     tagNames.forEach(function(tag) {
       tag = tag.toUpperCase();
-      if (tags[tag] == null ||
-        Definition.blotName === 'inline' || Definition.blotName === 'block' ||
-        (tags[tag].blotName !== 'inline' && tags[tag].blotName !== 'block')) {
+      if (tags[tag] == null || Definition.className == null) {
         tags[tag] = Definition;
       }
     });
