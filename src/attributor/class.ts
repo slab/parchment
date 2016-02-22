@@ -2,7 +2,8 @@ import Attributor from './attributor';
 
 
 function match(node: HTMLElement, prefix: string): string[] {
-  return node.className.split(/\s+/).filter(function(name) {
+  let className = node.getAttribute('class') || '';
+  return className.split(/\s+/).filter(function(name) {
     return name.indexOf(`${prefix}-`) === 0;
   });
 }

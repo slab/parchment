@@ -82,7 +82,7 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
       match = types['inline'];
     }
   } else if (query instanceof HTMLElement) {
-    let names = query.className.split(/\s+/);
+    let names = (query.getAttribute('class') || '').split(/\s+/);
     for (let i in names) {
       if (match = types[names[i]]) break;
     }
