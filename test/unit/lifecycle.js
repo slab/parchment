@@ -31,7 +31,7 @@ describe('Lifecycle', function() {
 
     it('null tagName', function() {
       class NullBlot extends ShadowBlot {}
-      expect(NullBlot.create).toThrowError(/\[Parchment\]/);
+      expect(NullBlot.create.bind(NullBlot)).toThrowError(/\[Parchment\]/);
     });
 
     it('className', function() {
