@@ -154,28 +154,17 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
     if (updated) {
       let childNode = this.domNode.firstChild;
-      this.children.forEach((child) => {
-        while (childNode !== child.domNode) {
-          if (child.domNode.parentNode === this.domNode) {
-            // New child inserted
-            let blot = Registry.find(childNode) || Registry.create(childNode);
-            if (blot.parent != null) {
-              blot.parent.children.remove(blot);
-            }
-            this.insertBefore(blot, child);
-            childNode = childNode.nextSibling;
-          } else {
-            // Existing child removed
-            return child.remove();
-          }
-        }
-        childNode = childNode.nextSibling;
-      });
-      while (childNode != null) {
+      let newChildren = new LinkedList<Blot>();
+      while (childNode) {
         let blot = Registry.find(childNode) || Registry.create(childNode);
-        this.insertBefore(blot);
+        if (blot.parent != null) {
+          blot.parent.children.remove(blot);
+        }
+        blot.parent = this;
+        newChildren.append(blot);
         childNode = childNode.nextSibling;
       }
+      this.children = newChildren;
     }
   }
 }
