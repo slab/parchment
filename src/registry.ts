@@ -84,7 +84,7 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   } else if (query instanceof HTMLElement) {
     let names = (query.getAttribute('class') || '').split(/\s+/);
     for (let i in names) {
-      if (match = types[names[i]]) break;
+      if (match = classes[names[i]]) break;
     }
     match = match || tags[query.tagName];
   }
@@ -102,14 +102,19 @@ export function register(Definition) {
   types[Definition.blotName || Definition.attrName] = Definition;
   if (typeof Definition.keyName === 'string') {
     attributes[Definition.keyName] = Definition;
-  } else if (Definition.tagName != null) {
-    let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
-    tagNames.forEach(function(tag) {
-      tag = tag.toUpperCase();
-      if (tags[tag] == null || Definition.className == null) {
-        tags[tag] = Definition;
-      }
-    });
+  } else {
+    if (Definition.className != null) {
+      classes[Definition.className] = Definition;
+    }
+    if (Definition.tagName != null) {
+      let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
+      tagNames.forEach(function(tag) {
+        tag = tag.toUpperCase();
+        if (tags[tag] == null || Definition.className == null) {
+          tags[tag] = Definition;
+        }
+      });
+    }
   }
   return Definition;
 }
