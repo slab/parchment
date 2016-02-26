@@ -14,6 +14,16 @@ class BlockBlot extends FormatBlot {
       super.formatAt(index, length, name, value);
     }
   }
+
+  insertAt(index: number, value: string, def?: any): void {
+    if (def == null || Registry.query(value, Registry.Scope.INLINE) != null) {  // Insert text or inline
+      super.insertAt(index, value, def);
+    } else {
+      let after = this.split(index);
+      let blot = Registry.create(value, def);
+      after.parent.insertBefore(blot, after);
+    }
+  }
 }
 
 

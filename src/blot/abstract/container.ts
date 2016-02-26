@@ -149,33 +149,33 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   update(mutations: MutationRecord[]): void {
-    let updated = mutations.some((mutation) => {
+    if (!mutations.some((mutation) => {
       return mutation.target === this.domNode && mutation.type === 'childList';
-    });
-    if (updated) {
-      let childNode = this.domNode.firstChild;
-      this.children.forEach((child) => {
-        while (childNode !== child.domNode) {
-          if (child.domNode.parentNode === this.domNode) {
-            // New child inserted
-            let blot = Registry.find(childNode) || Registry.create(childNode);
-            if (blot.parent != null) {
-              blot.parent.children.remove(blot);
-            }
-            this.insertBefore(blot, child);
-            childNode = childNode.nextSibling;
-          } else {
-            // Existing child removed
-            return child.remove();
+    })) {
+      return;
+    }
+    let childNode = this.domNode.firstChild;
+    this.children.forEach((child) => {
+      while (childNode !== child.domNode) {
+        if (child.domNode.parentNode === this.domNode) {
+          // New child inserted
+          let blot = Registry.find(childNode) || Registry.create(childNode);
+          if (blot.parent != null) {
+            blot.parent.children.remove(blot);
           }
+          this.insertBefore(blot, child);
+          childNode = childNode.nextSibling;
+        } else {
+          // Existing child removed
+          return child.remove();
         }
-        childNode = childNode.nextSibling;
-      });
-      while (childNode != null) {
-        let blot = Registry.find(childNode) || Registry.create(childNode);
-        this.insertBefore(blot);
-        childNode = childNode.nextSibling;
       }
+      childNode = childNode.nextSibling;
+    });
+    while (childNode != null) {
+      let blot = Registry.find(childNode) || Registry.create(childNode);
+      this.insertBefore(blot);
+      childNode = childNode.nextSibling;
     }
   }
 }

@@ -16,9 +16,9 @@ const MAX_OPTIMIZE_ITERATIONS = 100;
 
 class ScrollBlot extends ContainerBlot {
   static blotName = 'scroll';
+  static child = 'block';
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'DIV';
-  static terminal = 'block';
 
   observer: MutationObserver;
 
@@ -103,16 +103,22 @@ class ScrollBlot extends ContainerBlot {
     // TODO use WeakMap
     mutations.map(function(mutation: MutationRecord) {
       let blot = Registry.find(mutation.target, true);
-      blot.domNode[Registry.DATA_KEY].mutations = blot.domNode[Registry.DATA_KEY].mutations || [];
-      blot.domNode[Registry.DATA_KEY].mutations.push(mutation);
-      return blot;
+      if (blot.domNode[Registry.DATA_KEY].mutations == null) {
+        blot.domNode[Registry.DATA_KEY].mutations = [mutation];
+        return blot;
+      } else {
+        blot.domNode[Registry.DATA_KEY].mutations.push(mutation);
+        return null;
+      }
     }).forEach((blot: Blot) => {
+      if (blot == null) return;
       if (blot === this) {
         super.update(blot.domNode[Registry.DATA_KEY].mutations);
       } else {
         blot.update(blot.domNode[Registry.DATA_KEY].mutations);
       }
     });
+    this.optimize(mutations);
   }
 }
 
