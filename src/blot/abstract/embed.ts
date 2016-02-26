@@ -2,9 +2,14 @@ import { Formattable } from './blot';
 import LeafBlot from './leaf';
 
 
-abstract class EmbedBlot extends LeafBlot implements Formattable {
-  abstract format(name: string, value: any);
-  abstract formats(): { [index: string]: any };
+class EmbedBlot extends LeafBlot implements Formattable {
+  format(name: string, value: any): void {
+    // Do nothing by default
+  }
+
+  formats(): { [index: string]: any } {
+    return {};
+  }
 
   index(node, offset): number {
     if (node !== this.domNode) return -1;
