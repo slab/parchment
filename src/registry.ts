@@ -18,7 +18,6 @@ export class ParchmentError extends Error {
     super(message);
     this.message = message;
     this.name = (<any>this.constructor).name;
-    this.stack = (<any>new Error()).stack;
   }
 }
 

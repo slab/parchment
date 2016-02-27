@@ -149,34 +149,39 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   update(mutations: MutationRecord[]): void {
-    if (!mutations.some((mutation) => {
-      return mutation.target === this.domNode && mutation.type === 'childList';
-    })) {
-      return;
-    }
-    let childNode = this.domNode.firstChild;
-    this.children.forEach((child) => {
-      while (childNode !== child.domNode) {
-        if (child.domNode.parentNode === this.domNode) {
-          // New child inserted
-          let blot = Registry.find(childNode) || Registry.create(childNode);
-          if (blot.parent != null) {
-            blot.parent.children.remove(blot);
-          }
-          this.insertBefore(blot, child);
-          childNode = childNode.nextSibling;
-        } else {
-          // Existing child removed
-          return child.remove();
-        }
+    let addedNodes = [], removedNodes = [];
+    mutations.forEach((mutation) => {
+      if (mutation.target === this.domNode && mutation.type === 'childList') {
+        addedNodes.push.apply(addedNodes, mutation.addedNodes);
+        removedNodes.push.apply(removedNodes, mutation.removedNodes);
       }
-      childNode = childNode.nextSibling;
     });
-    while (childNode != null) {
-      let blot = Registry.find(childNode) || Registry.create(childNode);
-      this.insertBefore(blot);
-      childNode = childNode.nextSibling;
-    }
+    removedNodes.forEach((node) => {
+      let blot = Registry.find(node);
+      if (blot == null || blot.domNode.parentNode === this.domNode) return;
+      blot.remove();
+    });
+    addedNodes.sort(function(a, b) {
+      if (a === b) return 0;
+      if (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) {
+        return -1;
+      }
+      return 1;
+    });
+    addedNodes.reverse().forEach((node) => {
+      if (node.parentNode !== this.domNode) return;
+      let refBlot = null;
+      if (node.nextSibling != null) {
+        refBlot = Registry.find(node.nextSibling);
+      }
+      let blot = Registry.find(node) || Registry.create(node);
+      if (blot.next != refBlot || blot.next == null) {
+        if (blot.parent != null) {
+          blot.parent.children.remove(blot);
+        }
+        this.insertBefore(blot, refBlot);
+      }
+    });
   }
 }
 

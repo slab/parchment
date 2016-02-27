@@ -241,7 +241,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', true, 'ing', '|', '!']);
+        this.checkValues(['Test', true, 'ing|', '!']);
       });
 
       it('add empty family', function() {
@@ -260,13 +260,13 @@ describe('Lifecycle', function() {
         let italicBlot = this.descendants[1];
         let imageNode = document.createElement('img');
         let textNode = document.createTextNode('|');
-        let refNode = italicBlot.domNode.childNodes[1]
+        let refNode = italicBlot.domNode.childNodes[1];   // Old img
         italicBlot.domNode.insertBefore(textNode, refNode);
         italicBlot.domNode.insertBefore(imageNode, textNode);
         italicBlot.domNode.removeChild(refNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', '|', true, 'ing', '!'])
+        this.checkValues(['Test', true, '|ing', '!'])
       });
 
       it('add then remove same node', function() {
