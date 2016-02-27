@@ -256,6 +256,22 @@ describe('Lifecycle', function() {
         expect(this.container.descendants(ShadowBlot).length).toEqual(this.descendants.length);
       });
 
+      it('move node up', function() {
+        let imageBlot = this.descendants[4];
+        imageBlot.domNode.parentNode.insertBefore(imageBlot.domNode, imageBlot.domNode.previousSibling);
+        this.container.update();
+        this.checkUpdateCalls(imageBlot.parent);
+        this.checkValues([true, 'Test', 'ing', '!']);
+      });
+
+      it('move node down', function() {
+        let imageBlot = this.descendants[4];
+        imageBlot.domNode.parentNode.insertBefore(imageBlot.domNode.nextSibling, imageBlot.domNode);
+        this.container.update();
+        this.checkUpdateCalls(imageBlot.parent);
+        this.checkValues(['Test', 'ing', true, '!']);
+      });
+
       it('add and remove consecutive nodes', function() {
         let italicBlot = this.descendants[1];
         let imageNode = document.createElement('img');
