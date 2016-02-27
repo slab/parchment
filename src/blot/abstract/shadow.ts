@@ -20,7 +20,7 @@ abstract class ShadowBlot implements Blot {
     let statics = <any>this.constructor;
     return {
       blotName: statics.blotName,
-      child: statics.child,
+      childless: statics.childless,
       className: statics.className,
       scope: statics.scope,
       tagName: statics.tagName

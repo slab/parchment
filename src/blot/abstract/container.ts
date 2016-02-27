@@ -102,9 +102,8 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   optimize() {
     super.optimize();
     if (this.children.length === 0) {
-      if (this.statics.child != null) {
-        let args = typeof this.statics.child === 'string' ? [this.statics.child] : this.statics.child;
-        let child = Registry.create.apply(Registry, args);
+      if (this.statics.childless != null) {
+        let child = Registry.create(this.statics.childless);
         this.appendChild(child);
         child.optimize();
       } else {
