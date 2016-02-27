@@ -92,7 +92,14 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   return null;
 }
 
-export function register(Definition) {
+
+export function register(...Definitions) {
+  if (Definitions.length > 1) {
+    return Definitions.map(function(d) {
+      return register(d);
+    });
+  }
+  let Definition = Definitions[0];
   if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
     throw new ParchmentError('Invalid definition');
   } else if (Definition.blotName === 'abstract') {
