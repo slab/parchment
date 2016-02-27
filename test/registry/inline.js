@@ -1,5 +1,10 @@
 "use strict"
 
+class AuthorBlot extends InlineBlot {}
+AuthorBlot.blotName = 'author';
+AuthorBlot.className = 'author-blot';
+Registry.register(AuthorBlot);
+
 class BoldBlot extends InlineBlot {}
 BoldBlot.blotName = 'bold';
 BoldBlot.tagName = 'STRONG';

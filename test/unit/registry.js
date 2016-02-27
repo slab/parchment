@@ -73,8 +73,8 @@ describe('Registry', function() {
   describe('query()', function() {
     it('class', function() {
       let node = document.createElement('em');
-      node.setAttribute('class', 'bold');
-      expect(Registry.query(node)).toBe(BoldBlot);
+      node.setAttribute('class', 'author-blot');
+      expect(Registry.query(node)).toBe(AuthorBlot);
     });
 
     it('type mismatch', function() {
