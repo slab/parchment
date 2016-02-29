@@ -2,7 +2,7 @@
 
 Parchment is [Quill](https://quilljs.com)'s document model. It is a parallel tree structure to the DOM tree, and provides functionality useful for content editors, like Quill. A Parchment tree is made up of [Blots](#blots), which mirror a DOM node counterpart. Blots can provide structure, formatting, and/or or content. [Attributors](#attributors) can also provide lightweight formatting information.
 
-**Note:** You should never instantiate a Blot yourself with `new`. This may prevent necessary [lifecycle](#lifecycle) functionality of a Blot. Use the [Registry](#registry)'s `create()` method instead.
+**Note:** You should never instantiate a Blot yourself with `new`. This may prevent necessary lifecycle functionality of a Blot. Use the [Registry](#registry)'s `create()` method instead.
 
 `npm install --save parchment`
 
