@@ -40,7 +40,7 @@ class Blot {
   length(): Number;
 
   // Manipulate at given index and length, if applicable.
-  // Will often pass call onto appropriat child.
+  // Will often pass call onto appropriate child.
   deleteAt(index: number, length: number);
   formatAt(index: number, length: number, format: string, value: any);
   insertAt(index: number, text: string);
@@ -152,7 +152,9 @@ The root parent blot of a Parchment document. Is not formattable.
 
 ## Attributors
 
-Attributors the other more lightway way to represent formats. Their DOM counterpart is an [Attribute](https://www.w3.org/TR/html5/syntax.html#attributes-0).
+Attributors are the alternative, more lightweight, way to represent formats. Their DOM counterpart is an [Attribute](https://www.w3.org/TR/html5/syntax.html#attributes-0). Like a DOM attribute's relationship to a node, Attributors are meant to be belong to Blots. Calling `formats()` on an [Inline](#inline-blot) or [Block](#block-blot) blot will return both the format of the corresponding DOM node represents (if any) and the formats the DOM node's attributes represent (if any).
+
+Attributors have the following interface:
 
 ```js
 class Attributor {
@@ -169,9 +171,47 @@ class Attributor {
 }
 ```
 
-### Example
+Note custom attributors are instances, rather than class definitions like Blots. Similar to Blots, instead of creating from scratch, you will probably want to use existing Attributor implementations, such as the base [Attributor](#attributor), [Class Attributor](#class-attributor) or [Style Attributor](#style-attributor).
 
-Similar to Blots, you will probably want to use existing Attributor implementations instead of creating from scratch. Note custom attributors are instances, rather than class definitions like Blots.
+The implementation for Attributors is surprisingly simple, and its [source code](https://github.com/quilljs/parchment/tree/master/src/attributor) may be another source of understanding.
+
+### Attributor
+
+Uses a plain attribute to represent formats.
+
+```js
+import Parchment from 'parchment';
+
+let Width = new Parchment.Attributor.Attributor('width', 'width');
+Parchment.register(Width);
+
+let imageNode = document.createElement('img');
+
+Width(imageNode, '10px');
+console.log(imageNode.outerHTML);   // Will print <img width="10px">
+Width(imageNode);	                // Will return 10px
+Width(imageNode);
+console.log(imageNode.outerHTML);   // Will print <img>
+```
+
+### Class Attributor
+
+Uses a classname pattern to represent formats.
+
+```js
+import Parchment from 'parchment';
+
+let Align = new Parchment.Attributor.Style('align', 'blot-align'};
+Parchment.register(Align);
+
+let node = document.createElement('div');
+Align.add(node, 'right');
+console.log(node.outerHTML);  // Will print <div class="blot-align-right"></div>
+```
+
+### Style Attributor
+
+Uses inline styles to represent formats.
 
 ```js
 import Parchment from 'parchment';
@@ -179,10 +219,12 @@ import Parchment from 'parchment';
 let Align = new Parchment.Attributor.Style('align', 'text-align', {
   whitelist: ['right', 'center', 'justify']   // Having no value implies left align
 };
-
 Parchment.register(Align);
-```
 
+let node = document.createElement('div');
+Align.add(node, 'right');
+console.log(node.outerHTML);  // Will print <div style="text-align: right;"></div>
+```
 
 ## Registry
 
