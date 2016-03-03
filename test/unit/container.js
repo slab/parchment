@@ -28,4 +28,28 @@ describe('Container', function() {
       expect(this.blot.descendants(TextBlot, 1, 3).length).toEqual(2);
     });
   });
+
+  describe('destroy()', function() {
+    it('destroy', function() {
+      let node = document.createElement('p');
+      let blot = Registry.create(node);
+      expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
+      expect(blot.descendants(ShadowBlot).length).toEqual(0);
+      blot.destroy();
+      expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+    });
+
+    it('destroy + children', function() {
+      let node = document.createElement('p');
+      node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
+      let blot = Registry.create(node);
+      expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
+      expect(blot.descendants(ShadowBlot).length).toEqual(8);
+      blot.destroy();
+      expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+      blot.descendants(ShadowBlot).forEach(function(blot) {
+        expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+      });
+    });
+  })
 });

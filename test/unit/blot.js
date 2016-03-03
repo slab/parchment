@@ -10,6 +10,13 @@ describe('Blot', function() {
     expect(boldBlot.offset(blockBlot)).toEqual(4);
   });
 
+  it('destroy()', function() {
+    let blot = Registry.create('block');
+    expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
+    blot.destroy();
+    expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+  });
+
   it('wrap()', function() {
     let parent = Registry.create('block');
     let head = Registry.create('bold');

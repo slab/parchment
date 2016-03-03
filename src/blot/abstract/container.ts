@@ -148,6 +148,13 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     this.remove();
   }
 
+  destroy(): void {
+    super.destroy();
+    this.children.forEach(function(child) {
+        child.destroy();
+    });
+  }
+
   update(mutations: MutationRecord[]): void {
     let addedNodes = [], removedNodes = [];
     mutations.forEach((mutation) => {
@@ -160,6 +167,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
       let blot = Registry.find(node);
       if (blot == null || blot.domNode.parentNode === this.domNode || blot.parent == null) return;
       blot.parent.children.remove(blot);
+      blot.destroy();
     });
     addedNodes.sort(function(a, b) {
       if (a === b) return 0;
