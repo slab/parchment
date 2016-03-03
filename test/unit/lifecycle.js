@@ -205,6 +205,16 @@ describe('Lifecycle', function() {
         expect(textBlot.value()).toEqual('Te|st');
       });
 
+      it('add/remove unknown element', function() {
+        let unknownElement = document.createElement('unknownElement');
+        let unknownElement2 = document.createElement('unknownElement2');
+        this.container.domNode.appendChild(unknownElement);
+        unknownElement.appendChild(unknownElement2);
+        this.container.domNode.removeChild(unknownElement);
+        this.container.update();
+        this.checkValues(['Test', true, 'ing', '!']);
+      });
+
       it('add attribute', function() {
         let attrBlot = this.descendants[1];
         attrBlot.domNode.setAttribute('id', 'blot');
