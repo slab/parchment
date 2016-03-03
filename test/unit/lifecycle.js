@@ -295,6 +295,16 @@ describe('Lifecycle', function() {
         this.checkValues(['Test', true, '|ing', '!'])
       });
 
+      it('wrap text', function() {
+        let textNode = this.descendants[5].domNode;
+        let spanNode = document.createElement('span');
+        textNode.parentNode.removeChild(textNode);
+        this.container.domNode.appendChild(spanNode);
+        spanNode.appendChild(textNode);
+        this.container.update();
+        this.checkValues(['Test', true, '!', 'ing']);
+      });
+
       it('add then remove same node', function() {
         let italicBlot = this.descendants[1];
         let textNode = document.createTextNode('|');
