@@ -113,6 +113,17 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
+  path(index: number, inclusive: boolean = false): [Blot, number][] {
+    let [child, offset] = this.children.find(index, inclusive);
+    let position: [Blot, number][] = [[this, index]];
+    if (child instanceof ContainerBlot) {
+      return position.concat(child.path(offset, inclusive));
+    } else if (child != null) {
+      position.push([child, offset]);
+    }
+    return position;
+  }
+
   replace(target: Parent): void {
     target.moveChildren(this);
     super.replace(target);
