@@ -42,26 +42,27 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  descendant<T>(type: { new (): T; }, index: number, inclusive: boolean = false): [T, number] {
-    let [child, offset] = this.children.find(index, inclusive);
+  descendant<T>(type: { new (): T; }, index: number): [T, number] {
+    let [child, offset] = this.children.find(index);
     if (child instanceof type) {
       return [<any>child, offset];
     } else if (child instanceof ContainerBlot) {
-      return child.descendant(type, offset, inclusive);
+      return child.descendant(type, offset);
     } else {
       return [null, -1];
     }
   }
 
   descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_VALUE): T[] {
-    let descendants = [];
+    let descendants = [], lengthLeft = length;
     this.children.forEachAt(index, length, function(child, index, length) {
       if (child instanceof type) {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
-        descendants = descendants.concat(child.descendants(type, index, length));
+        descendants = descendants.concat(child.descendants(type, index, lengthLeft));
       }
+      lengthLeft -= length;
     });
     return descendants;
   }
