@@ -33,6 +33,9 @@ abstract class ShadowBlot implements Blot {
     }
     let node;
     if (Array.isArray(this.tagName)) {
+      if (typeof value === 'string' && parseInt(value).toString() === value) {
+        value = parseInt(value);
+      }
       if (typeof value === 'number') {
         node = document.createElement(this.tagName[value - 1]);
       } else if (this.tagName.indexOf(value) > -1) {
