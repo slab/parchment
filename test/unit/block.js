@@ -24,12 +24,16 @@ describe('Block', function() {
 
     it('change', function() {
       let container = Registry.create('scroll');
-      let block = Registry.create('header', 'h1');
+      let block = Registry.create('block');
+      let text = Registry.create('text', 'Test');
+      block.appendChild(text);
       container.appendChild(block);
       block.format('header', 'h2');
-      expect(container.domNode.innerHTML).toBe('<h2></h2>');
+      expect(container.domNode.innerHTML).toBe('<h2>Test</h2>');
       expect(container.children.head.statics.blotName).toBe('header');
       expect(container.children.head.formats()).toEqual({ header: 'h2' });
+      expect(container.children.head.children.length).toBe(1);
+      expect(container.children.head.children.head).toBe(text);
     });
   });
 });

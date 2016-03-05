@@ -158,7 +158,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
     removedNodes.forEach((node) => {
       let blot = Registry.find(node);
-      if (blot == null || blot.domNode.parentNode === this.domNode || blot.parent == null) return;
+      if (blot == null || blot.domNode.parentNode === this.domNode || blot.parent !== this) return;
       blot.parent.children.remove(blot);
     });
     addedNodes.sort(function(a, b) {
