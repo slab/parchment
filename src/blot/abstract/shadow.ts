@@ -118,7 +118,9 @@ abstract class ShadowBlot implements Blot {
 
   optimize(): void {
     // TODO clean up
-    delete this.domNode[Registry.DATA_KEY].mutations;
+    if (this.domNode[Registry.DATA_KEY] != null) {
+      delete this.domNode[Registry.DATA_KEY].mutations;
+    }
   }
 
   remove(): void {
