@@ -31,8 +31,8 @@ class ScrollBlot extends ContainerBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
-  destroy() {
-    super.destroy();
+  detach() {
+    super.detach();
     this.observer.disconnect();
   }
 

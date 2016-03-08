@@ -54,16 +54,21 @@ abstract class ShadowBlot implements Blot {
 
 
   constructor(public domNode: Node) {
-    this.domNode[Registry.DATA_KEY] = { blot: this };
+    this.attach();
   }
 
-  destroy() {
-    delete this.domNode[Registry.DATA_KEY];
+  attach() {
+    this.domNode[Registry.DATA_KEY] = { blot: this };
   }
 
   clone(): Blot {
     let domNode = this.domNode.cloneNode();
     return <Blot>Registry.create(domNode);
+  }
+
+  detach() {
+    if (this.parent != null) this.parent.children.remove(this);
+    delete this.domNode[Registry.DATA_KEY];
   }
 
   deleteAt(index: number, length: number): void {
@@ -120,9 +125,7 @@ abstract class ShadowBlot implements Blot {
     if (this.domNode.parentNode != null) {
       this.domNode.parentNode.removeChild(this.domNode);
     }
-    this.destroy();
-    if (this.parent == null) return;
-    this.parent.children.remove(this);
+    this.detach();
   }
 
   replace(target: Blot): void {

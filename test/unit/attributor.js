@@ -7,7 +7,7 @@ describe('Attributor', function() {
     blot.domNode.style.fontSize = '24px';
     blot.domNode.id = 'blot-test'
     blot.domNode.classList.add('indent-2')
-    blot.build();
+    blot.attributes.build();
     expect(Object.keys(blot.attributes.attributes).sort()).toEqual(['color', 'size', 'id', 'indent'].sort());
   });
 

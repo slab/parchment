@@ -10,10 +10,10 @@ describe('Blot', function() {
     expect(boldBlot.offset(blockBlot)).toEqual(4);
   });
 
-  it('destroy()', function() {
+  it('detach()', function() {
     let blot = Registry.create('block');
     expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
-    blot.destroy();
+    blot.detach();
     expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
   });
 

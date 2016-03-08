@@ -8,8 +8,8 @@ import * as Registry from '../../registry';
 abstract class FormatBlot extends ContainerBlot implements Formattable {
   protected attributes: AttributorStore;
 
-  build(): void {
-    super.build();
+  attach(): void {
+    super.attach();
     this.attributes = new AttributorStore(this.domNode);
   }
 

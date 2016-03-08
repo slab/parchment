@@ -8,8 +8,9 @@ interface Blot extends LinkedNode {
   next: Blot;
   domNode: Node;
 
+  attach(): void;
   clone(): Blot;
-  destroy(): void;
+  detach(): void;
   insertInto(parentBlot: Parent, refBlot?: Blot): void;
   isolate(index: number, length: number): Blot;
   offset(root?: Blot): number;
@@ -34,7 +35,6 @@ interface Parent extends Blot {
   domNode: HTMLElement;
 
   appendChild(child: Blot): void;
-  build(): void;
   descendant<T>(type: { new (): T; }, index: number): [T, number];
   descendants<T>(type: { new (): T; }, index: number, length: number): T[];
   insertBefore(child: Blot, refNode?: Blot): void;

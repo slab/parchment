@@ -10,16 +10,12 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   children: LinkedList<Blot>;
   domNode: HTMLElement;
 
-  constructor(domNode: HTMLElement) {
-    super(domNode);
-    this.build();
-  }
-
   appendChild(other: Blot): void {
     this.insertBefore(other);
   }
 
-  build(): void {
+  attach(): void {
+    super.attach();
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     [].slice.call(this.domNode.childNodes).reverse().forEach((node) => {
@@ -65,6 +61,13 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
       lengthLeft -= length;
     });
     return descendants;
+  }
+
+  detach(): void {
+    this.children.forEach(function(child) {
+      child.detach();
+    });
+    super.detach();
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -148,13 +151,6 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     this.remove();
   }
 
-  destroy(): void {
-    super.destroy();
-    this.children.forEach(function(child) {
-        child.destroy();
-    });
-  }
-
   update(mutations: MutationRecord[]): void {
     let addedNodes = [], removedNodes = [];
     mutations.forEach((mutation) => {
@@ -165,9 +161,8 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
     removedNodes.forEach((node) => {
       let blot = Registry.find(node);
-      if (blot == null || blot.domNode.parentNode === this.domNode || blot.parent !== this) return;
-      blot.parent.children.remove(blot);
-      blot.destroy();
+      if (blot == null || blot.domNode.parentNode === this.domNode) return;
+      blot.detach();
     });
     addedNodes.sort(function(a, b) {
       if (a === b) return 0;
