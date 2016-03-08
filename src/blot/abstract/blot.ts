@@ -9,6 +9,7 @@ interface Blot extends LinkedNode {
   domNode: Node;
 
   clone(): Blot;
+  destroy(): void;
   insertInto(parentBlot: Parent, refBlot?: Blot): void;
   isolate(index: number, length: number): Blot;
   offset(root?: Blot): number;

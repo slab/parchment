@@ -31,6 +31,11 @@ class ScrollBlot extends ContainerBlot {
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
   }
 
+  destroy() {
+    super.destroy();
+    this.observer.disconnect();
+  }
+
   deleteAt(index: number, length: number): void {
     this.update();
     if (index === 0 && length === this.length()) {
@@ -69,7 +74,7 @@ class ScrollBlot extends ContainerBlot {
     let optimize = function(blot: Blot) {  // Post-order traversal
       if (blot instanceof ContainerBlot) {
         blot.children.forEach(function(child) {
-          if (blot.domNode[Registry.DATA_KEY].mutations == null) return;
+          if (!child.domNode[Registry.DATA_KEY] || child.domNode[Registry.DATA_KEY].mutations == null) return;
           optimize(child);
         });
       }
