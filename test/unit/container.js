@@ -27,6 +27,10 @@ describe('Container', function() {
     it('range', function() {
       expect(this.blot.descendants(TextBlot, 1, 3).length).toEqual(2);
     });
+
+    it('scope.inline', function() {
+      expect(this.blot.descendants(Registry.Scope.INLINE).length).toEqual(8);
+    });
   });
 
   describe('detach()', function() {
