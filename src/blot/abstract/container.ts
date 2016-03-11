@@ -49,10 +49,13 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
-  descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_VALUE): T[] {
+  descendants<T>(type: { new (): T; } | Registry.Scope, index: number = 0, length: number = Number.MAX_VALUE): T[] {
     let descendants = [], lengthLeft = length;
     this.children.forEachAt(index, length, function(child, index, length) {
-      if (child instanceof type) {
+      if (typeof type === 'function' && child instanceof type) {
+        descendants.push(child);
+      }
+      if (typeof type === 'number' && Registry.query(child.domNode, type) != null) {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
