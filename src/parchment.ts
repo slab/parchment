@@ -11,6 +11,7 @@ import TextBlot from './blot/text';
 import Attributor from './attributor/attributor';
 import ClassAttributor from './attributor/class';
 import StyleAttributor from './attributor/style';
+import AttributorStore from './attributor/store';
 
 import * as Registry from './registry';
 
@@ -36,7 +37,9 @@ let Parchment = {
   Attributor: {
     Attributor: Attributor,
     Class: ClassAttributor,
-    Style: StyleAttributor
+    Style: StyleAttributor,
+
+    Store: AttributorStore
   }
 };
 

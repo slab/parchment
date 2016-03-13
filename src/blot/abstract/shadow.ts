@@ -152,7 +152,9 @@ abstract class ShadowBlot implements Blot {
 
   wrap(name: string | Parent, value?: any): Parent {
     let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
-    this.parent.insertBefore(wrapper, this.next);
+    if (this.parent != null) {
+      this.parent.insertBefore(wrapper, this.next);
+    }
     wrapper.appendChild(this);
     return wrapper;
   }
