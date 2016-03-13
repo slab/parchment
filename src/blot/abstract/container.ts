@@ -38,25 +38,31 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  descendant<T>(type: { new (): T; }, index: number): [T, number] {
+  descendant<T>(criteria: { new (): T; }, index: number): [T, number];
+  descendant<T>(criteria: (blot: Blot) => boolean, index: number): [T, number];
+  descendant<T>(criteria: any, index: number): [T, number] {
     let [child, offset] = this.children.find(index);
-    if (child instanceof type) {
+    if ((criteria.blotName == null && criteria(child)) ||
+        (criteria.blotName != null && child instanceof criteria)) {
       return [<any>child, offset];
     } else if (child instanceof ContainerBlot) {
-      return child.descendant(type, offset);
+      return child.descendant<T>(criteria, offset);
     } else {
       return [null, -1];
     }
   }
 
-  descendants<T>(type: { new (): T; }, index: number = 0, length: number = Number.MAX_VALUE): T[] {
+  descendants<T>(criteria: { new (): T; }, index: number, length: number): T[];
+  descendants<T>(criteria: (blot: Blot) => boolean, index: number, length: number): T[];
+  descendants<T>(criteria: any, index: number = 0, length: number = Number.MAX_VALUE): T[] {
     let descendants = [], lengthLeft = length;
     this.children.forEachAt(index, length, function(child, index, length) {
-      if (child instanceof type) {
+      if ((criteria.blotName == null && criteria(child)) ||
+          (criteria.blotName != null && child instanceof criteria)) {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
-        descendants = descendants.concat(child.descendants(type, index, lengthLeft));
+        descendants = descendants.concat(child.descendants(criteria, index, lengthLeft));
       }
       lengthLeft -= length;
     });

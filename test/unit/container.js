@@ -27,6 +27,12 @@ describe('Container', function() {
     it('range', function() {
       expect(this.blot.descendants(TextBlot, 1, 3).length).toEqual(2);
     });
+
+    it('function match', function() {
+      expect(this.blot.descendants(function(blot) {
+        return blot instanceof TextBlot;
+      }, 1, 3).length).toEqual(2);
+    });
   });
 
   describe('detach()', function() {

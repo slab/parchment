@@ -36,7 +36,9 @@ interface Parent extends Blot {
 
   appendChild(child: Blot): void;
   descendant<T>(type: { new (): T; }, index: number): [T, number];
+  descendant<T>(matcher: (blot: Blot) => boolean, index: number): [T, number];
   descendants<T>(type: { new (): T; }, index: number, length: number): T[];
+  descendants<T>(matcher: (blot: Blot) => boolean, index: number, length: number): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
   path(index: number, inclusive?: boolean): [Blot, number][];
