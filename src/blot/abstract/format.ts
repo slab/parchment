@@ -9,6 +9,14 @@ import * as Registry from '../../registry';
 abstract class FormatBlot extends ContainerBlot implements Formattable {
   protected attributes: AttributorStore;
 
+  static formats(domNode): { [index: string]: any } {
+    let formats = {};
+    if ((<any>Registry.query(this.scope)).blotName !== this.blotName) {
+      formats[this.blotName] = Array.isArray(this.tagName) ? domNode.tagName.toLowerCase() : true;
+    }
+    return formats;
+  }
+
   attach(): void {
     super.attach();
     this.attributes = new AttributorStore(this.domNode);
@@ -28,11 +36,7 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
   }
 
   formats(): { [index: string]: any } {
-    let formats = this.attributes.values();
-    if ((<any>Registry.query(this.statics.scope)).blotName !== this.statics.blotName) {
-      formats[this.statics.blotName] = Array.isArray(this.statics.tagName) ? this.domNode.tagName.toLowerCase() : true;
-    }
-    return formats;
+    return (<any>Object).assign({}, this.attributes.values(), this.statics.formats(this.domNode));
   }
 
   replaceWith(name: string | Blot, value?: any): Blot {

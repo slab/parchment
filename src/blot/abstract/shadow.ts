@@ -23,7 +23,11 @@ abstract class ShadowBlot implements Blot {
       childless: statics.childless,
       className: statics.className,
       scope: statics.scope,
-      tagName: statics.tagName
+      tagName: statics.tagName,
+
+      create: statics.create,
+      formats: statics.formats,
+      value: statics.value
     };
   }
 

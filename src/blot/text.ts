@@ -14,9 +14,13 @@ class TextBlot extends LeafBlot implements Leaf {
     return document.createTextNode(value);
   }
 
+  static value(domNode: Text): string {
+    return domNode.data;
+  }
+
   constructor(node: Node) {
     super(node);
-    this.text = this.domNode.data;
+    this.text = this.statics.value(this.domNode);
   }
 
   deleteAt(index: number, length: number): void {
@@ -45,7 +49,7 @@ class TextBlot extends LeafBlot implements Leaf {
 
   optimize(): void {
     super.optimize();
-    this.text = this.domNode.data;
+    this.text = this.statics.value(this.domNode);
     if (this.text.length === 0) {
       this.remove();
     } else if (this.next instanceof TextBlot && this.next.prev === this) {
@@ -65,7 +69,7 @@ class TextBlot extends LeafBlot implements Leaf {
     }
     let after = Registry.create(this.domNode.splitText(index));
     this.parent.insertBefore(after, this.next);
-    this.text = this.domNode.data;
+    this.text = this.statics.value(this.domNode);
     return after;
   }
 
@@ -73,7 +77,7 @@ class TextBlot extends LeafBlot implements Leaf {
     if (mutations.some((mutation) => {
       return mutation.type === 'characterData' && mutation.target === this.domNode;
     })) {
-      this.text = this.domNode.data;
+      this.text = this.statics.value(this.domNode);
     }
   }
 

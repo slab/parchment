@@ -3,12 +3,20 @@ import LeafBlot from './leaf';
 
 
 class EmbedBlot extends LeafBlot implements Formattable {
+  static formats(domNode: HTMLElement): { [index: string]: any } {
+    return {};
+  }
+
+  static value(domNode: HTMLElement): any {
+    return null;
+  }
+
   format(name: string, value: any): void {
     // Do nothing by default
   }
 
   formats(): { [index: string]: any } {
-    return {};
+    return this.statics.formats(this.domNode);
   }
 
   index(node, offset): number {
@@ -27,7 +35,7 @@ class EmbedBlot extends LeafBlot implements Formattable {
   }
 
   value(): boolean {
-    return true;
+    return this.statics.value(this.domNode) || true;
   }
 }
 
