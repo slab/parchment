@@ -36,7 +36,12 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
   }
 
   formats(): { [index: string]: any } {
-    return (<any>Object).assign({}, this.attributes.values(), this.statics.formats(this.domNode));
+    let attributes = this.attributes.values();
+    let formats = this.statics.formats(this.domNode);
+    Object.keys(formats).forEach(function(key) {
+      attributes[key] = formats[key];
+    });
+    return attributes;
   }
 
   replaceWith(name: string | Blot, value?: any): Blot {
