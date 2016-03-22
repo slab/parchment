@@ -80,10 +80,6 @@ abstract class ShadowBlot implements Blot {
     blot.remove();
   }
 
-  findOffset(node: Node): number {
-    return node === this.domNode ? 0 : -1;
-  }
-
   formatAt(index: number, length: number, name: string, value: any): void {
     let blot = this.isolate(index, length);
     blot.wrap(name, value);
