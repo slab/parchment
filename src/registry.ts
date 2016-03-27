@@ -92,7 +92,6 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   return null;
 }
 
-
 export function register(...Definitions) {
   if (Definitions.length > 1) {
     return Definitions.map(function(d) {
