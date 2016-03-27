@@ -1,4 +1,6 @@
 import Attributor from './attributor';
+import ClassAttributor from './class';
+import StyleAttributor from './style';
 import { Formattable } from '../blot/abstract/blot';
 import * as Registry from '../registry';
 
@@ -25,21 +27,9 @@ class AttributorStore {
 
   build(): void {
     this.attributes = {};
-    let attributes = [], classes = [], styles = [];
-    [].slice.call(this.domNode.attributes).forEach((item) => {
-      if (item.name === 'class') {
-        classes = item.value.split(/\s+/).map(function(name) {
-          return name.split('-').slice(0, -1).join('-');
-        });
-      } else if (item.name === 'style') {
-        styles = item.value.split(';').map(function(val) {
-          let arr = val.split(':');
-          return arr[0].trim();
-        });
-      } else {
-        attributes.push(item.name);
-      }
-    });
+    let attributes = Attributor.keys(this.domNode);
+    let classes = ClassAttributor.keys(this.domNode);
+    let styles = StyleAttributor.keys(this.domNode);
     attributes.concat(classes).concat(styles).forEach((name) => {
       let attr = Registry.query(name, Registry.Scope.ATTRIBUTE);
       if (attr instanceof Attributor) {

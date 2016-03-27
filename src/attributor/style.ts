@@ -11,6 +11,13 @@ function camelize(name: string): string {
 
 
 class StyleAttributor extends Attributor {
+  static keys(node): string[] {
+    return (node.getAttribute('style') || '').split(';').map(function(value) {
+      let arr = value.split(':');
+      return arr[0].trim();
+    });
+  }
+
   add(node: HTMLElement, value: string): boolean {
     if (!this.canAdd(node, value)) return false;
     node.style[camelize(this.keyName)] = value;

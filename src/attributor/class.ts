@@ -9,6 +9,12 @@ function match(node: HTMLElement, prefix: string): string[] {
 }
 
 class ClassAttributor extends Attributor {
+  static keys(node: HTMLElement): string[] {
+    return (node.getAttribute('class') || '').split(/\s+/).map(function(name) {
+      return name.split('-').slice(0, -1).join('-');
+    });
+  }
+
   add(node: HTMLElement, value: string): boolean {
     if (!this.canAdd(node, value)) return false;
     this.remove(node);

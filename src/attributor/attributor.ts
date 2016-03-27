@@ -12,6 +12,12 @@ class Attributor {
   scope: Registry.Scope;
   whitelist: string[];
 
+  static keys(node: HTMLElement): string[] {
+    return [].map.call(node.attributes, function(item) {
+      return item.name;
+    });
+  }
+
   constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
     this.attrName = attrName;
     this.keyName = keyName;

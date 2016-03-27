@@ -35,7 +35,7 @@ let Parchment = {
   Text: TextBlot,
 
   Attributor: {
-    Attributor: Attributor,
+    Attribute: Attributor,
     Class: ClassAttributor,
     Style: StyleAttributor,
 
