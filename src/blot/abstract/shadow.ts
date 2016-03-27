@@ -117,7 +117,7 @@ abstract class ShadowBlot implements Blot {
   }
 
   optimize(): void {
-    // TODO clean up
+    // TODO clean up once we use WeakMap
     if (this.domNode[Registry.DATA_KEY] != null) {
       delete this.domNode[Registry.DATA_KEY].mutations;
     }

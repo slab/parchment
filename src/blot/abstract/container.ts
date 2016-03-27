@@ -97,7 +97,6 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   length(): number {
-    // TODO can we use descendants?
     return this.children.reduce(function(memo, child) {
       return memo + child.length();
     }, 0);

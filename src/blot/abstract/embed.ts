@@ -23,8 +23,10 @@ class EmbedBlot extends LeafBlot implements Formattable {
     return 1;
   }
 
-  value(): boolean {
-    return this.statics.value(this.domNode) || true;
+  value(): { [index: string]: any } {
+    let value = {};
+    value[this.statics.blotName] = this.statics.value(this.domNode) || true;
+    return value;
   }
 }
 
