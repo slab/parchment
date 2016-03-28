@@ -41,7 +41,8 @@ module.exports = function(config) {
       dir: '.build/coverage',
       reporters: [
         { type: 'html' },
-        { type: 'text' }
+        { type: 'text' },
+        { type: 'lcov' }
       ]
     },
     browsers: ['Chrome'],

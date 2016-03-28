@@ -67,10 +67,6 @@ gulp.task('test:travis', function() {
       accessKey: process.env.SAUCE_KEY || 'adc0c0cf-221b-46f1-81b9-a4429b722c2e',
       build: process.env.TRAVIS_BUILD_ID,
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
-    },
-    coverageReporter: {
-      dir: '.build/coverage',
-      reporters: [{ type: 'lcov' }]
     }
   }).start();
 });
