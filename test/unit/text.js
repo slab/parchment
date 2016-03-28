@@ -90,4 +90,17 @@ describe('TextBlot', function() {
     expect(textBlot.next.statics.blotName).toEqual('bold');
     expect(textBlot.value()).toEqual('T');
   });
+
+  it('index()', function() {
+    let textBlot = Registry.create('text', 'Test');
+    expect(textBlot.index(textBlot.domNode, 2)).toEqual(2);
+    expect(textBlot.index(document.body, 2)).toEqual(-1);
+  });
+
+  it('position()', function() {
+    let textBlot = Registry.create('text', 'Test');
+    let [node, offset] = textBlot.position(2);
+    expect(node).toEqual(textBlot.domNode);
+    expect(offset).toEqual(2);
+  });
 });

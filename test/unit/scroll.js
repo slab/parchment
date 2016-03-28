@@ -1,13 +1,13 @@
 "use strict"
 
 describe('Scroll', function() {
-  describe('path()', function() {
-    beforeEach(function() {
-      let containerNode = document.createElement('div');
-      containerNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
-      this.container = Registry.create(containerNode);
-    });
+  beforeEach(function() {
+    let containerNode = document.createElement('div');
+    containerNode.innerHTML = '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>'
+    this.container = Registry.create(containerNode);
+  });
 
+  describe('path()', function() {
     it('middle', function() {
       let path = this.container.path(7);
       let expected = [
@@ -66,5 +66,12 @@ describe('Scroll', function() {
         expect(position[1]).toEqual(expected[i][1]);
       });
     });
+  });
+
+  it('delete all', function() {
+    let wrapper = document.createElement('div');
+    wrapper.appendChild(this.container.domNode);
+    this.container.deleteAt(0, 9);
+    expect(wrapper.firstChild).toEqual(this.container.domNode);
   });
 });

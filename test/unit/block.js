@@ -35,5 +35,18 @@ describe('Block', function() {
       expect(container.children.head.children.length).toBe(1);
       expect(container.children.head.children.head).toBe(text);
     });
+
+    it('split', function() {
+      let container = Registry.create('scroll');
+      let block = Registry.create('block');
+      let text = Registry.create('text', 'Test');
+      block.appendChild(text);
+      container.appendChild(block);
+      let src = 'http://www.w3schools.com/html/mov_bbb.mp4';
+      block.insertAt(2, 'video', src);
+      expect(container.domNode.innerHTML).toBe(`<p>Te</p><video src="${src}"></video><p>st</p>`);
+      expect(container.children.length).toBe(3);
+      expect(container.children.head.next.statics.blotName).toBe('video');
+    });
   });
 });

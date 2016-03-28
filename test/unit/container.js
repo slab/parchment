@@ -1,13 +1,13 @@
 "use strict"
 
 describe('Container', function() {
-  describe('descendants()', function() {
-    beforeEach(function() {
-      let node = document.createElement('p');
-      node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
-      this.blot = Registry.create(node);
-    });
+  beforeEach(function() {
+    let node = document.createElement('p');
+    node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
+    this.blot = Registry.create(node);
+  });
 
+  describe('descendants()', function() {
     it('all', function() {
       expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
     });
@@ -35,27 +35,43 @@ describe('Container', function() {
     });
   });
 
-  describe('detach()', function() {
-    it('destroy', function() {
-      let node = document.createElement('p');
-      let blot = Registry.create(node);
-      expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
-      expect(blot.descendants(ShadowBlot).length).toEqual(0);
-      blot.detach();
-      expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+  describe('descendant', function() {
+    it('index', function() {
+      let [blot, offset] = this.blot.descendant(ItalicBlot, 3);
+      expect(blot instanceof ItalicBlot).toBe(true);
+      expect(offset).toEqual(2);
     });
 
-    it('detach + children', function() {
-      let node = document.createElement('p');
-      node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
-      let blot = Registry.create(node);
-      expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
-      expect(blot.descendants(ShadowBlot).length).toEqual(8);
-      blot.detach();
-      expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
-      blot.descendants(ShadowBlot).forEach(function(blot) {
-        expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
-      });
+    it('function match', function() {
+      let [blot, offset] = this.blot.descendant(function(blot) {
+        return blot instanceof ItalicBlot;
+      }, 3);
+      expect(blot instanceof ItalicBlot).toBe(true);
+      expect(offset).toEqual(2);
     });
-  })
+
+    it('no match', function() {
+      let [blot, offset] = this.blot.descendant(VideoBlot, 1);
+      expect(blot).toEqual(null);
+      expect(offset).toEqual(-1);
+    });
+  });
+
+  it('detach()', function() {
+    expect(this.blot.domNode[Registry.DATA_KEY]).toEqual({ blot: this.blot });
+    expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
+    this.blot.detach();
+    expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+    this.blot.descendants(ShadowBlot).forEach((blot) => {
+      expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+    });
+  });
+
+  it('attach unknown blot', function() {
+    let node = document.createElement('p');
+    node.appendChild(document.createElement('input'));
+    expect(function() {
+      Registry.create(node);
+    }).not.toThrowError(/\[Parchment\]/);
+  });
 });

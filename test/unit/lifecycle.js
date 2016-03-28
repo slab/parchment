@@ -141,6 +141,15 @@ describe('Lifecycle', function() {
       expect(node.innerHTML).toEqual('<p><em>Test</em></p>');
       expect(node.firstChild.firstChild.childNodes.length).toBe(1);
     });
+
+    it('insert childless', function() {
+      HeaderBlot.childless = 'image';
+      let blot = Registry.create('header');
+      expect(blot.domNode.innerHTML).toEqual('');
+      blot.optimize();
+      HeaderBlot.childless = undefined;
+      expect(blot.domNode.outerHTML).toEqual('<h1><img></h1>');
+    });
   });
 
   describe('update()', function() {
@@ -173,13 +182,13 @@ describe('Lifecycle', function() {
     describe('api', function() {
       it('insert text', function() {
         this.container.insertAt(2, '|');
-        this.checkValues(['Te|st', true, 'ing', '!']);
+        this.checkValues(['Te|st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('insert embed', function() {
         this.container.insertAt(2, 'image', true);
-        this.checkValues(['Te', true, 'st', true, 'ing', '!']);
+        this.checkValues(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
@@ -191,7 +200,7 @@ describe('Lifecycle', function() {
 
       it('format', function() {
         this.container.formatAt(2, 5, 'size', '24px');
-        this.checkValues(['Te', 'st', true, 'in', 'g', '!']);
+        this.checkValues(['Te', 'st', { image: true }, 'in', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
     });
@@ -212,7 +221,7 @@ describe('Lifecycle', function() {
         unknownElement.appendChild(unknownElement2);
         this.container.domNode.removeChild(unknownElement);
         this.container.update();
-        this.checkValues(['Test', true, 'ing', '!']);
+        this.checkValues(['Test', { image: true }, 'ing', '!']);
       });
 
       it('add attribute', function() {
@@ -251,7 +260,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', true, 'ing|', '!']);
+        this.checkValues(['Test', { image: true }, 'ing|', '!']);
       });
 
       it('add empty family', function() {
@@ -271,7 +280,7 @@ describe('Lifecycle', function() {
         imageBlot.domNode.parentNode.insertBefore(imageBlot.domNode, imageBlot.domNode.previousSibling);
         this.container.update();
         this.checkUpdateCalls(imageBlot.parent);
-        this.checkValues([true, 'Test', 'ing', '!']);
+        this.checkValues([{ image: true }, 'Test', 'ing', '!']);
       });
 
       it('move node down', function() {
@@ -279,7 +288,7 @@ describe('Lifecycle', function() {
         imageBlot.domNode.parentNode.insertBefore(imageBlot.domNode.nextSibling, imageBlot.domNode);
         this.container.update();
         this.checkUpdateCalls(imageBlot.parent);
-        this.checkValues(['Test', 'ing', true, '!']);
+        this.checkValues(['Test', 'ing', { image: true }, '!']);
       });
 
       it('add and remove consecutive nodes', function() {
@@ -292,7 +301,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(refNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', true, '|ing', '!'])
+        this.checkValues(['Test', { image: true }, '|ing', '!'])
       });
 
       it('wrap text', function() {
@@ -302,7 +311,7 @@ describe('Lifecycle', function() {
         this.container.domNode.appendChild(spanNode);
         spanNode.appendChild(textNode);
         this.container.update();
-        this.checkValues(['Test', true, '!', 'ing']);
+        this.checkValues(['Test', { image: true }, '!', 'ing']);
       });
 
       it('add then remove same node', function() {
@@ -312,7 +321,7 @@ describe('Lifecycle', function() {
         italicBlot.domNode.removeChild(textNode);
         this.container.update();
         this.checkUpdateCalls(italicBlot);
-        this.checkValues(['Test', true, 'ing', '!']);
+        this.checkValues(['Test', { image: true }, 'ing', '!']);
       });
 
       it('remove child node', function() {
@@ -349,7 +358,7 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(attrBlot);
         expect(attrBlot.formats()).toEqual({ color: 'blue', italic: true });
-        this.checkValues(['Test', '|', true , 'ing', '!']);
+        this.checkValues(['Test', '|', { image: true } , 'ing', '!']);
       });
     });
   });

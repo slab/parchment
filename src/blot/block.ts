@@ -16,7 +16,8 @@ class BlockBlot extends FormatBlot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    if (def == null || Registry.query(value, Registry.Scope.INLINE) != null) {  // Insert text or inline
+    if (def == null || Registry.query(value, Registry.Scope.INLINE) != null) {
+      // Insert text or inline
       super.insertAt(index, value, def);
     } else {
       let after = this.split(index);

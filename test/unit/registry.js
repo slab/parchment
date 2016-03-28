@@ -15,6 +15,24 @@ describe('Registry', function() {
       expect(blot.statics.blotName).toBe('bold');
     });
 
+    it('block', function() {
+      let blot = Registry.create(Registry.Scope.BLOCK_BLOT);
+      expect(blot instanceof BlockBlot).toBe(true);
+      expect(blot.statics.blotName).toBe('block');
+    });
+
+    it('inline', function() {
+      let blot = Registry.create(Registry.Scope.INLINE_BLOT);
+      expect(blot instanceof InlineBlot).toBe(true);
+      expect(blot.statics.blotName).toBe('inline');
+    });
+
+    it('string index', function() {
+      let blot = Registry.create('header', '2');
+      expect(blot instanceof HeaderBlot).toBe(true);
+      expect(blot.formats()).toEqual({ header: 'h2' });
+    });
+
     it('invalid', function() {
       expect(function() {
         Registry.create(BoldBlot);
