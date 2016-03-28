@@ -1,32 +1,74 @@
 "use strict"
 
 class ImageBlot extends EmbedBlot {
+  static create(value) {
+    let node = super.create(value);
+    if (typeof value === 'string') {
+      node.setAttribute('src', value);
+    }
+    return node;
+  }
+
+  static value(domNode) {
+    return domNode.getAttribute('src');
+  }
+
+  static formats(domNode) {
+    let formats = super.formats(domNode);
+    if (domNode.hasAttribute('alt')) {
+      formats['alt'] = domNode.getAttribute('alt');
+    }
+    return formats;
+  }
+
   format(name, value) {
     if (name === 'alt') {
       this.domNode.setAttribute(name, value);
+    } else {
+      super.format(name, value);
     }
-  }
-
-  formats() {
-    let format = {};
-    if (this.domNode.hasAttribute('alt')) {
-      format['alt'] = this.domNode.getAttribute('alt');
-    }
-    return format;
-  }
-
-  value() {
-    return this.domNode.getAttribute('src') || true;
   }
 }
 ImageBlot.blotName = 'image';
 ImageBlot.tagName = 'IMG';
-ImageBlot.create = function(value) {
-  let node = EmbedBlot.create.call(this, value);
-  if (typeof value === 'string') {
-    node.setAttribute('src', value);
+
+
+class VideoBlot extends EmbedBlot {
+  static create(value) {
+    let node = super.create(value);
+    if (typeof value === 'string') {
+      node.setAttribute('src', value);
+    }
+    return node;
   }
-  return node;
+
+  static formats(domNode) {
+    let formats = super.formats();
+    if (domNode.hasAttribute('height')) formats['height'] = domNode.getAttribute('height');
+    if (domNode.hasAttribute('width')) formats['width'] = domNode.getAttribute('width');
+    return formats;
+  }
+
+  static value(domNode) {
+    return domNode.getAttribute('src');
+  }
+
+  format(name, value) {
+    if (name === 'height' || name === 'width') {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
 }
+VideoBlot.blotName = 'video';
+VideoBlot.scope = Registry.Scope.BLOCK_BLOT;
+VideoBlot.tagName = 'VIDEO';
+
 
 Registry.register(ImageBlot);
+Registry.register(VideoBlot);
