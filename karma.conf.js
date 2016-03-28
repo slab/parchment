@@ -50,8 +50,8 @@ module.exports = function(config) {
       'saucelabs-chrome': {
         base: 'SauceLabs',
         browserName: 'Chrome',
-        platform: 'Mac 10.11',
-        version: '47'
+        platform: 'Windows 10',
+        version: '49'
       }
     },
     port: 10876,
