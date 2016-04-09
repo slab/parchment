@@ -62,8 +62,8 @@ class ScrollBlot extends ContainerBlot {
 
   optimize(mutations: MutationRecord[] = []): void {
     super.optimize();
+    mutations.push.apply(mutations, this.observer.takeRecords());
     // TODO use WeakMap
-    mutations = mutations.concat(this.observer.takeRecords());
     let mark = (blot: Blot) => {
       if (blot == null || blot === this) return;
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {
@@ -80,11 +80,12 @@ class ScrollBlot extends ContainerBlot {
       }
       blot.optimize();
     }
-    for (let i = 0; mutations.length > 0; i += 1) {
+    let remaining = mutations;
+    for (let i = 0; remaining.length > 0; i += 1) {
       if (i >= MAX_OPTIMIZE_ITERATIONS) {
         throw new Error('[Parchment] Maximum optimize iterations reached');
       }
-      mutations.forEach(function(mutation) {
+      remaining.forEach(function(mutation) {
         let blot = Registry.find(mutation.target, true);
         if (blot != null && blot.domNode === mutation.target && mutation.type === 'childList') {
           mark(Registry.find(mutation.previousSibling, false));
@@ -99,7 +100,8 @@ class ScrollBlot extends ContainerBlot {
         mark(blot);
       });
       this.children.forEach(optimize);
-      mutations = this.observer.takeRecords();
+      remaining = this.observer.takeRecords();
+      mutations.push.apply(mutations, remaining);
     }
   }
 
