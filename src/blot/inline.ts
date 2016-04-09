@@ -18,6 +18,11 @@ class InlineBlot extends FormatBlot {
   static scope = Registry.Scope.INLINE_BLOT;
   static tagName = 'SPAN';
 
+  static formats(domNode): any {
+    if (domNode.tagName === InlineBlot.tagName) return undefined;
+    return super.formats(domNode);
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     if (this.formats()[name] != null || Registry.query(name, Registry.Scope.ATTRIBUTE)) {
       let blot = <InlineBlot>this.isolate(index, length);

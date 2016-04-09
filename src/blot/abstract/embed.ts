@@ -3,12 +3,12 @@ import LeafBlot from './leaf';
 
 
 class EmbedBlot extends LeafBlot implements Formattable {
-  static formats(domNode: HTMLElement): { [index: string]: any } {
-    return {};
+  static formats(domNode: HTMLElement): any {
+    return undefined;
   }
 
   static value(domNode: HTMLElement): any {
-    return null;
+    return undefined;
   }
 
   format(name: string, value: any): void {

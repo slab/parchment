@@ -9,12 +9,13 @@ import * as Registry from '../../registry';
 abstract class FormatBlot extends ContainerBlot implements Formattable {
   protected attributes: AttributorStore;
 
-  static formats(domNode): { [index: string]: any } {
-    let formats = {};
-    if ((<any>Registry.query(this.scope)).blotName !== this.blotName) {
-      formats[this.blotName] = Array.isArray(this.tagName) ? domNode.tagName.toLowerCase() : true;
+  static formats(domNode): any {
+    if (typeof this.tagName === 'string') {
+      return true;
+    } else if (Array.isArray(this.tagName)) {
+      return domNode.tagName.toLowerCase();
     }
-    return formats;
+    return undefined;
   }
 
   attach(): void {
@@ -36,12 +37,12 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
   }
 
   formats(): { [index: string]: any } {
-    let attributes = this.attributes.values();
-    let formats = this.statics.formats(this.domNode);
-    Object.keys(formats).forEach(function(key) {
-      attributes[key] = formats[key];
-    });
-    return attributes;
+    let formats = this.attributes.values();
+    let format = this.statics.formats(this.domNode);
+    if (format != null) {
+      formats[this.statics.blotName] = format;
+    }
+    return formats;
   }
 
   replaceWith(name: string | Blot, value?: any): Blot {

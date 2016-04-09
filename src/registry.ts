@@ -112,9 +112,15 @@ export function register(...Definitions) {
       classes[Definition.className] = Definition;
     }
     if (Definition.tagName != null) {
+      if (Array.isArray(Definition.tagName)) {
+        Definition.tagName = Definition.tagName.map(function(tagName) {
+          return tagName.toUpperCase();
+        });
+      } else {
+        Definition.tagName = Definition.tagName.toUpperCase();
+      }
       let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
       tagNames.forEach(function(tag) {
-        tag = tag.toUpperCase();
         if (tags[tag] == null || Definition.className == null) {
           tags[tag] = Definition;
         }

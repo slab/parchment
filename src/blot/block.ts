@@ -7,6 +7,11 @@ class BlockBlot extends FormatBlot {
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'P';
 
+  static formats(domNode): any {
+    if (domNode.tagName === BlockBlot.tagName) return undefined;
+    return super.formats(domNode);
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.query(name, Registry.Scope.BLOCK) != null) {
       this.format(name, value);

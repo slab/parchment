@@ -14,11 +14,10 @@ class ImageBlot extends EmbedBlot {
   }
 
   static formats(domNode) {
-    let formats = super.formats(domNode);
     if (domNode.hasAttribute('alt')) {
-      formats['alt'] = domNode.getAttribute('alt');
+      return { alt: domNode.getAttribute('alt') };
     }
-    return formats;
+    return undefined;
   }
 
   format(name, value) {
@@ -43,7 +42,7 @@ class VideoBlot extends EmbedBlot {
   }
 
   static formats(domNode) {
-    let formats = super.formats();
+    let formats = {};
     if (domNode.hasAttribute('height')) formats['height'] = domNode.getAttribute('height');
     if (domNode.hasAttribute('width')) formats['width'] = domNode.getAttribute('width');
     return formats;
