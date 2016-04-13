@@ -85,7 +85,9 @@ abstract class ShadowBlot implements Blot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     let blot = this.isolate(index, length);
-    blot.wrap(name, value);
+    if (Registry.query(name) != null) {
+      blot.wrap(name, value);
+    }
   }
 
   insertAt(index: number, value: string, def?: any): void {
