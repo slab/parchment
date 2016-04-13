@@ -66,6 +66,7 @@ class ScrollBlot extends ContainerBlot {
     // TODO use WeakMap
     let mark = (blot: Blot) => {
       if (blot == null || blot === this) return;
+      if (blot.domNode.parentNode == null) return;
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {
         blot.domNode[Registry.DATA_KEY].mutations = [];
       }
