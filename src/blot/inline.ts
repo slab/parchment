@@ -23,6 +23,14 @@ class InlineBlot extends FormatBlot {
     return super.formats(domNode);
   }
 
+  format(name: string, value: any) {
+    if (name === this.statics.blotName && !value) {
+      this.replaceWith(InlineBlot.blotName);
+    } else {
+      super.format(name, value);
+    }
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     if (this.formats()[name] != null || Registry.query(name, Registry.Scope.ATTRIBUTE)) {
       let blot = <InlineBlot>this.isolate(index, length);

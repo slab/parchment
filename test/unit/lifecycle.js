@@ -142,12 +142,12 @@ describe('Lifecycle', function() {
       expect(node.firstChild.firstChild.childNodes.length).toBe(1);
     });
 
-    it('insert childless', function() {
-      HeaderBlot.childless = 'image';
+    it('insert default child', function() {
+      HeaderBlot.defaultChild = 'image';
       let blot = Registry.create('header');
       expect(blot.domNode.innerHTML).toEqual('');
       blot.optimize();
-      HeaderBlot.childless = undefined;
+      HeaderBlot.defaultChild = undefined;
       expect(blot.domNode.outerHTML).toEqual('<h1><img></h1>');
     });
   });

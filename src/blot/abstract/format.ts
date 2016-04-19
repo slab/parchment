@@ -31,8 +31,6 @@ abstract class FormatBlot extends ContainerBlot implements Formattable {
       if (format != null && (name !== this.statics.blotName || this.formats()[name] !== value)) {
         this.replaceWith(name, value);
       }
-    } else if (name === this.statics.blotName) {
-      this.replaceWith(Registry.create(this.statics.scope));
     }
   }
 

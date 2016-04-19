@@ -5,8 +5,8 @@ import * as Registry from '../../registry';
 
 
 abstract class ContainerBlot extends ShadowBlot implements Parent {
-  static childless: string;
-  static children: any[];
+  static defaultChild: string;
+  static allowedChildren: any[];
 
   children: LinkedList<Blot>;
   domNode: HTMLElement;
@@ -94,7 +94,7 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
-    if (this.statics.children != null && !this.statics.children.some(function(child) {
+    if (this.statics.allowedChildren != null && !this.statics.allowedChildren.some(function(child) {
       return childBlot instanceof child;
     })) {
       console.log(this.domNode.innerHTML);
@@ -118,8 +118,8 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   optimize() {
     super.optimize();
     if (this.children.length === 0) {
-      if (this.statics.childless != null) {
-        let child = Registry.create(this.statics.childless);
+      if (this.statics.defaultChild != null) {
+        let child = Registry.create(this.statics.defaultChild);
         this.appendChild(child);
         child.optimize();
       } else {

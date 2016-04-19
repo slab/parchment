@@ -12,6 +12,14 @@ class BlockBlot extends FormatBlot {
     return super.formats(domNode);
   }
 
+  format(name: string, value: any) {
+    if (name === this.statics.blotName && !value) {
+      this.replaceWith(BlockBlot.blotName);
+    } else {
+      super.format(name, value);
+    }
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.query(name, Registry.Scope.BLOCK) != null) {
       this.format(name, value);

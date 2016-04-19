@@ -19,7 +19,7 @@ abstract class ShadowBlot implements Blot {
   get statics(): any {
     return [
       'blotName', 'className', 'scope', 'tagName',
-      'childless', 'children',
+      'defaultChild', 'allowedChildren',
       'create', 'formats', 'value'
     ].reduce((memo, key) => {
       let value = (<any>this.constructor)[key];
