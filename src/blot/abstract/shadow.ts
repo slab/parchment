@@ -17,18 +17,17 @@ abstract class ShadowBlot implements Blot {
 
   // Hack for accessing inherited static methods
   get statics(): any {
-    let statics = <any>this.constructor;
-    return {
-      blotName: statics.blotName,
-      childless: statics.childless,
-      className: statics.className,
-      scope: statics.scope,
-      tagName: statics.tagName,
-
-      create: statics.create,
-      formats: statics.formats,
-      value: statics.value
-    };
+    return [
+      'blotName', 'className', 'scope', 'tagName',
+      'childless', 'children',
+      'create', 'formats', 'value'
+    ].reduce((memo, key) => {
+      let value = (<any>this.constructor)[key];
+      if (value != null) {
+        memo[key] = value;
+      }
+      return memo;
+    }, {});
   }
 
   static create(value: any): Node {

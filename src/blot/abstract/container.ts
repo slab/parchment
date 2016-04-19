@@ -5,7 +5,8 @@ import * as Registry from '../../registry';
 
 
 abstract class ContainerBlot extends ShadowBlot implements Parent {
-  static child: string;
+  static childless: string;
+  static children: any[];
 
   children: LinkedList<Blot>;
   domNode: HTMLElement;
@@ -93,6 +94,12 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
+    if (this.statics.children != null && !this.statics.children.some(function(child) {
+      return childBlot instanceof child;
+    })) {
+      console.log(this.domNode.innerHTML);
+      throw new Registry.ParchmentError(`Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${this.statics.blotName}`);
+    }
     childBlot.insertInto(this, refBlot);
   }
 
