@@ -84,8 +84,12 @@ abstract class ShadowBlot implements Blot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     let blot = this.isolate(index, length);
-    if (Registry.query(name) != null) {
+    if (Registry.query(name, Registry.Scope.BLOT) != null) {
       blot.wrap(name, value);
+    } else if (Registry.query(name, Registry.Scope.ATTRIBUTE) != null) {
+      let parent = <Parent & Formattable>Registry.create(this.statics.scope);
+      blot.wrap(parent);
+      parent.format(name, value);
     }
   }
 
@@ -155,17 +159,7 @@ abstract class ShadowBlot implements Blot {
   }
 
   wrap(name: string | Parent, value?: any): Parent {
-    let wrapper;
-    if (typeof name === 'string') {
-      if (Registry.query(name, Registry.Scope.BLOT)) {
-        wrapper = Registry.create(name, value);
-      } else {
-        wrapper = <Formattable>Registry.create(this.statics.scope);
-        wrapper.format(name, value);
-      }
-    } else {
-      wrapper = name;
-    }
+    let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next);
     }
