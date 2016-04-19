@@ -1,4 +1,4 @@
-import { Blot, Parent } from './blot';
+import { Blot, Parent, Formattable } from './blot';
 import * as Registry from '../../registry';
 
 
@@ -155,7 +155,17 @@ abstract class ShadowBlot implements Blot {
   }
 
   wrap(name: string | Parent, value?: any): Parent {
-    let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
+    let wrapper;
+    if (typeof name === 'string') {
+      if (Registry.query(name, Registry.Scope.BLOT)) {
+        wrapper = Registry.create(name, value);
+      } else {
+        wrapper = <Formattable>Registry.create(this.statics.scope);
+        wrapper.format(name, value);
+      }
+    } else {
+      wrapper = name;
+    }
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next);
     }

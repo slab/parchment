@@ -49,12 +49,7 @@ export enum Scope {
 export function create(input: Node | string | Scope, value?: any): Blot {
   let match = query(input);
   if (match == null) {
-    throw new ParchmentError(`Unable to create ${input}`);
-  }
-  if (match instanceof Attributor) {
-    let blot = <Formattable>create(match.scope & Scope.LEVEL);
-    blot.format(<string>input, value);
-    return blot;
+    throw new ParchmentError(`Unable to create ${input} blot`);
   }
   let BlotClass = <BlotConstructor>match;
   let node = input instanceof Node ? input : BlotClass.create(value);
