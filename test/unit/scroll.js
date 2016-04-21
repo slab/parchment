@@ -74,4 +74,19 @@ describe('Scroll', function() {
     this.container.deleteAt(0, 9);
     expect(wrapper.firstChild).toEqual(this.container.domNode);
   });
+
+  it('detach', function(done) {
+    let scroll = Registry.create('scroll');
+    spyOn(scroll, 'optimize').and.callThrough();
+    scroll.domNode.innerHTML = 'Test';
+    setTimeout(function() {
+      expect(scroll.optimize).toHaveBeenCalledTimes(1);
+      scroll.detach();
+      scroll.domNode.innerHTML = '!';
+      setTimeout(function() {
+        expect(scroll.optimize).toHaveBeenCalledTimes(1);
+        done();
+      }, 1);
+    }, 1);
+  });
 });

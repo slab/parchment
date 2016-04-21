@@ -74,4 +74,15 @@ describe('Container', function() {
       Registry.create(node);
     }).not.toThrowError(/\[Parchment\]/);
   });
+
+  it('allowedChildren', function() {
+    HeaderBlot.allowedChildren = [BoldBlot];
+    let node = document.createElement('h1');
+    node.innerHTML = 'Test';
+    let blot = Registry.create(node);
+    expect(function() {
+      blot.insertAt(2, 'image', true);
+    }).toThrowError(Registry.ParchmentError);
+    HeaderBlot.allowedChildren = undefined;
+  });
 });

@@ -97,7 +97,6 @@ abstract class ContainerBlot extends ShadowBlot implements Parent {
     if (this.statics.allowedChildren != null && !this.statics.allowedChildren.some(function(child) {
       return childBlot instanceof child;
     })) {
-      console.log(this.domNode.innerHTML);
       throw new Registry.ParchmentError(`Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${this.statics.blotName}`);
     }
     childBlot.insertInto(this, refBlot);

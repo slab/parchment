@@ -1,11 +1,11 @@
 import ContainerBlot from './blot/abstract/container';
 import FormatBlot from './blot/abstract/format';
 import LeafBlot from './blot/abstract/leaf';
-import EmbedBlot from './blot/abstract/embed';
 
 import ScrollBlot from './blot/scroll';
 import InlineBlot from './blot/inline';
 import BlockBlot from './blot/block';
+import EmbedBlot from './blot/embed';
 import TextBlot from './blot/text';
 
 import Attributor from './attributor/attributor';

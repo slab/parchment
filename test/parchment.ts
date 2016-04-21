@@ -6,11 +6,11 @@ import ShadowBlot from '../src/blot/abstract/shadow';
 import ContainerBlot from '../src/blot/abstract/container';
 import FormatBlot from '../src/blot/abstract/format';
 import LeafBlot from '../src/blot/abstract/leaf';
-import EmbedBlot from '../src/blot/abstract/embed';
 
 import ScrollBlot from '../src/blot/scroll';
 import BlockBlot from '../src/blot/block';
 import InlineBlot from '../src/blot/inline';
+import EmbedBlot from '../src/blot/embed';
 import TextBlot from '../src/blot/text';
 
 import LinkedList from '../src/collection/linked-list';
