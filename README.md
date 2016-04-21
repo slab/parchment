@@ -18,7 +18,7 @@ Blots are the basic building blocks of a Parchment document. Several basic imple
 
 At the very minimum a Blot must be named with a static `blotName` and associated with either a `tagName` or `className`. If a Blot is defined with both a tag and class, the class takes precedence, but the tag may be used as a fallback. Blots must also have a [scope](#registry), which determine if it is inline or block.
 
-```javascript
+```typescript
 class Blot {
   static blotName: string;
   static className: string;
@@ -58,6 +58,11 @@ class Blot {
 
 
   /** Leaf Blots only **/
+  
+  // Returns the value represented by domNode if it is this Blot's type
+  // No checking that domNode can represent this Blot type is required so
+  // applications needing it should check externally before calling.
+  static value(domNode): any;
 
   // Given location represented by node and offset from DOM Selection Range,
   // return index to that location.
@@ -74,6 +79,12 @@ class Blot {
 
 
   /** Parent blots only **/
+  
+  // Whitelist array of Blots that can be direct children.
+  static allowedChildren: Blot[];
+  
+  // Default child blot to be inserted if this blot becomes empty.
+  static defaultChild: string;
 
   children: LinkedList<Blot>;
 
@@ -86,6 +97,10 @@ class Blot {
 
 
   /** Formattable blots only **/
+  
+  // Returns format values represented by domNode if it is this Blot's type
+  // No checking that domNode is this Blot's type is required.
+  static formats(domNode: Node);
 
   // Apply format to blot. Should not pass onto child or other blot.
   format(format: name, value: any);
@@ -99,7 +114,7 @@ class Blot {
 
 Implementation for a Blot representing a link, which is a parent, inline scoped, and formattable.
 
-```javascript
+```typescript
 import Parchment from 'parchment';
 
 class LinkBlot extends Parchment.Inline {
@@ -109,6 +124,10 @@ class LinkBlot extends Parchment.Inline {
     node.setAttribute('target', '_blank');
     node.setAttribute('title', node.textContent);
     return node;
+  }
+  
+  static formats(domNode) {
+    return domNode.getAttribute('href') || true;
   }
 
   format(name, value) {
@@ -121,7 +140,7 @@ class LinkBlot extends Parchment.Inline {
 
   formats() {
     let formats = super.formats();
-    formats['link'] = this.domNode.getAttribute('href') || true;
+    formats['link'] = LinkBlot.formats(this.domNode);
     return formats;
   }
 }
@@ -156,7 +175,7 @@ Attributors are the alternative, more lightweight, way to represent formats. The
 
 Attributors have the following interface:
 
-```js
+```typescript
 class Attributor {
   attrName: string;
   keyName: string;
@@ -230,7 +249,7 @@ console.log(node.outerHTML);  // Will print <div style="text-align: right;"></di
 
 All methods are accessible from Parchment ex. `Parchment.create('bold')`.
 
-```js
+```typescript
 // Creates a blot given a name or DOM node.
 // When given just a scope, creates blot the same name as scope
 create(domNode: Node, value?: any): Blot;
