@@ -4,7 +4,7 @@ import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class ContainerBlot extends ShadowBlot implements Parent {
+class ContainerBlot extends ShadowBlot implements Parent {
   static defaultChild: string;
   static allowedChildren: any[];
 

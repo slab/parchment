@@ -2,7 +2,7 @@ import { Blot, Parent, Formattable } from './blot';
 import * as Registry from '../../registry';
 
 
-abstract class ShadowBlot implements Blot {
+class ShadowBlot implements Blot {
   static blotName = 'abstract';
   static className: string;
   static scope: Registry.Scope;
@@ -11,9 +11,6 @@ abstract class ShadowBlot implements Blot {
   prev: Blot;
   next: Blot;
   parent: Parent;
-
-  abstract length(): number;
-
 
   // Hack for accessing inherited static methods
   get statics(): any {
@@ -118,6 +115,10 @@ abstract class ShadowBlot implements Blot {
     target.split(length);
     return target;
   }
+
+  length(): number {
+    return 1;
+  };
 
   offset(root: Blot = this.parent): number {
     if (this.parent == null || this == root) return 0;

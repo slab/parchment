@@ -6,7 +6,7 @@ import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class FormatBlot extends ContainerBlot implements Formattable {
+class FormatBlot extends ContainerBlot implements Formattable {
   protected attributes: AttributorStore;
 
   static formats(domNode): any {

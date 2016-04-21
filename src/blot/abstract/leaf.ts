@@ -3,10 +3,12 @@ import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 
-abstract class LeafBlot extends ShadowBlot implements Leaf {
+class LeafBlot extends ShadowBlot implements Leaf {
   static scope = Registry.Scope.INLINE_BLOT;
 
-  abstract value(): any;
+  static value(domNode: Node): any {
+    return true;
+  }
 
   index(node, offset): number {
     if (node !== this.domNode) return -1;
@@ -17,6 +19,12 @@ abstract class LeafBlot extends ShadowBlot implements Leaf {
     let offset = [].indexOf.call(this.parent.domNode.childNodes, this.domNode);
     if (index > 0) offset += 1;
     return [this.parent.domNode, offset];
+  }
+
+  value(): any {
+    let value = {};
+    value[this.statics.blotName] = this.statics.value(this.domNode) || true;
+    return value;
   }
 }
 
