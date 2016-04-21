@@ -69,7 +69,7 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
     match = types[query] || attributes[query];
   } else if (query instanceof Text) {
     match = types['text'];
-  } if (typeof query === 'number') {
+  } else if (typeof query === 'number') {
     if (query & Scope.LEVEL & Scope.BLOCK) {
       match = types['block'];
     } else if (query & Scope.LEVEL & Scope.INLINE) {
