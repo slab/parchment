@@ -120,13 +120,12 @@ class ScrollBlot extends ContainerBlot {
         return null;
       }
     }).forEach((blot: Blot) => {
-      if (blot == null) return;
-      if (blot === this) {
-        super.update(blot.domNode[Registry.DATA_KEY].mutations);
-      } else {
-        blot.update(blot.domNode[Registry.DATA_KEY].mutations);
-      }
+      if (blot == null || blot === this) return;
+      blot.update(blot.domNode[Registry.DATA_KEY].mutations || []);
     });
+    if (this.domNode[Registry.DATA_KEY].mutations != null) {
+      super.update(this.domNode[Registry.DATA_KEY].mutations);
+    }
     this.optimize(mutations);
   }
 }

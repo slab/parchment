@@ -155,7 +155,7 @@ describe('Lifecycle', function() {
   describe('update()', function() {
     beforeEach(function() {
       let div = document.createElement('div');
-      div.innerHTML = '<p><em style="color: red;"><strong>Test</strong><img>ing</em></p><p><em>!</em></p>'
+      div.innerHTML = '<p><em style="color: red;"><strong>Test</strong><img>ing</em></p><p><em>!</em></p>';
       this.container = Registry.create(div);
       // [p, em, strong, text, image, text, p, em, text]
       this.descendants = this.container.descendants(ShadowBlot);
@@ -289,6 +289,16 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(imageBlot.parent);
         this.checkValues(['Test', 'ing', { image: true }, '!']);
+      });
+
+      it('move node and change', function() {
+        let firstBlockBlot = this.descendants[0];
+        let lastItalicBlot = this.descendants[7];
+        firstBlockBlot.domNode.appendChild(lastItalicBlot.domNode);
+        lastItalicBlot.domNode.innerHTML = '?';
+        this.container.update();
+        this.checkUpdateCalls([firstBlockBlot, this.descendants[6], this.descendants[8]]);
+        this.checkValues(['Test', { image: true }, 'ing', '?']);
       });
 
       it('add and remove consecutive nodes', function() {
