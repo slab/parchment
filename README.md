@@ -220,7 +220,7 @@ Uses a classname pattern to represent formats.
 ```js
 import Parchment from 'parchment';
 
-let Align = new Parchment.Attributor.Style('align', 'blot-align'};
+let Align = new Parchment.Attributor.Class('align', 'blot-align'};
 Parchment.register(Align);
 
 let node = document.createElement('div');
