@@ -81,7 +81,7 @@ class ShadowBlot implements Blot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     let blot = this.isolate(index, length);
-    if (Registry.query(name, Registry.Scope.BLOT) != null) {
+    if (Registry.query(name, Registry.Scope.BLOT) != null && value) {
       blot.wrap(name, value);
     } else if (Registry.query(name, Registry.Scope.ATTRIBUTE) != null) {
       let parent = <Parent & Formattable>Registry.create(this.statics.scope);

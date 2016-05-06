@@ -81,6 +81,15 @@ describe('TextBlot', function() {
     expect(textBlot.value()).toEqual('Test');
   });
 
+  it('format null', function() {
+    let container = Registry.create('inline');
+    let textBlot = Registry.create('text', 'Test');
+    container.appendChild(textBlot);
+    textBlot.formatAt(0, 4, 'bold', null);
+    expect(textBlot.domNode.parentNode.tagName).toEqual('SPAN');
+    expect(textBlot.value()).toEqual('Test');
+  });
+
   it('format split', function() {
     let container = Registry.create('block');
     let textBlot = Registry.create('text', 'Test');
