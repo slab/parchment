@@ -22,9 +22,7 @@ class LeafBlot extends ShadowBlot implements Leaf {
   }
 
   value(): any {
-    let value = {};
-    value[this.statics.blotName] = this.statics.value(this.domNode) || true;
-    return value;
+    return { [this.statics.blotName]: this.statics.value(this.domNode) || true };
   }
 }
 
