@@ -32,6 +32,7 @@ class Attributor {
   }
 
   add(node: HTMLElement, value: string): boolean {
+    if (!this.canAdd(node, value)) return false;
     node.setAttribute(this.keyName, value);
     return true;
   }
