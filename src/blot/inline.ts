@@ -1,4 +1,5 @@
 import FormatBlot from './abstract/format';
+import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
 
@@ -25,7 +26,13 @@ class InlineBlot extends FormatBlot {
 
   format(name: string, value: any) {
     if (name === this.statics.blotName && !value) {
-      this.replaceWith(InlineBlot.blotName);
+      this.children.forEach((child) => {
+        if (!(child instanceof FormatBlot)) {
+          child = child.wrap(InlineBlot.blotName, true);
+        }
+        this.attributes.copy(<FormatBlot>child);
+      });
+      this.unwrap();
     } else {
       super.format(name, value);
     }

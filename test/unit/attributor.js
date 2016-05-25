@@ -6,7 +6,7 @@ describe('Attributor', function() {
     blot.domNode.style.color = 'red';
     blot.domNode.style.fontSize = '24px';
     blot.domNode.id = 'blot-test'
-    blot.domNode.classList.add('indent-2')
+    blot.domNode.classList.add('indent-2');
     blot.attributes.build();
     expect(Object.keys(blot.attributes.attributes).sort()).toEqual(['color', 'size', 'id', 'indent'].sort());
   });
@@ -66,6 +66,17 @@ describe('Attributor', function() {
     let blockBlot = Registry.create('block');
     blockBlot.format('align', 'justify');
     expect(blockBlot.domNode.style.textAlign).toBeFalsy();
+  });
+
+  it('unwrap', function() {
+    let container = Registry.create('block');
+    let node = document.createElement('strong');
+    node.style.color = 'red';
+    node.innerHTML = '<em>01</em>23';
+    let blot = Registry.create(node);
+    container.appendChild(blot);
+    container.formatAt(0, 4, 'bold', false);
+    expect(container.domNode.innerHTML).toEqual('<em style="color: red;">01</em><span style="color: red;">23</span>');
   });
 
   it('remove', function() {
