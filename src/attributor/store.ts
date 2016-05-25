@@ -20,7 +20,7 @@ class AttributorStore {
         if (attribute.value(this.domNode) != null) {
           this.attributes[attribute.attrName] = attribute;
         } else {
-          delete this.attributes[attribute.attribute];
+          delete this.attributes[attribute.attrName];
         }
       }
     } else {
