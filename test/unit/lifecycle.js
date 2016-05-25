@@ -99,6 +99,17 @@ describe('Lifecycle', function() {
       expect(node.querySelector('strong').childNodes.length).toBe(1);
     });
 
+    it('remove attribute merge', function() {
+      let node = document.createElement('div');
+      node.innerHTML = '<p><em>T</em><em style="color: red;">es</em><em>t</em></p>';
+      let container = Registry.create(node);
+      let paragraph = Registry.find(node.querySelector('p'));
+      paragraph.formatAt(1, 2, 'color', false);
+      container.optimize();
+      expect(node.innerHTML).toEqual('<p><em>Test</em></p>');
+      expect(node.querySelector('em').childNodes.length).toBe(1);
+    });
+
     it('format no merge attribute mismatch', function() {
       let node = document.createElement('div');
       node.innerHTML = '<p><strong>Te</strong><em><strong style="color: red;">st</strong></em></p>';

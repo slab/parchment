@@ -88,17 +88,21 @@ class ScrollBlot extends ContainerBlot {
       }
       remaining.forEach(function(mutation) {
         let blot = Registry.find(mutation.target, true);
-        if (blot != null && blot.domNode === mutation.target && mutation.type === 'childList') {
-          mark(Registry.find(mutation.previousSibling, false));
-          [].forEach.call(mutation.addedNodes, function(node) {
-            let child = Registry.find(node, false);
-            mark(child);
-            if (child instanceof ContainerBlot) {
-              child.children.forEach(mark);
-            }
-          });
+        if (blot != null && blot.domNode === mutation.target) {
+          if (mutation.type === 'childList') {
+            mark(Registry.find(mutation.previousSibling, false));
+            [].forEach.call(mutation.addedNodes, function(node) {
+              let child = Registry.find(node, false);
+              mark(child);
+              if (child instanceof ContainerBlot) {
+                child.children.forEach(mark);
+              }
+            });
+          } else if (mutation.type === 'attributes') {
+            mark(blot.prev);
+          }
+          mark(blot);
         }
-        mark(blot);
       });
       this.children.forEach(optimize);
       remaining = this.observer.takeRecords();
