@@ -17,7 +17,11 @@ class AttributorStore {
   attribute(attribute: Attributor, value: any): void {  // verb
     if (value) {
       if (attribute.add(this.domNode, value)) {
-        this.attributes[attribute.attrName] = attribute;
+        if (attribute.value(this.domNode) != null) {
+          this.attributes[attribute.attrName] = attribute;
+        } else {
+          delete this.attributes[attribute.attribute];
+        }
       }
     } else {
       attribute.remove(this.domNode);
