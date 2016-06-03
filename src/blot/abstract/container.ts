@@ -138,8 +138,10 @@ class ContainerBlot extends ShadowBlot implements Parent {
     return position;
   }
 
-  replace(target: Parent): void {
-    target.moveChildren(this);
+  replace(target: Blot): void {
+    if (target instanceof ContainerBlot) {
+      target.moveChildren(this);
+    }
     super.replace(target);
   }
 
