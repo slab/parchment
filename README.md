@@ -46,6 +46,9 @@ class Blot {
   insertAt(index: number, text: string);
   insertAt(index: number, embed: string, value: any);
 
+  // Returns offset between this blot and an ancestor's
+  offset(ancestor: Blot = this.parent): number;
+
   // Called after update cycle completes. Cannot change the value or length
   // of the document, and any DOM operation must reduce complexity of the DOM
   // tree.
@@ -58,7 +61,7 @@ class Blot {
 
 
   /** Leaf Blots only **/
-  
+
   // Returns the value represented by domNode if it is this Blot's type
   // No checking that domNode can represent this Blot type is required so
   // applications needing it should check externally before calling.
@@ -79,10 +82,10 @@ class Blot {
 
 
   /** Parent blots only **/
-  
+
   // Whitelist array of Blots that can be direct children.
   static allowedChildren: Blot[];
-  
+
   // Default child blot to be inserted if this blot becomes empty.
   static defaultChild: string;
 
@@ -97,7 +100,7 @@ class Blot {
 
 
   /** Formattable blots only **/
-  
+
   // Returns format values represented by domNode if it is this Blot's type
   // No checking that domNode is this Blot's type is required.
   static formats(domNode: Node);
@@ -125,7 +128,7 @@ class LinkBlot extends Parchment.Inline {
     node.setAttribute('title', node.textContent);
     return node;
   }
-  
+
   static formats(domNode) {
     return domNode.getAttribute('href') || true;
   }
