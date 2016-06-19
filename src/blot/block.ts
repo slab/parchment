@@ -8,7 +8,8 @@ class BlockBlot extends FormatBlot {
   static tagName = 'P';
 
   static formats(domNode): any {
-    if (domNode.tagName === BlockBlot.tagName) return undefined;
+    let tagName = (<any>Registry.query(BlockBlot.blotName)).tagName;
+    if (domNode.tagName === tagName) return undefined;
     return super.formats(domNode);
   }
 
