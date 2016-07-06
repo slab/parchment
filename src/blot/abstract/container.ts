@@ -192,6 +192,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       }
       let blot;
       if (node instanceof HTMLFontElement) {
+        // node is in the form <font><span><b>...</b></span></font>
         const BlotClass = <Registry.BlotConstructor>Registry.query(node.firstChild.firstChild);
         blot = new BlotClass(node.firstChild.firstChild);
       } else {
