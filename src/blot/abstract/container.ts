@@ -190,7 +190,19 @@ class ContainerBlot extends ShadowBlot implements Parent {
       if (node.nextSibling != null) {
         refBlot = Registry.find(node.nextSibling);
       }
-      let blot = Registry.find(node) || Registry.create(node);
+      let blot = Registry.find(node);
+      if (blot == null) {
+        try {
+          blot = Registry.create(node);
+        } catch (e) {
+          blot = Registry.create(Registry.Scope.INLINE);
+          [].slice.call(node.childNodes).forEach(function(child) {
+            blot.domNode.appendChild(child);
+          });
+          blot.attach();
+          node.parentNode.replaceChild(blot.domNode, node);
+        }
+      }
       if (blot.next != refBlot || blot.next == null) {
         if (blot.parent != null) {
           blot.parent.children.remove(blot);
