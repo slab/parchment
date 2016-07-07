@@ -21,7 +21,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
     // Need to be reversed for if DOM nodes already in order
     [].slice.call(this.domNode.childNodes).reverse().forEach((node) => {
       try {
-        let child = Registry.find(node) || Registry.create(node);
+        let child = makeBlot(node);
         this.insertBefore(child, this.children.head);
       } catch (err) {
         if (err instanceof Registry.ParchmentError) return;
@@ -190,19 +190,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       if (node.nextSibling != null) {
         refBlot = Registry.find(node.nextSibling);
       }
-      let blot = Registry.find(node);
-      if (blot == null) {
-        try {
-          blot = Registry.create(node);
-        } catch (e) {
-          blot = Registry.create(Registry.Scope.INLINE);
-          [].slice.call(node.childNodes).forEach(function(child) {
-            blot.domNode.appendChild(child);
-          });
-          blot.attach();
-          node.parentNode.replaceChild(blot.domNode, node);
-        }
-      }
+      let blot = makeBlot(node);
       if (blot.next != refBlot || blot.next == null) {
         if (blot.parent != null) {
           blot.parent.children.remove(blot);
@@ -211,6 +199,24 @@ class ContainerBlot extends ShadowBlot implements Parent {
       }
     });
   }
+}
+
+
+function makeBlot(node): Blot {
+  let blot = Registry.find(node);
+  if (blot == null) {
+    try {
+      blot = Registry.create(node);
+    } catch (e) {
+      blot = Registry.create(Registry.Scope.INLINE);
+      [].slice.call(node.childNodes).forEach(function(child) {
+        blot.domNode.appendChild(child);
+      });
+      node.parentNode.replaceChild(blot.domNode, node);
+      blot.attach();
+    }
+  }
+  return blot;
 }
 
 
