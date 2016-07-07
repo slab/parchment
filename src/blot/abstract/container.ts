@@ -177,15 +177,15 @@ class ContainerBlot extends ShadowBlot implements Parent {
       if (blot == null || blot.domNode.parentNode === this.domNode) return;
       blot.detach();
     });
-    addedNodes.sort(function(a, b) {
+    addedNodes.filter((node) => {
+      return node.parentNode == this.domNode;
+    }).sort(function(a, b) {
       if (a === b) return 0;
       if (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) {
-        return -1;
+        return 1;
       }
-      return 1;
-    });
-    addedNodes.reverse().forEach((node) => {
-      if (node.parentNode !== this.domNode) return;
+      return -1;
+    }).forEach((node) => {
       let refBlot = null;
       if (node.nextSibling != null) {
         refBlot = Registry.find(node.nextSibling);
