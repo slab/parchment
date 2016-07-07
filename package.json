@@ -1,6 +1,6 @@
 {
   "name": "parchment",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "description": "A document model for rich text editors",
   "author": "Jason Chen <jhchen7@gmail.com>",
   "homepage": "http://quilljs.com/docs/parchment",
@@ -15,7 +15,7 @@
     "gulp-util": "^3.0.7",
     "istanbul": "~0.4.3",
     "jasmine-core": "^2.4.1",
-    "karma": "~0.13.22",
+    "karma": "^1.1.1",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "^1.0.1",
     "karma-coverage": "^1.0.0",
