@@ -14,17 +14,7 @@ class ShadowBlot implements Blot {
 
   // Hack for accessing inherited static methods
   get statics(): any {
-    return [
-      'blotName', 'className', 'scope', 'tagName',
-      'defaultChild', 'allowedChildren',
-      'create', 'formats', 'value'
-    ].reduce((memo, key) => {
-      let value = (<any>this.constructor)[key];
-      if (value != null) {
-        memo[key] = value;
-      }
-      return memo;
-    }, {});
+    return this.constructor;
   }
 
   static create(value: any): Node {
