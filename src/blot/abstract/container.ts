@@ -138,6 +138,10 @@ class ContainerBlot extends ShadowBlot implements Parent {
     return position;
   }
 
+  removeChild(child: Blot): void {
+    this.children.remove(child);
+  }
+
   replace(target: Blot): void {
     if (target instanceof ContainerBlot) {
       target.moveChildren(this);
@@ -195,7 +199,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       let blot = makeBlot(node);
       if (blot.next != refBlot || blot.next == null) {
         if (blot.parent != null) {
-          blot.parent.children.remove(blot);
+          blot.parent.removeChild(this);
         }
         this.insertBefore(blot, refBlot);
       }

@@ -42,6 +42,7 @@ interface Parent extends Blot {
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
   path(index: number, inclusive?: boolean): [Blot, number][];
+  removeChild(child: Blot): void;
   unwrap(): void;
 }
 

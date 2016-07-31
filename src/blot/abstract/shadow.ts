@@ -60,7 +60,7 @@ class ShadowBlot implements Blot {
   }
 
   detach() {
-    if (this.parent != null) this.parent.children.remove(this);
+    if (this.parent != null) this.parent.removeChild(this);
     delete this.domNode[Registry.DATA_KEY];
   }
 
