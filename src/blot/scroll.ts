@@ -73,11 +73,11 @@ class ScrollBlot extends ContainerBlot {
       mark(blot.parent);
     }
     let optimize = function(blot: Blot) {  // Post-order traversal
+      if (blot.domNode[Registry.DATA_KEY] == null || blot.domNode[Registry.DATA_KEY].mutations == null) {
+        return;
+      }
       if (blot instanceof ContainerBlot) {
-        blot.children.forEach(function(child) {
-          if (!child.domNode[Registry.DATA_KEY] || child.domNode[Registry.DATA_KEY].mutations == null) return;
-          optimize(child);
-        });
+        blot.children.forEach(optimize);
       }
       blot.optimize();
     }
