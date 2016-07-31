@@ -64,13 +64,13 @@ class ScrollBlot extends ContainerBlot {
     super.optimize();
     mutations.push.apply(mutations, this.observer.takeRecords());
     // TODO use WeakMap
-    let mark = (blot: Blot) => {
+    let mark = (blot: Blot, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {
         blot.domNode[Registry.DATA_KEY].mutations = [];
       }
-      mark(blot.parent);
+      if (markParent) mark(blot.parent);
     }
     let optimize = function(blot: Blot) {  // Post-order traversal
       if (blot.domNode[Registry.DATA_KEY] == null || blot.domNode[Registry.DATA_KEY].mutations == null) {
@@ -93,9 +93,11 @@ class ScrollBlot extends ContainerBlot {
             mark(Registry.find(mutation.previousSibling, false));
             [].forEach.call(mutation.addedNodes, function(node) {
               let child = Registry.find(node, false);
-              mark(child);
+              mark(child, false);
               if (child instanceof ContainerBlot) {
-                child.children.forEach(mark);
+                child.children.forEach(function(grandChild) {
+                  mark(grandChild, false);
+                });
               }
             });
           } else if (mutation.type === 'attributes') {
