@@ -204,7 +204,7 @@ Uses a plain attribute to represent formats.
 ```js
 import Parchment from 'parchment';
 
-let Width = new Parchment.Attributor.Attributor('width', 'width');
+let Width = new Parchment.Attributor.Attribute('width', 'width');
 Parchment.register(Width);
 
 let imageNode = document.createElement('img');
@@ -223,7 +223,7 @@ Uses a classname pattern to represent formats.
 ```js
 import Parchment from 'parchment';
 
-let Align = new Parchment.Attributor.Class('align', 'blot-align'};
+let Align = new Parchment.Attributor.Class('align', 'blot-align');
 Parchment.register(Align);
 
 let node = document.createElement('div');
