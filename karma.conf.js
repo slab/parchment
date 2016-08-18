@@ -51,7 +51,7 @@ module.exports = function(config) {
         base: 'SauceLabs',
         browserName: 'Chrome',
         platform: 'Windows 10',
-        version: '49'
+        version: 'beta'
       }
     },
     port: 10876,
