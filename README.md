@@ -6,11 +6,7 @@ Parchment is [Quill](https://quilljs.com)'s document model. It is a parallel tre
 
 `npm install --save parchment`
 
-
-## Tutorial
-
-Coming soon to a README near you!
-
+See [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/) for a guide on how Quill uses Parchment for its document model.
 
 ## Blots
 
