@@ -165,7 +165,7 @@ Basic implementation of a non-text leaf blot, that is formattable. Its correspon
 
 ### Scroll
 
-The root parent blot of a Parchment document. Is not formattable.
+The root parent blot of a Parchment document. It is not formattable.
 
 
 ## Attributors
