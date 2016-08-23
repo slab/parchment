@@ -7,6 +7,7 @@ import * as Registry from '../registry';
 const OBSERVER_CONFIG = {
   attributes: true,
   characterData: true,
+  characterDataOldValue: true,
   childList: true,
   subtree: true
 };
