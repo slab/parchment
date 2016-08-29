@@ -46,19 +46,16 @@ class ScrollBlot extends ContainerBlot {
     } else {
       super.deleteAt(index, length)
     }
-    this.optimize();
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
     this.update();
     super.formatAt(index, length, name, value);
-    this.optimize();
   }
 
   insertAt(index: number, value: string, def?: any): void {
     this.update();
     super.insertAt(index, value, def);
-    this.optimize();
   }
 
   optimize(mutations: MutationRecord[] = []): void {

@@ -193,24 +193,28 @@ describe('Lifecycle', function() {
     describe('api', function() {
       it('insert text', function() {
         this.container.insertAt(2, '|');
+        this.container.optimize();
         this.checkValues(['Te|st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('insert embed', function() {
         this.container.insertAt(2, 'image', true);
+        this.container.optimize();
         this.checkValues(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('delete', function() {
         this.container.deleteAt(2, 5);
+        this.container.optimize();
         this.checkValues(['Te', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
       it('format', function() {
         this.container.formatAt(2, 5, 'size', '24px');
+        this.container.optimize();
         this.checkValues(['Te', 'st', { image: true }, 'in', 'g', '!']);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
