@@ -86,7 +86,8 @@ class ScrollBlot extends ContainerBlot {
       }
       remaining.forEach(function(mutation) {
         let blot = Registry.find(mutation.target, true);
-        if (blot != null && blot.domNode === mutation.target) {
+        if (blot == null) return;
+        if (blot.domNode === mutation.target) {
           if (mutation.type === 'childList') {
             mark(Registry.find(mutation.previousSibling, false));
             [].forEach.call(mutation.addedNodes, function(node) {
@@ -101,8 +102,8 @@ class ScrollBlot extends ContainerBlot {
           } else if (mutation.type === 'attributes') {
             mark(blot.prev);
           }
-          mark(blot);
         }
+        mark(blot);
       });
       this.children.forEach(optimize);
       remaining = this.observer.takeRecords();
