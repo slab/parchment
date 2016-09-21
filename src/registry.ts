@@ -78,7 +78,8 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   } else if (query instanceof HTMLElement) {
     let names = (query.getAttribute('class') || '').split(/\s+/);
     for (let i in names) {
-      if (match = classes[names[i]]) break;
+      match = classes[names[i]]
+      if (match) break;
     }
     match = match || tags[query.tagName];
   }
