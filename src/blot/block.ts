@@ -14,7 +14,9 @@ class BlockBlot extends FormatBlot {
   }
 
   format(name: string, value: any) {
-    if (name === this.statics.blotName && !value) {
+    if (Registry.query(name, Registry.Scope.BLOCK) == null) {
+      return;
+    } else if (name === this.statics.blotName && !value) {
       this.replaceWith(BlockBlot.blotName);
     } else {
       super.format(name, value);

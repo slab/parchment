@@ -48,5 +48,15 @@ describe('Block', function() {
       expect(container.children.length).toBe(3);
       expect(container.children.head.next.statics.blotName).toBe('video');
     });
+
+    it('ignore inline', function() {
+      let container = Registry.create('scroll');
+      let block = Registry.create('header', 1);
+      container.appendChild(block);
+      block.format('bold', true);
+      expect(container.domNode.innerHTML).toBe('<h1></h1>');
+      expect(container.children.head.statics.blotName).toBe('header');
+      expect(container.children.head.formats()).toEqual({ header: 'h1' });
+    });
   });
 });
