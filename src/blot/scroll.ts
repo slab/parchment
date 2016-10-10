@@ -125,7 +125,7 @@ class ScrollBlot extends ContainerBlot {
         return null;
       }
     }).forEach((blot: Blot) => {
-      if (blot == null || blot === this) return;
+      if (blot == null || blot === this || blot.domNode[Registry.DATA_KEY] == null) return;
       blot.update(blot.domNode[Registry.DATA_KEY].mutations || []);
     });
     if (this.domNode[Registry.DATA_KEY].mutations != null) {
