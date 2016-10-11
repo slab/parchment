@@ -177,6 +177,11 @@ class ContainerBlot extends ShadowBlot implements Parent {
       }
     });
     removedNodes.forEach((node) => {
+      if (node.parentNode != null &&
+          (document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY)) {
+        // Node has not actually been removed
+        return;
+      }
       let blot = Registry.find(node);
       if (blot == null) return;
       if (blot.domNode.parentNode == null || blot.domNode.parentNode === this.domNode) {
