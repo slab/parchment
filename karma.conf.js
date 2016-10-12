@@ -54,6 +54,13 @@ module.exports = function(config) {
         version: 'beta'
       }
     },
+    sauceLabs: {
+      testName: 'Parchment Unit Tests',
+      username: process.env.SAUCE_USER || 'quill',
+      accessKey: process.env.SAUCE_KEY || 'adc0c0cf-221b-46f1-81b9-a4429b722c2e',
+      build: process.env.TRAVIS_BUILD_ID,
+      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+    },
     port: 10876,
     colors: true,
     logLevel: config.LOG_INFO,
