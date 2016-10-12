@@ -28,8 +28,8 @@
     "webpack": "^1.13.2"
   },
   "engines": {
-    "node": "^5.3",
-    "npm": "^3.5"
+    "node": ">= 5.3",
+    "npm": ">= 3.5"
   },
   "license": "BSD-3-Clause",
   "repository": {
