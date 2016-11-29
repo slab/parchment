@@ -14,8 +14,5 @@ module.exports = {
       { test: /\.ts$/, loader: 'ts-loader' }
     ]
   },
-  ts: {
-    silent: true
-  },
   devtool: 'source-map'
 };

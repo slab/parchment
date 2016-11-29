@@ -9,6 +9,7 @@
     "dist",
     "src"
   ],
+  "types": "dist/src/parchment.d.ts",
   "devDependencies": {
     "istanbul": "~0.4.5",
     "jasmine-core": "^2.5.2",

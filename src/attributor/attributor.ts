@@ -1,12 +1,12 @@
 import * as Registry from '../registry';
 
 
-interface AttributorOptions {
+export interface AttributorOptions {
   scope?: Registry.Scope;
   whitelist?: string[];
 }
 
-class Attributor {
+export default class Attributor {
   attrName: string;
   keyName: string;
   scope: Registry.Scope;
@@ -53,6 +53,3 @@ class Attributor {
     return node.getAttribute(this.keyName);
   }
 }
-
-
-export default Attributor;

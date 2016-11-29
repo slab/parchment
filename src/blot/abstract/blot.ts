@@ -2,7 +2,7 @@ import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
 
 
-interface Blot extends LinkedNode {
+export interface Blot extends LinkedNode {
   parent: Parent;
   prev: Blot;
   next: Blot;
@@ -30,7 +30,7 @@ interface Blot extends LinkedNode {
 }
 
 
-interface Parent extends Blot {
+export interface Parent extends Blot {
   children: LinkedList<Blot>;
   domNode: HTMLElement;
 
@@ -47,17 +47,14 @@ interface Parent extends Blot {
 }
 
 
-interface Formattable extends Blot {
+export interface Formattable extends Blot {
   format(name: string, value: any): void;
   formats(): { [index: string]: any };
 }
 
 
-interface Leaf extends Blot {
+export interface Leaf extends Blot {
   index(node: Node, offset: number): number;
   position(index: number, inclusive: boolean): [Node, number];
   value(): any;
 }
-
-
-export { Blot, Parent, Formattable, Leaf };
