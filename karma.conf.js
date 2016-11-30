@@ -51,7 +51,7 @@ module.exports = function(config) {
         base: 'SauceLabs',
         browserName: 'Chrome',
         platform: 'Windows 10',
-        version: 'beta'
+        version: '54'
       }
     },
     sauceLabs: {
