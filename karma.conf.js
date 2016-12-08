@@ -50,8 +50,8 @@ module.exports = function(config) {
       'saucelabs-chrome': {
         base: 'SauceLabs',
         browserName: 'Chrome',
-        platform: 'Windows 10',
-        version: '54'
+        platform: 'OS X 10.11',
+        version: 'beta'
       }
     },
     sauceLabs: {
