@@ -6,6 +6,7 @@
   "homepage": "http://quilljs.com/docs/parchment",
   "main": "dist/parchment.js",
   "files": [
+    "tsconfig.json",
     "dist",
     "src"
   ],
