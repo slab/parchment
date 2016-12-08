@@ -79,10 +79,10 @@ describe('Container', function() {
     HeaderBlot.allowedChildren = [BoldBlot];
     let node = document.createElement('h1');
     node.innerHTML = 'Test';
-    let blot = Registry.create(node);
     expect(function() {
+      let blot = Registry.create(node);
       blot.insertAt(2, 'image', true);
-    }).toThrowError(Registry.ParchmentError);
+    }).toThrowError(/\[Parchment\]/);
     HeaderBlot.allowedChildren = undefined;
   });
 });
