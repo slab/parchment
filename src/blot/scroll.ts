@@ -60,8 +60,11 @@ class ScrollBlot extends ContainerBlot {
 
   optimize(mutations: MutationRecord[] = []): void {
     super.optimize();
+    // We must modify mutations directly, cannot make copy and then modify
     let records = [].slice.call(this.observer.takeRecords());
-    mutations = mutations.concat(records);
+    // Array.push currently seems to be implemented by a non-tail recursive function
+    // so we cannot just mutations.push.apply(mutations, this.observer.takeRecords());
+    while (records.length > 0) mutations.push(records.pop());
     // TODO use WeakMap
     let mark = (blot: Blot, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
@@ -108,7 +111,8 @@ class ScrollBlot extends ContainerBlot {
       });
       this.children.forEach(optimize);
       remaining = [].slice.call(this.observer.takeRecords());
-      mutations = mutations.concat(remaining);
+      records = remaining.slice();
+      while (records.length > 0) mutations.push(records.pop());
     }
   }
 
