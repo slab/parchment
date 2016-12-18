@@ -205,10 +205,10 @@ Parchment.register(Width);
 
 let imageNode = document.createElement('img');
 
-Width(imageNode, '10px');
+Width.add(imageNode, '10px');
 console.log(imageNode.outerHTML);   // Will print <img width="10px">
-Width(imageNode);	                // Will return 10px
-Width(imageNode);
+Width.value(imageNode);	                // Will return 10px
+Width.remove(imageNode);
 console.log(imageNode.outerHTML);   // Will print <img>
 ```
 
@@ -236,7 +236,7 @@ import Parchment from 'parchment';
 
 let Align = new Parchment.Attributor.Style('align', 'text-align', {
   whitelist: ['right', 'center', 'justify']   // Having no value implies left align
-};
+});
 Parchment.register(Align);
 
 let node = document.createElement('div');
