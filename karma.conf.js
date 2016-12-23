@@ -23,6 +23,9 @@ module.exports = function(config) {
       'test/registry/*.js': ['babel'],
       'test/parchment.ts': ['webpack']
     },
+    mime: {
+      'text/x-typescript': ['ts']
+    },
     webpack: webpackConfig,
     webpackMiddleware: {
       stats: {
@@ -51,7 +54,7 @@ module.exports = function(config) {
         base: 'SauceLabs',
         browserName: 'Chrome',
         platform: 'OS X 10.11',
-        version: '54'
+        version: 'beta'
       }
     },
     sauceLabs: {
