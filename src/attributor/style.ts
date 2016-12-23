@@ -32,7 +32,8 @@ class StyleAttributor extends Attributor {
   }
 
   value(node: HTMLElement): string {
-    return node.style[camelize(this.keyName)];
+    let value = node.style[camelize(this.keyName)];
+    return this.canAdd(node, value) ? value : '';
   }
 }
 

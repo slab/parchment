@@ -50,6 +50,7 @@ export default class Attributor {
   }
 
   value(node: HTMLElement): string {
-    return node.getAttribute(this.keyName);
+    let value = node.getAttribute(this.keyName);
+    return this.canAdd(node, value) ? value : '';
   }
 }

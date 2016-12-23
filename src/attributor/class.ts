@@ -34,7 +34,8 @@ class ClassAttributor extends Attributor {
 
   value(node: HTMLElement): string {
     let result = match(node, this.keyName)[0] || '';
-    return result.slice(this.keyName.length + 1);  // +1 for hyphen
+    let value = result.slice(this.keyName.length + 1);  // +1 for hyphen
+    return this.canAdd(node, value) ? value : '';
   }
 }
 
