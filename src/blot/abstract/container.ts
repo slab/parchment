@@ -177,9 +177,11 @@ class ContainerBlot extends ShadowBlot implements Parent {
       }
     });
     removedNodes.forEach((node) => {
-      if (node.parentNode != null &&
+      // Check node has actually been removed
+      // One exception is Chrome does not immediately remove IFRAMEs
+      // from DOM but MutationRecord is correct in its reported removal
+      if (node.parentNode != null && node.tagName !== 'IFRAME' &&
           (document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY)) {
-        // Node has not actually been removed
         return;
       }
       let blot = Registry.find(node);
