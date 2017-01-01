@@ -41,6 +41,14 @@ class BlockBlot extends FormatBlot {
       after.parent.insertBefore(blot, after);
     }
   }
+
+  update(mutations: MutationRecord[]): void {
+    if (navigator.userAgent.match(/Trident/)) {
+      this.attach();
+    } else {
+      super.update(mutations);
+    }
+  }
 }
 
 
