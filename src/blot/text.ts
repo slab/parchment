@@ -15,7 +15,9 @@ class TextBlot extends LeafBlot implements Leaf {
   }
 
   static value(domNode: Text): string {
-    return domNode.data;
+    let text = domNode.data;
+    if (text["normalize"]) text = text["normalize"]();
+    return text;
   }
 
   constructor(node: Node) {
