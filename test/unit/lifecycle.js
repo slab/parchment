@@ -312,7 +312,7 @@ describe('Lifecycle', function() {
         firstBlockBlot.domNode.appendChild(lastItalicBlot.domNode);
         lastItalicBlot.domNode.innerHTML = '?';
         this.container.update();
-        this.checkUpdateCalls([firstBlockBlot, this.descendants[6], this.descendants[8]]);
+        this.checkUpdateCalls([firstBlockBlot, this.descendants[6], this.descendants[7]]);
         this.checkValues(['Test', { image: true }, 'ing', '?']);
       });
 
