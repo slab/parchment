@@ -4,3 +4,8 @@ script:
   - npm run test:travis
 env:
   - CXX=g++-4.8
+addons:
+  sauce_connect:
+    username: "quill"
+  jwt:
+    secure: "UqkZKE0vdSMobc9jrxABZLzHJAGQUizKdM5qdgryZo+0pwYOnkTNbZtputruBTPmFjufM+s76VYrESvXPeSUWGtxbLXCZjxCkvyQ72zx0rqmFs8myLoxLbkfAbdLvtTjnn91S3mZJiC7RKSMKL1WGg13JRKwlReY4gFnkr4jE8g="
