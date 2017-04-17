@@ -52,8 +52,10 @@ export function create(input: Node | string | Scope, value?: any): Blot {
     throw new ParchmentError(`Unable to create ${input} blot`);
   }
   let BlotClass = <BlotConstructor>match;
-  let node = input instanceof Node ? input : BlotClass.create(value);
-  return new BlotClass(node, value);
+  let node = (input instanceof Node || input['nodeType'] === Node.TEXT_NODE) ?
+             input :
+             BlotClass.create(value);
+  return new BlotClass(<Node>node, value);
 }
 
 export function find(node: Node, bubble: boolean = false): Blot {
@@ -67,7 +69,7 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
-  } else if (query instanceof Text) {
+  } else if (query instanceof Text || query['nodeType'] === Node.TEXT_NODE) {
     match = types['text'];
   } else if (typeof query === 'number') {
     if (query & Scope.LEVEL & Scope.BLOCK) {
