@@ -7,11 +7,11 @@ module.exports = {
     path: __dirname + '/dist'
   },
   resolve: {
-    extensions: ['', '.js', '.ts']
+    extensions: ['.js', '.ts']
   },
   module: {
-    loaders: [
-      { test: /\.ts$/, loader: 'ts-loader' }
+    rules: [
+      { test: /\.ts$/, use: 'ts-loader' }
     ]
   },
   devtool: 'source-map'
