@@ -1,11 +1,11 @@
 language: node_js
-node_js: '6'
+node_js: '7'
+dist: trusty
+sudo: false
 script:
   - npm run test:travis
-env:
-  - CXX=g++-4.8
 addons:
   sauce_connect:
-    username: "quill"
+    username: quill
   jwt:
-    secure: "UqkZKE0vdSMobc9jrxABZLzHJAGQUizKdM5qdgryZo+0pwYOnkTNbZtputruBTPmFjufM+s76VYrESvXPeSUWGtxbLXCZjxCkvyQ72zx0rqmFs8myLoxLbkfAbdLvtTjnn91S3mZJiC7RKSMKL1WGg13JRKwlReY4gFnkr4jE8g="
+    secure: f058ssnuI9sfLahr9H8nrt1+npBBlKjsp958Yg8kzdZgk86YBBBRTC2e5q+qJYBzk+2qWlxHJ4cQAaGJbhX/2FRp3EdPDELinarg0qmhn1eAshY/6jg+Ij0/sUABztJjZbtdMnk54D9yVohF5H8qf8mLgSic6cCPvjZp3R2u8JU=
