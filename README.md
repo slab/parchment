@@ -157,7 +157,7 @@ Basic implementation of a block scoped formattable parent Blot. Formatting a blo
 
 ### Inline Blot
 
-Basic implementation of an inline scoped formattable parent Blot. Formatting an inline blot by default either wraps itself with another blot passes the call to the approprate child.
+Basic implementation of an inline scoped formattable parent Blot. Formatting an inline blot by default either wraps itself with another blot or passes the call to the approprate child.
 
 ### Embed Blot
 
