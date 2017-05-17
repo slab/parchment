@@ -170,7 +170,7 @@ The root parent blot of a Parchment document. It is not formattable.
 
 ## Attributors
 
-Attributors are the alternative, more lightweight, way to represent formats. Their DOM counterpart is an [Attribute](https://www.w3.org/TR/html5/syntax.html#attributes-0). Like a DOM attribute's relationship to a node, Attributors are meant to be belong to Blots. Calling `formats()` on an [Inline](#inline-blot) or [Block](#block-blot) blot will return both the format of the corresponding DOM node represents (if any) and the formats the DOM node's attributes represent (if any).
+Attributors are the alternative, more lightweight, way to represent formats. Their DOM counterpart is an [Attribute](https://www.w3.org/TR/html5/syntax.html#attributes-0). Like a DOM attribute's relationship to a node, Attributors are meant to belong to Blots. Calling `formats()` on an [Inline](#inline-blot) or [Block](#block-blot) blot will return both the format of the corresponding DOM node represents (if any) and the formats the DOM node's attributes represent (if any).
 
 Attributors have the following interface:
 
