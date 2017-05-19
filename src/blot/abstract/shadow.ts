@@ -95,7 +95,11 @@ class ShadowBlot implements Blot {
       var refDomNode = refBlot.domNode;
     }
     if (this.next == null || this.domNode.nextSibling != refDomNode) {
-      parentBlot.domNode.insertBefore(this.domNode, (typeof refDomNode !== 'undefined') ? refDomNode : null);
+      if (parentBlot.domNode !== this.domNode.parentNode) {
+        // https://github.com/quilljs/parchment/issues/26
+        // fixbug: #26, insert the same child will make the range object changed since webbrowsers(safari[10.1], chrome[59_dev])
+        parentBlot.domNode.insertBefore(this.domNode, (typeof refDomNode !== 'undefined') ? refDomNode : null);
+      }
     }
     this.parent = parentBlot;
   }
