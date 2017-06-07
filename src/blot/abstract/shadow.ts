@@ -55,7 +55,7 @@ class ShadowBlot implements Blot {
   }
 
   clone(): Blot {
-    let domNode = this.domNode.cloneNode();
+    let domNode = this.domNode.cloneNode(false);
     return Registry.create(domNode);
   }
 
