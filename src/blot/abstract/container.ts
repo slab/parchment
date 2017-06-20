@@ -114,13 +114,13 @@ class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  optimize() {
-    super.optimize();
+  optimize(context: {[key: string]: any}) {
+    super.optimize(context);
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
         let child = Registry.create(this.statics.defaultChild);
         this.appendChild(child);
-        child.optimize();
+        child.optimize(context);
       } else {
         this.remove();
       }
@@ -168,7 +168,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
     this.remove();
   }
 
-  update(mutations: MutationRecord[]): void {
+  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
     let addedNodes = [], removedNodes = [];
     mutations.forEach((mutation) => {
       if (mutation.target === this.domNode && mutation.type === 'childList') {

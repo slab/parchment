@@ -42,11 +42,11 @@ class BlockBlot extends FormatBlot {
     }
   }
 
-  update(mutations: MutationRecord[]): void {
+  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
     if (navigator.userAgent.match(/Trident/)) {
       this.attach();
     } else {
-      super.update(mutations);
+      super.update(mutations, context);
     }
   }
 }

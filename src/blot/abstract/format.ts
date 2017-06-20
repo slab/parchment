@@ -49,8 +49,8 @@ class FormatBlot extends ContainerBlot implements Formattable {
     return replacement;
   }
 
-  update(mutations: MutationRecord[]): void {
-    super.update(mutations);
+  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
+    super.update(mutations, context);
     if (mutations.some((mutation) => {
       return mutation.target === this.domNode && mutation.type === 'attributes';
     })) {
