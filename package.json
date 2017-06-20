@@ -13,17 +13,17 @@
   "types": "dist/src/parchment.d.ts",
   "devDependencies": {
     "istanbul": "~0.4.5",
-    "jasmine-core": "^2.5.2",
-    "karma": "^1.6.0",
+    "jasmine-core": "^2.6.4",
+    "karma": "^1.7.0",
     "karma-babel-preprocessor": "^6.0.1",
-    "karma-chrome-launcher": "^2.0.0",
+    "karma-chrome-launcher": "^2.1.1",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-sauce-launcher": "^1.1.0",
     "karma-webpack": "^2.0.3",
-    "ts-loader": "^2.0.3",
-    "typescript": "^2.2.2",
-    "webpack": "^2.4.1"
+    "ts-loader": "^2.1.0",
+    "typescript": "^2.3.4",
+    "webpack": "^3.0.0"
   },
   "engines": {
     "node": ">= 5.3",
