@@ -11,8 +11,11 @@ class LeafBlot extends ShadowBlot implements Leaf {
   }
 
   index(node, offset): number {
-    if (node !== this.domNode) return -1;
-    return Math.min(offset, 1);
+    if (this.domNode === node ||
+        this.domNode.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+      return Math.min(offset, 1);
+    }
+    return -1;
   }
 
   position(index: number, inclusive?: boolean): [Node, number] {

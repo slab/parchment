@@ -49,8 +49,8 @@ class TextBlot extends LeafBlot implements Leaf {
     return this.text.length;
   }
 
-  optimize(): void {
-    super.optimize();
+  optimize(context: {[key: string]: any}): void {
+    super.optimize(context);
     this.text = this.statics.value(this.domNode);
     if (this.text.length === 0) {
       this.remove();
@@ -75,7 +75,7 @@ class TextBlot extends LeafBlot implements Leaf {
     return after;
   }
 
-  update(mutations: MutationRecord[]): void {
+  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
     if (mutations.some((mutation) => {
       return mutation.type === 'characterData' && mutation.target === this.domNode;
     })) {

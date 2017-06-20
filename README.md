@@ -47,13 +47,14 @@ class Blot {
 
   // Called after update cycle completes. Cannot change the value or length
   // of the document, and any DOM operation must reduce complexity of the DOM
-  // tree.
-  optimize(): void;
+  // tree. A shared context object is passed through all blots.
+  optimize(context: {[key: string]: any}): void;
 
   // Called when blot changes, with the mutation records of its change.
   // Internal records of the blot values can be updated, and modifcations of
   // the blot itself is permitted. Can be trigger from user change or API call.
-  update(mutations: MutationRecord[]);
+  // A shared context object is passed through all blots.
+  update(mutations: MutationRecord[], context: {[key: string]: any});
 
 
   /** Leaf Blots only **/

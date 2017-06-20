@@ -58,8 +58,8 @@ class ScrollBlot extends ContainerBlot {
     super.insertAt(index, value, def);
   }
 
-  optimize(mutations: MutationRecord[] = []): void {
-    super.optimize();
+  optimize(mutations: MutationRecord[] = [], context: {[key: string]: any} = {}): void {
+    super.optimize(context);
     // We must modify mutations directly, cannot make copy and then modify
     let records = [].slice.call(this.observer.takeRecords());
     // Array.push currently seems to be implemented by a non-tail recursive function
@@ -81,7 +81,7 @@ class ScrollBlot extends ContainerBlot {
       if (blot instanceof ContainerBlot) {
         blot.children.forEach(optimize);
       }
-      blot.optimize();
+      blot.optimize(context);
     }
     let remaining = mutations;
     for (let i = 0; remaining.length > 0; i += 1) {
@@ -116,7 +116,7 @@ class ScrollBlot extends ContainerBlot {
     }
   }
 
-  update(mutations?: MutationRecord[]): void {
+  update(mutations?: MutationRecord[], context: {[key: string]: any} = {}): void {
     mutations = mutations || this.observer.takeRecords();
     // TODO use WeakMap
     mutations.map(function(mutation: MutationRecord) {
@@ -131,12 +131,12 @@ class ScrollBlot extends ContainerBlot {
       }
     }).forEach((blot: Blot) => {
       if (blot == null || blot === this || blot.domNode[Registry.DATA_KEY] == null) return;
-      blot.update(blot.domNode[Registry.DATA_KEY].mutations || []);
+      blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
     });
     if (this.domNode[Registry.DATA_KEY].mutations != null) {
-      super.update(this.domNode[Registry.DATA_KEY].mutations);
+      super.update(this.domNode[Registry.DATA_KEY].mutations, context);
     }
-    this.optimize(mutations);
+    this.optimize(mutations, context);
   }
 }
 

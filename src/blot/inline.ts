@@ -47,8 +47,8 @@ class InlineBlot extends FormatBlot {
     }
   }
 
-  optimize(): void {
-    super.optimize();
+  optimize(context: {[key: string]: any}): void {
+    super.optimize(context);
     let formats = this.formats();
     if (Object.keys(formats).length === 0) {
       return this.unwrap();  // unformatted span

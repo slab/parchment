@@ -115,7 +115,7 @@ class ShadowBlot implements Blot {
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  optimize(): void {
+  optimize(context: {[key: string]: any}): void {
     // TODO clean up once we use WeakMap
     if (this.domNode[Registry.DATA_KEY] != null) {
       delete this.domNode[Registry.DATA_KEY].mutations;
@@ -145,7 +145,7 @@ class ShadowBlot implements Blot {
     return index === 0 ? this : this.next;
   }
 
-  update(mutations: MutationRecord[] = []): void {
+  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
     // Nothing to do by default
   }
 
