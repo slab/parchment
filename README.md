@@ -132,7 +132,7 @@ class LinkBlot extends Parchment.Inline {
 
   format(name, value) {
     if (name === 'link' && value) {
-      this.domNode.setAttribute('href');
+      this.domNode.setAttribute('href', value);
     } else {
       super.format(name, value);
     }
