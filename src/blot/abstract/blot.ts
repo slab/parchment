@@ -1,7 +1,6 @@
 import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
 
-
 export interface Blot extends LinkedNode {
   parent: Parent;
   prev: Blot;
@@ -25,19 +24,18 @@ export interface Blot extends LinkedNode {
   deleteAt(index: number, length: number): void;
   formatAt(index: number, length: number, name: string, value: any): void;
   insertAt(index: number, value: string, def?: any): void;
-  optimize(context: {[key: string]: any}): void;
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void;
+  optimize(context: { [key: string]: any }): void;
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void;
 }
-
 
 export interface Parent extends Blot {
   children: LinkedList<Blot>;
   domNode: HTMLElement;
 
   appendChild(child: Blot): void;
-  descendant<T>(type: { new (): T; }, index: number): [T, number];
+  descendant<T>(type: { new (): T }, index: number): [T, number];
   descendant<T>(matcher: (blot: Blot) => boolean, index: number): [T, number];
-  descendants<T>(type: { new (): T; }, index: number, length: number): T[];
+  descendants<T>(type: { new (): T }, index: number, length: number): T[];
   descendants<T>(matcher: (blot: Blot) => boolean, index: number, length: number): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
@@ -46,12 +44,10 @@ export interface Parent extends Blot {
   unwrap(): void;
 }
 
-
 export interface Formattable extends Blot {
   format(name: string, value: any): void;
   formats(): { [index: string]: any };
 }
-
 
 export interface Leaf extends Blot {
   index(node: Node, offset: number): number;

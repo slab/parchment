@@ -2,7 +2,6 @@ import { Blot, Leaf } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
-
 class TextBlot extends LeafBlot implements Leaf {
   static blotName = 'text';
   static scope = Registry.Scope.INLINE_BLOT;
@@ -16,7 +15,7 @@ class TextBlot extends LeafBlot implements Leaf {
 
   static value(domNode: Text): string {
     let text = domNode.data;
-    if (text["normalize"]) text = text["normalize"]();
+    if (text['normalize']) text = text['normalize']();
     return text;
   }
 
@@ -49,7 +48,7 @@ class TextBlot extends LeafBlot implements Leaf {
     return this.text.length;
   }
 
-  optimize(context: {[key: string]: any}): void {
+  optimize(context: { [key: string]: any }): void {
     super.optimize(context);
     this.text = this.statics.value(this.domNode);
     if (this.text.length === 0) {
@@ -75,10 +74,12 @@ class TextBlot extends LeafBlot implements Leaf {
     return after;
   }
 
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
-    if (mutations.some((mutation) => {
-      return mutation.type === 'characterData' && mutation.target === this.domNode;
-    })) {
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+    if (
+      mutations.some(mutation => {
+        return mutation.type === 'characterData' && mutation.target === this.domNode;
+      })
+    ) {
       this.text = this.statics.value(this.domNode);
     }
   }
@@ -87,6 +88,5 @@ class TextBlot extends LeafBlot implements Leaf {
     return this.text;
   }
 }
-
 
 export default TextBlot;

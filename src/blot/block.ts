@@ -1,7 +1,6 @@
 import FormatBlot from './abstract/format';
 import * as Registry from '../registry';
 
-
 class BlockBlot extends FormatBlot {
   static blotName = 'block';
   static scope = Registry.Scope.BLOCK_BLOT;
@@ -42,7 +41,7 @@ class BlockBlot extends FormatBlot {
     }
   }
 
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     if (navigator.userAgent.match(/Trident/)) {
       this.attach();
     } else {
@@ -50,6 +49,5 @@ class BlockBlot extends FormatBlot {
     }
   }
 }
-
 
 export default BlockBlot;

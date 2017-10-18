@@ -4,15 +4,13 @@ module.exports = {
     filename: 'parchment.js',
     library: 'Parchment',
     libraryTarget: 'umd',
-    path: __dirname + '/dist'
+    path: __dirname + '/dist',
   },
   resolve: {
-    extensions: ['.js', '.ts']
+    extensions: ['.js', '.ts'],
   },
   module: {
-    rules: [
-      { test: /\.ts$/, use: 'ts-loader' }
-    ]
+    rules: [{ test: /\.ts$/, use: 'ts-loader' }],
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
 };

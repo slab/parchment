@@ -5,7 +5,6 @@ import ContainerBlot from './container';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-
 class FormatBlot extends ContainerBlot implements Formattable {
   protected attributes: AttributorStore;
 
@@ -49,11 +48,13 @@ class FormatBlot extends ContainerBlot implements Formattable {
     return replacement;
   }
 
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     super.update(mutations, context);
-    if (mutations.some((mutation) => {
-      return mutation.target === this.domNode && mutation.type === 'attributes';
-    })) {
+    if (
+      mutations.some(mutation => {
+        return mutation.target === this.domNode && mutation.type === 'attributes';
+      })
+    ) {
       this.attributes.build();
     }
   }
@@ -66,6 +67,5 @@ class FormatBlot extends ContainerBlot implements Formattable {
     return wrapper;
   }
 }
-
 
 export default FormatBlot;

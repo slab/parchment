@@ -1,7 +1,6 @@
 import { Blot, Parent, Formattable } from './blot';
 import * as Registry from '../../registry';
 
-
 class ShadowBlot implements Blot {
   static blotName = 'abstract';
   static className: string;
@@ -45,7 +44,6 @@ class ShadowBlot implements Blot {
     return node;
   }
 
-
   constructor(public domNode: Node) {
     this.attach();
   }
@@ -81,7 +79,7 @@ class ShadowBlot implements Blot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+    let blot = def == null ? Registry.create('text', value) : Registry.create(value, def);
     let ref = this.split(index);
     this.parent.insertBefore(blot, ref);
   }
@@ -95,7 +93,10 @@ class ShadowBlot implements Blot {
       var refDomNode = refBlot.domNode;
     }
     if (this.next == null || this.domNode.nextSibling != refDomNode) {
-      parentBlot.domNode.insertBefore(this.domNode, (typeof refDomNode !== 'undefined') ? refDomNode : null);
+      parentBlot.domNode.insertBefore(
+        this.domNode,
+        typeof refDomNode !== 'undefined' ? refDomNode : null,
+      );
     }
     this.parent = parentBlot;
   }
@@ -108,14 +109,14 @@ class ShadowBlot implements Blot {
 
   length(): number {
     return 1;
-  };
+  }
 
   offset(root: Blot = this.parent): number {
     if (this.parent == null || this == root) return 0;
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  optimize(context: {[key: string]: any}): void {
+  optimize(context: { [key: string]: any }): void {
     // TODO clean up once we use WeakMap
     if (this.domNode[Registry.DATA_KEY] != null) {
       delete this.domNode[Registry.DATA_KEY].mutations;
@@ -145,7 +146,7 @@ class ShadowBlot implements Blot {
     return index === 0 ? this : this.next;
   }
 
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     // Nothing to do by default
   }
 
@@ -158,6 +159,5 @@ class ShadowBlot implements Blot {
     return wrapper;
   }
 }
-
 
 export default ShadowBlot;

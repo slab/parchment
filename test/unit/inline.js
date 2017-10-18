@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('InlineBlot', function() {
   it('format addition', function() {

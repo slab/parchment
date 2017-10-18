@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('Registry', function() {
   describe('create()', function() {
@@ -63,7 +63,9 @@ describe('Registry', function() {
       expect(Registry.find(blockNode)).toBe(blockBlot);
       expect(Registry.find(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
       expect(Registry.find(blockNode.querySelector('em'))).toBe(blockBlot.children.tail);
-      expect(Registry.find(blockNode.querySelector('strong'))).toBe(blockBlot.children.tail.children.tail);
+      expect(Registry.find(blockNode.querySelector('strong'))).toBe(
+        blockBlot.children.tail.children.tail,
+      );
       let text01 = blockBlot.children.head.children.head;
       let text23 = blockBlot.children.tail.children.head;
       let text45 = blockBlot.children.tail.children.tail.children.head;

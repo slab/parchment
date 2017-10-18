@@ -1,6 +1,5 @@
 import * as Registry from '../registry';
 
-
 export interface AttributorOptions {
   scope?: Registry.Scope;
   whitelist?: string[];

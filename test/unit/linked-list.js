@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('LinkedList', function() {
   beforeEach(function() {
@@ -8,7 +8,9 @@ describe('LinkedList', function() {
     this.c = { str: 'c' };
     this.zero = {
       str: '!',
-      length: function() { return 0; }
+      length: function() {
+        return 0;
+      },
     };
     this.a.length = this.b.length = this.c.length = function() {
       return 3;
@@ -125,14 +127,14 @@ describe('LinkedList', function() {
       this.spy = {
         callback: function() {
           return arguments;
-        }
+        },
       };
       spyOn(this.spy, 'callback');
     });
 
     it('iterate over empty list', function() {
-      this.list.forEach(this.spy.callback)
-      expect(this.spy.callback.calls.count()).toBe(0)
+      this.list.forEach(this.spy.callback);
+      expect(this.spy.callback.calls.count()).toBe(0);
     });
 
     it('iterate non-head start', function() {
@@ -179,7 +181,7 @@ describe('LinkedList', function() {
     it('destructive modification', function() {
       this.list.append(this.a, this.b, this.c);
       let arr = [];
-      this.list.forEach((node) => {
+      this.list.forEach(node => {
         arr.push(node.str);
         if (node === this.a) {
           this.list.remove(this.a);

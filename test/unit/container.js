@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('Container', function() {
   beforeEach(function() {
@@ -29,9 +29,15 @@ describe('Container', function() {
     });
 
     it('function match', function() {
-      expect(this.blot.descendants(function(blot) {
-        return blot instanceof TextBlot;
-      }, 1, 3).length).toEqual(2);
+      expect(
+        this.blot.descendants(
+          function(blot) {
+            return blot instanceof TextBlot;
+          },
+          1,
+          3,
+        ).length,
+      ).toEqual(2);
     });
   });
 
@@ -62,7 +68,7 @@ describe('Container', function() {
     expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
     this.blot.detach();
     expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
-    this.blot.descendants(ShadowBlot).forEach((blot) => {
+    this.blot.descendants(ShadowBlot).forEach(blot => {
       expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
     });
   });

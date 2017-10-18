@@ -1,10 +1,9 @@
 import Attributor from './attributor/attributor';
 import { Blot, Formattable } from './blot/abstract/blot';
 
-
 export interface BlotConstructor {
   blotName: string;
-  new(node: Node, value?: any): Blot;
+  new (node: Node, value?: any): Blot;
   create(value?): Node;
 }
 
@@ -29,22 +28,21 @@ let types: { [key: string]: Attributor | BlotConstructor } = {};
 export const DATA_KEY = '__blot';
 
 export enum Scope {
-  TYPE = (1 << 2) - 1,          // 0011 Lower two bits
-  LEVEL = ((1 << 2) - 1) << 2,  // 1100 Higher two bits
+  TYPE = (1 << 2) - 1, // 0011 Lower two bits
+  LEVEL = ((1 << 2) - 1) << 2, // 1100 Higher two bits
 
   ATTRIBUTE = (1 << 0) | LEVEL, // 1101
-  BLOT = (1 << 1) | LEVEL,      // 1110
-  INLINE = (1 << 2) | TYPE,     // 0111
-  BLOCK = (1 << 3) | TYPE,      // 1011
+  BLOT = (1 << 1) | LEVEL, // 1110
+  INLINE = (1 << 2) | TYPE, // 0111
+  BLOCK = (1 << 3) | TYPE, // 1011
 
-  BLOCK_BLOT = BLOCK & BLOT,              // 1010
-  INLINE_BLOT = INLINE & BLOT,            // 0110
-  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE,    // 1001
-  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE,  // 0101
+  BLOCK_BLOT = BLOCK & BLOT, // 1010
+  INLINE_BLOT = INLINE & BLOT, // 0110
+  BLOCK_ATTRIBUTE = BLOCK & ATTRIBUTE, // 1001
+  INLINE_ATTRIBUTE = INLINE & ATTRIBUTE, // 0101
 
-  ANY = TYPE | LEVEL
-};
-
+  ANY = TYPE | LEVEL,
+}
 
 export function create(input: Node | string | Scope, value?: any): Blot {
   let match = query(input);
@@ -52,9 +50,8 @@ export function create(input: Node | string | Scope, value?: any): Blot {
     throw new ParchmentError(`Unable to create ${input} blot`);
   }
   let BlotClass = <BlotConstructor>match;
-  let node = (input instanceof Node || input['nodeType'] === Node.TEXT_NODE) ?
-             input :
-             BlotClass.create(value);
+  let node =
+    input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
   return new BlotClass(<Node>node, value);
 }
 
@@ -65,7 +62,10 @@ export function find(node: Node, bubble: boolean = false): Blot {
   return null;
 }
 
-export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): Attributor | BlotConstructor {
+export function query(
+  query: string | Node | Scope,
+  scope: Scope = Scope.ANY,
+): Attributor | BlotConstructor {
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
@@ -80,13 +80,13 @@ export function query(query: string | Node | Scope, scope: Scope = Scope.ANY): A
   } else if (query instanceof HTMLElement) {
     let names = (query.getAttribute('class') || '').split(/\s+/);
     for (let i in names) {
-      match = classes[names[i]]
+      match = classes[names[i]];
       if (match) break;
     }
     match = match || tags[query.tagName];
   }
   if (match == null) return null;
-  if ((scope & Scope.LEVEL & match.scope) && (scope & Scope.TYPE & match.scope)) return match;
+  if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) return match;
   return null;
 }
 

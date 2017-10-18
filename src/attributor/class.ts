@@ -1,6 +1,5 @@
 import Attributor from './attributor';
 
-
 function match(node: HTMLElement, prefix: string): string[] {
   let className = node.getAttribute('class') || '';
   return className.split(/\s+/).filter(function(name) {
@@ -11,7 +10,10 @@ function match(node: HTMLElement, prefix: string): string[] {
 class ClassAttributor extends Attributor {
   static keys(node: HTMLElement): string[] {
     return (node.getAttribute('class') || '').split(/\s+/).map(function(name) {
-      return name.split('-').slice(0, -1).join('-');
+      return name
+        .split('-')
+        .slice(0, -1)
+        .join('-');
     });
   }
 
@@ -34,10 +36,9 @@ class ClassAttributor extends Attributor {
 
   value(node: HTMLElement): string {
     let result = match(node, this.keyName)[0] || '';
-    let value = result.slice(this.keyName.length + 1);  // +1 for hyphen
+    let value = result.slice(this.keyName.length + 1); // +1 for hyphen
     return this.canAdd(node, value) ? value : '';
   }
 }
-
 
 export default ClassAttributor;

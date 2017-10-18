@@ -2,7 +2,6 @@ import { Formattable, Leaf } from './blot';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-
 class LeafBlot extends ShadowBlot implements Leaf {
   static scope = Registry.Scope.INLINE_BLOT;
 
@@ -11,8 +10,10 @@ class LeafBlot extends ShadowBlot implements Leaf {
   }
 
   index(node, offset): number {
-    if (this.domNode === node ||
-        this.domNode.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY) {
+    if (
+      this.domNode === node ||
+      this.domNode.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
+    ) {
       return Math.min(offset, 1);
     }
     return -1;
@@ -28,6 +29,5 @@ class LeafBlot extends ShadowBlot implements Leaf {
     return { [this.statics.blotName]: this.statics.value(this.domNode) || true };
   }
 }
-
 
 export default LeafBlot;

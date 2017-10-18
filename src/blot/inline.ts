@@ -3,7 +3,6 @@ import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
 
-
 // Shallow object comparison
 function isEqual(obj1, obj2): boolean {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
@@ -12,7 +11,6 @@ function isEqual(obj1, obj2): boolean {
   }
   return true;
 }
-
 
 class InlineBlot extends FormatBlot {
   static blotName = 'inline';
@@ -26,7 +24,7 @@ class InlineBlot extends FormatBlot {
 
   format(name: string, value: any) {
     if (name === this.statics.blotName && !value) {
-      this.children.forEach((child) => {
+      this.children.forEach(child => {
         if (!(child instanceof FormatBlot)) {
           child = child.wrap(InlineBlot.blotName, true);
         }
@@ -47,11 +45,11 @@ class InlineBlot extends FormatBlot {
     }
   }
 
-  optimize(context: {[key: string]: any}): void {
+  optimize(context: { [key: string]: any }): void {
     super.optimize(context);
     let formats = this.formats();
     if (Object.keys(formats).length === 0) {
-      return this.unwrap();  // unformatted span
+      return this.unwrap(); // unformatted span
     }
     let next = this.next;
     if (next instanceof InlineBlot && next.prev === this && isEqual(formats, next.formats())) {
@@ -60,6 +58,5 @@ class InlineBlot extends FormatBlot {
     }
   }
 }
-
 
 export default InlineBlot;

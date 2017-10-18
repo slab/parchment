@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 class AuthorBlot extends InlineBlot {}
 AuthorBlot.blotName = 'author';
@@ -15,6 +15,5 @@ ItalicBlot.tagName = 'em';
 class ScriptBlot extends InlineBlot {}
 ScriptBlot.blotName = 'script';
 ScriptBlot.tagName = ['sup', 'sub'];
-
 
 Registry.register(AuthorBlot, BoldBlot, ItalicBlot, ScriptBlot);

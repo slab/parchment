@@ -1,14 +1,15 @@
 import Attributor from './attributor';
 
-
 function camelize(name: string): string {
   let parts = name.split('-');
-  let rest = parts.slice(1).map(function(part) {
-    return part[0].toUpperCase() + part.slice(1);
-  }).join('');
+  let rest = parts
+    .slice(1)
+    .map(function(part) {
+      return part[0].toUpperCase() + part.slice(1);
+    })
+    .join('');
   return parts[0] + rest;
 }
-
 
 class StyleAttributor extends Attributor {
   static keys(node): string[] {
@@ -36,6 +37,5 @@ class StyleAttributor extends Attributor {
     return this.canAdd(node, value) ? value : '';
   }
 }
-
 
 export default StyleAttributor;

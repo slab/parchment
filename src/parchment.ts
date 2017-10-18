@@ -16,7 +16,6 @@ import AttributorStore from './attributor/store';
 
 import * as Registry from './registry';
 
-
 let Parchment = {
   Scope: Registry.Scope,
 
@@ -40,9 +39,8 @@ let Parchment = {
     Class: ClassAttributor,
     Style: StyleAttributor,
 
-    Store: AttributorStore
-  }
+    Store: AttributorStore,
+  },
 };
-
 
 export default Parchment;

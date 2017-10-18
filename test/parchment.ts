@@ -18,7 +18,6 @@ import LinkedList from '../src/collection/linked-list';
 import * as Registry from '../src/registry';
 import Parchment from '../src/parchment';
 
-
 window['Attributor'] = Attributor;
 window['ClassAttributor'] = ClassAttributor;
 window['StyleAttributor'] = StyleAttributor;
@@ -38,7 +37,6 @@ window['LinkedList'] = LinkedList;
 
 window['Parchment'] = Parchment;
 window['Registry'] = Registry;
-
 
 Registry.register(ScrollBlot);
 Registry.register(BlockBlot);

@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('TextBlot', function() {
   it('constructor(node)', function() {

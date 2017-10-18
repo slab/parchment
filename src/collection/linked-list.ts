@@ -1,6 +1,5 @@
 import LinkedNode from './linked-node';
 
-
 class LinkedList<T extends LinkedNode> {
   head: T;
   tail: T;
@@ -19,8 +18,9 @@ class LinkedList<T extends LinkedNode> {
   }
 
   contains(node: T): boolean {
-    let cur, next = this.iterator();
-    while (cur = next()) {
+    let cur,
+      next = this.iterator();
+    while ((cur = next())) {
       if (cur === node) return true;
     }
     return false;
@@ -49,10 +49,11 @@ class LinkedList<T extends LinkedNode> {
   }
 
   offset(target: T): number {
-    let index = 0, cur = this.head;
+    let index = 0,
+      cur = this.head;
     while (cur != null) {
       if (cur === target) return index;
-      index += cur.length()
+      index += cur.length();
       cur = <T>cur.next;
     }
     return -1;
@@ -61,7 +62,7 @@ class LinkedList<T extends LinkedNode> {
   remove(node: T): void {
     if (!this.contains(node)) return;
     if (node.prev != null) node.prev.next = node.next;
-    if (node.next != null) node.next.prev = node.prev
+    if (node.next != null) node.next.prev = node.prev;
     if (node === this.head) this.head = <T>node.next;
     if (node === this.tail) this.tail = <T>node.prev;
     this.length -= 1;
@@ -73,14 +74,18 @@ class LinkedList<T extends LinkedNode> {
       let ret = curNode;
       if (curNode != null) curNode = <T>curNode.next;
       return ret;
-    }
+    };
   }
 
   find(index: number, inclusive: boolean = false): [T, number] {
-    let cur, next = this.iterator();
-    while (cur = next()) {
+    let cur,
+      next = this.iterator();
+    while ((cur = next())) {
       let length = cur.length();
-      if (index < length || (inclusive && index === length && (cur.next == null || cur.next.length() !== 0))) {
+      if (
+        index < length ||
+        (inclusive && index === length && (cur.next == null || cur.next.length() !== 0))
+      ) {
         return [cur, index];
       }
       index -= length;
@@ -89,16 +94,23 @@ class LinkedList<T extends LinkedNode> {
   }
 
   forEach(callback: (cur: T) => void): void {
-    let cur, next = this.iterator();
-    while (cur = next()) {
+    let cur,
+      next = this.iterator();
+    while ((cur = next())) {
       callback(cur);
     }
   }
 
-  forEachAt(index: number, length: number, callback: (cur: T, offset: number, length: number) => void): void {
+  forEachAt(
+    index: number,
+    length: number,
+    callback: (cur: T, offset: number, length: number) => void,
+  ): void {
     if (length <= 0) return;
     let [startNode, offset] = this.find(index);
-    let cur, curIndex = index - offset, next = this.iterator(startNode);
+    let cur,
+      curIndex = index - offset,
+      next = this.iterator(startNode);
     while ((cur = next()) && curIndex < index + length) {
       let curLength = cur.length();
       if (index > curIndex) {
@@ -118,13 +130,13 @@ class LinkedList<T extends LinkedNode> {
   }
 
   reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {
-    let cur, next = this.iterator();
-    while (cur = next()) {
+    let cur,
+      next = this.iterator();
+    while ((cur = next())) {
       memo = callback(memo, cur);
     }
     return memo;
   }
 }
-
 
 export default LinkedList;

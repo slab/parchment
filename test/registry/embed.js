@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 class ImageBlot extends EmbedBlot {
   static create(value) {
@@ -30,7 +30,6 @@ class ImageBlot extends EmbedBlot {
 }
 ImageBlot.blotName = 'image';
 ImageBlot.tagName = 'IMG';
-
 
 class VideoBlot extends EmbedBlot {
   static create(value) {
@@ -67,7 +66,6 @@ class VideoBlot extends EmbedBlot {
 VideoBlot.blotName = 'video';
 VideoBlot.scope = Registry.Scope.BLOCK_BLOT;
 VideoBlot.tagName = 'VIDEO';
-
 
 Registry.register(ImageBlot);
 Registry.register(VideoBlot);

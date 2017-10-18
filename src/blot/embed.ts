@@ -1,7 +1,6 @@
 import { Formattable } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 
-
 class EmbedBlot extends LeafBlot implements Formattable {
   static formats(domNode: HTMLElement): any {
     return undefined;
@@ -26,6 +25,5 @@ class EmbedBlot extends LeafBlot implements Formattable {
     return this.statics.formats(this.domNode);
   }
 }
-
 
 export default EmbedBlot;

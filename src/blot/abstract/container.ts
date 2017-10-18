@@ -3,7 +3,6 @@ import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-
 class ContainerBlot extends ShadowBlot implements Parent {
   static defaultChild: string;
   static allowedChildren: any[];
@@ -19,15 +18,18 @@ class ContainerBlot extends ShadowBlot implements Parent {
     super.attach();
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
-    [].slice.call(this.domNode.childNodes).reverse().forEach((node) => {
-      try {
-        let child = makeBlot(node);
-        this.insertBefore(child, this.children.head);
-      } catch (err) {
-        if (err instanceof Registry.ParchmentError) return;
-        else throw err;
-      }
-    });
+    [].slice
+      .call(this.domNode.childNodes)
+      .reverse()
+      .forEach(node => {
+        try {
+          let child = makeBlot(node);
+          this.insertBefore(child, this.children.head);
+        } catch (err) {
+          if (err instanceof Registry.ParchmentError) return;
+          else throw err;
+        }
+      });
   }
 
   deleteAt(index: number, length: number): void {
@@ -39,12 +41,14 @@ class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  descendant<T>(criteria: { new (): T; }, index: number): [T, number];
+  descendant<T>(criteria: { new (): T }, index: number): [T, number];
   descendant<T>(criteria: (blot: Blot) => boolean, index: number): [T, number];
   descendant<T>(criteria: any, index: number): [T, number] {
     let [child, offset] = this.children.find(index);
-    if ((criteria.blotName == null && criteria(child)) ||
-        (criteria.blotName != null && child instanceof criteria)) {
+    if (
+      (criteria.blotName == null && criteria(child)) ||
+      (criteria.blotName != null && child instanceof criteria)
+    ) {
       return [<any>child, offset];
     } else if (child instanceof ContainerBlot) {
       return child.descendant<T>(criteria, offset);
@@ -53,13 +57,16 @@ class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
-  descendants<T>(criteria: { new (): T; }, index: number, length: number): T[];
+  descendants<T>(criteria: { new (): T }, index: number, length: number): T[];
   descendants<T>(criteria: (blot: Blot) => boolean, index: number, length: number): T[];
   descendants<T>(criteria: any, index: number = 0, length: number = Number.MAX_VALUE): T[] {
-    let descendants = [], lengthLeft = length;
+    let descendants = [],
+      lengthLeft = length;
     this.children.forEachAt(index, length, function(child, index, length) {
-      if ((criteria.blotName == null && criteria(child)) ||
-          (criteria.blotName != null && child instanceof criteria)) {
+      if (
+        (criteria.blotName == null && criteria(child)) ||
+        (criteria.blotName != null && child instanceof criteria)
+      ) {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
@@ -88,16 +95,21 @@ class ContainerBlot extends ShadowBlot implements Parent {
     if (child) {
       child.insertAt(offset, value, def);
     } else {
-      let blot = (def == null) ? Registry.create('text', value) : Registry.create(value, def);
+      let blot = def == null ? Registry.create('text', value) : Registry.create(value, def);
       this.appendChild(blot);
     }
   }
 
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
-    if (this.statics.allowedChildren != null && !this.statics.allowedChildren.some(function(child) {
-      return childBlot instanceof child;
-    })) {
-      throw new Registry.ParchmentError(`Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${this.statics.blotName}`);
+    if (
+      this.statics.allowedChildren != null &&
+      !this.statics.allowedChildren.some(function(child) {
+        return childBlot instanceof child;
+      })
+    ) {
+      throw new Registry.ParchmentError(
+        `Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${this.statics.blotName}`,
+      );
     }
     childBlot.insertInto(this, refBlot);
   }
@@ -114,7 +126,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  optimize(context: {[key: string]: any}) {
+  optimize(context: { [key: string]: any }) {
     super.optimize(context);
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
@@ -168,20 +180,24 @@ class ContainerBlot extends ShadowBlot implements Parent {
     this.remove();
   }
 
-  update(mutations: MutationRecord[], context: {[key: string]: any}): void {
-    let addedNodes = [], removedNodes = [];
-    mutations.forEach((mutation) => {
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+    let addedNodes = [],
+      removedNodes = [];
+    mutations.forEach(mutation => {
       if (mutation.target === this.domNode && mutation.type === 'childList') {
         addedNodes.push.apply(addedNodes, mutation.addedNodes);
         removedNodes.push.apply(removedNodes, mutation.removedNodes);
       }
     });
-    removedNodes.forEach((node) => {
+    removedNodes.forEach(node => {
       // Check node has actually been removed
       // One exception is Chrome does not immediately remove IFRAMEs
       // from DOM but MutationRecord is correct in its reported removal
-      if (node.parentNode != null && node.tagName !== 'IFRAME' &&
-          (document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY)) {
+      if (
+        node.parentNode != null &&
+        node.tagName !== 'IFRAME' &&
+        document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
+      ) {
         return;
       }
       let blot = Registry.find(node);
@@ -190,30 +206,32 @@ class ContainerBlot extends ShadowBlot implements Parent {
         blot.detach();
       }
     });
-    addedNodes.filter((node) => {
-      return node.parentNode == this.domNode;
-    }).sort(function(a, b) {
-      if (a === b) return 0;
-      if (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) {
-        return 1;
-      }
-      return -1;
-    }).forEach((node) => {
-      let refBlot = null;
-      if (node.nextSibling != null) {
-        refBlot = Registry.find(node.nextSibling);
-      }
-      let blot = makeBlot(node);
-      if (blot.next != refBlot || blot.next == null) {
-        if (blot.parent != null) {
-          blot.parent.removeChild(this);
+    addedNodes
+      .filter(node => {
+        return node.parentNode == this.domNode;
+      })
+      .sort(function(a, b) {
+        if (a === b) return 0;
+        if (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) {
+          return 1;
         }
-        this.insertBefore(blot, refBlot);
-      }
-    });
+        return -1;
+      })
+      .forEach(node => {
+        let refBlot = null;
+        if (node.nextSibling != null) {
+          refBlot = Registry.find(node.nextSibling);
+        }
+        let blot = makeBlot(node);
+        if (blot.next != refBlot || blot.next == null) {
+          if (blot.parent != null) {
+            blot.parent.removeChild(this);
+          }
+          this.insertBefore(blot, refBlot);
+        }
+      });
   }
 }
-
 
 function makeBlot(node): Blot {
   let blot = Registry.find(node);
@@ -231,6 +249,5 @@ function makeBlot(node): Blot {
   }
   return blot;
 }
-
 
 export default ContainerBlot;

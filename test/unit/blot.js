@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 describe('Blot', function() {
   it('offset()', function() {
@@ -12,7 +12,7 @@ describe('Blot', function() {
 
   it('detach()', function() {
     let blot = Registry.create('block');
-    expect(blot.domNode[Registry.DATA_KEY]).toEqual({blot: blot});
+    expect(blot.domNode[Registry.DATA_KEY]).toEqual({ blot: blot });
     blot.detach();
     expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
   });
