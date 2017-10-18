@@ -10,6 +10,7 @@ class ShadowBlot implements Blot {
   prev: Blot;
   next: Blot;
   parent: Parent;
+  scroll: Parent;
 
   // Hack for accessing inherited static methods
   get statics(): any {
@@ -99,6 +100,7 @@ class ShadowBlot implements Blot {
       );
     }
     this.parent = parentBlot;
+    this.scroll = parentBlot.scroll;
   }
 
   isolate(index: number, length: number): Blot {

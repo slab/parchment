@@ -2,6 +2,7 @@ import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
 
 export interface Blot extends LinkedNode {
+  scroll: Parent;
   parent: Parent;
   prev: Blot;
   next: Blot;

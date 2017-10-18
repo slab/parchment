@@ -28,6 +28,7 @@ class ScrollBlot extends ContainerBlot {
       this.update(mutations);
     });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
+    this.scroll = this;
   }
 
   detach() {
