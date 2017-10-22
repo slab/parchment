@@ -10,12 +10,8 @@ class ContainerBlot extends ShadowBlot implements Parent {
   children: LinkedList<Blot>;
   domNode: HTMLElement;
 
-  appendChild(other: Blot): void {
-    this.insertBefore(other);
-  }
-
-  attach(): void {
-    super.attach();
+  constructor(domNode: Node) {
+    super(domNode);
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     [].slice
@@ -31,6 +27,12 @@ class ContainerBlot extends ShadowBlot implements Parent {
         }
       });
   }
+
+  appendChild(other: Blot): void {
+    this.insertBefore(other);
+  }
+
+  attach(): void {}
 
   deleteAt(index: number, length: number): void {
     if (index === 0 && length === this.length()) {

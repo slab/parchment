@@ -46,12 +46,10 @@ class ShadowBlot implements Blot {
   }
 
   constructor(public domNode: Node) {
-    this.attach();
-  }
-
-  attach() {
     this.domNode[Registry.DATA_KEY] = { blot: this };
   }
+
+  attach() {}
 
   clone(): Blot {
     let domNode = this.domNode.cloneNode(false);
@@ -100,7 +98,6 @@ class ShadowBlot implements Blot {
       );
     }
     this.parent = parentBlot;
-    this.scroll = parentBlot.scroll;
   }
 
   isolate(index: number, length: number): Blot {

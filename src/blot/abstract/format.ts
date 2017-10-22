@@ -17,9 +17,13 @@ class FormatBlot extends ContainerBlot implements Formattable {
     return undefined;
   }
 
+  constructor(domNode: Node) {
+    super(domNode);
+    this.attributes = new AttributorStore(this.domNode);
+  }
+
   attach(): void {
     super.attach();
-    this.attributes = new AttributorStore(this.domNode);
   }
 
   format(name: string, value: any): void {
