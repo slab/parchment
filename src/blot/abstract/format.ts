@@ -22,10 +22,6 @@ class FormatBlot extends ContainerBlot implements Formattable {
     this.attributes = new AttributorStore(this.domNode);
   }
 
-  attach(): void {
-    super.attach();
-  }
-
   format(name: string, value: any): void {
     let format = Registry.query(name);
     if (format instanceof Attributor) {

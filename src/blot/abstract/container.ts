@@ -32,7 +32,12 @@ class ContainerBlot extends ShadowBlot implements Parent {
     this.insertBefore(other);
   }
 
-  attach(): void {}
+  attach(): void {
+    super.attach();
+    this.children.forEach(child => {
+      child.attach();
+    });
+  }
 
   deleteAt(index: number, length: number): void {
     if (index === 0 && length === this.length()) {

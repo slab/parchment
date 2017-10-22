@@ -71,4 +71,27 @@ describe('Scroll', function() {
       }, 1);
     }, 1);
   });
+
+  describe('scroll reference', function() {
+    it('initialization', function() {
+      expect(this.container.scroll).toEqual(this.container);
+      this.container.descendants(blot => {
+        expect(blot.scroll).toEqual(this.container);
+      });
+    });
+
+    it('api change', function() {
+      const blot = Registry.create('text', 'Test');
+      this.container.appendChild(blot);
+      expect(blot.scroll).toEqual(this.container);
+    });
+
+    it('user change', function() {
+      this.container.domNode.innerHTML = '<p><em>01</em>23</p>';
+      this.container.update();
+      this.container.descendants(blot => {
+        expect(blot.scroll).toEqual(this.container);
+      });
+    });
+  });
 });

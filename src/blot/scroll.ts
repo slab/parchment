@@ -24,11 +24,12 @@ class ScrollBlot extends ContainerBlot {
   constructor(node: HTMLDivElement) {
     super(node);
     this.parent = null;
+    this.scroll = this;
     this.observer = new MutationObserver((mutations: MutationRecord[]) => {
       this.update(mutations);
     });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
-    this.scroll = this;
+    this.attach();
   }
 
   detach() {
