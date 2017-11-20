@@ -190,4 +190,13 @@ describe('Attributor', function() {
     let indentAttributor = Registry.query('indent');
     expect(indentAttributor.value(block.domNode)).toBeFalsy();
   });
+
+  it('removes quotes from attribute value when checking if canAdd', function () {
+    let node = document.createElement('strong');
+    let familyAttributor = Registry.query('family');
+    expect(familyAttributor.canAdd(node, 'Arial')).toBeTruthy();
+    expect(familyAttributor.canAdd(node, '"Times New Roman"')).toBeTruthy();
+    expect(familyAttributor.canAdd(node, 'monotype')).toBeFalsy();
+    expect(familyAttributor.canAdd(node, '"Lucida Grande"')).toBeFalsy();
+  });
 });
