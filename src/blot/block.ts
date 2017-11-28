@@ -43,7 +43,7 @@ class BlockBlot extends FormatBlot {
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     if (navigator.userAgent.match(/Trident/)) {
-      this.attach();
+      this.build();
     } else {
       super.update(mutations, context);
     }
