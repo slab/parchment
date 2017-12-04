@@ -23,6 +23,7 @@ let Parchment = {
   find: Registry.find,
   query: Registry.query,
   register: Registry.register,
+  setActiveRegistry: Registry.setActiveRegistry,
 
   Container: ContainerBlot,
   Format: FormatBlot,

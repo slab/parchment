@@ -7,6 +7,13 @@ export interface BlotConstructor {
   create(value?): Node;
 }
 
+interface ActiveRegistry {
+    attributes: { [key: string]: Attributor };
+    classes: { [key: string]: BlotConstructor };
+    tags: { [key: string]: BlotConstructor };
+    types: { [key: string]: Attributor | BlotConstructor };
+}
+
 export class ParchmentError extends Error {
   message: string;
   name: string;
@@ -24,8 +31,72 @@ let attributes: { [key: string]: Attributor } = {};
 let classes: { [key: string]: BlotConstructor } = {};
 let tags: { [key: string]: BlotConstructor } = {};
 let types: { [key: string]: Attributor | BlotConstructor } = {};
+let activeRegistryKey: string = null;
+let secondaryRegistries: { [key: string]: ActiveRegistry } = {};
+
+const EMPTY_REGISTRY: ActiveRegistry = {
+  attributes: {},
+  classes: {},
+  tags: {},
+  types: {}
+};
 
 export const DATA_KEY = '__blot';
+
+// If the activeRegistryKey is not null, use secondaryRegistries per the respective editor
+function updateActiveRegistry(groupName: string, key: string, value: any) {
+  if (activeRegistryKey) {
+    if (!secondaryRegistries[activeRegistryKey]) {
+      secondaryRegistries[activeRegistryKey] = {
+        attributes,
+        classes,
+        tags,
+        types
+      };
+    }
+    secondaryRegistries[activeRegistryKey][groupName][key] = value;
+  } else {
+    switch (groupName) {
+      case 'attributes':
+        attributes[key] = value;
+        break;
+      case 'classes':
+        classes[key] = value;
+        break;
+      case 'tags':
+        tags[key] = value;
+        break;
+      case 'types':
+        types[key] = value;
+        break;
+    }
+  }
+}
+
+function getMatch(groupName: string, key: string) {
+  if (activeRegistryKey) {
+    if (!secondaryRegistries[activeRegistryKey]) {
+      secondaryRegistries[activeRegistryKey] = {
+        attributes,
+        classes,
+        tags,
+        types
+      };;
+    }
+    return secondaryRegistries[activeRegistryKey][groupName][key];
+  } else {
+    switch (groupName) {
+      case 'attributes':
+        return attributes[key];
+      case 'classes':
+        return classes[key];
+      case 'tags':
+        return tags[key];
+      case 'types':
+        return types[key];
+    }
+  }
+}
 
 export enum Scope {
   TYPE = (1 << 2) - 1, // 0011 Lower two bits
@@ -68,22 +139,22 @@ export function query(
 ): Attributor | BlotConstructor {
   let match;
   if (typeof query === 'string') {
-    match = types[query] || attributes[query];
+    match = getMatch('types', query) || getMatch('attributes', query);
   } else if (query instanceof Text || query['nodeType'] === Node.TEXT_NODE) {
-    match = types['text'];
+    match = getMatch('types', 'text');
   } else if (typeof query === 'number') {
     if (query & Scope.LEVEL & Scope.BLOCK) {
-      match = types['block'];
+      match = getMatch('types', 'block');
     } else if (query & Scope.LEVEL & Scope.INLINE) {
-      match = types['inline'];
+      match = getMatch('types', 'inline');
     }
   } else if (query instanceof HTMLElement) {
     let names = (query.getAttribute('class') || '').split(/\s+/);
     for (let i in names) {
-      match = classes[names[i]];
+      match = getMatch('classes', names[i]);
       if (match) break;
     }
-    match = match || tags[query.tagName];
+    match = match || getMatch('tags', query.tagName);
   }
   if (match == null) return null;
   if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) return match;
@@ -102,12 +173,12 @@ export function register(...Definitions) {
   } else if (Definition.blotName === 'abstract') {
     throw new ParchmentError('Cannot register abstract class');
   }
-  types[Definition.blotName || Definition.attrName] = Definition;
+  updateActiveRegistry('types', Definition.blotName || Definition.attrName, Definition);
   if (typeof Definition.keyName === 'string') {
-    attributes[Definition.keyName] = Definition;
+    updateActiveRegistry('attributes', Definition.keyName, Definition);
   } else {
     if (Definition.className != null) {
-      classes[Definition.className] = Definition;
+      updateActiveRegistry('classes', Definition.className, Definition);
     }
     if (Definition.tagName != null) {
       if (Array.isArray(Definition.tagName)) {
@@ -120,10 +191,26 @@ export function register(...Definitions) {
       let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
       tagNames.forEach(function(tag) {
         if (tags[tag] == null || Definition.className == null) {
+          updateActiveRegistry('tags', tag, Definition);
           tags[tag] = Definition;
         }
       });
     }
   }
   return Definition;
+}
+
+export function setActiveRegistry(registryKey: string | null) {
+    if (!registryKey.length) {
+      throw new ParchmentError('registryKey must be a valid string');
+    }
+    activeRegistryKey = registryKey;
+}
+
+// For garbarge collecting
+export function destroyActiveRegistry(registryKey: string) {
+  if (activeRegistryKey === registryKey) {
+    activeRegistryKey = null;
+  }
+  delete secondaryRegistries[activeRegistryKey];
 }
