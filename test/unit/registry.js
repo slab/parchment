@@ -1,6 +1,10 @@
 'use strict';
 
 describe('Registry', function() {
+  beforeEach(function() {
+    Registry.destroyActiveRegistry('abc');
+  });
+  
   describe('create()', function() {
     it('name', function() {
       let blot = Registry.create('bold');
@@ -130,6 +134,55 @@ describe('Registry', function() {
     it('type match and level mismatch', function() {
       let match = Registry.query('italic', Registry.Scope.BLOCK & Registry.Scope.BLOT);
       expect(match).toBeFalsy();
+    });
+  });
+
+  describe('setActiveRegistry()', function() {
+    it('set activeRegistryKey to string value', function() {
+      expect(Registry.getActiveRegistry()).toBe(null);
+      Registry.setActiveRegistry('abc');
+      const expected = 'abc';
+      const actual = Registry.getActiveRegistry();
+      expect(actual).toEqual(expected);
+    });
+
+    it('invalid', function() {
+      expect(function() {
+        Registry.setActiveRegistry(123);
+      }).toThrowError(/\[Parchment\]/);
+    })
+  });
+
+  describe('updateActiveRegistry() and getMatch()', function() {
+    beforeEach(function() {
+      Registry.destroyActiveRegistry('abc');
+    });
+    it('update global registry values', function() {
+      expect(Registry.getActiveRegistry()).toBe(null);
+      ['attributes', 'classes', 'tags', 'types'].forEach((groupName) => {
+        Registry.updateActiveRegistry(groupName, 'mockKey', 'mockValue');
+        expect(Registry.getMatch(groupName, 'mockKey')).toEqual('mockValue');
+      });
+    });
+
+    it('update editory specific registry values', function() {
+      expect(Registry.getActiveRegistry()).toBe(null);
+      Registry.setActiveRegistry('abc');
+      expect(Registry.getActiveRegistry()).toBe('abc');
+      ['attributes', 'classes', 'tags', 'types'].forEach((groupName) => {
+        Registry.updateActiveRegistry(groupName, 'mockKey', 'mockValue');
+        expect(Registry.getMatch(groupName, 'mockKey')).toEqual('mockValue');
+      });
+    });
+  });
+
+  describe('destroyActiveRegistry()', function() {
+    it('clear registry', function() {
+      expect(Registry.getActiveRegistry()).toBe(null);
+      Registry.setActiveRegistry('abc');
+      expect(Registry.getActiveRegistry()).toBe('abc');
+      Registry.destroyActiveRegistry('abc');
+      expect(Registry.getActiveRegistry()).toBe(null);
     });
   });
 });

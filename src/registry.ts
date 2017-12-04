@@ -34,6 +34,7 @@ let types: { [key: string]: Attributor | BlotConstructor } = {};
 let activeRegistryKey: string = null;
 let secondaryRegistries: { [key: string]: ActiveRegistry } = {};
 
+
 const EMPTY_REGISTRY: ActiveRegistry = {
   attributes: {},
   classes: {},
@@ -44,7 +45,7 @@ const EMPTY_REGISTRY: ActiveRegistry = {
 export const DATA_KEY = '__blot';
 
 // If the activeRegistryKey is not null, use secondaryRegistries per the respective editor
-function updateActiveRegistry(groupName: string, key: string, value: any) {
+export function updateActiveRegistry(groupName: string, key: string, value: any) {
   if (activeRegistryKey) {
     if (!secondaryRegistries[activeRegistryKey]) {
       secondaryRegistries[activeRegistryKey] = {
@@ -73,7 +74,7 @@ function updateActiveRegistry(groupName: string, key: string, value: any) {
   }
 }
 
-function getMatch(groupName: string, key: string) {
+export function getMatch(groupName: string, key: string) {
   if (activeRegistryKey) {
     if (!secondaryRegistries[activeRegistryKey]) {
       secondaryRegistries[activeRegistryKey] = {
@@ -200,11 +201,16 @@ export function register(...Definitions) {
   return Definition;
 }
 
+// For testing purposes only
+export function getActiveRegistry() {
+  return activeRegistryKey;
+}
+
 export function setActiveRegistry(registryKey: string | null) {
-    if (!registryKey.length) {
-      throw new ParchmentError('registryKey must be a valid string');
-    }
-    activeRegistryKey = registryKey;
+  if (!registryKey.length) {
+    throw new ParchmentError('registryKey must be a valid string');
+  }
+  activeRegistryKey = registryKey;
 }
 
 // For garbarge collecting
