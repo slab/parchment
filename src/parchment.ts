@@ -20,9 +20,11 @@ let Parchment = {
   Scope: Registry.Scope,
 
   create: Registry.create,
+  destroyActiveRegistry: Registry.destroyActiveRegistry,
   find: Registry.find,
   query: Registry.query,
   register: Registry.register,
+  setActiveRegistry: Registry.setActiveRegistry,
 
   Container: ContainerBlot,
   Format: FormatBlot,
