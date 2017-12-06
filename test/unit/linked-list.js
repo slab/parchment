@@ -23,8 +23,8 @@ describe('LinkedList', function() {
       expect(this.list.length).toBe(1);
       expect(this.list.head).toBe(this.a);
       expect(this.list.tail).toBe(this.a);
-      expect(this.a.prev).toBeUndefined();
-      expect(this.a.next).toBeUndefined();
+      expect(this.a.prev).toBeNull();
+      expect(this.a.next).toBeNull();
     });
 
     it('insert to become head', function() {
@@ -33,22 +33,22 @@ describe('LinkedList', function() {
       expect(this.list.length).toBe(2);
       expect(this.list.head).toBe(this.a);
       expect(this.list.tail).toBe(this.b);
-      expect(this.a.prev).toBeUndefined();
+      expect(this.a.prev).toBeNull();
       expect(this.a.next).toBe(this.b);
       expect(this.b.prev).toBe(this.a);
-      expect(this.b.next).toBeUndefined();
+      expect(this.b.next).toBeNull();
     });
 
     it('insert to become tail', function() {
       this.list.append(this.a);
-      this.list.insertBefore(this.b, undefined);
+      this.list.insertBefore(this.b, null);
       expect(this.list.length).toBe(2);
       expect(this.list.head).toBe(this.a);
       expect(this.list.tail).toBe(this.b);
-      expect(this.a.prev).toBeUndefined();
+      expect(this.a.prev).toBeNull();
       expect(this.a.next).toBe(this.b);
       expect(this.b.prev).toBe(this.a);
-      expect(this.b.next).toBeUndefined();
+      expect(this.b.next).toBeNull();
     });
 
     it('insert in middle', function() {
@@ -67,8 +67,8 @@ describe('LinkedList', function() {
       expect(this.list.length).toBe(1);
       expect(this.list.head).toBe(this.b);
       expect(this.list.tail).toBe(this.b);
-      expect(this.list.head.prev).toBeUndefined();
-      expect(this.list.tail.next).toBeUndefined();
+      expect(this.list.head.prev).toBeNull();
+      expect(this.list.tail.next).toBeNull();
     });
 
     it('remove tail', function() {
@@ -77,8 +77,8 @@ describe('LinkedList', function() {
       expect(this.list.length).toBe(1);
       expect(this.list.head).toBe(this.a);
       expect(this.list.tail).toBe(this.a);
-      expect(this.list.head.prev).toBeUndefined();
-      expect(this.list.tail.next).toBeUndefined();
+      expect(this.list.head.prev).toBeNull();
+      expect(this.list.tail.next).toBeNull();
     });
 
     it('remove inner', function() {
@@ -87,8 +87,8 @@ describe('LinkedList', function() {
       expect(this.list.length).toBe(2);
       expect(this.list.head).toBe(this.a);
       expect(this.list.tail).toBe(this.c);
-      expect(this.list.head.prev).toBeUndefined();
-      expect(this.list.tail.next).toBeUndefined();
+      expect(this.list.head.prev).toBeNull();
+      expect(this.list.tail.next).toBeNull();
       expect(this.a.next).toBe(this.c);
       expect(this.c.prev).toBe(this.a);
       // Maintain references
@@ -100,8 +100,8 @@ describe('LinkedList', function() {
       this.list.append(this.a);
       this.list.remove(this.a);
       expect(this.list.length).toBe(0);
-      expect(this.list.head).toBeUndefined();
-      expect(this.list.tail).toBeUndefined();
+      expect(this.list.head).toBeNull();
+      expect(this.list.tail).toBeNull();
     });
 
     it('contains', function() {
@@ -117,8 +117,8 @@ describe('LinkedList', function() {
       this.list.remove(this.a);
       this.list.remove(this.c);
       this.list.append(this.b);
-      expect(this.b.prev).toBeUndefined();
-      expect(this.b.next).toBeUndefined();
+      expect(this.b.prev).toBeNull();
+      expect(this.b.next).toBeNull();
     });
   });
 
@@ -145,7 +145,7 @@ describe('LinkedList', function() {
       let d = next();
       expect(b).toBe(this.b);
       expect(c).toBe(this.c);
-      expect(d).toBeUndefined();
+      expect(d).toBeNull();
     });
 
     it('find', function() {

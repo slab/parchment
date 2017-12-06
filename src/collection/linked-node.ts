@@ -1,6 +1,6 @@
 interface LinkedNode {
-  prev: LinkedNode;
-  next: LinkedNode;
+  prev: LinkedNode | null;
+  next: LinkedNode | null;
 
   length(): number;
 }

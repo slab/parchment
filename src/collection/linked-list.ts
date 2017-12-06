@@ -1,17 +1,17 @@
 import LinkedNode from './linked-node';
 
 class LinkedList<T extends LinkedNode> {
-  head: T;
-  tail: T;
+  head: T | null;
+  tail: T | null;
   length: number;
 
   constructor() {
-    this.head = this.tail = undefined;
+    this.head = this.tail = null;
     this.length = 0;
   }
 
   append(...nodes: T[]): void {
-    this.insertBefore(nodes[0], undefined);
+    this.insertBefore(nodes[0], null);
     if (nodes.length > 1) {
       this.append.apply(this, nodes.slice(1));
     }
@@ -26,7 +26,8 @@ class LinkedList<T extends LinkedNode> {
     return false;
   }
 
-  insertBefore(node: T, refNode: T): void {
+  insertBefore(node: T | null, refNode: T | null): void {
+    if (!node) return
     node.next = refNode;
     if (refNode != null) {
       node.prev = refNode.prev;
@@ -42,7 +43,7 @@ class LinkedList<T extends LinkedNode> {
       node.prev = this.tail;
       this.tail = node;
     } else {
-      node.prev = undefined;
+      node.prev = null;
       this.head = this.tail = node;
     }
     this.length += 1;
@@ -68,16 +69,16 @@ class LinkedList<T extends LinkedNode> {
     this.length -= 1;
   }
 
-  iterator(curNode: T = this.head): () => T {
+  iterator(curNode: T | null = this.head): () => T | null {
     // TODO use yield when we can
-    return function(): T {
+    return function(): T | null {
       let ret = curNode;
       if (curNode != null) curNode = <T>curNode.next;
       return ret;
     };
   }
 
-  find(index: number, inclusive: boolean = false): [T, number] {
+  find(index: number, inclusive: boolean = false): [T | null, number] {
     let cur,
       next = this.iterator();
     while ((cur = next())) {
@@ -122,8 +123,8 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  map(callback: (cur: T) => any): any[] {
-    return this.reduce(function(memo, cur: T) {
+  map(callback: (cur: T | null) => any): any[] {
+    return this.reduce(function(memo: (T | null)[], cur: T | null) {
       memo.push(callback(cur));
       return memo;
     }, []);
