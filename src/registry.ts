@@ -4,7 +4,7 @@ import { Blot, Formattable } from './blot/abstract/blot';
 export interface BlotConstructor {
   blotName: string;
   new (node: Node, value?: any): Blot;
-  create(value?): Node;
+  create(value?: any): Node;
 }
 
 export class ParchmentError extends Error {
@@ -12,7 +12,7 @@ export class ParchmentError extends Error {
   name: string;
   stack: string;
 
-  constructor(message) {
+  constructor(message: string) {
     message = '[Parchment] ' + message;
     super(message);
     this.message = message;
@@ -55,7 +55,7 @@ export function create(input: Node | string | Scope, value?: any): Blot {
   return new BlotClass(<Node>node, value);
 }
 
-export function find(node: Node, bubble: boolean = false): Blot {
+export function find(node: Node | null, bubble: boolean = false): Blot | null {
   if (node == null) return null;
   if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
   if (bubble) return find(node.parentNode, bubble);
@@ -65,7 +65,7 @@ export function find(node: Node, bubble: boolean = false): Blot {
 export function query(
   query: string | Node | Scope,
   scope: Scope = Scope.ANY,
-): Attributor | BlotConstructor {
+): Attributor | BlotConstructor | null {
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
@@ -111,14 +111,14 @@ export function register(...Definitions) {
     }
     if (Definition.tagName != null) {
       if (Array.isArray(Definition.tagName)) {
-        Definition.tagName = Definition.tagName.map(function(tagName) {
+        Definition.tagName = Definition.tagName.map(function(tagName: string) {
           return tagName.toUpperCase();
         });
       } else {
         Definition.tagName = Definition.tagName.toUpperCase();
       }
       let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
-      tagNames.forEach(function(tag) {
+      tagNames.forEach(function(tag: string) {
         if (tags[tag] == null || Definition.className == null) {
           tags[tag] = Definition;
         }

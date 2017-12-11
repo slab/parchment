@@ -23,7 +23,6 @@ class ScrollBlot extends ContainerBlot {
 
   constructor(node: HTMLDivElement) {
     super(node);
-    this.parent = null;
     this.scroll = this;
     this.observer = new MutationObserver((mutations: MutationRecord[]) => {
       this.update(mutations);
@@ -58,7 +57,9 @@ class ScrollBlot extends ContainerBlot {
     super.insertAt(index, value, def);
   }
 
-  optimize(mutations: MutationRecord[] = [], context: { [key: string]: any } = {}): void {
+  optimize(context: { [key: string]: any });
+  optimize(mutations: MutationRecord[], context: { [key: string]: any });
+  optimize(mutations: any = [], context: any = {}): void {
     super.optimize(context);
     // We must modify mutations directly, cannot make copy and then modify
     let records = [].slice.call(this.observer.takeRecords());
@@ -66,7 +67,7 @@ class ScrollBlot extends ContainerBlot {
     // so we cannot just mutations.push.apply(mutations, this.observer.takeRecords());
     while (records.length > 0) mutations.push(records.pop());
     // TODO use WeakMap
-    let mark = (blot: Blot, markParent: boolean = true) => {
+    let mark = (blot: Blot | null, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {

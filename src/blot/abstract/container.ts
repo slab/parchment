@@ -35,7 +35,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       .forEach(node => {
         try {
           let child = makeBlot(node);
-          this.insertBefore(child, this.children.head);
+          this.insertBefore(child, this.children.head || undefined);
         } catch (err) {
           if (err instanceof Registry.ParchmentError) return;
           else throw err;
@@ -52,9 +52,9 @@ class ContainerBlot extends ShadowBlot implements Parent {
     });
   }
 
-  descendant<T>(criteria: { new (): T }, index: number): [T, number];
-  descendant<T>(criteria: (blot: Blot) => boolean, index: number): [T, number];
-  descendant<T>(criteria: any, index: number): [T, number] {
+  descendant(criteria: { new (): Blot }, index: number): [Blot | null, number];
+  descendant(criteria: (blot: Blot) => boolean, index: number): [Blot | null, number];
+  descendant(criteria: any, index: number): [Blot | null, number] {
     let [child, offset] = this.children.find(index);
     if (
       (criteria.blotName == null && criteria(child)) ||
@@ -62,18 +62,18 @@ class ContainerBlot extends ShadowBlot implements Parent {
     ) {
       return [<any>child, offset];
     } else if (child instanceof ContainerBlot) {
-      return child.descendant<T>(criteria, offset);
+      return child.descendant(criteria, offset);
     } else {
       return [null, -1];
     }
   }
 
-  descendants<T>(criteria: { new (): T }, index: number, length: number): T[];
-  descendants<T>(criteria: (blot: Blot) => boolean, index: number, length: number): T[];
-  descendants<T>(criteria: any, index: number = 0, length: number = Number.MAX_VALUE): T[] {
-    let descendants = [],
-      lengthLeft = length;
-    this.children.forEachAt(index, length, function(child, index, length) {
+  descendants(criteria: { new (): Blot }, index: number, length: number): Blot[];
+  descendants(criteria: (blot: Blot) => boolean, index: number, length: number): Blot[];
+  descendants(criteria: any, index: number = 0, length: number = Number.MAX_VALUE): Blot[] {
+    let descendants: Blot[] = [];
+    let lengthLeft = length;
+    this.children.forEachAt(index, length, function(child: Blot, index: number, length: number) {
       if (
         (criteria.blotName == null && criteria(child)) ||
         (criteria.blotName != null && child instanceof criteria)
@@ -192,21 +192,21 @@ class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
-    let addedNodes = [],
-      removedNodes = [];
+    let addedNodes: Node[] = [];
+    let removedNodes: Node[] = [];
     mutations.forEach(mutation => {
       if (mutation.target === this.domNode && mutation.type === 'childList') {
         addedNodes.push.apply(addedNodes, mutation.addedNodes);
         removedNodes.push.apply(removedNodes, mutation.removedNodes);
       }
     });
-    removedNodes.forEach(node => {
+    removedNodes.forEach((node: Node) => {
       // Check node has actually been removed
       // One exception is Chrome does not immediately remove IFRAMEs
       // from DOM but MutationRecord is correct in its reported removal
       if (
         node.parentNode != null &&
-        node.tagName !== 'IFRAME' &&
+        node['tagName'] !== 'IFRAME' &&
         document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
       ) {
         return;
@@ -229,7 +229,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
         return -1;
       })
       .forEach(node => {
-        let refBlot = null;
+        let refBlot: Blot | null = null;
         if (node.nextSibling != null) {
           refBlot = Registry.find(node.nextSibling);
         }
@@ -238,7 +238,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
           if (blot.parent != null) {
             blot.parent.removeChild(this);
           }
-          this.insertBefore(blot, refBlot);
+          this.insertBefore(blot, refBlot || undefined);
         }
       });
   }
@@ -252,6 +252,7 @@ function makeBlot(node): Blot {
     } catch (e) {
       blot = Registry.create(Registry.Scope.INLINE);
       [].slice.call(node.childNodes).forEach(function(child) {
+        // @ts-ignore
         blot.domNode.appendChild(child);
       });
       node.parentNode.replaceChild(blot.domNode, node);
