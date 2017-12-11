@@ -18,24 +18,39 @@ import LinkedList from '../src/collection/linked-list';
 import * as Registry from '../src/registry';
 import Parchment from '../src/parchment';
 
+// @ts-ignore
 window['Attributor'] = Attributor;
+// @ts-ignore
 window['ClassAttributor'] = ClassAttributor;
+// @ts-ignore
 window['StyleAttributor'] = StyleAttributor;
 
+// @ts-ignore
 window['ShadowBlot'] = ShadowBlot;
+// @ts-ignore
 window['ContainerBlot'] = ContainerBlot;
+// @ts-ignore
 window['FormatBlot'] = FormatBlot;
+// @ts-ignore
 window['LeafBlot'] = LeafBlot;
+// @ts-ignore
 window['EmbedBlot'] = EmbedBlot;
 
+// @ts-ignore
 window['ScrollBlot'] = ScrollBlot;
+// @ts-ignore
 window['BlockBlot'] = BlockBlot;
+// @ts-ignore
 window['InlineBlot'] = InlineBlot;
+// @ts-ignore
 window['TextBlot'] = TextBlot;
 
+// @ts-ignore
 window['LinkedList'] = LinkedList;
 
+// @ts-ignore
 window['Parchment'] = Parchment;
+// @ts-ignore
 window['Registry'] = Registry;
 
 Registry.register(ScrollBlot);
