@@ -58,7 +58,7 @@ describe('TextBlot', function() {
     let before = textBlot.split(0);
     let after = textBlot.split(4);
     expect(before).toEqual(textBlot);
-    expect(after).toEqual(undefined);
+    expect(after).toBe(null);
   });
 
   it('split() force', function() {
