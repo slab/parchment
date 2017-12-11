@@ -47,7 +47,7 @@ class ShadowBlot implements Blot {
 
   constructor(public domNode: Node) {
     // @ts-ignore
-    this.domNode[Registry.DATA_KEY] = store;
+    this.domNode[Registry.DATA_KEY] = { blot: this };
   }
 
   attach(): void {
