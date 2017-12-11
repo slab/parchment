@@ -9,7 +9,7 @@ class LeafBlot extends ShadowBlot implements Leaf {
     return true;
   }
 
-  index(node, offset): number {
+  index(node: Node, offset: number): number {
     if (
       this.domNode === node ||
       this.domNode.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY

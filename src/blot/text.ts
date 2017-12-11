@@ -15,6 +15,7 @@ class TextBlot extends LeafBlot implements Leaf {
 
   static value(domNode: Text): string {
     let text = domNode.data;
+    // @ts-ignore
     if (text['normalize']) text = text['normalize']();
     return text;
   }
@@ -28,7 +29,7 @@ class TextBlot extends LeafBlot implements Leaf {
     this.domNode.data = this.text = this.text.slice(0, index) + this.text.slice(index + length);
   }
 
-  index(node, offset): number {
+  index(node: Node, offset: number): number {
     if (this.domNode === node) {
       return offset;
     }

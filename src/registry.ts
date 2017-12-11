@@ -51,12 +51,14 @@ export function create(input: Node | string | Scope, value?: any): Blot {
   }
   let BlotClass = <BlotConstructor>match;
   let node =
+    // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
   return new BlotClass(<Node>node, value);
 }
 
 export function find(node: Node | null, bubble: boolean = false): Blot | null {
   if (node == null) return null;
+  // @ts-ignore
   if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
   if (bubble) return find(node.parentNode, bubble);
   return null;
@@ -69,6 +71,7 @@ export function query(
   let match;
   if (typeof query === 'string') {
     match = types[query] || attributes[query];
+    // @ts-ignore
   } else if (query instanceof Text || query['nodeType'] === Node.TEXT_NODE) {
     match = types['text'];
   } else if (typeof query === 'number') {
@@ -86,11 +89,12 @@ export function query(
     match = match || tags[query.tagName];
   }
   if (match == null) return null;
+  // @ts-ignore
   if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) return match;
   return null;
 }
 
-export function register(...Definitions) {
+export function register(...Definitions: any[]): any {
   if (Definitions.length > 1) {
     return Definitions.map(function(d) {
       return register(d);

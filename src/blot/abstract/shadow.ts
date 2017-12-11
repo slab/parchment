@@ -46,7 +46,8 @@ class ShadowBlot implements Blot {
   }
 
   constructor(public domNode: Node) {
-    this.domNode[Registry.DATA_KEY] = { blot: this };
+    // @ts-ignore
+    this.domNode[Registry.DATA_KEY] = store;
   }
 
   attach(): void {
@@ -62,6 +63,7 @@ class ShadowBlot implements Blot {
 
   detach() {
     if (this.parent != null) this.parent.removeChild(this);
+    // @ts-ignore
     delete this.domNode[Registry.DATA_KEY];
   }
 
@@ -120,7 +122,9 @@ class ShadowBlot implements Blot {
 
   optimize(context: { [key: string]: any }): void {
     // TODO clean up once we use WeakMap
+    // @ts-ignore
     if (this.domNode[Registry.DATA_KEY] != null) {
+      // @ts-ignore
       delete this.domNode[Registry.DATA_KEY].mutations;
     }
   }

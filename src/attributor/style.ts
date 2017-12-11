@@ -4,7 +4,7 @@ function camelize(name: string): string {
   let parts = name.split('-');
   let rest = parts
     .slice(1)
-    .map(function(part) {
+    .map(function(part: string) {
       return part[0].toUpperCase() + part.slice(1);
     })
     .join('');
@@ -12,7 +12,7 @@ function camelize(name: string): string {
 }
 
 class StyleAttributor extends Attributor {
-  static keys(node): string[] {
+  static keys(node: Element): string[] {
     return (node.getAttribute('style') || '').split(';').map(function(value) {
       let arr = value.split(':');
       return arr[0].trim();
@@ -21,11 +21,13 @@ class StyleAttributor extends Attributor {
 
   add(node: HTMLElement, value: string): boolean {
     if (!this.canAdd(node, value)) return false;
+    // @ts-ignore
     node.style[camelize(this.keyName)] = value;
     return true;
   }
 
   remove(node: HTMLElement): void {
+    // @ts-ignore
     node.style[camelize(this.keyName)] = '';
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
@@ -33,6 +35,7 @@ class StyleAttributor extends Attributor {
   }
 
   value(node: HTMLElement): string {
+    // @ts-ignore
     let value = node.style[camelize(this.keyName)];
     return this.canAdd(node, value) ? value : '';
   }

@@ -32,7 +32,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
     [].slice
       .call(this.domNode.childNodes)
       .reverse()
-      .forEach(node => {
+      .forEach((node: Node) => {
         try {
           let child = makeBlot(node);
           this.insertBefore(child, this.children.head || undefined);
@@ -114,7 +114,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
     if (
       this.statics.allowedChildren != null &&
-      !this.statics.allowedChildren.some(function(child) {
+      !this.statics.allowedChildren.some(function(child: Registry.BlotConstructor) {
         return childBlot instanceof child;
       })
     ) {
@@ -206,7 +206,8 @@ class ContainerBlot extends ShadowBlot implements Parent {
       // from DOM but MutationRecord is correct in its reported removal
       if (
         node.parentNode != null &&
-        node['tagName'] !== 'IFRAME' &&
+        // @ts-ignore
+        node.tagName !== 'IFRAME' &&
         document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
       ) {
         return;
@@ -244,18 +245,20 @@ class ContainerBlot extends ShadowBlot implements Parent {
   }
 }
 
-function makeBlot(node): Blot {
+function makeBlot(node: Node): Blot {
   let blot = Registry.find(node);
   if (blot == null) {
     try {
       blot = Registry.create(node);
     } catch (e) {
       blot = Registry.create(Registry.Scope.INLINE);
-      [].slice.call(node.childNodes).forEach(function(child) {
+      [].slice.call(node.childNodes).forEach(function(child: Node) {
         // @ts-ignore
         blot.domNode.appendChild(child);
       });
-      node.parentNode.replaceChild(blot.domNode, node);
+      if (node.parentNode) {
+        node.parentNode.replaceChild(blot.domNode, node);
+      }
       blot.attach();
     }
   }

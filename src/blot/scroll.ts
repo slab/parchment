@@ -57,8 +57,8 @@ class ScrollBlot extends ContainerBlot {
     super.insertAt(index, value, def);
   }
 
-  optimize(context: { [key: string]: any });
-  optimize(mutations: MutationRecord[], context: { [key: string]: any });
+  optimize(context: { [key: string]: any }): void;
+  optimize(mutations: MutationRecord[], context: { [key: string]: any }): void;
   optimize(mutations: any = [], context: any = {}): void {
     super.optimize(context);
     // We must modify mutations directly, cannot make copy and then modify
@@ -70,7 +70,9 @@ class ScrollBlot extends ContainerBlot {
     let mark = (blot: Blot | null, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
+      // @ts-ignore
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {
+        // @ts-ignore
         blot.domNode[Registry.DATA_KEY].mutations = [];
       }
       if (markParent) mark(blot.parent);
@@ -78,7 +80,9 @@ class ScrollBlot extends ContainerBlot {
     let optimize = function(blot: Blot) {
       // Post-order traversal
       if (
+        // @ts-ignore
         blot.domNode[Registry.DATA_KEY] == null ||
+        // @ts-ignore
         blot.domNode[Registry.DATA_KEY].mutations == null
       ) {
         return;
@@ -93,17 +97,17 @@ class ScrollBlot extends ContainerBlot {
       if (i >= MAX_OPTIMIZE_ITERATIONS) {
         throw new Error('[Parchment] Maximum optimize iterations reached');
       }
-      remaining.forEach(function(mutation) {
+      remaining.forEach(function(mutation: MutationRecord) {
         let blot = Registry.find(mutation.target, true);
         if (blot == null) return;
         if (blot.domNode === mutation.target) {
           if (mutation.type === 'childList') {
             mark(Registry.find(mutation.previousSibling, false));
-            [].forEach.call(mutation.addedNodes, function(node) {
+            [].forEach.call(mutation.addedNodes, function(node: Node) {
               let child = Registry.find(node, false);
               mark(child, false);
               if (child instanceof ContainerBlot) {
-                child.children.forEach(function(grandChild) {
+                child.children.forEach(function(grandChild: Blot) {
                   mark(grandChild, false);
                 });
               }
@@ -127,20 +131,27 @@ class ScrollBlot extends ContainerBlot {
     mutations
       .map(function(mutation: MutationRecord) {
         let blot = Registry.find(mutation.target, true);
-        if (blot == null) return;
+        if (blot == null) return null;
+        // @ts-ignore
         if (blot.domNode[Registry.DATA_KEY].mutations == null) {
+          // @ts-ignore
           blot.domNode[Registry.DATA_KEY].mutations = [mutation];
           return blot;
         } else {
+          // @ts-ignore
           blot.domNode[Registry.DATA_KEY].mutations.push(mutation);
           return null;
         }
       })
-      .forEach((blot: Blot) => {
+      .forEach((blot: Blot | null) => {
+        // @ts-ignore
         if (blot == null || blot === this || blot.domNode[Registry.DATA_KEY] == null) return;
+        // @ts-ignore
         blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
       });
+    // @ts-ignore
     if (this.domNode[Registry.DATA_KEY].mutations != null) {
+      // @ts-ignore
       super.update(this.domNode[Registry.DATA_KEY].mutations, context);
     }
     this.optimize(mutations, context);
