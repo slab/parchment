@@ -9,7 +9,7 @@ export default class Attributor {
   attrName: string;
   keyName: string;
   scope: Registry.Scope;
-  whitelist: string[] | null;
+  whitelist: string[] | undefined;
 
   static keys(node: HTMLElement): string[] {
     return [].map.call(node.attributes, function(item: Attr) {

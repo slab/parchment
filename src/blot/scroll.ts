@@ -147,10 +147,10 @@ class ScrollBlot extends ContainerBlot {
         }
       })
       .forEach((blot: Blot | null) => {
-        // @ts-ignore
         if (
           blot == null ||
           blot === this ||
+          //@ts-ignore
           blot.domNode[Registry.DATA_KEY] == null
         )
           return;

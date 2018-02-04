@@ -14,21 +14,17 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "istanbul": "~0.4.5",
-    "jasmine-core": "^2.8.0",
-    "karma": "^1.7.1",
+    "jasmine-core": "^2.9.1",
+    "karma": "^2.0.0",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.1",
     "karma-sauce-launcher": "^1.2.0",
-    "karma-webpack": "^2.0.6",
-    "ts-loader": "^3.2.0",
-    "typescript": "^2.6.2",
+    "karma-webpack": "^2.0.9",
+    "ts-loader": "^3.4.0",
+    "typescript": "^2.7.1",
     "webpack": "^3.10.0"
-  },
-  "engines": {
-    "node": ">= 5.3",
-    "npm": ">= 3.5"
   },
   "license": "BSD-3-Clause",
   "repository": {

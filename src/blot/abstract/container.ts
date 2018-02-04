@@ -7,8 +7,8 @@ class ContainerBlot extends ShadowBlot implements Parent {
   static defaultChild: string;
   static allowedChildren: any[];
 
-  children: LinkedList<Blot>;
-  domNode: HTMLElement;
+  children!: LinkedList<Blot>;
+  domNode!: HTMLElement;
 
   constructor(domNode: Node) {
     super(domNode);
