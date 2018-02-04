@@ -7,9 +7,13 @@ class ShadowBlot implements Blot {
   static scope: Registry.Scope;
   static tagName: string;
 
+  // @ts-ignore
   prev: Blot;
+  // @ts-ignore
   next: Blot;
+  // @ts-ignore
   parent: Parent;
+  // @ts-ignore
   scroll: Parent;
 
   // Hack for accessing inherited static methods

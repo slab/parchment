@@ -6,7 +6,7 @@ class TextBlot extends LeafBlot implements Leaf {
   static blotName = 'text';
   static scope = Registry.Scope.INLINE_BLOT;
 
-  public domNode: Text;
+  public domNode!: Text;
   protected text: string;
 
   static create(value: string): Text {
