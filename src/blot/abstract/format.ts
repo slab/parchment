@@ -1,11 +1,11 @@
 import Attributor from '../../attributor/attributor';
 import AttributorStore from '../../attributor/store';
 import { Blot, Parent, Formattable } from './blot';
-import ContainerBlot from './container';
+import ParentBlot from './parent';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-class FormatBlot extends ContainerBlot implements Formattable {
+class FormatBlot extends ParentBlot implements Formattable {
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {

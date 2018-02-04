@@ -1,5 +1,5 @@
 import { Blot } from './blot/abstract/blot';
-import ContainerBlot from './blot/abstract/container';
+import ParentBlot from './blot/abstract/parent';
 import FormatBlot from './blot/abstract/format';
 import LeafBlot from './blot/abstract/leaf';
 
@@ -24,7 +24,7 @@ let Parchment = {
   query: Registry.query,
   register: Registry.register,
 
-  Container: ContainerBlot,
+  Parent: ParentBlot,
   Format: FormatBlot,
   Leaf: LeafBlot,
   Embed: EmbedBlot,

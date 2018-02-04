@@ -3,7 +3,7 @@ import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-class ContainerBlot extends ShadowBlot implements Parent {
+class ParentBlot extends ShadowBlot implements Parent {
   static defaultChild: string;
   static allowedChildren: any[];
 
@@ -64,7 +64,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       (criteria.blotName != null && child instanceof criteria)
     ) {
       return [<any>child, offset];
-    } else if (child instanceof ContainerBlot) {
+    } else if (child instanceof ParentBlot) {
       return child.descendant(criteria, offset);
     } else {
       return [null, -1];
@@ -99,7 +99,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       ) {
         descendants.push(child);
       }
-      if (child instanceof ContainerBlot) {
+      if (child instanceof ParentBlot) {
         descendants = descendants.concat(
           child.descendants(criteria, index, lengthLeft),
         );
@@ -181,7 +181,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
   path(index: number, inclusive: boolean = false): [Blot, number][] {
     let [child, offset] = this.children.find(index, inclusive);
     let position: [Blot, number][] = [[this, index]];
-    if (child instanceof ContainerBlot) {
+    if (child instanceof ParentBlot) {
       return position.concat(child.path(offset, inclusive));
     } else if (child != null) {
       position.push([child, offset]);
@@ -194,7 +194,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   replace(target: Blot): void {
-    if (target instanceof ContainerBlot) {
+    if (target instanceof ParentBlot) {
       target.moveChildren(this);
     }
     super.replace(target);
@@ -205,7 +205,7 @@ class ContainerBlot extends ShadowBlot implements Parent {
       if (index === 0) return this;
       if (index === this.length()) return this.next;
     }
-    let after = <ContainerBlot>this.clone();
+    let after = <ParentBlot>this.clone();
     this.parent.insertBefore(after, this.next);
     this.children.forEachAt(index, this.length(), function(
       child,
@@ -301,4 +301,4 @@ function makeBlot(node: Node): Blot {
   return blot;
 }
 
-export default ContainerBlot;
+export default ParentBlot;

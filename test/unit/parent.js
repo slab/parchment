@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Container', function() {
+describe('Parent', function() {
   beforeEach(function() {
     let node = document.createElement('p');
     node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
@@ -13,7 +13,7 @@ describe('Container', function() {
     });
 
     it('container', function() {
-      expect(this.blot.descendants(ContainerBlot).length).toEqual(3);
+      expect(this.blot.descendants(ParentBlot).length).toEqual(3);
     });
 
     it('leaf', function() {

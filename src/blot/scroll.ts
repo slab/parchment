@@ -1,5 +1,5 @@
 import { Blot } from './abstract/blot';
-import ContainerBlot from './abstract/container';
+import ParentBlot from './abstract/parent';
 import LinkedList from '../collection/linked-list';
 import * as Registry from '../registry';
 
@@ -13,7 +13,7 @@ const OBSERVER_CONFIG = {
 
 const MAX_OPTIMIZE_ITERATIONS = 100;
 
-class ScrollBlot extends ContainerBlot {
+class ScrollBlot extends ParentBlot {
   static blotName = 'scroll';
   static defaultChild = 'block';
   static scope = Registry.Scope.BLOCK_BLOT;
@@ -87,7 +87,7 @@ class ScrollBlot extends ContainerBlot {
       ) {
         return;
       }
-      if (blot instanceof ContainerBlot) {
+      if (blot instanceof ParentBlot) {
         blot.children.forEach(optimize);
       }
       blot.optimize(context);
@@ -106,7 +106,7 @@ class ScrollBlot extends ContainerBlot {
             [].forEach.call(mutation.addedNodes, function(node: Node) {
               let child = Registry.find(node, false);
               mark(child, false);
-              if (child instanceof ContainerBlot) {
+              if (child instanceof ParentBlot) {
                 child.children.forEach(function(grandChild: Blot) {
                   mark(grandChild, false);
                 });
