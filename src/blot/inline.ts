@@ -39,7 +39,10 @@ class InlineBlot extends FormatBlot {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (this.formats()[name] != null || Registry.query(name, Registry.Scope.ATTRIBUTE)) {
+    if (
+      this.formats()[name] != null ||
+      Registry.query(name, Registry.Scope.ATTRIBUTE)
+    ) {
       let blot = <InlineBlot>this.isolate(index, length);
       blot.format(name, value);
     } else {
@@ -54,7 +57,11 @@ class InlineBlot extends FormatBlot {
       return this.unwrap(); // unformatted span
     }
     let next = this.next;
-    if (next instanceof InlineBlot && next.prev === this && isEqual(formats, next.formats())) {
+    if (
+      next instanceof InlineBlot &&
+      next.prev === this &&
+      isEqual(formats, next.formats())
+    ) {
       next.moveChildren(this);
       next.remove();
     }

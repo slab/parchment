@@ -36,9 +36,13 @@ describe('Blot', function() {
     parent.appendChild(head);
     parent.appendChild(text);
     parent.appendChild(tail);
-    expect(parent.domNode.innerHTML).toEqual('<strong></strong>Test<strong></strong>');
+    expect(parent.domNode.innerHTML).toEqual(
+      '<strong></strong>Test<strong></strong>',
+    );
     let wrapper = text.wrap('italic', true);
-    expect(parent.domNode.innerHTML).toEqual('<strong></strong><em>Test</em><strong></strong>');
+    expect(parent.domNode.innerHTML).toEqual(
+      '<strong></strong><em>Test</em><strong></strong>',
+    );
     expect(parent.children.head).toEqual(head);
     expect(parent.children.head.next).toEqual(wrapper);
     expect(parent.children.tail).toEqual(tail);

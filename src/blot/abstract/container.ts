@@ -53,7 +53,10 @@ class ContainerBlot extends ShadowBlot implements Parent {
   }
 
   descendant(criteria: { new (): Blot }, index: number): [Blot | null, number];
-  descendant(criteria: (blot: Blot) => boolean, index: number): [Blot | null, number];
+  descendant(
+    criteria: (blot: Blot) => boolean,
+    index: number,
+  ): [Blot | null, number];
   descendant(criteria: any, index: number): [Blot | null, number] {
     let [child, offset] = this.children.find(index);
     if (
@@ -68,12 +71,28 @@ class ContainerBlot extends ShadowBlot implements Parent {
     }
   }
 
-  descendants(criteria: { new (): Blot }, index: number, length: number): Blot[];
-  descendants(criteria: (blot: Blot) => boolean, index: number, length: number): Blot[];
-  descendants(criteria: any, index: number = 0, length: number = Number.MAX_VALUE): Blot[] {
+  descendants(
+    criteria: { new (): Blot },
+    index: number,
+    length: number,
+  ): Blot[];
+  descendants(
+    criteria: (blot: Blot) => boolean,
+    index: number,
+    length: number,
+  ): Blot[];
+  descendants(
+    criteria: any,
+    index: number = 0,
+    length: number = Number.MAX_VALUE,
+  ): Blot[] {
     let descendants: Blot[] = [];
     let lengthLeft = length;
-    this.children.forEachAt(index, length, function(child: Blot, index: number, length: number) {
+    this.children.forEachAt(index, length, function(
+      child: Blot,
+      index: number,
+      length: number,
+    ) {
       if (
         (criteria.blotName == null && criteria(child)) ||
         (criteria.blotName != null && child instanceof criteria)
@@ -81,7 +100,9 @@ class ContainerBlot extends ShadowBlot implements Parent {
         descendants.push(child);
       }
       if (child instanceof ContainerBlot) {
-        descendants = descendants.concat(child.descendants(criteria, index, lengthLeft));
+        descendants = descendants.concat(
+          child.descendants(criteria, index, lengthLeft),
+        );
       }
       lengthLeft -= length;
     });
@@ -106,7 +127,10 @@ class ContainerBlot extends ShadowBlot implements Parent {
     if (child) {
       child.insertAt(offset, value, def);
     } else {
-      let blot = def == null ? Registry.create('text', value) : Registry.create(value, def);
+      let blot =
+        def == null
+          ? Registry.create('text', value)
+          : Registry.create(value, def);
       this.appendChild(blot);
     }
   }
@@ -114,12 +138,16 @@ class ContainerBlot extends ShadowBlot implements Parent {
   insertBefore(childBlot: Blot, refBlot?: Blot): void {
     if (
       this.statics.allowedChildren != null &&
-      !this.statics.allowedChildren.some(function(child: Registry.BlotConstructor) {
+      !this.statics.allowedChildren.some(function(
+        child: Registry.BlotConstructor,
+      ) {
         return childBlot instanceof child;
       })
     ) {
       throw new Registry.ParchmentError(
-        `Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${this.statics.blotName}`,
+        `Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${
+          this.statics.blotName
+        }`,
       );
     }
     childBlot.insertInto(this, refBlot);
@@ -179,7 +207,11 @@ class ContainerBlot extends ShadowBlot implements Parent {
     }
     let after = <ContainerBlot>this.clone();
     this.parent.insertBefore(after, this.next);
-    this.children.forEachAt(index, this.length(), function(child, offset, length) {
+    this.children.forEachAt(index, this.length(), function(
+      child,
+      offset,
+      length,
+    ) {
       child = child.split(offset, force);
       after.appendChild(child);
     });
@@ -208,13 +240,17 @@ class ContainerBlot extends ShadowBlot implements Parent {
         node.parentNode != null &&
         // @ts-ignore
         node.tagName !== 'IFRAME' &&
-        document.body.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
+        document.body.compareDocumentPosition(node) &
+          Node.DOCUMENT_POSITION_CONTAINED_BY
       ) {
         return;
       }
       let blot = Registry.find(node);
       if (blot == null) return;
-      if (blot.domNode.parentNode == null || blot.domNode.parentNode === this.domNode) {
+      if (
+        blot.domNode.parentNode == null ||
+        blot.domNode.parentNode === this.domNode
+      ) {
         blot.detach();
       }
     });

@@ -84,7 +84,10 @@ class ShadowBlot implements Blot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    let blot = def == null ? Registry.create('text', value) : Registry.create(value, def);
+    let blot =
+      def == null
+        ? Registry.create('text', value)
+        : Registry.create(value, def);
     let ref = this.split(index);
     this.parent.insertBefore(blot, ref);
   }
@@ -143,7 +146,8 @@ class ShadowBlot implements Blot {
   }
 
   replaceWith(name: string | Blot, value?: any): Blot {
-    let replacement = typeof name === 'string' ? Registry.create(name, value) : name;
+    let replacement =
+      typeof name === 'string' ? Registry.create(name, value) : name;
     replacement.replace(this);
     return replacement;
   }
@@ -157,7 +161,8 @@ class ShadowBlot implements Blot {
   }
 
   wrap(name: string | Parent, value?: any): Parent {
-    let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
+    let wrapper =
+      typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next);
     }

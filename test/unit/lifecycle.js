@@ -48,7 +48,8 @@ describe('Lifecycle', function() {
   describe('optimize()', function() {
     it('unwrap empty inline', function() {
       let node = document.createElement('div');
-      node.innerHTML = '<p><span style="color: red;"><strong>Te</strong><em>st</em></span></p>';
+      node.innerHTML =
+        '<p><span style="color: red;"><strong>Te</strong><em>st</em></span></p>';
       let container = Registry.create(node);
       let span = Registry.find(node.querySelector('span'));
       span.format('color', false);
@@ -91,7 +92,8 @@ describe('Lifecycle', function() {
 
     it('remove format merge', function() {
       let node = document.createElement('div');
-      node.innerHTML = '<p><strong>T</strong><em><strong>es</strong></em><strong>t</strong></p>';
+      node.innerHTML =
+        '<p><strong>T</strong><em><strong>es</strong></em><strong>t</strong></p>';
       let container = Registry.create(node);
       let paragraph = Registry.find(node.querySelector('p'));
       paragraph.formatAt(1, 2, 'italic', false);
@@ -102,7 +104,8 @@ describe('Lifecycle', function() {
 
     it('remove attribute merge', function() {
       let node = document.createElement('div');
-      node.innerHTML = '<p><em>T</em><em style="color: red;">es</em><em>t</em></p>';
+      node.innerHTML =
+        '<p><em>T</em><em style="color: red;">es</em><em>t</em></p>';
       let container = Registry.create(node);
       let paragraph = Registry.find(node.querySelector('p'));
       paragraph.formatAt(1, 2, 'color', false);
@@ -113,7 +116,8 @@ describe('Lifecycle', function() {
 
     it('format no merge attribute mismatch', function() {
       let node = document.createElement('div');
-      node.innerHTML = '<p><strong>Te</strong><em><strong style="color: red;">st</strong></em></p>';
+      node.innerHTML =
+        '<p><strong>Te</strong><em><strong style="color: red;">st</strong></em></p>';
       let container = Registry.create(node);
       let paragraph = Registry.find(node.querySelector('p'));
       paragraph.formatAt(2, 2, 'italic', false);
@@ -180,7 +184,10 @@ describe('Lifecycle', function() {
       });
       this.checkUpdateCalls = called => {
         this.descendants.forEach(function(blot) {
-          if (called === blot || (Array.isArray(called) && called.indexOf(blot) > -1)) {
+          if (
+            called === blot ||
+            (Array.isArray(called) && called.indexOf(blot) > -1)
+          ) {
             expect(blot.update).toHaveBeenCalled();
           } else {
             expect(blot.update).not.toHaveBeenCalled();
@@ -206,7 +213,14 @@ describe('Lifecycle', function() {
       it('insert embed', function() {
         this.container.insertAt(2, 'image', true);
         this.container.optimize();
-        this.checkValues(['Te', { image: true }, 'st', { image: true }, 'ing', '!']);
+        this.checkValues([
+          'Te',
+          { image: true },
+          'st',
+          { image: true },
+          'ing',
+          '!',
+        ]);
         expect(this.container.observer.takeRecords()).toEqual([]);
       });
 
@@ -249,7 +263,11 @@ describe('Lifecycle', function() {
         attrBlot.domNode.setAttribute('id', 'blot');
         this.container.update();
         this.checkUpdateCalls(attrBlot);
-        expect(attrBlot.formats()).toEqual({ color: 'red', italic: true, id: 'blot' });
+        expect(attrBlot.formats()).toEqual({
+          color: 'red',
+          italic: true,
+          id: 'blot',
+        });
       });
 
       it('add embed attribute', function() {
@@ -292,7 +310,9 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(blockBlot);
         expect(this.container.innerHTML).toBe(html);
-        expect(this.container.descendants(ShadowBlot).length).toEqual(this.descendants.length);
+        expect(this.container.descendants(ShadowBlot).length).toEqual(
+          this.descendants.length,
+        );
       });
 
       it('move node up', function() {
@@ -308,7 +328,10 @@ describe('Lifecycle', function() {
 
       it('move node down', function() {
         let imageBlot = this.descendants[4];
-        imageBlot.domNode.parentNode.insertBefore(imageBlot.domNode.nextSibling, imageBlot.domNode);
+        imageBlot.domNode.parentNode.insertBefore(
+          imageBlot.domNode.nextSibling,
+          imageBlot.domNode,
+        );
         this.container.update();
         this.checkUpdateCalls(imageBlot.parent);
         this.checkValues(['Test', 'ing', { image: true }, '!']);
@@ -320,7 +343,11 @@ describe('Lifecycle', function() {
         firstBlockBlot.domNode.appendChild(lastItalicBlot.domNode);
         lastItalicBlot.domNode.innerHTML = '?';
         this.container.update();
-        this.checkUpdateCalls([firstBlockBlot, this.descendants[6], this.descendants[7]]);
+        this.checkUpdateCalls([
+          firstBlockBlot,
+          this.descendants[6],
+          this.descendants[7],
+        ]);
         this.checkValues(['Test', { image: true }, 'ing', '?']);
       });
 
@@ -387,7 +414,10 @@ describe('Lifecycle', function() {
       it('different changes to same blot', function() {
         let attrBlot = this.descendants[1];
         attrBlot.domNode.style.color = 'blue';
-        attrBlot.domNode.insertBefore(document.createTextNode('|'), attrBlot.domNode.childNodes[1]);
+        attrBlot.domNode.insertBefore(
+          document.createTextNode('|'),
+          attrBlot.domNode.childNodes[1],
+        );
         this.container.update();
         this.checkUpdateCalls(attrBlot);
         expect(attrBlot.formats()).toEqual({ color: 'blue', italic: true });

@@ -12,7 +12,8 @@ class LeafBlot extends ShadowBlot implements Leaf {
   index(node: Node, offset: number): number {
     if (
       this.domNode === node ||
-      this.domNode.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY
+      this.domNode.compareDocumentPosition(node) &
+        Node.DOCUMENT_POSITION_CONTAINED_BY
     ) {
       return Math.min(offset, 1);
     }
@@ -26,7 +27,9 @@ class LeafBlot extends ShadowBlot implements Leaf {
   }
 
   value(): any {
-    return { [this.statics.blotName]: this.statics.value(this.domNode) || true };
+    return {
+      [this.statics.blotName]: this.statics.value(this.domNode) || true,
+    };
   }
 }
 

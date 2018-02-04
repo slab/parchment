@@ -5,7 +5,9 @@ describe('InlineBlot', function() {
     let italicBlot = Registry.create('italic');
     italicBlot.appendChild(Registry.create('text', 'Test'));
     italicBlot.formatAt(1, 2, 'bold', true);
-    expect(italicBlot.domNode.outerHTML).toEqual('<em>T<strong>es</strong>t</em>');
+    expect(italicBlot.domNode.outerHTML).toEqual(
+      '<em>T<strong>es</strong>t</em>',
+    );
   });
 
   it('format invalid', function() {

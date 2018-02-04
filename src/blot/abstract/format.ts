@@ -27,7 +27,10 @@ class FormatBlot extends ContainerBlot implements Formattable {
     if (format instanceof Attributor) {
       this.attributes.attribute(format, value);
     } else if (value) {
-      if (format != null && (name !== this.statics.blotName || this.formats()[name] !== value)) {
+      if (
+        format != null &&
+        (name !== this.statics.blotName || this.formats()[name] !== value)
+      ) {
         this.replaceWith(name, value);
       }
     }
@@ -52,7 +55,9 @@ class FormatBlot extends ContainerBlot implements Formattable {
     super.update(mutations, context);
     if (
       mutations.some(mutation => {
-        return mutation.target === this.domNode && mutation.type === 'attributes';
+        return (
+          mutation.target === this.domNode && mutation.type === 'attributes'
+        );
       })
     ) {
       this.attributes.build();
@@ -61,7 +66,10 @@ class FormatBlot extends ContainerBlot implements Formattable {
 
   wrap(name: string | Parent, value?: any): Parent {
     let wrapper = super.wrap(name, value);
-    if (wrapper instanceof FormatBlot && wrapper.statics.scope === this.statics.scope) {
+    if (
+      wrapper instanceof FormatBlot &&
+      wrapper.statics.scope === this.statics.scope
+    ) {
       this.attributes.move(wrapper);
     }
     return wrapper;

@@ -17,7 +17,11 @@ export default class Attributor {
     });
   }
 
-  constructor(attrName: string, keyName: string, options: AttributorOptions = {}) {
+  constructor(
+    attrName: string,
+    keyName: string,
+    options: AttributorOptions = {},
+  ) {
     this.attrName = attrName;
     this.keyName = keyName;
     let attributeBit = Registry.Scope.TYPE & Registry.Scope.ATTRIBUTE;
@@ -37,7 +41,10 @@ export default class Attributor {
   }
 
   canAdd(node: HTMLElement, value: any): boolean {
-    let match = Registry.query(node, Registry.Scope.BLOT & (this.scope | Registry.Scope.TYPE));
+    let match = Registry.query(
+      node,
+      Registry.Scope.BLOT & (this.scope | Registry.Scope.TYPE),
+    );
     if (match == null) return false;
     if (this.whitelist == null) return true;
     if (typeof value === 'string') {

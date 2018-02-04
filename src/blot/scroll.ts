@@ -125,7 +125,10 @@ class ScrollBlot extends ContainerBlot {
     }
   }
 
-  update(mutations?: MutationRecord[], context: { [key: string]: any } = {}): void {
+  update(
+    mutations?: MutationRecord[],
+    context: { [key: string]: any } = {},
+  ): void {
     mutations = mutations || this.observer.takeRecords();
     // TODO use WeakMap
     mutations
@@ -145,7 +148,12 @@ class ScrollBlot extends ContainerBlot {
       })
       .forEach((blot: Blot | null) => {
         // @ts-ignore
-        if (blot == null || blot === this || blot.domNode[Registry.DATA_KEY] == null) return;
+        if (
+          blot == null ||
+          blot === this ||
+          blot.domNode[Registry.DATA_KEY] == null
+        )
+          return;
         // @ts-ignore
         blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
       });

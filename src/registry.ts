@@ -52,7 +52,9 @@ export function create(input: Node | string | Scope, value?: any): Blot {
   let BlotClass = <BlotConstructor>match;
   let node =
     // @ts-ignore
-    input instanceof Node || input['nodeType'] === Node.TEXT_NODE ? input : BlotClass.create(value);
+    input instanceof Node || input['nodeType'] === Node.TEXT_NODE
+      ? input
+      : BlotClass.create(value);
   return new BlotClass(<Node>node, value);
 }
 
@@ -90,7 +92,8 @@ export function query(
   }
   if (match == null) return null;
   // @ts-ignore
-  if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) return match;
+  if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope)
+    return match;
   return null;
 }
 
@@ -101,7 +104,10 @@ export function register(...Definitions: any[]): any {
     });
   }
   let Definition = Definitions[0];
-  if (typeof Definition.blotName !== 'string' && typeof Definition.attrName !== 'string') {
+  if (
+    typeof Definition.blotName !== 'string' &&
+    typeof Definition.attrName !== 'string'
+  ) {
     throw new ParchmentError('Invalid definition');
   } else if (Definition.blotName === 'abstract') {
     throw new ParchmentError('Cannot register abstract class');
@@ -121,7 +127,9 @@ export function register(...Definitions: any[]): any {
       } else {
         Definition.tagName = Definition.tagName.toUpperCase();
       }
-      let tagNames = Array.isArray(Definition.tagName) ? Definition.tagName : [Definition.tagName];
+      let tagNames = Array.isArray(Definition.tagName)
+        ? Definition.tagName
+        : [Definition.tagName];
       tagNames.forEach(function(tag: string) {
         if (tags[tag] == null || Definition.className == null) {
           tags[tag] = Definition;

@@ -166,8 +166,13 @@ describe('Attributor', function() {
     let block = Registry.create('header', 'h1');
     container.appendChild(block);
     block.format('align', 'right');
-    expect(container.domNode.innerHTML).toBe('<h1 style="text-align: right;"></h1>');
-    expect(container.children.head.formats()).toEqual({ header: 'h1', align: 'right' });
+    expect(container.domNode.innerHTML).toBe(
+      '<h1 style="text-align: right;"></h1>',
+    );
+    expect(container.children.head.formats()).toEqual({
+      header: 'h1',
+      align: 'right',
+    });
   });
 
   it('invalid class scope add', function() {
@@ -191,7 +196,7 @@ describe('Attributor', function() {
     expect(indentAttributor.value(block.domNode)).toBeFalsy();
   });
 
-  it('removes quotes from attribute value when checking if canAdd', function () {
+  it('removes quotes from attribute value when checking if canAdd', function() {
     let node = document.createElement('strong');
     let familyAttributor = Registry.query('family');
     expect(familyAttributor.canAdd(node, 'Arial')).toBeTruthy();

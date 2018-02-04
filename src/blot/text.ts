@@ -26,7 +26,8 @@ class TextBlot extends LeafBlot implements Leaf {
   }
 
   deleteAt(index: number, length: number): void {
-    this.domNode.data = this.text = this.text.slice(0, index) + this.text.slice(index + length);
+    this.domNode.data = this.text =
+      this.text.slice(0, index) + this.text.slice(index + length);
   }
 
   index(node: Node, offset: number): number {
@@ -78,7 +79,9 @@ class TextBlot extends LeafBlot implements Leaf {
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     if (
       mutations.some(mutation => {
-        return mutation.type === 'characterData' && mutation.target === this.domNode;
+        return (
+          mutation.type === 'characterData' && mutation.target === this.domNode
+        );
       })
     ) {
       this.text = this.statics.value(this.domNode);

@@ -27,7 +27,7 @@ class LinkedList<T extends LinkedNode> {
   }
 
   insertBefore(node: T | null, refNode: T | null): void {
-    if (!node) return
+    if (!node) return;
     node.next = refNode;
     if (refNode != null) {
       node.prev = refNode.prev;
@@ -85,7 +85,9 @@ class LinkedList<T extends LinkedNode> {
       let length = cur.length();
       if (
         index < length ||
-        (inclusive && index === length && (cur.next == null || cur.next.length() !== 0))
+        (inclusive &&
+          index === length &&
+          (cur.next == null || cur.next.length() !== 0))
       ) {
         return [cur, index];
       }
@@ -115,7 +117,11 @@ class LinkedList<T extends LinkedNode> {
     while ((cur = next()) && curIndex < index + length) {
       let curLength = cur.length();
       if (index > curIndex) {
-        callback(cur, index - curIndex, Math.min(length, curIndex + curLength - index));
+        callback(
+          cur,
+          index - curIndex,
+          Math.min(length, curIndex + curLength - index),
+        );
       } else {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));
       }
