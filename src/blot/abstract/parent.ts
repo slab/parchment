@@ -4,8 +4,8 @@ import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 class ParentBlot extends ShadowBlot implements Parent {
-  static defaultChild: Registry.BlotConstructor;
-  static allowedChildren: Registry.BlotConstructor[];
+  static defaultChild: Registry.BlotConstructor | null;
+  static allowedChildren: Registry.BlotConstructor[] | null;
 
   children!: LinkedList<Blot>;
   domNode!: HTMLElement;
