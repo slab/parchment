@@ -162,7 +162,7 @@ describe('Lifecycle', function() {
     });
 
     it('insert default child', function() {
-      HeaderBlot.defaultChild = 'image';
+      HeaderBlot.defaultChild = ImageBlot;
       let blot = Registry.create('header');
       expect(blot.domNode.innerHTML).toEqual('');
       blot.optimize();

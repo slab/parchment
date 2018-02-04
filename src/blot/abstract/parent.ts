@@ -4,8 +4,8 @@ import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
 class ParentBlot extends ShadowBlot implements Parent {
-  static defaultChild: string;
-  static allowedChildren: any[];
+  static defaultChild: Registry.BlotConstructor;
+  static allowedChildren: Registry.BlotConstructor[];
 
   children!: LinkedList<Blot>;
   domNode!: HTMLElement;
@@ -169,7 +169,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     super.optimize(context);
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
-        let child = Registry.create(this.statics.defaultChild);
+        let child = Registry.create(this.statics.defaultChild.blotName);
         this.appendChild(child);
         child.optimize(context);
       } else {

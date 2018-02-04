@@ -1,5 +1,6 @@
 import { Blot } from './abstract/blot';
 import ParentBlot from './abstract/parent';
+import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
 import * as Registry from '../registry';
 
@@ -15,7 +16,7 @@ const MAX_OPTIMIZE_ITERATIONS = 100;
 
 class ScrollBlot extends ParentBlot {
   static blotName = 'scroll';
-  static defaultChild = 'block';
+  static defaultChild = BlockBlot;
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'DIV';
 
