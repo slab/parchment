@@ -7,10 +7,8 @@ class ShadowBlot implements Blot {
   static scope: Registry.Scope;
   static tagName: string;
 
-  // @ts-ignore
-  prev: Blot;
-  // @ts-ignore
-  next: Blot;
+  prev: Blot | null;
+  next: Blot | null;
   // @ts-ignore
   parent: Parent;
   // @ts-ignore
@@ -52,6 +50,8 @@ class ShadowBlot implements Blot {
   constructor(public domNode: Node) {
     // @ts-ignore
     this.domNode[Registry.DATA_KEY] = { blot: this };
+    this.prev = null;
+    this.next = null;
   }
 
   attach(): void {
@@ -93,7 +93,7 @@ class ShadowBlot implements Blot {
         ? Registry.create('text', value)
         : Registry.create(value, def);
     let ref = this.split(index);
-    this.parent.insertBefore(blot, ref);
+    this.parent.insertBefore(blot, ref || undefined);
   }
 
   insertInto(parentBlot: Parent, refBlot: Blot | null = null): void {
@@ -114,6 +114,9 @@ class ShadowBlot implements Blot {
 
   isolate(index: number, length: number): Blot {
     let target = this.split(index);
+    if (target == null) {
+      throw new Error('Attempt to isolate at end');
+    }
     target.split(length);
     return target;
   }
@@ -145,7 +148,7 @@ class ShadowBlot implements Blot {
 
   replace(target: Blot): void {
     if (target.parent == null) return;
-    target.parent.insertBefore(this, target.next);
+    target.parent.insertBefore(this, target.next || undefined);
     target.remove();
   }
 
@@ -156,7 +159,7 @@ class ShadowBlot implements Blot {
     return replacement;
   }
 
-  split(index: number, force?: boolean): Blot {
+  split(index: number, force?: boolean): Blot | null {
     return index === 0 ? this : this.next;
   }
 
@@ -168,7 +171,7 @@ class ShadowBlot implements Blot {
     let wrapper =
       typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
     if (this.parent != null) {
-      this.parent.insertBefore(wrapper, this.next);
+      this.parent.insertBefore(wrapper, this.next || undefined);
     }
     wrapper.appendChild(this);
     return wrapper;

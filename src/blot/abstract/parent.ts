@@ -200,26 +200,28 @@ class ParentBlot extends ShadowBlot implements Parent {
     super.replace(target);
   }
 
-  split(index: number, force: boolean = false): Blot {
+  split(index: number, force: boolean = false): Blot | null {
     if (!force) {
       if (index === 0) return this;
       if (index === this.length()) return this.next;
     }
     let after = <ParentBlot>this.clone();
-    this.parent.insertBefore(after, this.next);
+    this.parent.insertBefore(after, this.next || undefined);
     this.children.forEachAt(index, this.length(), function(
       child,
       offset,
       length,
     ) {
-      child = child.split(offset, force);
-      after.appendChild(child);
+      const split = child.split(offset, force);
+      if (split != null) {
+        after.appendChild(split);
+      }
     });
     return after;
   }
 
   unwrap(): void {
-    this.moveChildren(this.parent, this.next);
+    this.moveChildren(this.parent, this.next || undefined);
     this.remove();
   }
 

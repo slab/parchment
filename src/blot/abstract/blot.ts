@@ -4,8 +4,8 @@ import LinkedNode from '../../collection/linked-node';
 export interface Blot extends LinkedNode {
   scroll: Parent;
   parent: Parent;
-  prev: Blot;
-  next: Blot;
+  prev: Blot | null;
+  next: Blot | null;
   domNode: Node;
 
   attach(): void;
@@ -18,7 +18,7 @@ export interface Blot extends LinkedNode {
   replace(target: Blot): void;
   replaceWith(name: string, value: any): Blot;
   replaceWith(replacement: Blot): Blot;
-  split(index: number, force?: boolean): Blot;
+  split(index: number, force?: boolean): Blot | null;
   wrap(name: string, value: any): Parent;
   wrap(wrapper: Parent): Parent;
 

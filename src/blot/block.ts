@@ -37,8 +37,13 @@ class BlockBlot extends FormatBlot {
       super.insertAt(index, value, def);
     } else {
       let after = this.split(index);
-      let blot = Registry.create(value, def);
-      after.parent.insertBefore(blot, after);
+      if (after != null) {
+        let blot = Registry.create(value, def);
+        after.parent.insertBefore(blot, after);
+      } else {
+        throw new Error('Attempt to insertAt after block boundaries');
+      }
+    }
     }
   }
 
