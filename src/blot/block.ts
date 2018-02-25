@@ -44,8 +44,14 @@ class BlockBlot extends FormatBlot {
         throw new Error('Attempt to insertAt after block boundaries');
       }
     }
-    }
   }
+
+  // remove() {
+  //   super.remove();
+  //   if (this.statics.container != null && this.prev == null && this.next == null) {
+  //     this.parent.remove();
+  //   }
+  // }
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     if (navigator.userAgent.match(/Trident/)) {

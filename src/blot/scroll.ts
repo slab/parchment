@@ -18,7 +18,7 @@ const MAX_OPTIMIZE_ITERATIONS = 100;
 class ScrollBlot extends ContainerBlot {
   static blotName = 'scroll';
   static defaultChild = BlockBlot;
-  static allowedChildren = [BlockBlot, ContainerBlot];
+  // static allowedChildren = [BlockBlot, ContainerBlot];
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'DIV';
 
