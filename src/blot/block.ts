@@ -10,11 +10,10 @@ class BlockBlot extends ParentBlot implements Formattable {
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'P';
   static container: Registry.BlotConstructor;
-
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
-    let tagName = (<any>Registry.query(BlockBlot.blotName)).tagName;
+    const tagName = (<any>Registry.query(BlockBlot.blotName)).tagName;
     if (domNode.tagName === tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
@@ -33,13 +32,12 @@ class BlockBlot extends ParentBlot implements Formattable {
     const format = Registry.query(name, Registry.Scope.BLOCK);
     if (format == null) {
       return;
-    } else if (name === this.statics.blotName && !value) {
-      this.replaceWith(BlockBlot.blotName);
     } else if (format instanceof Attributor) {
       this.attributes.attribute(format, value);
+    } else if (name === this.statics.blotName && !value) {
+      this.replaceWith(BlockBlot.blotName);
     } else if (
       value &&
-      format != null &&
       (name !== this.statics.blotName || this.formats()[name] !== value)
     ) {
       this.replaceWith(name, value);
@@ -92,6 +90,7 @@ class BlockBlot extends ParentBlot implements Formattable {
   }
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+    // Workaround for IE11 not giving correct mutation records
     if (navigator.userAgent.match(/Trident/)) {
       this.build();
     } else {

@@ -24,7 +24,8 @@ class InlineBlot extends ParentBlot implements Formattable {
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
-    if (domNode.tagName === InlineBlot.tagName) {
+    const tagName = (<any>Registry.query(InlineBlot.blotName)).tagName;
+    if (domNode.tagName === tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
       return true;
@@ -49,16 +50,15 @@ class InlineBlot extends ParentBlot implements Formattable {
       });
       this.unwrap();
     } else {
-      let format = Registry.query(name);
+      const format = Registry.query(name);
       if (format instanceof Attributor) {
         this.attributes.attribute(format, value);
-      } else if (value) {
-        if (
-          format != null &&
-          (name !== this.statics.blotName || this.formats()[name] !== value)
-        ) {
-          this.replaceWith(name, value);
-        }
+      } else if (
+        value &&
+        format != null &&
+        (name !== this.statics.blotName || this.formats()[name] !== value)
+      ) {
+        this.replaceWith(name, value);
       }
     }
   }
@@ -109,23 +109,18 @@ class InlineBlot extends ParentBlot implements Formattable {
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
     super.update(mutations, context);
-    if (
-      mutations.some(mutation => {
-        return (
-          mutation.target === this.domNode && mutation.type === 'attributes'
-        );
-      })
-    ) {
+    const attributeChanged = mutations.some(
+      mutation =>
+        mutation.target === this.domNode && mutation.type === 'attributes',
+    );
+    if (attributeChanged) {
       this.attributes.build();
     }
   }
 
   wrap(name: string | Parent, value?: any): Parent {
-    let wrapper = super.wrap(name, value);
-    if (
-      wrapper instanceof InlineBlot &&
-      wrapper.statics.scope === this.statics.scope
-    ) {
+    const wrapper = super.wrap(name, value);
+    if (wrapper instanceof InlineBlot) {
       this.attributes.move(wrapper);
     }
     return wrapper;
