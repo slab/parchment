@@ -96,22 +96,6 @@ class ShadowBlot implements Blot {
     this.parent.insertBefore(blot, ref || undefined);
   }
 
-  insertInto(parentBlot: Parent, refBlot: Blot | null = null): void {
-    if (this.parent != null) {
-      this.parent.children.remove(this);
-    }
-    let refDomNode: Node | null = null;
-    parentBlot.children.insertBefore(this, refBlot);
-    if (refBlot != null) {
-      refDomNode = refBlot.domNode;
-    }
-    if (this.next == null || this.domNode.nextSibling != refDomNode) {
-      parentBlot.domNode.insertBefore(this.domNode, refDomNode);
-    }
-    this.parent = parentBlot;
-    this.attach();
-  }
-
   isolate(index: number, length: number): Blot {
     let target = this.split(index);
     if (target == null) {

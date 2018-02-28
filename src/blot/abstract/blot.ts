@@ -11,7 +11,6 @@ export interface Blot extends LinkedNode {
   attach(): void;
   clone(): Blot;
   detach(): void;
-  insertInto(parentBlot: Parent, refBlot?: Blot): void;
   isolate(index: number, length: number): Blot;
   offset(root?: Blot): number;
   remove(): void;

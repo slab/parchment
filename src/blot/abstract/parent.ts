@@ -135,22 +135,21 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
   }
 
-  insertBefore(childBlot: Blot, refBlot?: Blot): void {
-    if (
-      this.statics.allowedChildren != null &&
-      !this.statics.allowedChildren.some(function(
-        child: Registry.BlotConstructor,
-      ) {
-        return childBlot instanceof child;
-      })
-    ) {
-      throw new Registry.ParchmentError(
-        `Cannot insert ${(<ShadowBlot>childBlot).statics.blotName} into ${
-          this.statics.blotName
-        }`,
-      );
+  // TODO handle allowedChildren
+  insertBefore(childBlot: Blot, refBlot?: Blot | null): void {
+    if (childBlot.parent != null) {
+      childBlot.parent.children.remove(childBlot);
     }
-    childBlot.insertInto(this, refBlot);
+    let refDomNode: Node | null = null;
+    this.children.insertBefore(childBlot, refBlot || null);
+    if (refBlot != null) {
+      refDomNode = refBlot.domNode;
+    }
+    if (childBlot.next == null || childBlot.domNode.nextSibling != refDomNode) {
+      this.domNode.insertBefore(childBlot.domNode, refDomNode);
+    }
+    childBlot.parent = this;
+    childBlot.attach();
   }
 
   length(): number {
