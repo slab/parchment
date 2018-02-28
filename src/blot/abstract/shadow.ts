@@ -146,16 +146,13 @@ class ShadowBlot implements Blot {
     this.detach();
   }
 
-  replace(target: Blot): void {
-    if (target.parent == null) return;
-    target.parent.insertBefore(this, target.next || undefined);
-    target.remove();
-  }
-
   replaceWith(name: string | Blot, value?: any): Blot {
-    let replacement =
+    const replacement =
       typeof name === 'string' ? Registry.create(name, value) : name;
-    replacement.replace(this);
+    if (this.parent != null) {
+      this.parent.insertBefore(replacement, this.next || undefined);
+      this.remove();
+    }
     return replacement;
   }
 

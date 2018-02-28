@@ -193,11 +193,13 @@ class ParentBlot extends ShadowBlot implements Parent {
     this.children.remove(child);
   }
 
-  replace(target: Blot): void {
-    if (target instanceof ParentBlot) {
-      target.moveChildren(this);
+  replaceWith(name: string | Blot, value?: any): Blot {
+    const replacement =
+      typeof name === 'string' ? Registry.create(name, value) : name;
+    if (replacement instanceof ParentBlot) {
+      this.moveChildren(replacement);
     }
-    super.replace(target);
+    return super.replaceWith(replacement);
   }
 
   split(index: number, force: boolean = false): Blot | null {
