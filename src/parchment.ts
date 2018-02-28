@@ -1,7 +1,6 @@
 import { Blot } from './blot/abstract/blot';
 import ContainerBlot from './blot/abstract/container';
 import ParentBlot from './blot/abstract/parent';
-import FormatBlot from './blot/abstract/format';
 import LeafBlot from './blot/abstract/leaf';
 
 import ScrollBlot from './blot/scroll';
@@ -27,7 +26,6 @@ let Parchment = {
 
   Parent: ParentBlot,
   Container: ContainerBlot,
-  Format: FormatBlot,
   Leaf: LeafBlot,
   Embed: EmbedBlot,
 

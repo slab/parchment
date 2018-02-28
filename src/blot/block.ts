@@ -3,7 +3,6 @@ import AttributorStore from '../attributor/store';
 import { Blot, Parent, Formattable } from './abstract/blot';
 import ParentBlot from './abstract/parent';
 import ShadowBlot from './abstract/shadow';
-import FormatBlot from './abstract/format';
 import * as Registry from '../registry';
 
 class BlockBlot extends ParentBlot implements Formattable {

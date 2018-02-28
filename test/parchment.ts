@@ -4,7 +4,6 @@ import StyleAttributor from '../src/attributor/style';
 
 import ShadowBlot from '../src/blot/abstract/shadow';
 import ParentBlot from '../src/blot/abstract/parent';
-import FormatBlot from '../src/blot/abstract/format';
 import LeafBlot from '../src/blot/abstract/leaf';
 
 import ScrollBlot from '../src/blot/scroll';
@@ -29,8 +28,6 @@ window['StyleAttributor'] = StyleAttributor;
 window['ShadowBlot'] = ShadowBlot;
 // @ts-ignore
 window['ParentBlot'] = ParentBlot;
-// @ts-ignore
-window['FormatBlot'] = FormatBlot;
 // @ts-ignore
 window['LeafBlot'] = LeafBlot;
 // @ts-ignore

@@ -1,4 +1,7 @@
-import FormatBlot from './abstract/format';
+import Attributor from '../attributor/attributor';
+import AttributorStore from '../attributor/store';
+import { Blot, Parent, Formattable } from './abstract/blot';
+import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
@@ -14,28 +17,59 @@ function isEqual(obj1: Object, obj2: Object): boolean {
   return true;
 }
 
-class InlineBlot extends FormatBlot {
+class InlineBlot extends ParentBlot implements Formattable {
   static blotName = 'inline';
   static scope = Registry.Scope.INLINE_BLOT;
   static tagName = 'SPAN';
+  protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
-    if (domNode.tagName === InlineBlot.tagName) return undefined;
-    return super.formats(domNode);
+    if (domNode.tagName === InlineBlot.tagName) {
+      return undefined;
+    } else if (typeof this.tagName === 'string') {
+      return true;
+    } else if (Array.isArray(this.tagName)) {
+      return domNode.tagName.toLowerCase();
+    }
+    return undefined;
+  }
+
+  constructor(domNode: Node) {
+    super(domNode);
+    this.attributes = new AttributorStore(this.domNode);
   }
 
   format(name: string, value: any) {
     if (name === this.statics.blotName && !value) {
       this.children.forEach(child => {
-        if (!(child instanceof FormatBlot)) {
+        if (!(child instanceof InlineBlot)) {
           child = child.wrap(InlineBlot.blotName, true);
         }
-        this.attributes.copy(<FormatBlot>child);
+        this.attributes.copy(<InlineBlot>child);
       });
       this.unwrap();
     } else {
-      super.format(name, value);
+      let format = Registry.query(name);
+      if (format instanceof Attributor) {
+        this.attributes.attribute(format, value);
+      } else if (value) {
+        if (
+          format != null &&
+          (name !== this.statics.blotName || this.formats()[name] !== value)
+        ) {
+          this.replaceWith(name, value);
+        }
+      }
     }
+  }
+
+  formats(): { [index: string]: any } {
+    let formats = this.attributes.values();
+    let format = this.statics.formats(this.domNode);
+    if (format != null) {
+      formats[this.statics.blotName] = format;
+    }
+    return formats;
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
@@ -65,6 +99,36 @@ class InlineBlot extends FormatBlot {
       next.moveChildren(this);
       next.remove();
     }
+  }
+
+  replaceWith(name: string | Blot, value?: any): Blot {
+    const replacement = <InlineBlot>super.replaceWith(name, value);
+    this.attributes.copy(replacement);
+    return replacement;
+  }
+
+  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+    super.update(mutations, context);
+    if (
+      mutations.some(mutation => {
+        return (
+          mutation.target === this.domNode && mutation.type === 'attributes'
+        );
+      })
+    ) {
+      this.attributes.build();
+    }
+  }
+
+  wrap(name: string | Parent, value?: any): Parent {
+    let wrapper = super.wrap(name, value);
+    if (
+      wrapper instanceof InlineBlot &&
+      wrapper.statics.scope === this.statics.scope
+    ) {
+      this.attributes.move(wrapper);
+    }
+    return wrapper;
   }
 }
 
