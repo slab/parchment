@@ -34,7 +34,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       .reverse()
       .forEach((node: Node) => {
         try {
-          let child = makeBlot(node);
+          let child = makeAttachedBlot(node);
           this.insertBefore(child, this.children.head || undefined);
         } catch (err) {
           if (err instanceof Registry.ParchmentError) return;
@@ -273,7 +273,7 @@ class ParentBlot extends ShadowBlot implements Parent {
         if (node.nextSibling != null) {
           refBlot = Registry.find(node.nextSibling);
         }
-        let blot = makeBlot(node);
+        let blot = makeAttachedBlot(node);
         if (blot.next != refBlot || blot.next == null) {
           if (blot.parent != null) {
             blot.parent.removeChild(this);
@@ -284,7 +284,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 }
 
-function makeBlot(node: Node): Blot {
+function makeAttachedBlot(node: Node): Blot {
   let blot = Registry.find(node);
   if (blot == null) {
     try {
