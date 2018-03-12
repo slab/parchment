@@ -10,8 +10,8 @@ let Size = new StyleAttributor('size', 'font-size', {
 
 let Family = new StyleAttributor('family', 'font-family', {
   scope: Registry.Scope.INLINE_ATTRIBUTE,
-  whitelist: ['Arial', 'Times New Roman']
-})
+  whitelist: ['Arial', 'Times New Roman'],
+});
 
 let Id = new Attributor('id', 'id');
 

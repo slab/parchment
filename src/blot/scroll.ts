@@ -1,5 +1,7 @@
 import { Blot } from './abstract/blot';
+import ParentBlot from './abstract/parent';
 import ContainerBlot from './abstract/container';
+import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
 import * as Registry from '../registry';
 
@@ -15,7 +17,8 @@ const MAX_OPTIMIZE_ITERATIONS = 100;
 
 class ScrollBlot extends ContainerBlot {
   static blotName = 'scroll';
-  static defaultChild = 'block';
+  static defaultChild = BlockBlot;
+  static allowedChildren: Registry.BlotConstructor[] = [BlockBlot, ContainerBlot];
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'DIV';
 
@@ -87,7 +90,7 @@ class ScrollBlot extends ContainerBlot {
       ) {
         return;
       }
-      if (blot instanceof ContainerBlot) {
+      if (blot instanceof ParentBlot) {
         blot.children.forEach(optimize);
       }
       blot.optimize(context);
@@ -106,7 +109,7 @@ class ScrollBlot extends ContainerBlot {
             [].forEach.call(mutation.addedNodes, function(node: Node) {
               let child = Registry.find(node, false);
               mark(child, false);
-              if (child instanceof ContainerBlot) {
+              if (child instanceof ParentBlot) {
                 child.children.forEach(function(grandChild: Blot) {
                   mark(grandChild, false);
                 });
@@ -125,7 +128,10 @@ class ScrollBlot extends ContainerBlot {
     }
   }
 
-  update(mutations?: MutationRecord[], context: { [key: string]: any } = {}): void {
+  update(
+    mutations?: MutationRecord[],
+    context: { [key: string]: any } = {},
+  ): void {
     mutations = mutations || this.observer.takeRecords();
     // TODO use WeakMap
     mutations
@@ -144,8 +150,13 @@ class ScrollBlot extends ContainerBlot {
         }
       })
       .forEach((blot: Blot | null) => {
-        // @ts-ignore
-        if (blot == null || blot === this || blot.domNode[Registry.DATA_KEY] == null) return;
+        if (
+          blot == null ||
+          blot === this ||
+          //@ts-ignore
+          blot.domNode[Registry.DATA_KEY] == null
+        )
+          return;
         // @ts-ignore
         blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
       });

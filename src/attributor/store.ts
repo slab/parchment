@@ -61,12 +61,13 @@ class AttributorStore {
   }
 
   values(): { [key: string]: any } {
-    return Object.keys(
-      this.attributes,
-    ).reduce((attributes: { [key: string]: any }, name: string) => {
-      attributes[name] = this.attributes[name].value(this.domNode);
-      return attributes;
-    }, {});
+    return Object.keys(this.attributes).reduce(
+      (attributes: { [key: string]: any }, name: string) => {
+        attributes[name] = this.attributes[name].value(this.domNode);
+        return attributes;
+      },
+      {},
+    );
   }
 }
 

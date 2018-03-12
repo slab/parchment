@@ -2,8 +2,10 @@
 
 describe('EmbedBlot', function() {
   it('value()', function() {
-    let imageBlot = Registry.create('image', 'http://quilljs.com/images/favicon.png');
-    expect(imageBlot.value()).toEqual({ image: 'http://quilljs.com/images/favicon.png' });
+    let imageBlot = Registry.create('image', 'favicon.ico');
+    expect(imageBlot.value()).toEqual({
+      image: 'favicon.ico',
+    });
   });
 
   it('deleteAt()', function() {

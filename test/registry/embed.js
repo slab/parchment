@@ -42,8 +42,10 @@ class VideoBlot extends EmbedBlot {
 
   static formats(domNode) {
     let formats = {};
-    if (domNode.hasAttribute('height')) formats['height'] = domNode.getAttribute('height');
-    if (domNode.hasAttribute('width')) formats['width'] = domNode.getAttribute('width');
+    if (domNode.hasAttribute('height'))
+      formats['height'] = domNode.getAttribute('height');
+    if (domNode.hasAttribute('width'))
+      formats['width'] = domNode.getAttribute('width');
     return formats;
   }
 

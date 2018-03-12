@@ -11,7 +11,13 @@ describe('Scroll', function() {
   describe('path()', function() {
     it('middle', function() {
       let path = this.container.path(7);
-      let expected = [['scroll', 7], ['block', 7], ['italic', 2], ['bold', 2], ['text', 2]];
+      let expected = [
+        ['scroll', 7],
+        ['block', 7],
+        ['italic', 2],
+        ['bold', 2],
+        ['text', 2],
+      ];
       expect(path.length).toEqual(expected.length);
       path.forEach(function(position, i) {
         expect(position[0].statics.blotName).toEqual(expected[i][0]);
@@ -21,7 +27,13 @@ describe('Scroll', function() {
 
     it('between blots', function() {
       let path = this.container.path(5);
-      let expected = [['scroll', 5], ['block', 5], ['italic', 0], ['bold', 0], ['text', 0]];
+      let expected = [
+        ['scroll', 5],
+        ['block', 5],
+        ['italic', 0],
+        ['bold', 0],
+        ['text', 0],
+      ];
       expect(path.length).toEqual(expected.length);
       path.forEach(function(position, i) {
         expect(position[0].statics.blotName).toEqual(expected[i][0]);

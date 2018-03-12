@@ -44,7 +44,9 @@ describe('Block', function() {
       container.appendChild(block);
       let src = 'http://www.w3schools.com/html/mov_bbb.mp4';
       block.insertAt(2, 'video', src);
-      expect(container.domNode.innerHTML).toBe(`<p>Te</p><video src="${src}"></video><p>st</p>`);
+      expect(container.domNode.innerHTML).toBe(
+        `<p>Te</p><video src="${src}"></video><p>st</p>`,
+      );
       expect(container.children.length).toBe(3);
       expect(container.children.head.next.statics.blotName).toBe('video');
     });

@@ -61,8 +61,12 @@ describe('Registry', function() {
       let blockBlot = Registry.create(blockNode);
       expect(Registry.find(document.body)).toBeFalsy();
       expect(Registry.find(blockNode)).toBe(blockBlot);
-      expect(Registry.find(blockNode.querySelector('span'))).toBe(blockBlot.children.head);
-      expect(Registry.find(blockNode.querySelector('em'))).toBe(blockBlot.children.tail);
+      expect(Registry.find(blockNode.querySelector('span'))).toBe(
+        blockBlot.children.head,
+      );
+      expect(Registry.find(blockNode.querySelector('em'))).toBe(
+        blockBlot.children.tail,
+      );
       expect(Registry.find(blockNode.querySelector('strong'))).toBe(
         blockBlot.children.tail.children.tail,
       );
@@ -113,22 +117,34 @@ describe('Registry', function() {
     });
 
     it('either level', function() {
-      let match = Registry.query('italic', Registry.Scope.BLOCK | Registry.Scope.INLINE);
+      let match = Registry.query(
+        'italic',
+        Registry.Scope.BLOCK | Registry.Scope.INLINE,
+      );
       expect(match).toBe(ItalicBlot);
     });
 
     it('level and type match', function() {
-      let match = Registry.query('italic', Registry.Scope.INLINE & Registry.Scope.BLOT);
+      let match = Registry.query(
+        'italic',
+        Registry.Scope.INLINE & Registry.Scope.BLOT,
+      );
       expect(match).toBe(ItalicBlot);
     });
 
     it('level match and type mismatch', function() {
-      let match = Registry.query('italic', Registry.Scope.INLINE & Registry.Scope.ATTRIBUTE);
+      let match = Registry.query(
+        'italic',
+        Registry.Scope.INLINE & Registry.Scope.ATTRIBUTE,
+      );
       expect(match).toBeFalsy();
     });
 
     it('type match and level mismatch', function() {
-      let match = Registry.query('italic', Registry.Scope.BLOCK & Registry.Scope.BLOT);
+      let match = Registry.query(
+        'italic',
+        Registry.Scope.BLOCK & Registry.Scope.BLOT,
+      );
       expect(match).toBeFalsy();
     });
   });

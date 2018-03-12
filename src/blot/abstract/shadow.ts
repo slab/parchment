@@ -4,12 +4,15 @@ import * as Registry from '../../registry';
 class ShadowBlot implements Blot {
   static blotName = 'abstract';
   static className: string;
+  static requiredParent: Registry.BlotConstructor;
   static scope: Registry.Scope;
   static tagName: string;
 
-  prev: Blot;
-  next: Blot;
+  prev: Blot | null;
+  next: Blot | null;
+  // @ts-ignore
   parent: Parent;
+  // @ts-ignore
   scroll: Parent;
 
   // Hack for accessing inherited static methods
@@ -48,6 +51,8 @@ class ShadowBlot implements Blot {
   constructor(public domNode: Node) {
     // @ts-ignore
     this.domNode[Registry.DATA_KEY] = { blot: this };
+    this.prev = null;
+    this.next = null;
   }
 
   attach(): void {
@@ -84,30 +89,19 @@ class ShadowBlot implements Blot {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    let blot = def == null ? Registry.create('text', value) : Registry.create(value, def);
+    let blot =
+      def == null
+        ? Registry.create('text', value)
+        : Registry.create(value, def);
     let ref = this.split(index);
-    this.parent.insertBefore(blot, ref);
-  }
-
-  insertInto(parentBlot: Parent, refBlot: Blot | null = null): void {
-    if (this.parent != null) {
-      this.parent.children.remove(this);
-    }
-    let refDomNode: Node | null = null;
-    parentBlot.children.insertBefore(this, refBlot);
-    if (refBlot != null) {
-      refDomNode = refBlot.domNode;
-    }
-    if (this.domNode.parentNode != parentBlot.domNode ||
-        this.domNode.nextSibling != refDomNode) {
-      parentBlot.domNode.insertBefore(this.domNode, refDomNode);
-    }
-    this.parent = parentBlot;
-    this.attach();
+    this.parent.insertBefore(blot, ref || undefined);
   }
 
   isolate(index: number, length: number): Blot {
     let target = this.split(index);
+    if (target == null) {
+      throw new Error('Attempt to isolate at end');
+    }
     target.split(length);
     return target;
   }
@@ -128,6 +122,9 @@ class ShadowBlot implements Blot {
       // @ts-ignore
       delete this.domNode[Registry.DATA_KEY].mutations;
     }
+    // if (this.statics.requiredParent && !(this.parent instanceof this.statics.requiredParent)) {
+    //   this.wrap(this.statics.requiredParent.blotName);
+    // }
   }
 
   remove(): void {
@@ -137,19 +134,17 @@ class ShadowBlot implements Blot {
     this.detach();
   }
 
-  replace(target: Blot): void {
-    if (target.parent == null) return;
-    target.parent.insertBefore(this, target.next);
-    target.remove();
-  }
-
   replaceWith(name: string | Blot, value?: any): Blot {
-    let replacement = typeof name === 'string' ? Registry.create(name, value) : name;
-    replacement.replace(this);
+    const replacement =
+      typeof name === 'string' ? Registry.create(name, value) : name;
+    if (this.parent != null) {
+      this.parent.insertBefore(replacement, this.next || undefined);
+      this.remove();
+    }
     return replacement;
   }
 
-  split(index: number, force?: boolean): Blot {
+  split(index: number, force?: boolean): Blot | null {
     return index === 0 ? this : this.next;
   }
 
@@ -158,9 +153,10 @@ class ShadowBlot implements Blot {
   }
 
   wrap(name: string | Parent, value?: any): Parent {
-    let wrapper = typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
+    let wrapper =
+      typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
     if (this.parent != null) {
-      this.parent.insertBefore(wrapper, this.next);
+      this.parent.insertBefore(wrapper, this.next || undefined);
     }
     wrapper.appendChild(this);
     return wrapper;
