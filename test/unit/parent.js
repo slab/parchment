@@ -82,13 +82,9 @@ describe('Parent', function() {
   });
 
   it('allowedChildren', function() {
-    HeaderBlot.allowedChildren = [BoldBlot];
-    let node = document.createElement('h1');
-    node.innerHTML = 'Test';
-    expect(function() {
-      let blot = Registry.create(node);
-      blot.insertAt(2, 'image', true);
-    }).toThrowError(/\[Parchment\]/);
-    HeaderBlot.allowedChildren = undefined;
+    const scroll = Registry.create('scroll');
+    scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
+    scroll.update();
+    expect(scroll.domNode.innerHTML).toEqual('<p>A</p><p>D</p>');
   });
 });

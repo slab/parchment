@@ -368,7 +368,7 @@ describe('Lifecycle', function() {
         let textNode = this.descendants[5].domNode;
         let spanNode = document.createElement('span');
         textNode.parentNode.removeChild(textNode);
-        this.container.domNode.appendChild(spanNode);
+        this.container.domNode.lastChild.appendChild(spanNode);
         spanNode.appendChild(textNode);
         this.container.update();
         this.checkValues(['Test', { image: true }, '!', 'ing']);

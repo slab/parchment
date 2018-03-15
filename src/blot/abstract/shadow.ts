@@ -4,6 +4,7 @@ import * as Registry from '../../registry';
 class ShadowBlot implements Blot {
   static blotName = 'abstract';
   static className: string;
+  static requiredParent: Registry.BlotConstructor;
   static scope: Registry.Scope;
   static tagName: string;
 
@@ -120,6 +121,12 @@ class ShadowBlot implements Blot {
     if (this.domNode[Registry.DATA_KEY] != null) {
       // @ts-ignore
       delete this.domNode[Registry.DATA_KEY].mutations;
+    }
+    if (
+      this.statics.requiredParent &&
+      !(this.parent instanceof this.statics.requiredParent)
+    ) {
+      this.wrap(this.statics.requiredParent.blotName);
     }
   }
 

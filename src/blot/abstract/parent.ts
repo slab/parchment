@@ -135,7 +135,6 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
   }
 
-  // TODO handle allowedChildren
   insertBefore(childBlot: Blot, refBlot?: Blot | null): void {
     if (childBlot.parent != null) {
       childBlot.parent.children.remove(childBlot);
@@ -284,6 +283,14 @@ class ParentBlot extends ShadowBlot implements Parent {
           this.insertBefore(blot, refBlot || undefined);
         }
       });
+    this.children.forEach((child: Blot) => {
+      const allowed = this.statics.allowedChildren.some(
+        (def: Registry.BlotConstructor) => child instanceof def,
+      );
+      if (!allowed) {
+        child.remove();
+      }
+    });
   }
 }
 

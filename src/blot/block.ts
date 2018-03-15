@@ -3,13 +3,20 @@ import AttributorStore from '../attributor/store';
 import { Blot, Parent, Formattable } from './abstract/blot';
 import ParentBlot from './abstract/parent';
 import ShadowBlot from './abstract/shadow';
+import LeafBlot from './abstract/leaf';
+import InlineBlot from './inline';
 import * as Registry from '../registry';
 
 class BlockBlot extends ParentBlot implements Formattable {
+  static allowedChildren: Registry.BlotConstructor[] = [
+    InlineBlot,
+    BlockBlot,
+    LeafBlot,
+  ];
   static blotName = 'block';
+  static requiredParent: Registry.BlotConstructor;
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'P';
-  static container: Registry.BlotConstructor;
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
@@ -75,13 +82,6 @@ class BlockBlot extends ParentBlot implements Formattable {
       }
     }
   }
-
-  // remove() {
-  //   super.remove();
-  //   if (this.statics.container != null && this.prev == null && this.next == null) {
-  //     this.parent.remove();
-  //   }
-  // }
 
   replaceWith(name: string | Blot, value?: any): Blot {
     const replacement = <BlockBlot>super.replaceWith(name, value);
