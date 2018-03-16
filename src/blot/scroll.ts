@@ -15,7 +15,7 @@ const OBSERVER_CONFIG = {
 
 const MAX_OPTIMIZE_ITERATIONS = 100;
 
-class ScrollBlot extends ContainerBlot {
+class ScrollBlot extends ParentBlot {
   static blotName = 'scroll';
   static defaultChild = BlockBlot;
   static allowedChildren: Registry.BlotConstructor[] = [
