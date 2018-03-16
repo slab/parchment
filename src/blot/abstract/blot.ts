@@ -1,5 +1,6 @@
 import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
+import * as Registry from '../../registry';
 
 export interface Blot extends LinkedNode {
   scroll: Parent;
@@ -7,6 +8,16 @@ export interface Blot extends LinkedNode {
   prev: Blot | null;
   next: Blot | null;
   domNode: Node;
+
+  statics: {
+    allowedChildren?: Registry.BlotConstructor[];
+    blotName: string;
+    className?: string;
+    defaultChild?: Registry.BlotConstructor;
+    requiredParent?: Registry.BlotConstructor;
+    scope: Registry.Scope;
+    tagName: string;
+  };
 
   attach(): void;
   clone(): Blot;
