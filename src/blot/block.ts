@@ -14,7 +14,6 @@ class BlockBlot extends ParentBlot implements Formattable {
     LeafBlot,
   ];
   static blotName = 'block';
-  static requiredParent: Registry.BlotConstructor;
   static scope = Registry.Scope.BLOCK_BLOT;
   static tagName = 'P';
   protected attributes: AttributorStore;

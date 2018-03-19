@@ -14,7 +14,7 @@ export interface Blot extends LinkedNode {
     blotName: string;
     className?: string;
     defaultChild?: Registry.BlotConstructor;
-    requiredParent?: Registry.BlotConstructor;
+    requiredContainer?: Registry.BlotConstructor;
     scope: Registry.Scope;
     tagName: string;
   };
