@@ -116,6 +116,23 @@ class ParentBlot extends ShadowBlot implements Parent {
     super.detach();
   }
 
+  enforceAllowedChildren() {
+    this.children.forEach((child: Blot) => {
+      const allowed = this.statics.allowedChildren.some(
+        (def: Registry.BlotConstructor) => child instanceof def,
+      );
+      if (allowed) return;
+      if (child.statics.scope === Registry.Scope.BLOCK_BLOT) {
+        this.isolate(child.offset(this), child.length());
+        child.parent.unwrap();
+      } else if (child instanceof ParentBlot) {
+        child.unwrap();
+      } else {
+        child.remove();
+      }
+    });
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     this.children.forEachAt(index, length, function(child, offset, length) {
       child.formatAt(offset, length, name, value);
@@ -168,6 +185,7 @@ class ParentBlot extends ShadowBlot implements Parent {
 
   optimize(context: { [key: string]: any }) {
     super.optimize(context);
+    this.enforceAllowedChildren();
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
         let child = Registry.create(this.statics.defaultChild.blotName);
@@ -209,7 +227,9 @@ class ParentBlot extends ShadowBlot implements Parent {
       if (index === this.length()) return this.next;
     }
     let after = <ParentBlot>this.clone();
-    this.parent.insertBefore(after, this.next || undefined);
+    if (this.parent) {
+      this.parent.insertBefore(after, this.next || undefined);
+    }
     this.children.forEachAt(index, this.length(), function(
       child,
       offset,
@@ -224,7 +244,9 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   unwrap(): void {
-    this.moveChildren(this.parent, this.next || undefined);
+    if (this.parent) {
+      this.moveChildren(this.parent, this.next || undefined);
+    }
     this.remove();
   }
 
@@ -283,14 +305,7 @@ class ParentBlot extends ShadowBlot implements Parent {
           this.insertBefore(blot, refBlot || undefined);
         }
       });
-    this.children.forEach((child: Blot) => {
-      const allowed = this.statics.allowedChildren.some(
-        (def: Registry.BlotConstructor) => child instanceof def,
-      );
-      if (!allowed) {
-        child.remove();
-      }
-    });
+    this.enforceAllowedChildren();
   }
 }
 

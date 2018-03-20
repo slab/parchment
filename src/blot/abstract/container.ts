@@ -17,42 +17,27 @@ class ContainerBlot extends ParentBlot {
     );
   }
 
-  checkUnwrap() {
-    this.children.forEach((child: Blot) => {
-      const allowed = this.statics.allowedChildren.some(
-        (def: Registry.BlotConstructor) => child instanceof def,
-      );
-      if (!allowed) {
-        this.isolate(child.offset(this), child.length());
-        child.parent.unwrap();
-      }
-    });
-  }
-
   deleteAt(index: number, length: number): void {
     super.deleteAt(index, length);
-    this.checkUnwrap();
+    this.enforceAllowedChildren();
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
     super.formatAt(index, length, name, value);
-    this.checkUnwrap();
+    this.enforceAllowedChildren();
   }
 
   insertAt(index: number, value: string, def?: any): void {
     super.insertAt(index, value, def);
-    this.checkUnwrap();
+    this.enforceAllowedChildren();
   }
 
   optimize(context: { [key: string]: any }): void {
     super.optimize(context);
-    if (this.children.length === 0) {
-      this.remove();
-    } else if (this.next != null && this.checkMerge()) {
+    if (this.children.length > 0 && this.next != null && this.checkMerge()) {
       this.next.moveChildren(this);
       this.next.remove();
     }
-    this.checkUnwrap();
   }
 }
 
