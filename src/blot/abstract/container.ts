@@ -24,13 +24,23 @@ class ContainerBlot extends ParentBlot {
       );
       if (!allowed) {
         this.isolate(child.offset(this), child.length());
-        this.unwrap();
+        child.parent.unwrap();
       }
     });
   }
 
+  deleteAt(index: number, length: number): void {
+    super.deleteAt(index, length);
+    this.checkUnwrap();
+  }
+
   formatAt(index: number, length: number, name: string, value: any): void {
     super.formatAt(index, length, name, value);
+    this.checkUnwrap();
+  }
+
+  insertAt(index: number, value: string, def?: any): void {
+    super.insertAt(index, value, def);
     this.checkUnwrap();
   }
 
@@ -42,6 +52,7 @@ class ContainerBlot extends ParentBlot {
       this.next.moveChildren(this);
       this.next.remove();
     }
+    this.checkUnwrap();
   }
 }
 
