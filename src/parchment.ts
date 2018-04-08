@@ -1,4 +1,4 @@
-import { Blot } from './blot/abstract/blot';
+import Blot from './blot/abstract/blot';
 import ContainerBlot from './blot/abstract/container';
 import ParentBlot from './blot/abstract/parent';
 import LeafBlot from './blot/abstract/leaf';

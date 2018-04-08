@@ -1,9 +1,9 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import { Blot, Parent, Formattable } from './abstract/blot';
+import { Formattable } from './abstract/formattable';
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
-import ShadowBlot from './abstract/shadow';
+import Blot from './abstract/blot';
 import * as Registry from '../registry';
 
 // Shallow object comparison
@@ -18,7 +18,7 @@ function isEqual(obj1: Object, obj2: Object): boolean {
 }
 
 class InlineBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Registry.BlotConstructor[] = [InlineBlot, LeafBlot];
+  static allowedChildren: Array<typeof Blot> = [InlineBlot, LeafBlot];
   static blotName = 'inline';
   static scope = Registry.Scope.INLINE_BLOT;
   static tagName = 'SPAN';
@@ -119,7 +119,7 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  wrap(name: string | Parent, value?: any): Parent {
+  wrap(name: string | ParentBlot, value?: any): ParentBlot {
     const wrapper = super.wrap(name, value);
     if (wrapper instanceof InlineBlot) {
       this.attributes.move(wrapper);

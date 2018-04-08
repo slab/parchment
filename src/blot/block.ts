@@ -1,14 +1,14 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import { Blot, Parent, Formattable } from './abstract/blot';
+import { Formattable } from './abstract/formattable';
 import ParentBlot from './abstract/parent';
-import ShadowBlot from './abstract/shadow';
+import Blot from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
 import * as Registry from '../registry';
 
 class BlockBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Registry.BlotConstructor[] = [
+  static allowedChildren: Array<typeof Blot> = [
     InlineBlot,
     BlockBlot,
     LeafBlot,

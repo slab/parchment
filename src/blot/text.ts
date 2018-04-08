@@ -1,8 +1,8 @@
-import { Blot, Leaf } from './abstract/blot';
+import Blot from "./abstract/blot";
 import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
-class TextBlot extends LeafBlot implements Leaf {
+class TextBlot extends LeafBlot {
   static blotName = 'text';
   static scope = Registry.Scope.INLINE_BLOT;
 

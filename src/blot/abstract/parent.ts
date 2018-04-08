@@ -1,9 +1,8 @@
-import { Blot, Parent, Leaf } from './blot';
 import LinkedList from '../../collection/linked-list';
-import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
+import Blot from "./blot";
 
-class ParentBlot extends ShadowBlot implements Parent {
+class ParentBlot extends Blot {
   static defaultChild: Registry.BlotConstructor | null;
   static allowedChildren: Registry.BlotConstructor[] | null;
 
@@ -72,7 +71,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   descendants(
-    criteria: { new (): Blot },
+    criteria: typeof Blot,
     index: number,
     length: number,
   ): Blot[];
@@ -177,7 +176,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     }, 0);
   }
 
-  moveChildren(targetParent: Parent, refNode?: Blot): void {
+  moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
     this.children.forEach(function(child) {
       targetParent.insertBefore(child, refNode);
     });
