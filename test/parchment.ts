@@ -2,7 +2,7 @@ import Attributor from '../src/attributor/attributor';
 import ClassAttributor from '../src/attributor/class';
 import StyleAttributor from '../src/attributor/style';
 
-import ShadowBlot from '../src/blot/abstract/shadow';
+import Blot from '../src/blot/abstract/blot';
 import ParentBlot from '../src/blot/abstract/parent';
 import LeafBlot from '../src/blot/abstract/leaf';
 
@@ -25,7 +25,7 @@ window['ClassAttributor'] = ClassAttributor;
 window['StyleAttributor'] = StyleAttributor;
 
 // @ts-ignore
-window['ShadowBlot'] = ShadowBlot;
+window['Blot'] = Blot;
 // @ts-ignore
 window['ParentBlot'] = ParentBlot;
 // @ts-ignore

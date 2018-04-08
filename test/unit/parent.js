@@ -9,7 +9,7 @@ describe('Parent', function() {
 
   describe('descendants()', function() {
     it('all', function() {
-      expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
+      expect(this.blot.descendants(Blot).length).toEqual(8);
     });
 
     it('container', function() {
@@ -65,10 +65,10 @@ describe('Parent', function() {
 
   it('detach()', function() {
     expect(this.blot.domNode[Registry.DATA_KEY]).toEqual({ blot: this.blot });
-    expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
+    expect(this.blot.descendants(Blot).length).toEqual(8);
     this.blot.detach();
     expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
-    this.blot.descendants(ShadowBlot).forEach(blot => {
+    this.blot.descendants(Blot).forEach(blot => {
       expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
     });
   });
