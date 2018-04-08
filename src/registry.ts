@@ -1,12 +1,8 @@
 import Attributor from './attributor/attributor';
-import { Formattable } from './blot/abstract/formattable';
+import Formattable from './blot/abstract/formattable';
 import Blot from "./blot/abstract/blot";
 
-export interface BlotConstructor {
-  blotName: string;
-  new (node: Node, value?: any): Blot;
-  create(value?: any): Node;
-}
+export type BlotConstructor = typeof Blot;
 
 export class ParchmentError extends Error {
   message: string;
@@ -54,9 +50,9 @@ export function create(input: Node | string | Scope, value?: any): Blot {
   let node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE
-      ? input
+      ? input as Node
       : BlotClass.create(value);
-  return new BlotClass(<Node>node, value);
+  return new BlotClass(node);
 }
 
 export function find(node: Node | null, bubble: boolean = false): Blot | null {

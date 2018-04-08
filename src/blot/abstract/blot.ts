@@ -1,11 +1,12 @@
 import * as Registry from '../../registry';
 import ParentBlot from "./parent";
-import { Formattable } from './formattable';
+import Formattable from './formattable';
+import LinkedNode from "../../collection/linked-node";
 
-class Blot {
+class Blot implements LinkedNode {
   static blotName = 'abstract';
   static className: string;
-  static requiredContainer: Registry.BlotConstructor;
+  static requiredContainer: Registry.BlotConstructor
   static scope: Registry.Scope;
   static tagName: string;
 
