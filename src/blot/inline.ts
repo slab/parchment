@@ -18,7 +18,7 @@ function isEqual(obj1: Object, obj2: Object): boolean {
 }
 
 class InlineBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Array<typeof Blot> = [InlineBlot, LeafBlot];
+  static allowedChildren: Registry.BlotConstructor[] = [InlineBlot, LeafBlot];
   static blotName = 'inline';
   static scope = Registry.Scope.INLINE_BLOT;
   static tagName = 'SPAN';

@@ -8,7 +8,7 @@ import InlineBlot from './inline';
 import * as Registry from '../registry';
 
 class BlockBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Array<typeof Blot> = [
+  static allowedChildren: Registry.BlotConstructor[] = [
     InlineBlot,
     BlockBlot,
     LeafBlot,
