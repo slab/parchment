@@ -1,8 +1,8 @@
-import { Blot, Leaf } from './abstract/blot';
+import ShadowBlot from "./abstract/shadow";
 import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
-class TextBlot extends LeafBlot implements Leaf {
+class TextBlot extends LeafBlot {
   static blotName = 'text';
   static scope = Registry.Scope.INLINE_BLOT;
 
@@ -65,7 +65,7 @@ class TextBlot extends LeafBlot implements Leaf {
     return [this.domNode, index];
   }
 
-  split(index: number, force: boolean = false): Blot | null {
+  split(index: number, force: boolean = false): ShadowBlot | null {
     if (!force) {
       if (index === 0) return this;
       if (index === this.length()) return this.next;

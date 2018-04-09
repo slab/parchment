@@ -1,6 +1,6 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import { Blot, Parent, Formattable } from './abstract/blot';
+import Formattable from './abstract/formattable';
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
@@ -102,7 +102,7 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement = <InlineBlot>super.replaceWith(name, value);
     this.attributes.copy(replacement);
     return replacement;
@@ -119,7 +119,7 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  wrap(name: string | Parent, value?: any): Parent {
+  wrap(name: string | ParentBlot, value?: any): ParentBlot {
     const wrapper = super.wrap(name, value);
     if (wrapper instanceof InlineBlot) {
       this.attributes.move(wrapper);

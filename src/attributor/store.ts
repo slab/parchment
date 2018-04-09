@@ -1,7 +1,7 @@
 import Attributor from './attributor';
 import ClassAttributor from './class';
 import StyleAttributor from './style';
-import { Formattable } from '../blot/abstract/blot';
+import Formattable from '../blot/abstract/formattable';
 import * as Registry from '../registry';
 
 class AttributorStore {

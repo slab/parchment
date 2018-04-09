@@ -1,19 +1,21 @@
-import { Blot, Parent, Formattable } from './blot';
 import * as Registry from '../../registry';
+import ParentBlot from "./parent";
+import Formattable from './formattable';
+import LinkedNode from "../../collection/linked-node";
 
-class ShadowBlot implements Blot {
+class ShadowBlot implements LinkedNode {
   static blotName = 'abstract';
   static className: string;
-  static requiredContainer: Registry.BlotConstructor;
+  static requiredContainer: Registry.BlotConstructor
   static scope: Registry.Scope;
   static tagName: string;
 
-  prev: Blot | null;
-  next: Blot | null;
+  prev: ShadowBlot | null;
+  next: ShadowBlot | null;
   // @ts-ignore
-  parent: Parent;
+  parent: ParentBlot;
   // @ts-ignore
-  scroll: Parent;
+  scroll: ParentBlot;
 
   // Hack for accessing inherited static methods
   get statics(): any {
@@ -61,7 +63,7 @@ class ShadowBlot implements Blot {
     }
   }
 
-  clone(): Blot {
+  clone(): ShadowBlot {
     let domNode = this.domNode.cloneNode(false);
     return Registry.create(domNode);
   }
@@ -82,7 +84,7 @@ class ShadowBlot implements Blot {
     if (Registry.query(name, Registry.Scope.BLOT) != null && value) {
       blot.wrap(name, value);
     } else if (Registry.query(name, Registry.Scope.ATTRIBUTE) != null) {
-      let parent = <Parent & Formattable>Registry.create(this.statics.scope);
+      let parent = <ParentBlot & Formattable>Registry.create(this.statics.scope);
       blot.wrap(parent);
       parent.format(name, value);
     }
@@ -97,7 +99,7 @@ class ShadowBlot implements Blot {
     this.parent.insertBefore(blot, ref || undefined);
   }
 
-  isolate(index: number, length: number): Blot {
+  isolate(index: number, length: number): ShadowBlot {
     let target = this.split(index);
     if (target == null) {
       throw new Error('Attempt to isolate at end');
@@ -110,7 +112,7 @@ class ShadowBlot implements Blot {
     return 1;
   }
 
-  offset(root: Blot = this.parent): number {
+  offset(root: ShadowBlot = this.parent): number {
     if (this.parent == null || this == root) return 0;
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
@@ -137,7 +139,7 @@ class ShadowBlot implements Blot {
     this.detach();
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement =
       typeof name === 'string' ? Registry.create(name, value) : name;
     if (this.parent != null) {
@@ -147,7 +149,7 @@ class ShadowBlot implements Blot {
     return replacement;
   }
 
-  split(index: number, force?: boolean): Blot | null {
+  split(index: number, force?: boolean): ShadowBlot | null {
     return index === 0 ? this : this.next;
   }
 
@@ -155,9 +157,9 @@ class ShadowBlot implements Blot {
     // Nothing to do by default
   }
 
-  wrap(name: string | Parent, value?: any): Parent {
+  wrap(name: string | ParentBlot, value?: any): ParentBlot {
     let wrapper =
-      typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
+      typeof name === 'string' ? <ParentBlot>Registry.create(name, value) : name;
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next || undefined);
     }

@@ -1,11 +1,8 @@
 import Attributor from './attributor/attributor';
-import { Blot, Formattable } from './blot/abstract/blot';
+import Formattable from './blot/abstract/formattable';
+import ShadowBlot from "./blot/abstract/shadow";
 
-export interface BlotConstructor {
-  blotName: string;
-  new (node: Node, value?: any): Blot;
-  create(value?: any): Node;
-}
+export type BlotConstructor = typeof ShadowBlot;
 
 export class ParchmentError extends Error {
   message: string;
@@ -44,7 +41,7 @@ export enum Scope {
   ANY = TYPE | LEVEL,
 }
 
-export function create(input: Node | string | Scope, value?: any): Blot {
+export function create(input: Node | string | Scope, value?: any): ShadowBlot {
   let match = query(input);
   if (match == null) {
     throw new ParchmentError(`Unable to create ${input} blot`);
@@ -53,12 +50,12 @@ export function create(input: Node | string | Scope, value?: any): Blot {
   let node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE
-      ? input
+      ? input as Node
       : BlotClass.create(value);
-  return new BlotClass(<Node>node, value);
+  return new BlotClass(node);
 }
 
-export function find(node: Node | null, bubble: boolean = false): Blot | null {
+export function find(node: Node | null, bubble: boolean = false): ShadowBlot | null {
   if (node == null) return null;
   // @ts-ignore
   if (node[DATA_KEY] != null) return node[DATA_KEY].blot;

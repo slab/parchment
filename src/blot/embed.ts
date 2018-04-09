@@ -1,4 +1,4 @@
-import { Formattable } from './abstract/blot';
+import Formattable from './abstract/formattable';
 import LeafBlot from './abstract/leaf';
 
 class EmbedBlot extends LeafBlot implements Formattable {
