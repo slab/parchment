@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.conf.js",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "karma start",
     "test:server": "karma start --no-single-run",
     "test:travis":
