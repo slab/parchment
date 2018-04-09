@@ -9,6 +9,7 @@ class ParentBlot extends ShadowBlot implements Parent {
 
   children!: LinkedList<Blot>;
   domNode!: HTMLElement;
+  uiNode: HTMLElement | null = null;
 
   constructor(domNode: Node) {
     super(domNode);
@@ -26,11 +27,21 @@ class ParentBlot extends ShadowBlot implements Parent {
     });
   }
 
+  attachUI(node: HTMLElement) {
+    if (this.uiNode != null) {
+      this.uiNode.remove();
+    }
+    this.uiNode = node;
+    this.uiNode.setAttribute('contenteditable', 'false');
+    this.domNode.insertBefore(this.uiNode, this.domNode.firstChild);
+  }
+
   build(): void {
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
     [].slice
       .call(this.domNode.childNodes)
+      .filter((node: Node) => node !== this.uiNode)
       .reverse()
       .forEach((node: Node) => {
         try {
@@ -186,6 +197,9 @@ class ParentBlot extends ShadowBlot implements Parent {
   optimize(context: { [key: string]: any }) {
     super.optimize(context);
     this.enforceAllowedChildren();
+    if (this.uiNode != null && this.uiNode !== this.domNode.firstChild) {
+      this.domNode.insertBefore(this.uiNode, this.domNode.firstChild);
+    }
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
         let child = Registry.create(this.statics.defaultChild.blotName);
@@ -215,6 +229,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   replaceWith(name: string | Blot, value?: any): Blot {
     const replacement =
       typeof name === 'string' ? Registry.create(name, value) : name;
+    replacement.scroll = this.scroll;
     if (replacement instanceof ParentBlot) {
       this.moveChildren(replacement);
     }
@@ -283,7 +298,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     });
     addedNodes
       .filter(node => {
-        return node.parentNode == this.domNode;
+        return node.parentNode === this.domNode || node === this.uiNode;
       })
       .sort(function(a, b) {
         if (a === b) return 0;
