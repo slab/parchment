@@ -1,6 +1,6 @@
 import LinkedList from '../../collection/linked-list';
 import * as Registry from '../../registry';
-import Blot from "./blot";
+import Blot from "./shadow";
 
 class ParentBlot extends Blot {
   static defaultChild: Registry.BlotConstructor | null;

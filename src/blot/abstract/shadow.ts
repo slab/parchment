@@ -3,15 +3,15 @@ import ParentBlot from "./parent";
 import Formattable from './formattable';
 import LinkedNode from "../../collection/linked-node";
 
-class Blot implements LinkedNode {
+class ShadowBlot implements LinkedNode {
   static blotName = 'abstract';
   static className: string;
   static requiredContainer: Registry.BlotConstructor
   static scope: Registry.Scope;
   static tagName: string;
 
-  prev: Blot | null;
-  next: Blot | null;
+  prev: ShadowBlot | null;
+  next: ShadowBlot | null;
   // @ts-ignore
   parent: ParentBlot;
   // @ts-ignore
@@ -63,7 +63,7 @@ class Blot implements LinkedNode {
     }
   }
 
-  clone(): Blot {
+  clone(): ShadowBlot {
     let domNode = this.domNode.cloneNode(false);
     return Registry.create(domNode);
   }
@@ -99,7 +99,7 @@ class Blot implements LinkedNode {
     this.parent.insertBefore(blot, ref || undefined);
   }
 
-  isolate(index: number, length: number): Blot {
+  isolate(index: number, length: number): ShadowBlot {
     let target = this.split(index);
     if (target == null) {
       throw new Error('Attempt to isolate at end');
@@ -112,7 +112,7 @@ class Blot implements LinkedNode {
     return 1;
   }
 
-  offset(root: Blot = this.parent): number {
+  offset(root: ShadowBlot = this.parent): number {
     if (this.parent == null || this == root) return 0;
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
@@ -139,7 +139,7 @@ class Blot implements LinkedNode {
     this.detach();
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement =
       typeof name === 'string' ? Registry.create(name, value) : name;
     if (this.parent != null) {
@@ -149,7 +149,7 @@ class Blot implements LinkedNode {
     return replacement;
   }
 
-  split(index: number, force?: boolean): Blot | null {
+  split(index: number, force?: boolean): ShadowBlot | null {
     return index === 0 ? this : this.next;
   }
 
@@ -168,4 +168,4 @@ class Blot implements LinkedNode {
   }
 }
 
-export default Blot;
+export default ShadowBlot;

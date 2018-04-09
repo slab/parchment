@@ -2,7 +2,7 @@ import Attributor from '../src/attributor/attributor';
 import ClassAttributor from '../src/attributor/class';
 import StyleAttributor from '../src/attributor/style';
 
-import Blot from '../src/blot/abstract/blot';
+import Blot from '../src/blot/abstract/shadow';
 import ParentBlot from '../src/blot/abstract/parent';
 import LeafBlot from '../src/blot/abstract/leaf';
 

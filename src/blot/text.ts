@@ -1,4 +1,4 @@
-import Blot from "./abstract/blot";
+import Blot from "./abstract/shadow";
 import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 

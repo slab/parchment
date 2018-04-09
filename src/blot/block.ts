@@ -2,7 +2,7 @@ import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
 import Formattable from './abstract/formattable';
 import ParentBlot from './abstract/parent';
-import Blot from './abstract/blot';
+import Blot from './abstract/shadow';
 import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
 import * as Registry from '../registry';

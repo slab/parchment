@@ -3,7 +3,7 @@ import AttributorStore from '../attributor/store';
 import Formattable from './abstract/formattable';
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
-import Blot from './abstract/blot';
+import Blot from './abstract/shadow';
 import * as Registry from '../registry';
 
 // Shallow object comparison

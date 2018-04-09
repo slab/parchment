@@ -1,4 +1,4 @@
-import Blot from './blot';
+import Blot from './shadow';
 import * as Registry from '../../registry';
 
 class LeafBlot extends Blot {
