@@ -1,4 +1,4 @@
-import Blot from './abstract/shadow';
+import ShadowBlot from './abstract/shadow';
 import ParentBlot from './abstract/parent';
 import ContainerBlot from './abstract/container';
 import BlockBlot from './block';
@@ -73,7 +73,7 @@ class ScrollBlot extends ParentBlot {
     // so we cannot just mutations.push.apply(mutations, this.observer.takeRecords());
     while (records.length > 0) mutations.push(records.pop());
     // TODO use WeakMap
-    let mark = (blot: Blot | null, markParent: boolean = true) => {
+    let mark = (blot: ShadowBlot | null, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
       // @ts-ignore
@@ -83,7 +83,7 @@ class ScrollBlot extends ParentBlot {
       }
       if (markParent) mark(blot.parent);
     };
-    let optimize = function(blot: Blot) {
+    let optimize = function(blot: ShadowBlot) {
       // Post-order traversal
       if (
         // @ts-ignore
@@ -113,7 +113,7 @@ class ScrollBlot extends ParentBlot {
               let child = Registry.find(node, false);
               mark(child, false);
               if (child instanceof ParentBlot) {
-                child.children.forEach(function(grandChild: Blot) {
+                child.children.forEach(function(grandChild: ShadowBlot) {
                   mark(grandChild, false);
                 });
               }
@@ -152,7 +152,7 @@ class ScrollBlot extends ParentBlot {
           return null;
         }
       })
-      .forEach((blot: Blot | null) => {
+      .forEach((blot: ShadowBlot | null) => {
         if (
           blot == null ||
           blot === this ||

@@ -1,12 +1,12 @@
 import LinkedList from '../../collection/linked-list';
 import * as Registry from '../../registry';
-import Blot from "./shadow";
+import ShadowBlot from "./shadow";
 
-class ParentBlot extends Blot {
+class ParentBlot extends ShadowBlot {
   static defaultChild: Registry.BlotConstructor | null;
   static allowedChildren: Registry.BlotConstructor[] | null;
 
-  children!: LinkedList<Blot>;
+  children!: LinkedList<ShadowBlot>;
   domNode!: HTMLElement;
 
   constructor(domNode: Node) {
@@ -14,7 +14,7 @@ class ParentBlot extends Blot {
     this.build();
   }
 
-  appendChild(other: Blot): void {
+  appendChild(other: ShadowBlot): void {
     this.insertBefore(other);
   }
 
@@ -26,7 +26,7 @@ class ParentBlot extends Blot {
   }
 
   build(): void {
-    this.children = new LinkedList<Blot>();
+    this.children = new LinkedList<ShadowBlot>();
     // Need to be reversed for if DOM nodes already in order
     [].slice
       .call(this.domNode.childNodes)
@@ -51,12 +51,12 @@ class ParentBlot extends Blot {
     });
   }
 
-  descendant(criteria: { new (): Blot }, index: number): [Blot | null, number];
+  descendant(criteria: { new (): ShadowBlot }, index: number): [ShadowBlot | null, number];
   descendant(
-    criteria: (blot: Blot) => boolean,
+    criteria: (blot: ShadowBlot) => boolean,
     index: number,
-  ): [Blot | null, number];
-  descendant(criteria: any, index: number): [Blot | null, number] {
+  ): [ShadowBlot | null, number];
+  descendant(criteria: any, index: number): [ShadowBlot | null, number] {
     let [child, offset] = this.children.find(index);
     if (
       (criteria.blotName == null && criteria(child)) ||
@@ -71,24 +71,24 @@ class ParentBlot extends Blot {
   }
 
   descendants(
-    criteria: typeof Blot,
+    criteria: typeof ShadowBlot,
     index: number,
     length: number,
-  ): Blot[];
+  ): ShadowBlot[];
   descendants(
-    criteria: (blot: Blot) => boolean,
+    criteria: (blot: ShadowBlot) => boolean,
     index: number,
     length: number,
-  ): Blot[];
+  ): ShadowBlot[];
   descendants(
     criteria: any,
     index: number = 0,
     length: number = Number.MAX_VALUE,
-  ): Blot[] {
-    let descendants: Blot[] = [];
+  ): ShadowBlot[] {
+    let descendants: ShadowBlot[] = [];
     let lengthLeft = length;
     this.children.forEachAt(index, length, function(
-      child: Blot,
+      child: ShadowBlot,
       index: number,
       length: number,
     ) {
@@ -116,7 +116,7 @@ class ParentBlot extends Blot {
   }
 
   enforceAllowedChildren() {
-    this.children.forEach((child: Blot) => {
+    this.children.forEach((child: ShadowBlot) => {
       const allowed = this.statics.allowedChildren.some(
         (def: Registry.BlotConstructor) => child instanceof def,
       );
@@ -151,7 +151,7 @@ class ParentBlot extends Blot {
     }
   }
 
-  insertBefore(childBlot: Blot, refBlot?: Blot | null): void {
+  insertBefore(childBlot: ShadowBlot, refBlot?: ShadowBlot | null): void {
     if (childBlot.parent != null) {
       childBlot.parent.children.remove(childBlot);
     }
@@ -176,7 +176,7 @@ class ParentBlot extends Blot {
     }, 0);
   }
 
-  moveChildren(targetParent: ParentBlot, refNode?: Blot): void {
+  moveChildren(targetParent: ParentBlot, refNode?: ShadowBlot): void {
     this.children.forEach(function(child) {
       targetParent.insertBefore(child, refNode);
     });
@@ -196,9 +196,9 @@ class ParentBlot extends Blot {
     }
   }
 
-  path(index: number, inclusive: boolean = false): [Blot, number][] {
+  path(index: number, inclusive: boolean = false): [ShadowBlot, number][] {
     let [child, offset] = this.children.find(index, inclusive);
-    let position: [Blot, number][] = [[this, index]];
+    let position: [ShadowBlot, number][] = [[this, index]];
     if (child instanceof ParentBlot) {
       return position.concat(child.path(offset, inclusive));
     } else if (child != null) {
@@ -207,11 +207,11 @@ class ParentBlot extends Blot {
     return position;
   }
 
-  removeChild(child: Blot): void {
+  removeChild(child: ShadowBlot): void {
     this.children.remove(child);
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement =
       typeof name === 'string' ? Registry.create(name, value) : name;
     if (replacement instanceof ParentBlot) {
@@ -220,7 +220,7 @@ class ParentBlot extends Blot {
     return super.replaceWith(replacement);
   }
 
-  split(index: number, force: boolean = false): Blot | null {
+  split(index: number, force: boolean = false): ShadowBlot | null {
     if (!force) {
       if (index === 0) return this;
       if (index === this.length()) return this.next;
@@ -292,7 +292,7 @@ class ParentBlot extends Blot {
         return -1;
       })
       .forEach(node => {
-        let refBlot: Blot | null = null;
+        let refBlot: ShadowBlot | null = null;
         if (node.nextSibling != null) {
           refBlot = Registry.find(node.nextSibling);
         }
@@ -308,7 +308,7 @@ class ParentBlot extends Blot {
   }
 }
 
-function makeAttachedBlot(node: Node): Blot {
+function makeAttachedBlot(node: Node): ShadowBlot {
   let blot = Registry.find(node);
   if (blot == null) {
     try {

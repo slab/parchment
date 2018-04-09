@@ -1,4 +1,4 @@
-import Blot from "./abstract/shadow";
+import ShadowBlot from "./abstract/shadow";
 import LeafBlot from './abstract/leaf';
 import * as Registry from '../registry';
 
@@ -65,7 +65,7 @@ class TextBlot extends LeafBlot {
     return [this.domNode, index];
   }
 
-  split(index: number, force: boolean = false): Blot | null {
+  split(index: number, force: boolean = false): ShadowBlot | null {
     if (!force) {
       if (index === 0) return this;
       if (index === this.length()) return this.next;

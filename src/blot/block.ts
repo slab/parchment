@@ -2,7 +2,7 @@ import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
 import Formattable from './abstract/formattable';
 import ParentBlot from './abstract/parent';
-import Blot from './abstract/shadow';
+import ShadowBlot from './abstract/shadow';
 import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
 import * as Registry from '../registry';
@@ -82,7 +82,7 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement = <BlockBlot>super.replaceWith(name, value);
     this.attributes.copy(replacement);
     return replacement;

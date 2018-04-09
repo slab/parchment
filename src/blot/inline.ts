@@ -3,7 +3,7 @@ import AttributorStore from '../attributor/store';
 import Formattable from './abstract/formattable';
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
-import Blot from './abstract/shadow';
+import ShadowBlot from './abstract/shadow';
 import * as Registry from '../registry';
 
 // Shallow object comparison
@@ -102,7 +102,7 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  replaceWith(name: string | ShadowBlot, value?: any): ShadowBlot {
     const replacement = <InlineBlot>super.replaceWith(name, value);
     this.attributes.copy(replacement);
     return replacement;

@@ -30,12 +30,12 @@ describe('Lifecycle', function() {
     });
 
     it('null tagName', function() {
-      class NullBlot extends Blot {}
+      class NullBlot extends ShadowBlot {}
       expect(NullBlot.create.bind(NullBlot)).toThrowError(/\[Parchment\]/);
     });
 
     it('className', function() {
-      class ClassBlot extends Blot {}
+      class ClassBlot extends ShadowBlot {}
       ClassBlot.className = 'test';
       ClassBlot.tagName = 'span';
       let node = ClassBlot.create();
@@ -178,7 +178,7 @@ describe('Lifecycle', function() {
         '<p><em style="color: red;"><strong>Test</strong><img>ing</em></p><p><em>!</em></p>';
       this.container = Registry.create(div);
       // [p, em, strong, text, image, text, p, em, text]
-      this.descendants = this.container.descendants(Blot);
+      this.descendants = this.container.descendants(ShadowBlot);
       this.descendants.forEach(function(blot) {
         spyOn(blot, 'update').and.callThrough();
       });
@@ -310,7 +310,7 @@ describe('Lifecycle', function() {
         this.container.update();
         this.checkUpdateCalls(blockBlot);
         expect(this.container.innerHTML).toBe(html);
-        expect(this.container.descendants(Blot).length).toEqual(
+        expect(this.container.descendants(ShadowBlot).length).toEqual(
           this.descendants.length,
         );
       });

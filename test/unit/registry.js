@@ -49,7 +49,7 @@ describe('Registry', function() {
 
     it('abstract', function() {
       expect(function() {
-        Registry.register(Blot);
+        Registry.register(ShadowBlot);
       }).toThrowError(/\[Parchment\]/);
     });
   });

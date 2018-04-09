@@ -1,7 +1,7 @@
-import Blot from './shadow';
+import ShadowBlot from './shadow';
 import * as Registry from '../../registry';
 
-class LeafBlot extends Blot {
+class LeafBlot extends ShadowBlot {
   static scope = Registry.Scope.INLINE_BLOT;
 
   static value(domNode: Node): any {
