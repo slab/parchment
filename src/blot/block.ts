@@ -89,18 +89,13 @@ class BlockBlot extends ParentBlot implements Formattable {
   }
 
   update(mutations: MutationRecord[], context: { [key: string]: any }): void {
-    // Workaround for IE11 not giving correct mutation records
-    if (navigator.userAgent.match(/Trident/)) {
-      this.build();
-    } else {
-      super.update(mutations, context);
-      const attributeChanged = mutations.some(
-        mutation =>
-          mutation.target === this.domNode && mutation.type === 'attributes',
-      );
-      if (attributeChanged) {
-        this.attributes.build();
-      }
+    super.update(mutations, context);
+    const attributeChanged = mutations.some(
+      mutation =>
+        mutation.target === this.domNode && mutation.type === 'attributes',
+    );
+    if (attributeChanged) {
+      this.attributes.build();
     }
   }
 }
