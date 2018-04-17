@@ -5,22 +5,27 @@
   "author": "Jason Chen <jhchen7@gmail.com>",
   "homepage": "http://quilljs.com/docs/parchment",
   "main": "dist/parchment.js",
-  "files": ["tsconfig.json", "dist", "src"],
+  "files": [
+    "tsconfig.json",
+    "dist",
+    "src"
+  ],
   "types": "dist/src/parchment.d.ts",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "istanbul": "~0.4.5",
-    "jasmine-core": "^2.99.1",
+    "jasmine-core": "^3.1.0",
     "karma": "^2.0.0",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.1",
     "karma-sauce-launcher": "^1.2.0",
-    "karma-webpack": "^2.0.9",
-    "ts-loader": "^3.5.0",
-    "typescript": "^2.7.2",
-    "webpack": "^3.11.0"
+    "karma-webpack": "^3.0.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
   },
   "license": "BSD-3-Clause",
   "repository": {
@@ -32,8 +37,7 @@
     "prepare": "npm run build",
     "test": "karma start",
     "test:server": "karma start --no-single-run",
-    "test:travis":
-      "karma start --browsers saucelabs-chrome --reporters dots,saucelabs"
+    "test:travis": "karma start --browsers saucelabs-chrome --reporters dots,saucelabs"
   },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"
