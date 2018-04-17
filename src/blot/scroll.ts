@@ -77,6 +77,8 @@ class ScrollBlot extends ParentBlot {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
       // @ts-ignore
+      if (blot.domNode[Registry.DATA_KEY] == null) return;
+      // @ts-ignore
       if (blot.domNode[Registry.DATA_KEY].mutations == null) {
         // @ts-ignore
         blot.domNode[Registry.DATA_KEY].mutations = [];
@@ -163,8 +165,12 @@ class ScrollBlot extends ParentBlot {
         // @ts-ignore
         blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
       });
-    // @ts-ignore
-    if (this.domNode[Registry.DATA_KEY].mutations != null) {
+    if (
+      // @ts-ignore
+      this.domNode[Registry.DATA_KEY] != null &&
+      // @ts-ignore
+      this.domNode[Registry.DATA_KEY].mutations != null
+    ) {
       // @ts-ignore
       super.update(this.domNode[Registry.DATA_KEY].mutations, context);
     }
