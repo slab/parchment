@@ -23,6 +23,7 @@ export interface Blot extends LinkedNode {
   clone(): Blot;
   detach(): void;
   isolate(index: number, length: number): Blot;
+  length(): number;
   offset(root?: Blot): number;
   remove(): void;
   replaceWith(name: string, value: any): Blot;
