@@ -129,8 +129,8 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
-  map(callback: (cur: T | null) => any): any[] {
-    return this.reduce(function(memo: (T | null)[], cur: T | null) {
+  map(callback: (cur: T) => any): any[] {
+    return this.reduce(function(memo: T[], cur: T) {
       memo.push(callback(cur));
       return memo;
     }, []);

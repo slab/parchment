@@ -13,6 +13,7 @@ module.exports = function(config) {
       'test/unit/blot.js',
       'test/unit/parent.js',
       'test/unit/scroll.js',
+      'test/unit/container.js',
       'test/unit/block.js',
       'test/unit/inline.js',
       'test/unit/embed.js',

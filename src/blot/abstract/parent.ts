@@ -128,14 +128,22 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   enforceAllowedChildren() {
-    this.children.forEach((child: Blot) => {
+    let done = false;
+    const children = this.children.forEach((child: Blot) => {
+      if (done) return;
       const allowed = this.statics.allowedChildren.some(
         (def: Registry.BlotConstructor) => child instanceof def,
       );
       if (allowed) return;
       if (child.statics.scope === Registry.Scope.BLOCK_BLOT) {
-        this.isolate(child.offset(this), child.length());
+        if (child.next != null) {
+          this.splitAfter(child);
+        }
+        if (child.prev != null) {
+          this.splitAfter(child.prev);
+        }
         child.parent.unwrap();
+        done = true;
       } else if (child instanceof ParentBlot) {
         child.unwrap();
       } else {
@@ -255,6 +263,17 @@ class ParentBlot extends ShadowBlot implements Parent {
         after.appendChild(split);
       }
     });
+    return after;
+  }
+
+  splitAfter(child: Blot): Parent {
+    let after = <ParentBlot>this.clone();
+    while (child.next != null) {
+      after.appendChild(child.next);
+    }
+    if (this.parent) {
+      this.parent.insertBefore(after, this.next || undefined);
+    }
     return after;
   }
 

@@ -4,6 +4,7 @@ import StyleAttributor from '../src/attributor/style';
 
 import ShadowBlot from '../src/blot/abstract/shadow';
 import ParentBlot from '../src/blot/abstract/parent';
+import ContainerBlot from '../src/blot/abstract/container';
 import LeafBlot from '../src/blot/abstract/leaf';
 
 import ScrollBlot from '../src/blot/scroll';
@@ -35,6 +36,8 @@ window['EmbedBlot'] = EmbedBlot;
 
 // @ts-ignore
 window['ScrollBlot'] = ScrollBlot;
+// @ts-ignore
+window['ContainerBlot'] = ContainerBlot;
 // @ts-ignore
 window['BlockBlot'] = BlockBlot;
 // @ts-ignore
