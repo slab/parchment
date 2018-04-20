@@ -211,7 +211,8 @@ class ParentBlot extends ShadowBlot implements Parent {
       if (this.statics.defaultChild != null) {
         let child = Registry.create(this.statics.defaultChild.blotName);
         this.appendChild(child);
-        child.optimize(context);
+        // TODO double check if necessary
+        // child.optimize(context);
       } else {
         this.remove();
       }
