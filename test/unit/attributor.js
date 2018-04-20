@@ -204,4 +204,16 @@ describe('Attributor', function() {
     expect(familyAttributor.canAdd(node, 'monotype')).toBeFalsy();
     expect(familyAttributor.canAdd(node, '"Lucida Grande"')).toBeFalsy();
   });
+
+  it('add to both block and inline', function() {
+    let container = Registry.create('scroll');
+    let block = Registry.create('block');
+    let textBlot = Registry.create('text', 'Test');
+    block.appendChild(textBlot);
+    container.appendChild(block);
+    container.formatAt(0, 4, 'comment', 'test-value');
+    expect(textBlot.parent instanceof InlineBlot).toBe(true);
+    expect(textBlot.parent.domNode.dataset.comment).toEqual('test-value');
+    expect(block.domNode.dataset.comment).toEqual('test-value');
+  });
 });

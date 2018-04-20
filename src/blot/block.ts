@@ -62,9 +62,8 @@ class BlockBlot extends ParentBlot implements Formattable {
   formatAt(index: number, length: number, name: string, value: any): void {
     if (Registry.query(name, Registry.Scope.BLOCK) != null) {
       this.format(name, value);
-    } else {
-      super.formatAt(index, length, name, value);
     }
+    super.formatAt(index, length, name, value);
   }
 
   insertAt(index: number, value: string, def?: any): void {
