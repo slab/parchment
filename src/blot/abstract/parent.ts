@@ -39,8 +39,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   build(): void {
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order
-    [].slice
-      .call(this.domNode.childNodes)
+    Array.from(this.domNode.childNodes)
       .filter((node: Node) => node !== this.uiNode)
       .reverse()
       .forEach((node: Node) => {
@@ -350,7 +349,7 @@ function makeAttachedBlot(node: Node): Blot {
       blot = Registry.create(node);
     } catch (e) {
       blot = Registry.create(Registry.Scope.INLINE);
-      [].slice.call(node.childNodes).forEach(function(child: Node) {
+      Array.from(node.childNodes).forEach(function(child: Node) {
         // @ts-ignore
         blot.domNode.appendChild(child);
       });

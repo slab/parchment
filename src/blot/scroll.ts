@@ -68,7 +68,7 @@ class ScrollBlot extends ParentBlot {
   optimize(mutations: any = [], context: any = {}): void {
     super.optimize(context);
     // We must modify mutations directly, cannot make copy and then modify
-    let records = [].slice.call(this.observer.takeRecords());
+    let records = Array.from(this.observer.takeRecords());
     // Array.push currently seems to be implemented by a non-tail recursive function
     // so we cannot just mutations.push.apply(mutations, this.observer.takeRecords());
     while (records.length > 0) mutations.push(records.pop());
@@ -111,8 +111,8 @@ class ScrollBlot extends ParentBlot {
         if (blot.domNode === mutation.target) {
           if (mutation.type === 'childList') {
             mark(Registry.find(mutation.previousSibling, false));
-            [].forEach.call(mutation.addedNodes, function(node: Node) {
-              let child = Registry.find(node, false);
+            Array.from(mutation.addedNodes).forEach(function(node: Node) {
+              const child = Registry.find(node, false);
               mark(child, false);
               if (child instanceof ParentBlot) {
                 child.children.forEach(function(grandChild: Blot) {
@@ -127,7 +127,7 @@ class ScrollBlot extends ParentBlot {
         mark(blot);
       });
       this.children.forEach(optimize);
-      remaining = [].slice.call(this.observer.takeRecords());
+      remaining = Array.from(this.observer.takeRecords());
       records = remaining.slice();
       while (records.length > 0) mutations.push(records.pop());
     }

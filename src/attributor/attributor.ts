@@ -12,7 +12,7 @@ export default class Attributor {
   whitelist: string[] | undefined;
 
   static keys(node: HTMLElement): string[] {
-    return [].map.call(node.attributes, function(item: Attr) {
+    return Array.from(node.attributes).map(function(item: Attr) {
       return item.name;
     });
   }
