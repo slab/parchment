@@ -12,9 +12,9 @@ describe('Blot', function() {
 
   it('detach()', function() {
     let blot = Registry.create('block');
-    expect(blot.domNode[Registry.DATA_KEY]).toEqual({ blot: blot });
+    expect(Registry.blots.get(blot.domNode)).toEqual(blot);
     blot.detach();
-    expect(blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+    expect(Registry.blots.get(blot.domNode)).toEqual(undefined);
   });
 
   it('remove()', function() {

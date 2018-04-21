@@ -64,12 +64,12 @@ describe('Parent', function() {
   });
 
   it('detach()', function() {
-    expect(this.blot.domNode[Registry.DATA_KEY]).toEqual({ blot: this.blot });
+    expect(Registry.blots.get(this.blot.domNode)).toEqual(this.blot);
     expect(this.blot.descendants(ShadowBlot).length).toEqual(8);
     this.blot.detach();
-    expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+    expect(Registry.blots.has(this.blot.domNode)).toBe(false);
     this.blot.descendants(ShadowBlot).forEach(blot => {
-      expect(this.blot.domNode[Registry.DATA_KEY]).toEqual(undefined);
+      expect(Registry.blots.has(blot.domNode)).toBe(false);
     });
   });
 
