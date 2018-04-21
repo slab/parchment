@@ -20,12 +20,12 @@ export class ParchmentError extends Error {
   }
 }
 
-let attributes: { [key: string]: Attributor } = {};
-let classes: { [key: string]: BlotConstructor } = {};
-let tags: { [key: string]: BlotConstructor } = {};
-let types: { [key: string]: Attributor | BlotConstructor } = {};
+const attributes: { [key: string]: Attributor } = {};
+const classes: { [key: string]: BlotConstructor } = {};
+const tags: { [key: string]: BlotConstructor } = {};
+const types: { [key: string]: Attributor | BlotConstructor } = {};
 
-export const DATA_KEY = '__blot';
+export const blots = new WeakMap();
 
 export enum Scope {
   TYPE = (1 << 2) - 1, // 0011 Lower two bits
@@ -45,12 +45,12 @@ export enum Scope {
 }
 
 export function create(input: Node | string | Scope, value?: any): Blot {
-  let match = query(input);
+  const match = query(input);
   if (match == null) {
     throw new ParchmentError(`Unable to create ${input} blot`);
   }
-  let BlotClass = <BlotConstructor>match;
-  let node =
+  const BlotClass = <BlotConstructor>match;
+  const node =
     // @ts-ignore
     input instanceof Node || input['nodeType'] === Node.TEXT_NODE
       ? input
@@ -60,8 +60,7 @@ export function create(input: Node | string | Scope, value?: any): Blot {
 
 export function find(node: Node | null, bubble: boolean = false): Blot | null {
   if (node == null) return null;
-  // @ts-ignore
-  if (node[DATA_KEY] != null) return node[DATA_KEY].blot;
+  if (blots.has(node)) return blots.get(node);
   if (bubble) return find(node.parentNode, bubble);
   return null;
 }

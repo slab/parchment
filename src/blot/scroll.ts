@@ -67,37 +67,27 @@ class ScrollBlot extends ParentBlot {
   optimize(mutations: MutationRecord[], context: { [key: string]: any }): void;
   optimize(mutations: any = [], context: any = {}): void {
     super.optimize(context);
+    const mutationsMap = context.mutationsMap || new WeakMap();
     // We must modify mutations directly, cannot make copy and then modify
     let records = Array.from(this.observer.takeRecords());
     // Array.push currently seems to be implemented by a non-tail recursive function
     // so we cannot just mutations.push.apply(mutations, this.observer.takeRecords());
     while (records.length > 0) mutations.push(records.pop());
-    // TODO use WeakMap
     let mark = (blot: Blot | null, markParent: boolean = true) => {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
-      // @ts-ignore
-      if (blot.domNode[Registry.DATA_KEY] == null) return;
-      // @ts-ignore
-      if (blot.domNode[Registry.DATA_KEY].mutations == null) {
-        // @ts-ignore
-        blot.domNode[Registry.DATA_KEY].mutations = [];
+      if (!mutationsMap.has(blot.domNode)) {
+        mutationsMap.set(blot.domNode, []);
       }
       if (markParent) mark(blot.parent);
     };
     let optimize = function(blot: Blot) {
       // Post-order traversal
-      if (
-        // @ts-ignore
-        blot.domNode[Registry.DATA_KEY] == null ||
-        // @ts-ignore
-        blot.domNode[Registry.DATA_KEY].mutations == null
-      ) {
-        return;
-      }
+      if (!mutationsMap.has(blot.domNode)) return;
       if (blot instanceof ParentBlot) {
         blot.children.forEach(optimize);
       }
+      mutationsMap.delete(blot.domNode);
       blot.optimize(context);
     };
     let remaining = mutations;
@@ -138,41 +128,27 @@ class ScrollBlot extends ParentBlot {
     context: { [key: string]: any } = {},
   ): void {
     mutations = mutations || this.observer.takeRecords();
-    // TODO use WeakMap
+    const mutationsMap = new WeakMap();
     mutations
       .map(function(mutation: MutationRecord) {
         let blot = Registry.find(mutation.target, true);
         if (blot == null) return null;
-        // @ts-ignore
-        if (blot.domNode[Registry.DATA_KEY].mutations == null) {
-          // @ts-ignore
-          blot.domNode[Registry.DATA_KEY].mutations = [mutation];
-          return blot;
-        } else {
-          // @ts-ignore
-          blot.domNode[Registry.DATA_KEY].mutations.push(mutation);
+        if (mutationsMap.has(blot.domNode)) {
+          mutationsMap.get(blot.domNode).push(mutation);
           return null;
+        } else {
+          mutationsMap.set(blot.domNode, [mutation]);
+          return blot;
         }
       })
       .forEach((blot: Blot | null) => {
-        if (
-          blot == null ||
-          blot === this ||
-          //@ts-ignore
-          blot.domNode[Registry.DATA_KEY] == null
-        )
-          return;
-        // @ts-ignore
-        blot.update(blot.domNode[Registry.DATA_KEY].mutations || [], context);
+        if (blot != null && blot !== this && mutationsMap.has(blot.domNode)) {
+          blot.update(mutationsMap.get(blot.domNode) || [], context);
+        }
       });
-    if (
-      // @ts-ignore
-      this.domNode[Registry.DATA_KEY] != null &&
-      // @ts-ignore
-      this.domNode[Registry.DATA_KEY].mutations != null
-    ) {
-      // @ts-ignore
-      super.update(this.domNode[Registry.DATA_KEY].mutations, context);
+    context.mutationsMap = mutationsMap;
+    if (mutationsMap.has(this.domNode)) {
+      super.update(mutationsMap.get(this.domNode), context);
     }
     this.optimize(mutations, context);
   }

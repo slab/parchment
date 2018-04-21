@@ -21,9 +21,8 @@ class LeafBlot extends ShadowBlot implements Leaf {
   }
 
   position(index: number, inclusive?: boolean): [Node, number] {
-    let offset = Array.from(this.parent.domNode.childNodes).indexOf(
-      this.domNode,
-    );
+    const childNodes: Node[] = Array.from(this.parent.domNode.childNodes);
+    let offset = childNodes.indexOf(this.domNode);
     if (index > 0) offset += 1;
     return [this.parent.domNode, offset];
   }
