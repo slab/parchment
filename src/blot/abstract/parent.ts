@@ -67,7 +67,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     criteria: (blot: Blot) => boolean,
     index: number,
   ): [Blot | null, number];
-  descendant(criteria: any, index: number): [Blot | null, number] {
+  descendant(criteria: any, index: number = 0): [Blot | null, number] {
     let [child, offset] = this.children.find(index);
     if (
       (criteria.blotName == null && criteria(child)) ||

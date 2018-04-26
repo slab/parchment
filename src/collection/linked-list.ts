@@ -17,6 +17,15 @@ class LinkedList<T extends LinkedNode> {
     }
   }
 
+  at(index: number): T | null {
+    let cur,
+      next = this.iterator();
+    while ((cur = next()) && index > 0) {
+      index -= 1;
+    }
+    return cur;
+  }
+
   contains(node: T): boolean {
     let cur,
       next = this.iterator();
@@ -24,6 +33,17 @@ class LinkedList<T extends LinkedNode> {
       if (cur === node) return true;
     }
     return false;
+  }
+
+  indexOf(node: T): number {
+    let cur,
+      next = this.iterator(),
+      index = 0;
+    while ((cur = next())) {
+      if (cur === node) return index;
+      index += 1;
+    }
+    return -1;
   }
 
   insertBefore(node: T | null, refNode: T | null): void {
