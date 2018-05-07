@@ -16,31 +16,18 @@ import AttributorStore from './attributor/store';
 
 import * as Registry from './registry';
 
-let Parchment = {
-  Scope: Registry.Scope,
-
-  create: Registry.create,
-  find: Registry.find,
-  query: Registry.query,
-  register: Registry.register,
-
-  Parent: ParentBlot,
-  Container: ContainerBlot,
-  Leaf: LeafBlot,
-  Embed: EmbedBlot,
-
-  Scroll: ScrollBlot,
-  Block: BlockBlot,
-  Inline: InlineBlot,
-  Text: TextBlot,
-
-  Attributor: {
-    Attribute: Attributor,
-    Class: ClassAttributor,
-    Style: StyleAttributor,
-
-    Store: AttributorStore,
-  },
+export {
+  Registry as default,
+  ParentBlot,
+  ContainerBlot,
+  LeafBlot,
+  EmbedBlot,
+  ScrollBlot,
+  BlockBlot,
+  InlineBlot,
+  TextBlot,
+  Attributor,
+  ClassAttributor,
+  StyleAttributor,
+  AttributorStore,
 };
-
-export default Parchment;
