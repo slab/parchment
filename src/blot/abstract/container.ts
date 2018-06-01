@@ -1,11 +1,11 @@
 import { Blot } from './blot';
 import ParentBlot from './parent';
 import BlockBlot from '../block';
-import * as Registry from '../../registry';
+import Scope from '../../scope';
 
 class ContainerBlot extends ParentBlot {
   static blotName = 'container';
-  static scope = Registry.Scope.BLOCK_BLOT;
+  static scope = Scope.BLOCK_BLOT;
   static tagName: string;
 
   prev!: BlockBlot | ContainerBlot | null;

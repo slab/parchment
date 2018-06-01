@@ -4,7 +4,7 @@ describe('Parent', function() {
   beforeEach(function() {
     let node = document.createElement('p');
     node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
-    this.blot = Registry.create(node);
+    this.blot = TestRegistry.create(this.scroll, node);
   });
 
   describe('descendants()', function() {
@@ -76,15 +76,14 @@ describe('Parent', function() {
   it('attach unknown blot', function() {
     let node = document.createElement('p');
     node.appendChild(document.createElement('input'));
-    expect(function() {
-      Registry.create(node);
+    expect(() => {
+      this.scroll.create(node);
     }).not.toThrowError(/\[Parchment\]/);
   });
 
   it('allowedChildren', function() {
-    const scroll = Registry.create('scroll');
-    scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
-    scroll.update();
-    expect(scroll.domNode.innerHTML).toEqual('<p>A</p><p>D</p>');
+    this.scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
+    this.scroll.update();
+    expect(this.scroll.domNode.innerHTML).toEqual('<p>A</p><p>D</p>');
   });
 });

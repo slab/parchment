@@ -14,9 +14,10 @@ import EmbedBlot from '../src/blot/embed';
 import TextBlot from '../src/blot/text';
 
 import LinkedList from '../src/collection/linked-list';
+import Registry from '../src/registry';
+import Scope from '../src/scope';
 
-import * as Registry from '../src/registry';
-import Parchment from '../src/parchment';
+const TestRegistry = new Registry();
 
 // @ts-ignore
 window['Attributor'] = Attributor;
@@ -47,13 +48,14 @@ window['TextBlot'] = TextBlot;
 
 // @ts-ignore
 window['LinkedList'] = LinkedList;
-
 // @ts-ignore
-window['Parchment'] = Parchment;
+window['Scope'] = Scope;
 // @ts-ignore
 window['Registry'] = Registry;
+// @ts-ignore
+window['TestRegistry'] = TestRegistry;
 
-Registry.register(ScrollBlot);
-Registry.register(BlockBlot);
-Registry.register(InlineBlot);
-Registry.register(TextBlot);
+TestRegistry.register(ScrollBlot);
+TestRegistry.register(BlockBlot);
+TestRegistry.register(InlineBlot);
+TestRegistry.register(TextBlot);

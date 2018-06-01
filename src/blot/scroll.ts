@@ -1,9 +1,12 @@
-import { Blot } from './abstract/blot';
+import Attributor from '../attributor/attributor';
+import { BlotConstructor, Blot, Root } from './abstract/blot';
 import ParentBlot from './abstract/parent';
 import ContainerBlot from './abstract/container';
 import BlockBlot from './block';
 import LinkedList from '../collection/linked-list';
-import * as Registry from '../registry';
+import ParchmentError from '../error';
+import Registry from '../registry';
+import Scope from '../scope';
 
 const OBSERVER_CONFIG = {
   attributes: true,
@@ -15,26 +18,51 @@ const OBSERVER_CONFIG = {
 
 const MAX_OPTIMIZE_ITERATIONS = 100;
 
-class ScrollBlot extends ParentBlot {
+class ScrollBlot extends ParentBlot implements Root {
   static blotName = 'scroll';
   static defaultChild = BlockBlot;
-  static allowedChildren: Registry.BlotConstructor[] = [
-    BlockBlot,
-    ContainerBlot,
-  ];
-  static scope = Registry.Scope.BLOCK_BLOT;
+  static allowedChildren: BlotConstructor[] = [BlockBlot, ContainerBlot];
+  static scope = Scope.BLOCK_BLOT;
   static tagName = 'DIV';
 
+  registry: Registry;
   observer: MutationObserver;
 
-  constructor(node: HTMLDivElement) {
-    super(node);
+  constructor(registry: Registry, node: HTMLDivElement) {
+    // @ts-ignore
+    super(null, node);
+    this.registry = registry;
     this.scroll = this;
+    this.build();
     this.observer = new MutationObserver((mutations: MutationRecord[]) => {
       this.update(mutations);
     });
     this.observer.observe(this.domNode, OBSERVER_CONFIG);
     this.attach();
+  }
+
+  create(input: Node | string | Scope, value?: any): Blot {
+    return this.registry.create(this, input, value);
+  }
+
+  find(node: Node | null, bubble: boolean = false): Blot | null {
+    return this.registry.find(node, bubble);
+  }
+
+  query(
+    query: string | Node | Scope,
+    scope: Scope = Scope.ANY,
+  ): Attributor | BlotConstructor | null {
+    return this.registry.query(query, scope);
+  }
+
+  register(...Definitions: any[]): any {
+    return this.registry.register(...Definitions);
+  }
+
+  build() {
+    if (this.scroll == null) return;
+    super.build();
   }
 
   detach() {
@@ -95,14 +123,14 @@ class ScrollBlot extends ParentBlot {
       if (i >= MAX_OPTIMIZE_ITERATIONS) {
         throw new Error('[Parchment] Maximum optimize iterations reached');
       }
-      remaining.forEach(function(mutation: MutationRecord) {
-        let blot = Registry.find(mutation.target, true);
+      remaining.forEach((mutation: MutationRecord) => {
+        let blot = this.find(mutation.target, true);
         if (blot == null) return;
         if (blot.domNode === mutation.target) {
           if (mutation.type === 'childList') {
-            mark(Registry.find(mutation.previousSibling, false));
-            Array.from(mutation.addedNodes).forEach(function(node: Node) {
-              const child = Registry.find(node, false);
+            mark(this.find(mutation.previousSibling, false));
+            Array.from(mutation.addedNodes).forEach((node: Node) => {
+              const child = this.find(node, false);
               mark(child, false);
               if (child instanceof ParentBlot) {
                 child.children.forEach(function(grandChild: Blot) {
@@ -130,7 +158,7 @@ class ScrollBlot extends ParentBlot {
     mutations = mutations || this.observer.takeRecords();
     const mutationsMap = new WeakMap();
     mutations
-      .map(function(mutation: MutationRecord) {
+      .map((mutation: MutationRecord) => {
         let blot = Registry.find(mutation.target, true);
         if (blot == null) return null;
         if (mutationsMap.has(blot.domNode)) {

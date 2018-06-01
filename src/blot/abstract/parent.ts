@@ -1,18 +1,20 @@
-import { Blot, Parent, Leaf } from './blot';
+import { Blot, BlotConstructor, Leaf, Parent, Root } from './blot';
 import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
-import * as Registry from '../../registry';
+import ParchmentError from '../../error';
+import Registry from '../../registry';
+import Scope from '../../scope';
 
 class ParentBlot extends ShadowBlot implements Parent {
-  static defaultChild: Registry.BlotConstructor | null;
-  static allowedChildren: Registry.BlotConstructor[] | null;
+  static defaultChild: BlotConstructor | null;
+  static allowedChildren: BlotConstructor[] | null;
 
   children!: LinkedList<Blot>;
   domNode!: HTMLElement;
   uiNode: HTMLElement | null = null;
 
-  constructor(domNode: Node) {
-    super(domNode);
+  constructor(scroll: Root, domNode: Node) {
+    super(scroll, domNode);
     this.build();
   }
 
@@ -44,10 +46,10 @@ class ParentBlot extends ShadowBlot implements Parent {
       .reverse()
       .forEach((node: Node) => {
         try {
-          let child = makeAttachedBlot(node);
+          let child = makeAttachedBlot(node, this.scroll);
           this.insertBefore(child, this.children.head || undefined);
         } catch (err) {
-          if (err instanceof Registry.ParchmentError) return;
+          if (err instanceof ParchmentError) return;
           else throw err;
         }
       });
@@ -131,10 +133,10 @@ class ParentBlot extends ShadowBlot implements Parent {
     const children = this.children.forEach((child: Blot) => {
       if (done) return;
       const allowed = this.statics.allowedChildren.some(
-        (def: Registry.BlotConstructor) => child instanceof def,
+        (def: BlotConstructor) => child instanceof def,
       );
       if (allowed) return;
-      if (child.statics.scope === Registry.Scope.BLOCK_BLOT) {
+      if (child.statics.scope === Scope.BLOCK_BLOT) {
         if (child.next != null) {
           this.splitAfter(child);
         }
@@ -164,8 +166,8 @@ class ParentBlot extends ShadowBlot implements Parent {
     } else {
       let blot =
         def == null
-          ? Registry.create('text', value)
-          : Registry.create(value, def);
+          ? this.scroll.create('text', value)
+          : this.scroll.create(value, def);
       this.appendChild(blot);
     }
   }
@@ -209,7 +211,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
     if (this.children.length === 0) {
       if (this.statics.defaultChild != null) {
-        let child = Registry.create(this.statics.defaultChild.blotName);
+        let child = this.scroll.create(this.statics.defaultChild.blotName);
         this.appendChild(child);
         // TODO double check if necessary
         // child.optimize(context);
@@ -236,8 +238,7 @@ class ParentBlot extends ShadowBlot implements Parent {
 
   replaceWith(name: string | Blot, value?: any): Blot {
     const replacement =
-      typeof name === 'string' ? Registry.create(name, value) : name;
-    replacement.scroll = this.scroll;
+      typeof name === 'string' ? this.scroll.create(name, value) : name;
     if (replacement instanceof ParentBlot) {
       this.moveChildren(replacement);
     }
@@ -306,7 +307,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       ) {
         return;
       }
-      let blot = Registry.find(node);
+      let blot = this.scroll.find(node);
       if (blot == null) return;
       if (
         blot.domNode.parentNode == null ||
@@ -329,9 +330,9 @@ class ParentBlot extends ShadowBlot implements Parent {
       .forEach(node => {
         let refBlot: Blot | null = null;
         if (node.nextSibling != null) {
-          refBlot = Registry.find(node.nextSibling);
+          refBlot = this.scroll.find(node.nextSibling);
         }
-        let blot = makeAttachedBlot(node);
+        let blot = makeAttachedBlot(node, this.scroll);
         if (blot.next != refBlot || blot.next == null) {
           if (blot.parent != null) {
             blot.parent.removeChild(this);
@@ -343,13 +344,13 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 }
 
-function makeAttachedBlot(node: Node): Blot {
-  let blot = Registry.find(node);
+function makeAttachedBlot(node: Node, scroll: Root): Blot {
+  let blot = scroll.find(node);
   if (blot == null) {
     try {
-      blot = Registry.create(node);
+      blot = scroll.create(node);
     } catch (e) {
-      blot = Registry.create(Registry.Scope.INLINE);
+      blot = <Blot>scroll.create(Scope.INLINE);
       Array.from(node.childNodes).forEach(function(child: Node) {
         // @ts-ignore
         blot.domNode.appendChild(child);
@@ -360,7 +361,7 @@ function makeAttachedBlot(node: Node): Blot {
       blot.attach();
     }
   }
-  return blot;
+  return <Blot>blot;
 }
 
 export default ParentBlot;

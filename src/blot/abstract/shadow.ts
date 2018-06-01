@@ -1,19 +1,19 @@
-import { Blot, Parent, Formattable } from './blot';
-import * as Registry from '../../registry';
+import { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
+import ParchmentError from '../../error';
+import Scope from '../../scope';
+import Registry from '../../registry';
 
 class ShadowBlot implements Blot {
   static blotName = 'abstract';
   static className: string;
-  static requiredContainer: Registry.BlotConstructor;
-  static scope: Registry.Scope;
+  static requiredContainer: BlotConstructor;
+  static scope: Scope;
   static tagName: string;
 
   prev: Blot | null;
   next: Blot | null;
   // @ts-ignore
   parent: Parent;
-  // @ts-ignore
-  scroll: Parent;
 
   // Hack for accessing inherited static methods
   get statics(): any {
@@ -22,7 +22,7 @@ class ShadowBlot implements Blot {
 
   static create(value: any): Node {
     if (this.tagName == null) {
-      throw new Registry.ParchmentError('Blot definition missing tagName');
+      throw new ParchmentError('Blot definition missing tagName');
     }
     let node;
     if (Array.isArray(this.tagName)) {
@@ -48,21 +48,19 @@ class ShadowBlot implements Blot {
     return node;
   }
 
-  constructor(public domNode: Node) {
+  constructor(public scroll: Root, public domNode: Node) {
     Registry.blots.set(domNode, this);
     this.prev = null;
     this.next = null;
   }
 
   attach(): void {
-    if (this.parent != null) {
-      this.scroll = this.parent.scroll;
-    }
+    // Nothing to do
   }
 
   clone(): Blot {
     let domNode = this.domNode.cloneNode(false);
-    return Registry.create(domNode);
+    return this.scroll.create(domNode);
   }
 
   detach() {
@@ -77,10 +75,10 @@ class ShadowBlot implements Blot {
 
   formatAt(index: number, length: number, name: string, value: any): void {
     let blot = this.isolate(index, length);
-    if (Registry.query(name, Registry.Scope.BLOT) != null && value) {
+    if (this.scroll.query(name, Scope.BLOT) != null && value) {
       blot.wrap(name, value);
-    } else if (Registry.query(name, Registry.Scope.ATTRIBUTE) != null) {
-      let parent = <Parent & Formattable>Registry.create(this.statics.scope);
+    } else if (this.scroll.query(name, Scope.ATTRIBUTE) != null) {
+      let parent = <Parent & Formattable>this.scroll.create(this.statics.scope);
       blot.wrap(parent);
       parent.format(name, value);
     }
@@ -89,8 +87,8 @@ class ShadowBlot implements Blot {
   insertAt(index: number, value: string, def?: any): void {
     let blot =
       def == null
-        ? Registry.create('text', value)
-        : Registry.create(value, def);
+        ? this.scroll.create('text', value)
+        : this.scroll.create(value, def);
     let ref = this.split(index);
     this.parent.insertBefore(blot, ref || undefined);
   }
@@ -131,7 +129,7 @@ class ShadowBlot implements Blot {
 
   replaceWith(name: string | Blot, value?: any): Blot {
     const replacement =
-      typeof name === 'string' ? Registry.create(name, value) : name;
+      typeof name === 'string' ? this.scroll.create(name, value) : name;
     if (this.parent != null) {
       this.parent.insertBefore(replacement, this.next || undefined);
       this.remove();
@@ -149,7 +147,7 @@ class ShadowBlot implements Blot {
 
   wrap(name: string | Parent, value?: any): Parent {
     let wrapper =
-      typeof name === 'string' ? <Parent>Registry.create(name, value) : name;
+      typeof name === 'string' ? <Parent>this.scroll.create(name, value) : name;
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next || undefined);
     }

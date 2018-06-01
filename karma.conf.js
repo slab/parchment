@@ -6,6 +6,7 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
       'test/parchment.ts',
+      'test/setup.js',
       'test/registry/*.js',
       'test/unit/linked-list.js', // Control test order
       'test/unit/registry.js',

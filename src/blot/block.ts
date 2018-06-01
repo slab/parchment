@@ -1,25 +1,30 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import { Blot, Parent, Formattable } from './abstract/blot';
+import {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Parent,
+  Root,
+} from './abstract/blot';
 import ParentBlot from './abstract/parent';
 import ShadowBlot from './abstract/shadow';
 import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
-import * as Registry from '../registry';
+import Registry from '../registry';
+import Scope from '../scope';
 
 class BlockBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Registry.BlotConstructor[] = [
-    InlineBlot,
-    BlockBlot,
-    LeafBlot,
-  ];
+  static allowedChildren: BlotConstructor[] = [InlineBlot, BlockBlot, LeafBlot];
   static blotName = 'block';
-  static scope = Registry.Scope.BLOCK_BLOT;
+  static scope = Scope.BLOCK_BLOT;
   static tagName = 'P';
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
-    const tagName = (<any>Registry.query(BlockBlot.blotName)).tagName;
+    const blot = Registry.find(domNode);
+    if (blot == null) return undefined;
+    const tagName = (<any>blot.scroll.query(BlockBlot.blotName)).tagName;
     if (domNode.tagName === tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
@@ -29,13 +34,13 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
-  constructor(domNode: Node) {
-    super(domNode);
+  constructor(scroll: Root, domNode: Node) {
+    super(scroll, domNode);
     this.attributes = new AttributorStore(this.domNode);
   }
 
   format(name: string, value: any) {
-    const format = Registry.query(name, Registry.Scope.BLOCK);
+    const format = this.scroll.query(name, Scope.BLOCK);
     if (format == null) {
       return;
     } else if (format instanceof Attributor) {
@@ -60,7 +65,7 @@ class BlockBlot extends ParentBlot implements Formattable {
   }
 
   formatAt(index: number, length: number, name: string, value: any): void {
-    if (Registry.query(name, Registry.Scope.BLOCK) != null) {
+    if (this.scroll.query(name, Scope.BLOCK) != null) {
       this.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
@@ -68,13 +73,13 @@ class BlockBlot extends ParentBlot implements Formattable {
   }
 
   insertAt(index: number, value: string, def?: any): void {
-    if (def == null || Registry.query(value, Registry.Scope.INLINE) != null) {
+    if (def == null || this.scroll.query(value, Scope.INLINE) != null) {
       // Insert text or inline
       super.insertAt(index, value, def);
     } else {
       const after = this.split(index);
       if (after != null) {
-        const blot = Registry.create(value, def);
+        const blot = this.scroll.create(value, def);
         after.parent.insertBefore(blot, after);
       } else {
         throw new Error('Attempt to insertAt after block boundaries');

@@ -1,10 +1,17 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import { Blot, Parent, Formattable } from './abstract/blot';
+import {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Parent,
+  Root,
+} from './abstract/blot';
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
-import * as Registry from '../registry';
+import Registry from '../registry';
+import Scope from '../scope';
 
 // Shallow object comparison
 function isEqual(obj1: Object, obj2: Object): boolean {
@@ -18,14 +25,16 @@ function isEqual(obj1: Object, obj2: Object): boolean {
 }
 
 class InlineBlot extends ParentBlot implements Formattable {
-  static allowedChildren: Registry.BlotConstructor[] = [InlineBlot, LeafBlot];
+  static allowedChildren: BlotConstructor[] = [InlineBlot, LeafBlot];
   static blotName = 'inline';
-  static scope = Registry.Scope.INLINE_BLOT;
+  static scope = Scope.INLINE_BLOT;
   static tagName = 'SPAN';
   protected attributes: AttributorStore;
 
   static formats(domNode: HTMLElement): any {
-    const tagName = (<any>Registry.query(InlineBlot.blotName)).tagName;
+    const blot = Registry.find(domNode);
+    if (blot == null) return undefined;
+    const tagName = (<any>blot.scroll.query(InlineBlot.blotName)).tagName;
     if (domNode.tagName === tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
@@ -36,8 +45,8 @@ class InlineBlot extends ParentBlot implements Formattable {
     return undefined;
   }
 
-  constructor(domNode: Node) {
-    super(domNode);
+  constructor(scroll: Root, domNode: Node) {
+    super(scroll, domNode);
     this.attributes = new AttributorStore(this.domNode);
   }
 
@@ -51,7 +60,7 @@ class InlineBlot extends ParentBlot implements Formattable {
       });
       this.unwrap();
     } else {
-      const format = Registry.query(name);
+      const format = this.scroll.query(name);
       if (format instanceof Attributor) {
         this.attributes.attribute(format, value);
       } else if (
@@ -76,7 +85,7 @@ class InlineBlot extends ParentBlot implements Formattable {
   formatAt(index: number, length: number, name: string, value: any): void {
     if (
       this.formats()[name] != null ||
-      Registry.query(name, Registry.Scope.ATTRIBUTE)
+      this.scroll.query(name, Scope.ATTRIBUTE)
     ) {
       let blot = <InlineBlot>this.isolate(index, length);
       blot.format(name, value);

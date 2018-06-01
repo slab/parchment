@@ -14,10 +14,7 @@ import ClassAttributor from './attributor/class';
 import StyleAttributor from './attributor/style';
 import AttributorStore from './attributor/store';
 
-import * as Registry from './registry';
-
 export {
-  Registry as default,
   ParentBlot,
   ContainerBlot,
   LeafBlot,

@@ -66,8 +66,8 @@ class VideoBlot extends EmbedBlot {
   }
 }
 VideoBlot.blotName = 'video';
-VideoBlot.scope = Registry.Scope.BLOCK_BLOT;
+VideoBlot.scope = Scope.BLOCK_BLOT;
 VideoBlot.tagName = 'VIDEO';
 
-Registry.register(ImageBlot);
-Registry.register(VideoBlot);
+TestRegistry.register(ImageBlot);
+TestRegistry.register(VideoBlot);

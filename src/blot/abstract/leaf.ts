@@ -1,9 +1,9 @@
 import { Formattable, Leaf } from './blot';
 import ShadowBlot from './shadow';
-import * as Registry from '../../registry';
+import Scope from '../../scope';
 
 class LeafBlot extends ShadowBlot implements Leaf {
-  static scope = Registry.Scope.INLINE_BLOT;
+  static scope = Scope.INLINE_BLOT;
 
   static value(domNode: Node): any {
     return true;

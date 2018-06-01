@@ -2,7 +2,8 @@ import Attributor from './attributor';
 import ClassAttributor from './class';
 import StyleAttributor from './style';
 import { Formattable } from '../blot/abstract/blot';
-import * as Registry from '../registry';
+import Registry from '../registry';
+import Scope from '../scope';
 
 class AttributorStore {
   private attributes: { [key: string]: Attributor } = {};
@@ -31,6 +32,8 @@ class AttributorStore {
 
   build(): void {
     this.attributes = {};
+    const blot = Registry.find(this.domNode);
+    if (blot == null) return;
     let attributes = Attributor.keys(this.domNode);
     let classes = ClassAttributor.keys(this.domNode);
     let styles = StyleAttributor.keys(this.domNode);
@@ -38,7 +41,7 @@ class AttributorStore {
       .concat(classes)
       .concat(styles)
       .forEach(name => {
-        let attr = Registry.query(name, Registry.Scope.ATTRIBUTE);
+        let attr = blot.scroll.query(name, Scope.ATTRIBUTE);
         if (attr instanceof Attributor) {
           this.attributes[attr.attrName] = attr;
         }

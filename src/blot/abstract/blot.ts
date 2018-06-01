@@ -1,21 +1,28 @@
 import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
-import * as Registry from '../../registry';
+import Attributor from '../../attributor/attributor';
+import Scope from '../../scope';
+
+export interface BlotConstructor {
+  blotName: string;
+  new (scroll: Root, node: Node, value?: any): Blot;
+  create(value?: any): Node;
+}
 
 export interface Blot extends LinkedNode {
-  scroll: Parent;
+  scroll: Root;
   parent: Parent;
   prev: Blot | null;
   next: Blot | null;
   domNode: Node;
 
   statics: {
-    allowedChildren?: Registry.BlotConstructor[];
+    allowedChildren?: BlotConstructor[];
     blotName: string;
     className?: string;
-    defaultChild?: Registry.BlotConstructor;
-    requiredContainer?: Registry.BlotConstructor;
-    scope: Registry.Scope;
+    defaultChild?: BlotConstructor;
+    requiredContainer?: BlotConstructor;
+    scope: Scope;
     tagName: string;
   };
 
@@ -58,6 +65,15 @@ export interface Parent extends Blot {
   path(index: number, inclusive?: boolean): [Blot, number][];
   removeChild(child: Blot): void;
   unwrap(): void;
+}
+
+export interface Root extends Parent {
+  create(input: Node | string | Scope, value?: any): Blot;
+  find(node: Node | null, bubble?: boolean): Blot | null;
+  query(
+    query: string | Node | Scope,
+    scope?: Scope,
+  ): Attributor | BlotConstructor | null;
 }
 
 export interface Formattable extends Blot {

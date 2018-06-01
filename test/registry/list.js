@@ -11,5 +11,5 @@ ListContainer.tagName = 'OL';
 ListContainer.allowedChildren = [ListItem];
 ListItem.requiredContainer = ListContainer;
 
-Registry.register(ListItem);
-Registry.register(ListContainer);
+TestRegistry.register(ListItem);
+TestRegistry.register(ListContainer);

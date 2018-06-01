@@ -2,9 +2,7 @@
 
 describe('Container', function() {
   beforeEach(function() {
-    let containerNode = document.createElement('div');
-    containerNode.innerHTML = '<ol><li>1</li></ol>';
-    this.scroll = Registry.create(containerNode);
+    this.container.innerHTML = '<ol><li>1</li></ol>';
   });
 
   describe('enforceAllowedChildren()', function() {
