@@ -175,21 +175,6 @@ describe('Attributor', function() {
     });
   });
 
-  it('invalid class scope add', function() {
-    let inline = this.scroll.create('inline');
-    let blockAttributor = this.scroll.query('indent');
-    blockAttributor.add(inline.domNode, 1);
-    expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
-    expect(inline.attributes['indent']).toBe(undefined);
-  });
-
-  it('invalid scope format', function() {
-    let inline = this.scroll.create('inline');
-    inline.format('indent', 1);
-    expect(inline.domNode.classList.contains('indent-1')).toBeFalsy();
-    expect(inline.attributes['indent']).toBe(undefined);
-  });
-
   it('missing class value', function() {
     let block = this.scroll.create('block');
     let indentAttributor = this.scroll.query('indent');

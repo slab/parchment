@@ -10,7 +10,6 @@ import {
 import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
 import ShadowBlot from './abstract/shadow';
-import Registry from '../registry';
 import Scope from '../scope';
 
 // Shallow object comparison
@@ -31,11 +30,9 @@ class InlineBlot extends ParentBlot implements Formattable {
   static tagName = 'SPAN';
   protected attributes: AttributorStore;
 
-  static formats(domNode: HTMLElement): any {
-    const blot = Registry.find(domNode);
-    if (blot == null) return undefined;
-    const tagName = (<any>blot.scroll.query(InlineBlot.blotName)).tagName;
-    if (domNode.tagName === tagName) {
+  static formats(domNode: HTMLElement, scroll: Root): any {
+    const match = scroll.query(InlineBlot.blotName);
+    if (match != null && domNode.tagName === (<BlotConstructor>match).tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
       return true;
@@ -60,12 +57,12 @@ class InlineBlot extends ParentBlot implements Formattable {
       });
       this.unwrap();
     } else {
-      const format = this.scroll.query(name);
+      const format = this.scroll.query(name, Scope.INLINE);
+      if (format == null) return;
       if (format instanceof Attributor) {
         this.attributes.attribute(format, value);
       } else if (
         value &&
-        format != null &&
         (name !== this.statics.blotName || this.formats()[name] !== value)
       ) {
         this.replaceWith(name, value);
@@ -75,7 +72,7 @@ class InlineBlot extends ParentBlot implements Formattable {
 
   formats(): { [index: string]: any } {
     let formats = this.attributes.values();
-    let format = this.statics.formats(this.domNode);
+    let format = this.statics.formats(this.domNode, this.scroll);
     if (format != null) {
       formats[this.statics.blotName] = format;
     }

@@ -42,10 +42,6 @@ export default class Attributor {
   }
 
   canAdd(node: HTMLElement, value: any): boolean {
-    const blot = Registry.find(node);
-    if (blot == null || blot.scroll == null) return false;
-    let match = blot.scroll.query(node, Scope.BLOT & (this.scope | Scope.TYPE));
-    if (match == null) return false;
     if (this.whitelist == null) return true;
     if (typeof value === 'string') {
       return this.whitelist.indexOf(value.replace(/["']/g, '')) > -1;

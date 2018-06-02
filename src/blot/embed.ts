@@ -1,8 +1,8 @@
-import { Formattable } from './abstract/blot';
+import { Formattable, Root } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 
 class EmbedBlot extends LeafBlot implements Formattable {
-  static formats(domNode: HTMLElement): any {
+  static formats(domNode: HTMLElement, scroll: Root): any {
     return undefined;
   }
 
@@ -22,7 +22,7 @@ class EmbedBlot extends LeafBlot implements Formattable {
   }
 
   formats(): { [index: string]: any } {
-    return this.statics.formats(this.domNode);
+    return this.statics.formats(this.domNode, this.scroll);
   }
 }
 

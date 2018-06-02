@@ -11,7 +11,6 @@ import ParentBlot from './abstract/parent';
 import ShadowBlot from './abstract/shadow';
 import LeafBlot from './abstract/leaf';
 import InlineBlot from './inline';
-import Registry from '../registry';
 import Scope from '../scope';
 
 class BlockBlot extends ParentBlot implements Formattable {
@@ -21,11 +20,9 @@ class BlockBlot extends ParentBlot implements Formattable {
   static tagName = 'P';
   protected attributes: AttributorStore;
 
-  static formats(domNode: HTMLElement): any {
-    const blot = Registry.find(domNode);
-    if (blot == null) return undefined;
-    const tagName = (<any>blot.scroll.query(BlockBlot.blotName)).tagName;
-    if (domNode.tagName === tagName) {
+  static formats(domNode: HTMLElement, scroll: Root): any {
+    const match = scroll.query(BlockBlot.blotName);
+    if (match != null && domNode.tagName === (<BlotConstructor>match).tagName) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
       return true;
@@ -57,7 +54,7 @@ class BlockBlot extends ParentBlot implements Formattable {
 
   formats(): { [index: string]: any } {
     const formats = this.attributes.values();
-    const format = this.statics.formats(this.domNode);
+    const format = this.statics.formats(this.domNode, this.scroll);
     if (format != null) {
       formats[this.statics.blotName] = format;
     }
