@@ -3,7 +3,7 @@ import { Blot, BlotConstructor, Formattable, Root } from './blot/abstract/blot';
 import ParchmentError from './error';
 import Scope from './scope';
 
-export interface Registry {
+export interface RegistryInterface {
   create(sroll: Root, input: Node | string | Scope, value?: any): Blot;
   query(
     query: string | Node | Scope,
@@ -12,7 +12,7 @@ export interface Registry {
   register(...Definitions: any[]): any;
 }
 
-export default class BaseRegistry implements Registry {
+export default class Registry implements RegistryInterface {
   static blots = new WeakMap<Node, Blot>();
 
   static find(node: Node | null, bubble: boolean = false): Blot | null {
@@ -40,12 +40,12 @@ export default class BaseRegistry implements Registry {
         : BlotClass.create(value);
 
     const blot = new BlotClass(scroll, <Node>node, value);
-    BaseRegistry.blots.set(blot.domNode, blot);
+    Registry.blots.set(blot.domNode, blot);
     return blot;
   }
 
   find(node: Node | null, bubble: boolean = false): Blot | null {
-    return BaseRegistry.find(node, bubble);
+    return Registry.find(node, bubble);
   }
 
   query(
