@@ -3,7 +3,8 @@
     "module": "es6",
     "target": "es6",
     "declaration": true,
-    "strict": true
+    "strict": true,
+    "noUnusedLocals": true
   },
   "exclude": ["node_modules", "test"]
 }
