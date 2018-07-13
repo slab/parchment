@@ -151,6 +151,9 @@ class ShadowBlot implements Blot {
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next || undefined);
     }
+    if (typeof wrapper.appendChild !== 'function') {
+      throw new ParchmentError(`Cannot wrap ${name}`);
+    }
     wrapper.appendChild(this);
     return wrapper;
   }
