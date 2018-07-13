@@ -1,4 +1,4 @@
-import { Formattable, Leaf } from './blot';
+import { Leaf } from './blot';
 import ShadowBlot from './shadow';
 import Scope from '../../scope';
 

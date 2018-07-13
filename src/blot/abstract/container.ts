@@ -1,4 +1,3 @@
-import { Blot } from './blot';
 import ParentBlot from './parent';
 import BlockBlot from '../block';
 import Scope from '../../scope';

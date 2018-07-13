@@ -1,5 +1,5 @@
 import Attributor from './attributor/attributor';
-import { Blot, BlotConstructor, Formattable, Root } from './blot/abstract/blot';
+import { Blot, BlotConstructor, Root } from './blot/abstract/blot';
 import ParchmentError from './error';
 import Scope from './scope';
 

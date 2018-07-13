@@ -1,9 +1,9 @@
-import Attributor from './attributor';
-import ClassAttributor from './class';
-import StyleAttributor from './style';
 import { Formattable } from '../blot/abstract/blot';
 import Registry from '../registry';
 import Scope from '../scope';
+import Attributor from './attributor';
+import ClassAttributor from './class';
+import StyleAttributor from './style';
 
 class AttributorStore {
   private attributes: { [key: string]: Attributor } = {};
@@ -14,7 +14,7 @@ class AttributorStore {
     this.build();
   }
 
-  attribute(attribute: Attributor, value: any): void {
+  public attribute(attribute: Attributor, value: any): void {
     // verb
     if (value) {
       if (attribute.add(this.domNode, value)) {
@@ -30,32 +30,34 @@ class AttributorStore {
     }
   }
 
-  build(): void {
+  public build(): void {
     this.attributes = {};
     const blot = Registry.find(this.domNode);
-    if (blot == null) return;
-    let attributes = Attributor.keys(this.domNode);
-    let classes = ClassAttributor.keys(this.domNode);
-    let styles = StyleAttributor.keys(this.domNode);
+    if (blot == null) {
+      return;
+    }
+    const attributes = Attributor.keys(this.domNode);
+    const classes = ClassAttributor.keys(this.domNode);
+    const styles = StyleAttributor.keys(this.domNode);
     attributes
       .concat(classes)
       .concat(styles)
       .forEach(name => {
-        let attr = blot.scroll.query(name, Scope.ATTRIBUTE);
+        const attr = blot.scroll.query(name, Scope.ATTRIBUTE);
         if (attr instanceof Attributor) {
           this.attributes[attr.attrName] = attr;
         }
       });
   }
 
-  copy(target: Formattable): void {
+  public copy(target: Formattable): void {
     Object.keys(this.attributes).forEach(key => {
-      let value = this.attributes[key].value(this.domNode);
+      const value = this.attributes[key].value(this.domNode);
       target.format(key, value);
     });
   }
 
-  move(target: Formattable): void {
+  public move(target: Formattable): void {
     this.copy(target);
     Object.keys(this.attributes).forEach(key => {
       this.attributes[key].remove(this.domNode);
@@ -63,7 +65,7 @@ class AttributorStore {
     this.attributes = {};
   }
 
-  values(): { [key: string]: any } {
+  public values(): { [key: string]: any } {
     return Object.keys(this.attributes).reduce(
       (attributes: { [key: string]: any }, name: string) => {
         attributes[name] = this.attributes[name].value(this.domNode);

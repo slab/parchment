@@ -1,28 +1,27 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
-import {
-  Blot,
-  BlotConstructor,
-  Formattable,
-  Parent,
-  Root,
-} from './abstract/blot';
-import ParentBlot from './abstract/parent';
-import ShadowBlot from './abstract/shadow';
-import LeafBlot from './abstract/leaf';
-import InlineBlot from './inline';
 import Scope from '../scope';
+import { Blot, BlotConstructor, Formattable, Root } from './abstract/blot';
+import LeafBlot from './abstract/leaf';
+import ParentBlot from './abstract/parent';
+import InlineBlot from './inline';
 
 class BlockBlot extends ParentBlot implements Formattable {
-  static allowedChildren: BlotConstructor[] = [InlineBlot, BlockBlot, LeafBlot];
-  static blotName = 'block';
-  static scope = Scope.BLOCK_BLOT;
-  static tagName = 'P';
-  protected attributes: AttributorStore;
+  public static blotName = 'block';
+  public static scope = Scope.BLOCK_BLOT;
+  public static tagName = 'P';
+  public static allowedChildren: BlotConstructor[] = [
+    InlineBlot,
+    BlockBlot,
+    LeafBlot,
+  ];
 
-  static formats(domNode: HTMLElement, scroll: Root): any {
+  public static formats(domNode: HTMLElement, scroll: Root): any {
     const match = scroll.query(BlockBlot.blotName);
-    if (match != null && domNode.tagName === (<BlotConstructor>match).tagName) {
+    if (
+      match != null &&
+      domNode.tagName === (match as BlotConstructor).tagName
+    ) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
       return true;
@@ -31,12 +30,14 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
+  protected attributes: AttributorStore;
+
   constructor(scroll: Root, domNode: Node) {
     super(scroll, domNode);
     this.attributes = new AttributorStore(this.domNode);
   }
 
-  format(name: string, value: any) {
+  public format(name: string, value: any) {
     const format = this.scroll.query(name, Scope.BLOCK);
     if (format == null) {
       return;
@@ -52,7 +53,7 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
-  formats(): { [index: string]: any } {
+  public formats(): { [index: string]: any } {
     const formats = this.attributes.values();
     const format = this.statics.formats(this.domNode, this.scroll);
     if (format != null) {
@@ -61,7 +62,12 @@ class BlockBlot extends ParentBlot implements Formattable {
     return formats;
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
+  public formatAt(
+    index: number,
+    length: number,
+    name: string,
+    value: any,
+  ): void {
     if (this.scroll.query(name, Scope.BLOCK) != null) {
       this.format(name, value);
     } else {
@@ -69,7 +75,7 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
-  insertAt(index: number, value: string, def?: any): void {
+  public insertAt(index: number, value: string, def?: any): void {
     if (def == null || this.scroll.query(value, Scope.INLINE) != null) {
       // Insert text or inline
       super.insertAt(index, value, def);
@@ -84,13 +90,16 @@ class BlockBlot extends ParentBlot implements Formattable {
     }
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
-    const replacement = <BlockBlot>super.replaceWith(name, value);
+  public replaceWith(name: string | Blot, value?: any): Blot {
+    const replacement = super.replaceWith(name, value) as BlockBlot;
     this.attributes.copy(replacement);
     return replacement;
   }
 
-  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+  public update(
+    mutations: MutationRecord[],
+    context: { [key: string]: any },
+  ): void {
     super.update(mutations, context);
     const attributeChanged = mutations.some(
       mutation =>

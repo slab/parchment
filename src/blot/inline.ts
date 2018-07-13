@@ -1,5 +1,6 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
+import Scope from '../scope';
 import {
   Blot,
   BlotConstructor,
@@ -7,32 +8,36 @@ import {
   Parent,
   Root,
 } from './abstract/blot';
-import ParentBlot from './abstract/parent';
 import LeafBlot from './abstract/leaf';
-import ShadowBlot from './abstract/shadow';
-import Scope from '../scope';
+import ParentBlot from './abstract/parent';
 
 // Shallow object comparison
-function isEqual(obj1: Object, obj2: Object): boolean {
-  if (Object.keys(obj1).length !== Object.keys(obj2).length) return false;
+function isEqual(obj1: object, obj2: object): boolean {
+  if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+    return false;
+  }
   // @ts-ignore
-  for (let prop in obj1) {
+  for (const prop in obj1) {
     // @ts-ignore
-    if (obj1[prop] !== obj2[prop]) return false;
+    if (obj1[prop] !== obj2[prop]) {
+      return false;
+    }
   }
   return true;
 }
 
 class InlineBlot extends ParentBlot implements Formattable {
-  static allowedChildren: BlotConstructor[] = [InlineBlot, LeafBlot];
-  static blotName = 'inline';
-  static scope = Scope.INLINE_BLOT;
-  static tagName = 'SPAN';
-  protected attributes: AttributorStore;
+  public static allowedChildren: BlotConstructor[] = [InlineBlot, LeafBlot];
+  public static blotName = 'inline';
+  public static scope = Scope.INLINE_BLOT;
+  public static tagName = 'SPAN';
 
-  static formats(domNode: HTMLElement, scroll: Root): any {
+  public static formats(domNode: HTMLElement, scroll: Root): any {
     const match = scroll.query(InlineBlot.blotName);
-    if (match != null && domNode.tagName === (<BlotConstructor>match).tagName) {
+    if (
+      match != null &&
+      domNode.tagName === (match as BlotConstructor).tagName
+    ) {
       return undefined;
     } else if (typeof this.tagName === 'string') {
       return true;
@@ -42,23 +47,27 @@ class InlineBlot extends ParentBlot implements Formattable {
     return undefined;
   }
 
+  protected attributes: AttributorStore;
+
   constructor(scroll: Root, domNode: Node) {
     super(scroll, domNode);
     this.attributes = new AttributorStore(this.domNode);
   }
 
-  format(name: string, value: any) {
+  public format(name: string, value: any) {
     if (name === this.statics.blotName && !value) {
       this.children.forEach(child => {
         if (!(child instanceof InlineBlot)) {
           child = child.wrap(InlineBlot.blotName, true);
         }
-        this.attributes.copy(<InlineBlot>child);
+        this.attributes.copy(child as InlineBlot);
       });
       this.unwrap();
     } else {
       const format = this.scroll.query(name, Scope.INLINE);
-      if (format == null) return;
+      if (format == null) {
+        return;
+      }
       if (format instanceof Attributor) {
         this.attributes.attribute(format, value);
       } else if (
@@ -70,34 +79,39 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  formats(): { [index: string]: any } {
-    let formats = this.attributes.values();
-    let format = this.statics.formats(this.domNode, this.scroll);
+  public formats(): { [index: string]: any } {
+    const formats = this.attributes.values();
+    const format = this.statics.formats(this.domNode, this.scroll);
     if (format != null) {
       formats[this.statics.blotName] = format;
     }
     return formats;
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
+  public formatAt(
+    index: number,
+    length: number,
+    name: string,
+    value: any,
+  ): void {
     if (
       this.formats()[name] != null ||
       this.scroll.query(name, Scope.ATTRIBUTE)
     ) {
-      let blot = <InlineBlot>this.isolate(index, length);
+      const blot = this.isolate(index, length) as InlineBlot;
       blot.format(name, value);
     } else {
       super.formatAt(index, length, name, value);
     }
   }
 
-  optimize(context: { [key: string]: any }): void {
+  public optimize(context: { [key: string]: any }): void {
     super.optimize(context);
-    let formats = this.formats();
+    const formats = this.formats();
     if (Object.keys(formats).length === 0) {
       return this.unwrap(); // unformatted span
     }
-    let next = this.next;
+    const next = this.next;
     if (
       next instanceof InlineBlot &&
       next.prev === this &&
@@ -108,13 +122,16 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
-    const replacement = <InlineBlot>super.replaceWith(name, value);
+  public replaceWith(name: string | Blot, value?: any): Blot {
+    const replacement = super.replaceWith(name, value) as InlineBlot;
     this.attributes.copy(replacement);
     return replacement;
   }
 
-  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+  public update(
+    mutations: MutationRecord[],
+    context: { [key: string]: any },
+  ): void {
     super.update(mutations, context);
     const attributeChanged = mutations.some(
       mutation =>
@@ -125,7 +142,7 @@ class InlineBlot extends ParentBlot implements Formattable {
     }
   }
 
-  wrap(name: string | Parent, value?: any): Parent {
+  public wrap(name: string | Parent, value?: any): Parent {
     const wrapper = super.wrap(name, value);
     if (wrapper instanceof InlineBlot) {
       this.attributes.move(wrapper);

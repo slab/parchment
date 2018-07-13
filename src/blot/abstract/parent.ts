@@ -1,8 +1,7 @@
-import { Blot, BlotConstructor, Leaf, Parent, Root } from './blot';
+import { Blot, BlotConstructor, Parent, Root } from './blot';
 import LinkedList from '../../collection/linked-list';
 import ShadowBlot from './shadow';
 import ParchmentError from '../../error';
-import Registry from '../../registry';
 import Scope from '../../scope';
 
 class ParentBlot extends ShadowBlot implements Parent {
@@ -130,7 +129,7 @@ class ParentBlot extends ShadowBlot implements Parent {
 
   enforceAllowedChildren() {
     let done = false;
-    const children = this.children.forEach((child: Blot) => {
+    this.children.forEach((child: Blot) => {
       if (done) return;
       const allowed = this.statics.allowedChildren.some(
         (def: BlotConstructor) => child instanceof def,
