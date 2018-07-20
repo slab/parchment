@@ -8,6 +8,8 @@ class ParentBlot extends ShadowBlot implements Parent {
   static defaultChild: BlotConstructor | null;
   static allowedChildren: BlotConstructor[] | null;
 
+  static uiClass: string = '';
+
   children!: LinkedList<Blot>;
   domNode!: HTMLElement;
   uiNode: HTMLElement | null = null;
@@ -33,6 +35,9 @@ class ParentBlot extends ShadowBlot implements Parent {
       this.uiNode.remove();
     }
     this.uiNode = node;
+    if (ParentBlot.uiClass) {
+      this.uiNode.classList.add(ParentBlot.uiClass);
+    }
     this.uiNode.setAttribute('contenteditable', 'false');
     this.domNode.insertBefore(this.uiNode, this.domNode.firstChild);
   }
