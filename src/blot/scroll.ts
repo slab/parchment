@@ -71,7 +71,7 @@ class ScrollBlot extends ContainerBlot {
       if (blot == null || blot === this) return;
       if (blot.domNode.parentNode == null) return;
       // @ts-ignore
-      if (blot.domNode[Registry.DATA_KEY].mutations == null) {
+      if (blot.domNode[Registry.DATA_KEY] && blot.domNode[Registry.DATA_KEY].mutations == null) {
         // @ts-ignore
         blot.domNode[Registry.DATA_KEY].mutations = [];
       }
@@ -132,6 +132,8 @@ class ScrollBlot extends ContainerBlot {
       .map(function(mutation: MutationRecord) {
         let blot = Registry.find(mutation.target, true);
         if (blot == null) return null;
+        // @ts-ignore
+        if (blot.domNode[Registry.DATA_KEY] == null) return null;
         // @ts-ignore
         if (blot.domNode[Registry.DATA_KEY].mutations == null) {
           // @ts-ignore
