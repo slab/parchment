@@ -111,7 +111,7 @@ class ShadowBlot implements Blot {
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  optimize(context: { [key: string]: any }): void {
+  optimize(_context: { [key: string]: any }): void {
     if (
       this.statics.requiredContainer &&
       !(this.parent instanceof this.statics.requiredContainer)
@@ -137,11 +137,11 @@ class ShadowBlot implements Blot {
     return replacement;
   }
 
-  split(index: number, force?: boolean): Blot | null {
+  split(index: number, _force?: boolean): Blot | null {
     return index === 0 ? this : this.next;
   }
 
-  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+  update(_mutations: MutationRecord[], _context: { [key: string]: any }): void {
     // Nothing to do by default
   }
 

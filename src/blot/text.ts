@@ -63,7 +63,7 @@ class TextBlot extends LeafBlot implements Leaf {
     }
   }
 
-  public position(index: number, inclusive: boolean = false): [Node, number] {
+  public position(index: number, _inclusive: boolean = false): [Node, number] {
     return [this.domNode, index];
   }
 
@@ -84,7 +84,7 @@ class TextBlot extends LeafBlot implements Leaf {
 
   public update(
     mutations: MutationRecord[],
-    context: { [key: string]: any },
+    _context: { [key: string]: any },
   ): void {
     if (
       mutations.some(mutation => {

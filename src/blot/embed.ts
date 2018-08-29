@@ -2,7 +2,7 @@ import { Formattable, Root } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 
 class EmbedBlot extends LeafBlot implements Formattable {
-  public static formats(domNode: HTMLElement, scroll: Root): any {
+  public static formats(_domNode: HTMLElement, _scroll: Root): any {
     return undefined;
   }
 

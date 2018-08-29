@@ -261,7 +261,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     this.children.forEachAt(index, this.length(), function(
       child,
       offset,
-      length,
+      _length,
     ) {
       const split = child.split(offset, force);
       if (split != null) {
@@ -289,7 +289,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     this.remove();
   }
 
-  update(mutations: MutationRecord[], context: { [key: string]: any }): void {
+  update(mutations: MutationRecord[], _context: { [key: string]: any }): void {
     let addedNodes: Node[] = [];
     let removedNodes: Node[] = [];
     mutations.forEach(mutation => {

@@ -41,7 +41,7 @@ export default class Attributor {
     return true;
   }
 
-  public canAdd(node: HTMLElement, value: any): boolean {
+  public canAdd(_node: HTMLElement, value: any): boolean {
     if (this.whitelist == null) {
       return true;
     }

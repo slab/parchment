@@ -5,7 +5,7 @@ import Scope from '../../scope';
 class LeafBlot extends ShadowBlot implements Leaf {
   static scope = Scope.INLINE_BLOT;
 
-  static value(domNode: Node): any {
+  static value(_domNode: Node): any {
     return true;
   }
 
@@ -20,7 +20,7 @@ class LeafBlot extends ShadowBlot implements Leaf {
     return -1;
   }
 
-  position(index: number, inclusive?: boolean): [Node, number] {
+  position(index: number, _inclusive?: boolean): [Node, number] {
     const childNodes: Node[] = Array.from(this.parent.domNode.childNodes);
     let offset = childNodes.indexOf(this.domNode);
     if (index > 0) offset += 1;
