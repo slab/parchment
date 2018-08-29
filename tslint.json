@@ -1,6 +1,12 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
-    "no-bitwise": false
+    "no-bitwise": false,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
   }
 }

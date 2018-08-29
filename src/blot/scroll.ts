@@ -54,8 +54,8 @@ class ScrollBlot extends ParentBlot implements Root {
     return this.registry.query(query, scope);
   }
 
-  public register(...Definitions: any[]): any {
-    return this.registry.register(...Definitions);
+  public register(...definitions: any[]): any {
+    return this.registry.register(...definitions);
   }
 
   public build() {
