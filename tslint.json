@@ -1,7 +1,9 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
+    "interface-name": false,
     "no-bitwise": false,
+    "unified-signatures": false,
     "variable-name": [
       true,
       "ban-keywords",
