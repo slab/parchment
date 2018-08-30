@@ -1,6 +1,6 @@
+import Attributor from '../../attributor/attributor';
 import LinkedList from '../../collection/linked-list';
 import LinkedNode from '../../collection/linked-node';
-import Attributor from '../../attributor/attributor';
 import Scope from '../../scope';
 
 export interface BlotConstructor {
@@ -64,7 +64,7 @@ export interface Parent extends Blot {
   ): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
-  path(index: number, inclusive?: boolean): [Blot, number][];
+  path(index: number, inclusive?: boolean): Array<[Blot, number]>;
   removeChild(child: Blot): void;
   unwrap(): void;
 }

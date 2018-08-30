@@ -1,26 +1,16 @@
-import { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
 import ParchmentError from '../../error';
-import Scope from '../../scope';
 import Registry from '../../registry';
+import Scope from '../../scope';
+import { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
 
 class ShadowBlot implements Blot {
-  static blotName = 'abstract';
-  static className: string;
-  static requiredContainer: BlotConstructor;
-  static scope: Scope;
-  static tagName: string;
+  public static blotName = 'abstract';
+  public static className: string;
+  public static requiredContainer: BlotConstructor;
+  public static scope: Scope;
+  public static tagName: string;
 
-  prev: Blot | null;
-  next: Blot | null;
-  // @ts-ignore
-  parent: Parent;
-
-  // Hack for accessing inherited static methods
-  get statics(): any {
-    return this.constructor;
-  }
-
-  static create(value: any): Node {
+  public static create(value: any): Node {
     if (this.tagName == null) {
       throw new ParchmentError('Blot definition missing tagName');
     }
@@ -28,8 +18,8 @@ class ShadowBlot implements Blot {
     if (Array.isArray(this.tagName)) {
       if (typeof value === 'string') {
         value = value.toUpperCase();
-        if (parseInt(value).toString() === value) {
-          value = parseInt(value);
+        if (parseInt(value, 10).toString() === value) {
+          value = parseInt(value, 10);
         }
       }
       if (typeof value === 'number') {
@@ -48,53 +38,70 @@ class ShadowBlot implements Blot {
     return node;
   }
 
+  public prev: Blot | null;
+  public next: Blot | null;
+  // @ts-ignore
+  public parent: Parent;
+
+  // Hack for accessing inherited static methods
+  get statics(): any {
+    return this.constructor;
+  }
   constructor(public scroll: Root, public domNode: Node) {
     Registry.blots.set(domNode, this);
     this.prev = null;
     this.next = null;
   }
 
-  attach(): void {
+  public attach(): void {
     // Nothing to do
   }
 
-  clone(): Blot {
-    let domNode = this.domNode.cloneNode(false);
+  public clone(): Blot {
+    const domNode = this.domNode.cloneNode(false);
     return this.scroll.create(domNode);
   }
 
-  detach() {
-    if (this.parent != null) this.parent.removeChild(this);
+  public detach() {
+    if (this.parent != null) {
+      this.parent.removeChild(this);
+    }
     Registry.blots.delete(this.domNode);
   }
 
-  deleteAt(index: number, length: number): void {
-    let blot = this.isolate(index, length);
+  public deleteAt(index: number, length: number): void {
+    const blot = this.isolate(index, length);
     blot.remove();
   }
 
-  formatAt(index: number, length: number, name: string, value: any): void {
-    let blot = this.isolate(index, length);
+  public formatAt(
+    index: number,
+    length: number,
+    name: string,
+    value: any,
+  ): void {
+    const blot = this.isolate(index, length);
     if (this.scroll.query(name, Scope.BLOT) != null && value) {
       blot.wrap(name, value);
     } else if (this.scroll.query(name, Scope.ATTRIBUTE) != null) {
-      let parent = <Parent & Formattable>this.scroll.create(this.statics.scope);
+      const parent = this.scroll.create(this.statics.scope) as Parent &
+        Formattable;
       blot.wrap(parent);
       parent.format(name, value);
     }
   }
 
-  insertAt(index: number, value: string, def?: any): void {
-    let blot =
+  public insertAt(index: number, value: string, def?: any): void {
+    const blot =
       def == null
         ? this.scroll.create('text', value)
         : this.scroll.create(value, def);
-    let ref = this.split(index);
+    const ref = this.split(index);
     this.parent.insertBefore(blot, ref || undefined);
   }
 
-  isolate(index: number, length: number): Blot {
-    let target = this.split(index);
+  public isolate(index: number, length: number): Blot {
+    const target = this.split(index);
     if (target == null) {
       throw new Error('Attempt to isolate at end');
     }
@@ -102,16 +109,18 @@ class ShadowBlot implements Blot {
     return target;
   }
 
-  length(): number {
+  public length(): number {
     return 1;
   }
 
-  offset(root: Blot = this.parent): number {
-    if (this.parent == null || this == root) return 0;
+  public offset(root: Blot = this.parent): number {
+    if (this.parent == null || this === root) {
+      return 0;
+    }
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  optimize(_context: { [key: string]: any }): void {
+  public optimize(_context: { [key: string]: any }): void {
     if (
       this.statics.requiredContainer &&
       !(this.parent instanceof this.statics.requiredContainer)
@@ -120,14 +129,14 @@ class ShadowBlot implements Blot {
     }
   }
 
-  remove(): void {
+  public remove(): void {
     if (this.domNode.parentNode != null) {
       this.domNode.parentNode.removeChild(this.domNode);
     }
     this.detach();
   }
 
-  replaceWith(name: string | Blot, value?: any): Blot {
+  public replaceWith(name: string | Blot, value?: any): Blot {
     const replacement =
       typeof name === 'string' ? this.scroll.create(name, value) : name;
     if (this.parent != null) {
@@ -137,17 +146,22 @@ class ShadowBlot implements Blot {
     return replacement;
   }
 
-  split(index: number, _force?: boolean): Blot | null {
+  public split(index: number, _force?: boolean): Blot | null {
     return index === 0 ? this : this.next;
   }
 
-  update(_mutations: MutationRecord[], _context: { [key: string]: any }): void {
+  public update(
+    _mutations: MutationRecord[],
+    _context: { [key: string]: any },
+  ): void {
     // Nothing to do by default
   }
 
-  wrap(name: string | Parent, value?: any): Parent {
-    let wrapper =
-      typeof name === 'string' ? <Parent>this.scroll.create(name, value) : name;
+  public wrap(name: string | Parent, value?: any): Parent {
+    const wrapper =
+      typeof name === 'string'
+        ? (this.scroll.create(name, value) as Parent)
+        : name;
     if (this.parent != null) {
       this.parent.insertBefore(wrapper, this.next || undefined);
     }
