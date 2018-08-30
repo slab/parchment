@@ -1,12 +1,12 @@
 export default class ParchmentError extends Error {
-  message: string;
-  name: string;
-  stack!: string;
+  public message: string;
+  public name: string;
+  public stack!: string;
 
   constructor(message: string) {
     message = '[Parchment] ' + message;
     super(message);
     this.message = message;
-    this.name = (<any>this.constructor).name;
+    this.name = this.constructor.name;
   }
 }

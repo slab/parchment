@@ -9,46 +9,52 @@ export interface RegistryInterface {
     query: string | Node | Scope,
     scope: Scope,
   ): Attributor | BlotConstructor | null;
-  register(...Definitions: any[]): any;
+  register(...definitions: any[]): any;
 }
 
 export default class Registry implements RegistryInterface {
-  static blots = new WeakMap<Node, Blot>();
+  public static blots = new WeakMap<Node, Blot>();
 
-  static find(node: Node | null, bubble: boolean = false): Blot | null {
-    if (node == null) return null;
-    if (this.blots.has(node)) return this.blots.get(node) || null;
-    if (bubble) return this.find(node.parentNode, bubble);
+  public static find(node: Node | null, bubble: boolean = false): Blot | null {
+    if (node == null) {
+      return null;
+    }
+    if (this.blots.has(node)) {
+      return this.blots.get(node) || null;
+    }
+    if (bubble) {
+      return this.find(node.parentNode, bubble);
+    }
     return null;
   }
 
-  attributes: { [key: string]: Attributor } = {};
-  classes: { [key: string]: BlotConstructor } = {};
-  tags: { [key: string]: BlotConstructor } = {};
-  types: { [key: string]: Attributor | BlotConstructor } = {};
+  private attributes: { [key: string]: Attributor } = {};
+  private classes: { [key: string]: BlotConstructor } = {};
+  private tags: { [key: string]: BlotConstructor } = {};
+  private types: { [key: string]: Attributor | BlotConstructor } = {};
 
-  create(scroll: Root, input: Node | string | Scope, value?: any): Blot {
+  public create(scroll: Root, input: Node | string | Scope, value?: any): Blot {
     const match = this.query(input);
     if (match == null) {
       throw new ParchmentError(`Unable to create ${input} blot`);
     }
-    const BlotClass = <BlotConstructor>match;
+    const blotClass = match as BlotConstructor;
     const node =
       // @ts-ignore
-      input instanceof Node || input['nodeType'] === Node.TEXT_NODE
+      input instanceof Node || input.nodeType === Node.TEXT_NODE
         ? input
-        : BlotClass.create(value);
+        : blotClass.create(value);
 
-    const blot = new BlotClass(scroll, <Node>node, value);
+    const blot = new blotClass(scroll, node as Node, value);
     Registry.blots.set(blot.domNode, blot);
     return blot;
   }
 
-  find(node: Node | null, bubble: boolean = false): Blot | null {
+  public find(node: Node | null, bubble: boolean = false): Blot | null {
     return Registry.find(node, bubble);
   }
 
-  query(
+  public query(
     query: string | Node | Scope,
     scope: Scope = Scope.ANY,
   ): Attributor | BlotConstructor | null {
@@ -56,71 +62,75 @@ export default class Registry implements RegistryInterface {
     if (typeof query === 'string') {
       match = this.types[query] || this.attributes[query];
       // @ts-ignore
-    } else if (query instanceof Text || query['nodeType'] === Node.TEXT_NODE) {
-      match = this.types['text'];
+    } else if (query instanceof Text || query.nodeType === Node.TEXT_NODE) {
+      match = this.types.text;
     } else if (typeof query === 'number') {
       if (query & Scope.LEVEL & Scope.BLOCK) {
-        match = this.types['block'];
+        match = this.types.block;
       } else if (query & Scope.LEVEL & Scope.INLINE) {
-        match = this.types['inline'];
+        match = this.types.inline;
       }
     } else if (query instanceof HTMLElement) {
-      let names = (query.getAttribute('class') || '').split(/\s+/);
-      for (let i in names) {
-        match = this.classes[names[i]];
-        if (match) break;
-      }
+      const names = (query.getAttribute('class') || '').split(/\s+/);
+      names.some(name => {
+        match = this.classes[name];
+        if (match) {
+          return true;
+        }
+        return false;
+      });
       match = match || this.tags[query.tagName];
     }
-    if (match == null) return null;
+    if (match == null) {
+      return null;
+    }
     // @ts-ignore
-    if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope)
+    if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) {
       return match;
+    }
     return null;
   }
 
-  register(...Definitions: any[]): any {
-    if (Definitions.length > 1) {
-      return Definitions.map(d => {
+  public register(...definitions: any[]): any {
+    if (definitions.length > 1) {
+      return definitions.map(d => {
         return this.register(d);
       });
     }
-    let Definition = Definitions[0];
+    const definition = definitions[0];
     if (
-      typeof Definition.blotName !== 'string' &&
-      typeof Definition.attrName !== 'string'
+      typeof definition.blotName !== 'string' &&
+      typeof definition.attrName !== 'string'
     ) {
       throw new ParchmentError('Invalid definition');
-    } else if (Definition.blotName === 'abstract') {
+    } else if (definition.blotName === 'abstract') {
       throw new ParchmentError('Cannot register abstract class');
     }
-    this.types[Definition.blotName || Definition.attrName] = Definition;
-    if (typeof Definition.keyName === 'string') {
-      this.attributes[Definition.keyName] = Definition;
+    this.types[definition.blotName || definition.attrName] = definition;
+    if (typeof definition.keyName === 'string') {
+      this.attributes[definition.keyName] = definition;
     } else {
-      if (Definition.className != null) {
-        this.classes[Definition.className] = Definition;
+      if (definition.className != null) {
+        this.classes[definition.className] = definition;
       }
-      if (Definition.tagName != null) {
-        if (Array.isArray(Definition.tagName)) {
-          Definition.tagName = Definition.tagName.map(function(
-            tagName: string,
-          ) {
+      if (definition.tagName != null) {
+        if (Array.isArray(definition.tagName)) {
+          definition.tagName = definition.tagName.map((tagName: string) => {
             return tagName.toUpperCase();
           });
         } else {
-          Definition.tagName = Definition.tagName.toUpperCase();
+          definition.tagName = definition.tagName.toUpperCase();
         }
-        let tagNames = Array.isArray(Definition.tagName)
-          ? Definition.tagName
-          : [Definition.tagName];
+        const tagNames = Array.isArray(definition.tagName)
+          ? definition.tagName
+          : [definition.tagName];
         tagNames.forEach((tag: string) => {
-          if (this.tags[tag] == null || Definition.className == null) {
-            this.tags[tag] = Definition;
+          if (this.tags[tag] == null || definition.className == null) {
+            this.tags[tag] = definition;
           }
         });
       }
     }
-    return Definition;
+    return definition;
   }
 }

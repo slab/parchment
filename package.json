@@ -41,7 +41,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.conf.js",
-    "lint": "tslint src/**/*.ts",
+    "lint": "tslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "test": "karma start",
     "test:server": "karma start --no-single-run",
