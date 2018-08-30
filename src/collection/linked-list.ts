@@ -55,9 +55,10 @@ class LinkedList<T extends LinkedNode> {
   }
 
   public insertBefore(node: T | null, refNode: T | null): void {
-    if (!node) {
+    if (node == null) {
       return;
     }
+    this.remove(node);
     node.next = refNode;
     if (refNode != null) {
       node.prev = refNode.prev;
