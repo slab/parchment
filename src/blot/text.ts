@@ -11,12 +11,7 @@ class TextBlot extends LeafBlot implements Leaf {
   }
 
   public static value(domNode: Text): string {
-    let text = domNode.data;
-    // @ts-ignore
-    if (text.normalize) {
-      text = text.normalize();
-    }
-    return text;
+    return domNode.data;
   }
 
   public domNode!: Text;
