@@ -81,12 +81,12 @@ export function query(
       match = types['inline'];
     }
   } else if (query instanceof HTMLElement) {
-    let names = (query.getAttribute('class') || '').split(/\s+/);
-    for (let i in names) {
-      match = classes[names[i]];
-      if (match) break;
-    }
-    match = match || tags[query.tagName];
+    const className = (query.getAttribute('class') || '')
+      .split(/\s+/)
+      .filter(className => className in classes)
+      .pop();
+
+    match = className ? classes[className] : tags[query.tagName];
   }
   if (match == null) return null;
   // @ts-ignore
