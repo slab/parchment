@@ -84,7 +84,7 @@ export function query(
     const className = (query.getAttribute('class') || '')
       .split(/\s+/)
       .filter(className => className in classes)
-      .pop();
+      .shift();
 
     match = className ? classes[className] : tags[query.tagName];
   }
