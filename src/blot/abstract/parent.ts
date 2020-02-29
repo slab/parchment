@@ -314,8 +314,8 @@ class ParentBlot extends ShadowBlot implements Parent {
     const removedNodes: Node[] = [];
     mutations.forEach(mutation => {
       if (mutation.target === this.domNode && mutation.type === 'childList') {
-        addedNodes.push.apply(addedNodes, mutation.addedNodes);
-        removedNodes.push.apply(removedNodes, mutation.removedNodes);
+        addedNodes.push(...mutation.addedNodes);
+        removedNodes.push(...mutation.removedNodes);
       }
     });
     removedNodes.forEach((node: Node) => {
