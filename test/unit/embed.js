@@ -1,14 +1,14 @@
 'use strict';
 
-describe('EmbedBlot', function() {
-  it('value()', function() {
+describe('EmbedBlot', function () {
+  it('value()', function () {
     let imageBlot = this.scroll.create('image', 'favicon.ico');
     expect(imageBlot.value()).toEqual({
       image: 'favicon.ico',
     });
   });
 
-  it('deleteAt()', function() {
+  it('deleteAt()', function () {
     let container = this.scroll.create('block');
     let imageBlot = this.scroll.create('image');
     container.appendChild(imageBlot);
@@ -19,7 +19,7 @@ describe('EmbedBlot', function() {
     expect(imageBlot.domNode.parentNode).toBeFalsy();
   });
 
-  it('format()', function() {
+  it('format()', function () {
     let container = this.scroll.create('block');
     let imageBlot = this.scroll.create('image');
     container.appendChild(imageBlot);
@@ -27,7 +27,7 @@ describe('EmbedBlot', function() {
     expect(imageBlot.formats()).toEqual({ alt: 'Quill Icon' });
   });
 
-  it('formatAt()', function() {
+  it('formatAt()', function () {
     let container = this.scroll.create('block');
     let imageBlot = this.scroll.create('image');
     container.appendChild(imageBlot);
@@ -35,7 +35,7 @@ describe('EmbedBlot', function() {
     expect(container.children.head.statics.blotName).toBe('inline');
   });
 
-  it('insertAt()', function() {
+  it('insertAt()', function () {
     let container = this.scroll.create('inline');
     let imageBlot = this.scroll.create('image');
     container.appendChild(imageBlot);
@@ -45,7 +45,7 @@ describe('EmbedBlot', function() {
     expect(container.domNode.innerHTML).toEqual('<img>|<img>!');
   });
 
-  it('split()', function() {
+  it('split()', function () {
     let blockNode = document.createElement('p');
     blockNode.innerHTML = '<em>Te</em><img><strong>st</strong>';
     let blockBlot = this.scroll.create(blockNode);
@@ -54,14 +54,14 @@ describe('EmbedBlot', function() {
     expect(imageBlot.split(1)).toBe(blockBlot.children.tail);
   });
 
-  it('index()', function() {
+  it('index()', function () {
     let imageBlot = this.scroll.create('image');
     expect(imageBlot.index(imageBlot.domNode, 0)).toEqual(0);
     expect(imageBlot.index(imageBlot.domNode, 1)).toEqual(1);
     expect(imageBlot.index(document.body, 1)).toEqual(-1);
   });
 
-  it('position()', function() {
+  it('position()', function () {
     let container = this.scroll.create('block');
     let imageBlot = this.scroll.create('image');
     container.appendChild(imageBlot);

@@ -1,7 +1,7 @@
 'use strict';
 
-describe('InlineBlot', function() {
-  it('format addition', function() {
+describe('InlineBlot', function () {
+  it('format addition', function () {
     let italicBlot = this.scroll.create('italic');
     italicBlot.appendChild(this.scroll.create('text', 'Test'));
     italicBlot.formatAt(1, 2, 'bold', true);
@@ -10,42 +10,42 @@ describe('InlineBlot', function() {
     );
   });
 
-  it('format invalid', function() {
+  it('format invalid', function () {
     let boldBlot = this.scroll.create('bold');
     boldBlot.appendChild(this.scroll.create('text', 'Test'));
     let original = boldBlot.domNode.outerHTML;
-    expect(function() {
+    expect(function () {
       boldBlot.format('nonexistent', true);
     }).not.toThrowError(/\[Parchment\]/);
     expect(boldBlot.domNode.outerHTML).toEqual(original);
   });
 
-  it('format existing', function() {
+  it('format existing', function () {
     let italicBlot = this.scroll.create('italic');
     let boldBlot = this.scroll.create('bold');
     boldBlot.appendChild(this.scroll.create('text', 'Test'));
     italicBlot.appendChild(boldBlot);
     let original = italicBlot.domNode.outerHTML;
-    expect(function() {
+    expect(function () {
       boldBlot.formatAt(0, 4, 'bold', true);
       italicBlot.formatAt(0, 4, 'italic', true);
     }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
   });
 
-  it('format removal nonexistent', function() {
+  it('format removal nonexistent', function () {
     let container = this.scroll.create('block');
     let italicBlot = this.scroll.create('italic');
     italicBlot.appendChild(this.scroll.create('text', 'Test'));
     container.appendChild(italicBlot);
     let original = italicBlot.domNode.outerHTML;
-    expect(function() {
+    expect(function () {
       italicBlot.format('bold', false);
     }).not.toThrowError(/\[Parchment\]/);
     expect(italicBlot.domNode.outerHTML).toEqual(original);
   });
 
-  it('delete + unwrap', function() {
+  it('delete + unwrap', function () {
     let node = document.createElement('p');
     node.innerHTML = '<em><strong>Test</strong></em>!';
     let container = this.scroll.create(node);
@@ -53,7 +53,7 @@ describe('InlineBlot', function() {
     expect(container.children.head.value()).toEqual('!');
   });
 
-  it('formats()', function() {
+  it('formats()', function () {
     let italic = document.createElement('em');
     italic.style.color = 'red';
     italic.innerHTML = '<strong>Test</strong>!';
@@ -61,7 +61,7 @@ describe('InlineBlot', function() {
     expect(blot.formats()).toEqual({ italic: true, color: 'red' });
   });
 
-  it('change', function() {
+  it('change', function () {
     let container = this.scroll.create('block');
     let script = this.scroll.create('script', 'sup');
     container.appendChild(script);

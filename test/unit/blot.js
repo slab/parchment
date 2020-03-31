@@ -1,7 +1,7 @@
 'use strict';
 
-describe('Blot', function() {
-  it('offset()', function() {
+describe('Blot', function () {
+  it('offset()', function () {
     let blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
     let blockBlot = this.scroll.create(blockNode);
@@ -10,14 +10,14 @@ describe('Blot', function() {
     expect(boldBlot.offset(blockBlot)).toEqual(4);
   });
 
-  it('detach()', function() {
+  it('detach()', function () {
     let blot = this.scroll.create('block');
     expect(Registry.blots.get(blot.domNode)).toEqual(blot);
     blot.detach();
     expect(Registry.blots.get(blot.domNode)).toEqual(undefined);
   });
 
-  it('remove()', function() {
+  it('remove()', function () {
     let blot = this.scroll.create('block');
     let text = this.scroll.create('text', 'Test');
     blot.appendChild(text);
@@ -28,7 +28,7 @@ describe('Blot', function() {
     expect(blot.domNode.innerHTML).toBe('');
   });
 
-  it('wrap()', function() {
+  it('wrap()', function () {
     let parent = this.scroll.create('block');
     let head = this.scroll.create('bold');
     let text = this.scroll.create('text', 'Test');
@@ -48,7 +48,7 @@ describe('Blot', function() {
     expect(parent.children.tail).toEqual(tail);
   });
 
-  it('wrap() with blot', function() {
+  it('wrap() with blot', function () {
     let parent = this.scroll.create('block');
     let text = this.scroll.create('text', 'Test');
     let italic = this.scroll.create('italic');

@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Block', function() {
-  describe('format', function() {
-    it('add', function() {
+describe('Block', function () {
+  describe('format', function () {
+    it('add', function () {
       let block = this.scroll.create('block');
       this.scroll.appendChild(block);
       block.format('header', 'h1');
@@ -11,7 +11,7 @@ describe('Block', function() {
       expect(this.scroll.children.head.formats()).toEqual({ header: 'h1' });
     });
 
-    it('remove', function() {
+    it('remove', function () {
       let block = this.scroll.create('header', 'h1');
       this.scroll.appendChild(block);
       block.format('header', false);
@@ -20,7 +20,7 @@ describe('Block', function() {
       expect(this.scroll.children.head.formats()).toEqual({});
     });
 
-    it('change', function() {
+    it('change', function () {
       let block = this.scroll.create('block');
       let text = this.scroll.create('text', 'Test');
       block.appendChild(text);
@@ -33,7 +33,7 @@ describe('Block', function() {
       expect(this.scroll.children.head.children.head).toBe(text);
     });
 
-    it('split', function() {
+    it('split', function () {
       let block = this.scroll.create('block');
       let text = this.scroll.create('text', 'Test');
       block.appendChild(text);
@@ -47,7 +47,7 @@ describe('Block', function() {
       expect(this.scroll.children.head.next.statics.blotName).toBe('video');
     });
 
-    it('ignore inline', function() {
+    it('ignore inline', function () {
       let block = this.scroll.create('header', 1);
       this.scroll.appendChild(block);
       block.format('bold', true);
