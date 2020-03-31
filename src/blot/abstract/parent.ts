@@ -4,10 +4,30 @@ import Scope from '../../scope';
 import { Blot, BlotConstructor, Parent, Root } from './blot';
 import ShadowBlot from './shadow';
 
+function makeAttachedBlot(node: Node, scroll: Root): Blot {
+  let blot = scroll.find(node);
+  if (blot == null) {
+    try {
+      blot = scroll.create(node);
+    } catch (e) {
+      blot = scroll.create(Scope.INLINE) as Blot;
+      Array.from(node.childNodes).forEach((child: Node) => {
+        // @ts-ignore
+        blot.domNode.appendChild(child);
+      });
+      if (node.parentNode) {
+        node.parentNode.replaceChild(blot.domNode, node);
+      }
+      blot.attach();
+    }
+  }
+  return blot as Blot;
+}
+
 class ParentBlot extends ShadowBlot implements Parent {
   public static allowedChildren: BlotConstructor[] | null;
   public static defaultChild: BlotConstructor | null;
-  public static uiClass: string = '';
+  public static uiClass = '';
 
   public children!: LinkedList<Blot>;
   public domNode!: HTMLElement;
@@ -24,12 +44,12 @@ class ParentBlot extends ShadowBlot implements Parent {
 
   public attach(): void {
     super.attach();
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       child.attach();
     });
   }
 
-  public attachUI(node: HTMLElement) {
+  public attachUI(node: HTMLElement): void {
     if (this.uiNode != null) {
       this.uiNode.remove();
     }
@@ -78,7 +98,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     criteria: (blot: Blot) => boolean,
     index: number,
   ): [Blot | null, number];
-  public descendant(criteria: any, index: number = 0): [Blot | null, number] {
+  public descendant(criteria: any, index = 0): [Blot | null, number] {
     const [child, offset] = this.children.find(index);
     if (
       (criteria.blotName == null && criteria(child)) ||
@@ -104,7 +124,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   ): Blot[];
   public descendants(
     criteria: any,
-    index: number = 0,
+    index = 0,
     length: number = Number.MAX_VALUE,
   ): Blot[] {
     let descendants: Blot[] = [];
@@ -131,13 +151,13 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   public detach(): void {
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       child.detach();
     });
     super.detach();
   }
 
-  public enforceAllowedChildren() {
+  public enforceAllowedChildren(): void {
     let done = false;
     this.children.forEach((child: Blot) => {
       if (done) {
@@ -216,12 +236,12 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   public moveChildren(targetParent: Parent, refNode?: Blot): void {
-    this.children.forEach(child => {
+    this.children.forEach((child) => {
       targetParent.insertBefore(child, refNode);
     });
   }
 
-  public optimize(context: { [key: string]: any }) {
+  public optimize(context: { [key: string]: any }): void {
     super.optimize(context);
     this.enforceAllowedChildren();
     if (this.uiNode != null && this.uiNode !== this.domNode.firstChild) {
@@ -239,7 +259,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
   }
 
-  public path(index: number, inclusive: boolean = false): [Blot, number][] {
+  public path(index: number, inclusive = false): [Blot, number][] {
     const [child, offset] = this.children.find(index, inclusive);
     const position: [Blot, number][] = [[this, index]];
     if (child instanceof ParentBlot) {
@@ -263,7 +283,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     return super.replaceWith(replacement);
   }
 
-  public split(index: number, force: boolean = false): Blot | null {
+  public split(index: number, force = false): Blot | null {
     if (!force) {
       if (index === 0) {
         return this;
@@ -309,7 +329,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   ): void {
     const addedNodes: Node[] = [];
     const removedNodes: Node[] = [];
-    mutations.forEach(mutation => {
+    mutations.forEach((mutation) => {
       if (mutation.target === this.domNode && mutation.type === 'childList') {
         addedNodes.push(...mutation.addedNodes);
         removedNodes.push(...mutation.removedNodes);
@@ -340,7 +360,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       }
     });
     addedNodes
-      .filter(node => {
+      .filter((node) => {
         return node.parentNode === this.domNode || node === this.uiNode;
       })
       .sort((a, b) => {
@@ -352,7 +372,7 @@ class ParentBlot extends ShadowBlot implements Parent {
         }
         return -1;
       })
-      .forEach(node => {
+      .forEach((node) => {
         let refBlot: Blot | null = null;
         if (node.nextSibling != null) {
           refBlot = this.scroll.find(node.nextSibling);
@@ -367,26 +387,6 @@ class ParentBlot extends ShadowBlot implements Parent {
       });
     this.enforceAllowedChildren();
   }
-}
-
-function makeAttachedBlot(node: Node, scroll: Root): Blot {
-  let blot = scroll.find(node);
-  if (blot == null) {
-    try {
-      blot = scroll.create(node);
-    } catch (e) {
-      blot = scroll.create(Scope.INLINE) as Blot;
-      Array.from(node.childNodes).forEach((child: Node) => {
-        // @ts-ignore
-        blot.domNode.appendChild(child);
-      });
-      if (node.parentNode) {
-        node.parentNode.replaceChild(blot.domNode, node);
-      }
-      blot.attach();
-    }
-  }
-  return blot as Blot;
 }
 
 export default ParentBlot;

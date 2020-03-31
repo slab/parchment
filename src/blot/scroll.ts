@@ -43,7 +43,7 @@ class ScrollBlot extends ParentBlot implements Root {
     return this.registry.create(this, input, value);
   }
 
-  public find(node: Node | null, bubble: boolean = false): Blot | null {
+  public find(node: Node | null, bubble = false): Blot | null {
     return this.registry.find(node, bubble);
   }
 
@@ -58,14 +58,14 @@ class ScrollBlot extends ParentBlot implements Root {
     return this.registry.register(...definitions);
   }
 
-  public build() {
+  public build(): void {
     if (this.scroll == null) {
       return;
     }
     super.build();
   }
 
-  public detach() {
+  public detach(): void {
     super.detach();
     this.observer.disconnect();
   }
@@ -73,7 +73,7 @@ class ScrollBlot extends ParentBlot implements Root {
   public deleteAt(index: number, length: number): void {
     this.update();
     if (index === 0 && length === this.length()) {
-      this.children.forEach(child => {
+      this.children.forEach((child) => {
         child.remove();
       });
     } else {
@@ -111,7 +111,7 @@ class ScrollBlot extends ParentBlot implements Root {
     while (records.length > 0) {
       mutations.push(records.pop());
     }
-    const mark = (blot: Blot | null, markParent: boolean = true) => {
+    const mark = (blot: Blot | null, markParent = true): void => {
       if (blot == null || blot === this) {
         return;
       }
@@ -125,7 +125,7 @@ class ScrollBlot extends ParentBlot implements Root {
         mark(blot.parent);
       }
     };
-    const optimize = (blot: Blot) => {
+    const optimize = (blot: Blot): void => {
       // Post-order traversal
       if (!mutationsMap.has(blot.domNode)) {
         return;

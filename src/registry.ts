@@ -15,7 +15,7 @@ export interface RegistryInterface {
 export default class Registry implements RegistryInterface {
   public static blots = new WeakMap<Node, Blot>();
 
-  public static find(node: Node | null, bubble: boolean = false): Blot | null {
+  public static find(node: Node | null, bubble = false): Blot | null {
     if (node == null) {
       return null;
     }
@@ -50,7 +50,7 @@ export default class Registry implements RegistryInterface {
     return blot;
   }
 
-  public find(node: Node | null, bubble: boolean = false): Blot | null {
+  public find(node: Node | null, bubble = false): Blot | null {
     return Registry.find(node, bubble);
   }
 
@@ -72,7 +72,7 @@ export default class Registry implements RegistryInterface {
       }
     } else if (query instanceof HTMLElement) {
       const names = (query.getAttribute('class') || '').split(/\s+/);
-      names.some(name => {
+      names.some((name) => {
         match = this.classes[name];
         if (match) {
           return true;
@@ -93,7 +93,7 @@ export default class Registry implements RegistryInterface {
 
   public register(...definitions: any[]): any {
     if (definitions.length > 1) {
-      return definitions.map(d => {
+      return definitions.map((d) => {
         return this.register(d);
       });
     }

@@ -37,7 +37,7 @@ class BlockBlot extends ParentBlot implements Formattable {
     this.attributes = new AttributorStore(this.domNode);
   }
 
-  public format(name: string, value: any) {
+  public format(name: string, value: any): void {
     const format = this.scroll.query(name, Scope.BLOCK);
     if (format == null) {
       return;
@@ -102,7 +102,7 @@ class BlockBlot extends ParentBlot implements Formattable {
   ): void {
     super.update(mutations, context);
     const attributeChanged = mutations.some(
-      mutation =>
+      (mutation) =>
         mutation.target === this.domNode && mutation.type === 'attributes',
     );
     if (attributeChanged) {

@@ -62,7 +62,7 @@ class ShadowBlot implements Blot {
     return this.scroll.create(domNode);
   }
 
-  public detach() {
+  public detach(): void {
     if (this.parent != null) {
       this.parent.removeChild(this);
     }

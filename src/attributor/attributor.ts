@@ -1,6 +1,6 @@
 import Scope from '../scope';
 
-export interface IAttributorOptions {
+export interface AttributorOptions {
   scope?: Scope;
   whitelist?: string[];
 }
@@ -18,7 +18,7 @@ export default class Attributor {
   constructor(
     attrName: string,
     keyName: string,
-    options: IAttributorOptions = {},
+    options: AttributorOptions = {},
   ) {
     this.attrName = attrName;
     this.keyName = keyName;

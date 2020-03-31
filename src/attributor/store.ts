@@ -42,7 +42,7 @@ class AttributorStore {
     attributes
       .concat(classes)
       .concat(styles)
-      .forEach(name => {
+      .forEach((name) => {
         const attr = blot.scroll.query(name, Scope.ATTRIBUTE);
         if (attr instanceof Attributor) {
           this.attributes[attr.attrName] = attr;
@@ -51,7 +51,7 @@ class AttributorStore {
   }
 
   public copy(target: Formattable): void {
-    Object.keys(this.attributes).forEach(key => {
+    Object.keys(this.attributes).forEach((key) => {
       const value = this.attributes[key].value(this.domNode);
       target.format(key, value);
     });
@@ -59,7 +59,7 @@ class AttributorStore {
 
   public move(target: Formattable): void {
     this.copy(target);
-    Object.keys(this.attributes).forEach(key => {
+    Object.keys(this.attributes).forEach((key) => {
       this.attributes[key].remove(this.domNode);
     });
     this.attributes = {};

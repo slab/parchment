@@ -14,7 +14,8 @@ class LinkedList<T extends LinkedNode> {
   public append(...nodes: T[]): void {
     this.insertBefore(nodes[0], null);
     if (nodes.length > 1) {
-      this.append.apply(this, nodes.slice(1));
+      const rest = nodes.slice(1);
+      this.append(...rest);
     }
   }
 
@@ -123,7 +124,7 @@ class LinkedList<T extends LinkedNode> {
     };
   }
 
-  public find(index: number, inclusive: boolean = false): [T | null, number] {
+  public find(index: number, inclusive = false): [T | null, number] {
     const next = this.iterator();
     let cur = next();
     while (cur) {

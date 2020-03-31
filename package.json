@@ -13,6 +13,11 @@
   "types": "dist/src/parchment.d.ts",
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@typescript-eslint/eslint-plugin": "^2.26.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "istanbul": "~0.4.5",
     "jasmine-core": "^3.5.0",
     "karma": "^4.4.1",
@@ -24,11 +29,26 @@
     "karma-webpack": "^4.0.2",
     "prettier": "^2.0.2",
     "ts-loader": "^6.2.1",
-    "tslint": "^6.1.0",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.8.3",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "@typescript-eslint/ban-ts-ignore": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    }
   },
   "prettier": {
     "singleQuote": true,
@@ -41,7 +61,7 @@
   },
   "scripts": {
     "build": "webpack --config webpack.conf.js",
-    "lint": "tslint 'src/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "test": "karma start",
     "test:server": "karma start --no-single-run",
@@ -49,5 +69,6 @@
   },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"
-  }
+  },
+  "dependencies": {}
 }

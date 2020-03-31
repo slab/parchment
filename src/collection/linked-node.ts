@@ -1,8 +1,8 @@
-interface ILinkedNode {
-  prev: ILinkedNode | null;
-  next: ILinkedNode | null;
+interface LinkedNode {
+  prev: LinkedNode | null;
+  next: LinkedNode | null;
 
   length(): number;
 }
 
-export default ILinkedNode;
+export default LinkedNode;

@@ -58,11 +58,11 @@ class TextBlot extends LeafBlot implements Leaf {
     }
   }
 
-  public position(index: number, _inclusive: boolean = false): [Node, number] {
+  public position(index: number, _inclusive = false): [Node, number] {
     return [this.domNode, index];
   }
 
-  public split(index: number, force: boolean = false): Blot | null {
+  public split(index: number, force = false): Blot | null {
     if (!force) {
       if (index === 0) {
         return this;
@@ -82,7 +82,7 @@ class TextBlot extends LeafBlot implements Leaf {
     _context: { [key: string]: any },
   ): void {
     if (
-      mutations.some(mutation => {
+      mutations.some((mutation) => {
         return (
           mutation.type === 'characterData' && mutation.target === this.domNode
         );

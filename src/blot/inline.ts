@@ -54,9 +54,9 @@ class InlineBlot extends ParentBlot implements Formattable {
     this.attributes = new AttributorStore(this.domNode);
   }
 
-  public format(name: string, value: any) {
+  public format(name: string, value: any): void {
     if (name === this.statics.blotName && !value) {
-      this.children.forEach(child => {
+      this.children.forEach((child) => {
         if (!(child instanceof InlineBlot)) {
           child = child.wrap(InlineBlot.blotName, true);
         }
@@ -134,7 +134,7 @@ class InlineBlot extends ParentBlot implements Formattable {
   ): void {
     super.update(mutations, context);
     const attributeChanged = mutations.some(
-      mutation =>
+      (mutation) =>
         mutation.target === this.domNode && mutation.type === 'attributes',
     );
     if (attributeChanged) {
