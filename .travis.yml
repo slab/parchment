@@ -1,5 +1,5 @@
 language: node_js
-node_js: '8.9'
+node_js: '10'
 dist: trusty
 sudo: false
 cache:
@@ -10,6 +10,5 @@ script:
 addons:
   sauce_connect:
     username: "quill"
-    # There is no way to securely allow community PRs to be built and tested
-    # by Travis and SauceLabs. Please do not abuse.
-    access_key: "ced60aed-80ad-436b-9ba8-690ed1205180"
+    access_key:
+      secure: "iGZeDMU8D7d7r/mJXNyPlnlwD4WOEfTpfXkCO9tBdUsmQJq3BlIdugbjOE4VvT2IU9CTyG8tSvHj/UcNOvDVjHv/3Wca4zWUJZ6zunIkE9m4HpyI4bdyWEuz4sfbHhJS8zPiGoRtAvs1z5+liydcfLTXvfWdG64ZLkxUCqDKfhg="
