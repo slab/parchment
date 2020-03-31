@@ -71,7 +71,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   public descendant(
-    criteria: { new (): Blot },
+    criteria: new () => Blot,
     index: number,
   ): [Blot | null, number];
   public descendant(
@@ -93,7 +93,7 @@ class ParentBlot extends ShadowBlot implements Parent {
   }
 
   public descendants(
-    criteria: { new (): Blot },
+    criteria: new () => Blot,
     index: number,
     length: number,
   ): Blot[];
@@ -239,12 +239,9 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
   }
 
-  public path(
-    index: number,
-    inclusive: boolean = false,
-  ): Array<[Blot, number]> {
+  public path(index: number, inclusive: boolean = false): [Blot, number][] {
     const [child, offset] = this.children.find(index, inclusive);
-    const position: Array<[Blot, number]> = [[this, index]];
+    const position: [Blot, number][] = [[this, index]];
     if (child instanceof ParentBlot) {
       return position.concat(child.path(offset, inclusive));
     } else if (child != null) {

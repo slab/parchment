@@ -54,9 +54,9 @@ export interface Parent extends Blot {
   domNode: HTMLElement;
 
   appendChild(child: Blot): void;
-  descendant<T>(type: { new (): T }, index: number): [T, number];
+  descendant<T>(type: new () => T, index: number): [T, number];
   descendant<T>(matcher: (blot: Blot) => boolean, index: number): [T, number];
-  descendants<T>(type: { new (): T }, index: number, length: number): T[];
+  descendants<T>(type: new () => T, index: number, length: number): T[];
   descendants<T>(
     matcher: (blot: Blot) => boolean,
     index: number,
@@ -64,7 +64,7 @@ export interface Parent extends Blot {
   ): T[];
   insertBefore(child: Blot, refNode?: Blot): void;
   moveChildren(parent: Parent, refNode?: Blot): void;
-  path(index: number, inclusive?: boolean): Array<[Blot, number]>;
+  path(index: number, inclusive?: boolean): [Blot, number][];
   removeChild(child: Blot): void;
   unwrap(): void;
 }
