@@ -3,6 +3,7 @@
     "module": "es6",
     "target": "es6",
     "declaration": true,
+    "declarationDir": "dist/src",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
