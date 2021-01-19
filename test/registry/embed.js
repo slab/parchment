@@ -42,8 +42,10 @@ class VideoBlot extends EmbedBlot {
 
   static formats(domNode) {
     let formats = {};
-    if (domNode.hasAttribute('height')) formats['height'] = domNode.getAttribute('height');
-    if (domNode.hasAttribute('width')) formats['width'] = domNode.getAttribute('width');
+    if (domNode.hasAttribute('height'))
+      formats['height'] = domNode.getAttribute('height');
+    if (domNode.hasAttribute('width'))
+      formats['width'] = domNode.getAttribute('width');
     return formats;
   }
 
@@ -64,8 +66,8 @@ class VideoBlot extends EmbedBlot {
   }
 }
 VideoBlot.blotName = 'video';
-VideoBlot.scope = Registry.Scope.BLOCK_BLOT;
+VideoBlot.scope = Scope.BLOCK_BLOT;
 VideoBlot.tagName = 'VIDEO';
 
-Registry.register(ImageBlot);
-Registry.register(VideoBlot);
+TestRegistry.register(ImageBlot);
+TestRegistry.register(VideoBlot);

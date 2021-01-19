@@ -13,4 +13,5 @@ module.exports = {
     rules: [{ test: /\.ts$/, use: 'ts-loader' }],
   },
   devtool: 'source-map',
+  mode: 'production',
 };

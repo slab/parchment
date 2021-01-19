@@ -1,33 +1,65 @@
 import LinkedNode from './linked-node';
 
 class LinkedList<T extends LinkedNode> {
-  head: T | null;
-  tail: T | null;
-  length: number;
+  public head: T | null;
+  public tail: T | null;
+  public length: number;
 
   constructor() {
-    this.head = this.tail = null;
+    this.head = null;
+    this.tail = null;
     this.length = 0;
   }
 
-  append(...nodes: T[]): void {
+  public append(...nodes: T[]): void {
     this.insertBefore(nodes[0], null);
     if (nodes.length > 1) {
-      this.append.apply(this, nodes.slice(1));
+      const rest = nodes.slice(1);
+      this.append(...rest);
     }
   }
 
-  contains(node: T): boolean {
-    let cur,
-      next = this.iterator();
-    while ((cur = next())) {
-      if (cur === node) return true;
+  public at(index: number): T | null {
+    const next = this.iterator();
+    let cur = next();
+    while (cur && index > 0) {
+      index -= 1;
+      cur = next();
+    }
+    return cur;
+  }
+
+  public contains(node: T): boolean {
+    const next = this.iterator();
+    let cur = next();
+    while (cur) {
+      if (cur === node) {
+        return true;
+      }
+      cur = next();
     }
     return false;
   }
 
-  insertBefore(node: T | null, refNode: T | null): void {
-    if (!node) return
+  public indexOf(node: T): number {
+    const next = this.iterator();
+    let cur = next();
+    let index = 0;
+    while (cur) {
+      if (cur === node) {
+        return index;
+      }
+      index += 1;
+      cur = next();
+    }
+    return -1;
+  }
+
+  public insertBefore(node: T | null, refNode: T | null): void {
+    if (node == null) {
+      return;
+    }
+    this.remove(node);
     node.next = refNode;
     if (refNode != null) {
       node.prev = refNode.prev;
@@ -49,92 +81,118 @@ class LinkedList<T extends LinkedNode> {
     this.length += 1;
   }
 
-  offset(target: T): number {
-    let index = 0,
-      cur = this.head;
+  public offset(target: T): number {
+    let index = 0;
+    let cur = this.head;
     while (cur != null) {
-      if (cur === target) return index;
+      if (cur === target) {
+        return index;
+      }
       index += cur.length();
-      cur = <T>cur.next;
+      cur = cur.next as T;
     }
     return -1;
   }
 
-  remove(node: T): void {
-    if (!this.contains(node)) return;
-    if (node.prev != null) node.prev.next = node.next;
-    if (node.next != null) node.next.prev = node.prev;
-    if (node === this.head) this.head = <T>node.next;
-    if (node === this.tail) this.tail = <T>node.prev;
+  public remove(node: T): void {
+    if (!this.contains(node)) {
+      return;
+    }
+    if (node.prev != null) {
+      node.prev.next = node.next;
+    }
+    if (node.next != null) {
+      node.next.prev = node.prev;
+    }
+    if (node === this.head) {
+      this.head = node.next as T;
+    }
+    if (node === this.tail) {
+      this.tail = node.prev as T;
+    }
     this.length -= 1;
   }
 
-  iterator(curNode: T | null = this.head): () => T | null {
+  public iterator(curNode: T | null = this.head): () => T | null {
     // TODO use yield when we can
-    return function(): T | null {
-      let ret = curNode;
-      if (curNode != null) curNode = <T>curNode.next;
+    return (): T | null => {
+      const ret = curNode;
+      if (curNode != null) {
+        curNode = curNode.next as T;
+      }
       return ret;
     };
   }
 
-  find(index: number, inclusive: boolean = false): [T | null, number] {
-    let cur,
-      next = this.iterator();
-    while ((cur = next())) {
-      let length = cur.length();
+  public find(index: number, inclusive = false): [T | null, number] {
+    const next = this.iterator();
+    let cur = next();
+    while (cur) {
+      const length = cur.length();
       if (
         index < length ||
-        (inclusive && index === length && (cur.next == null || cur.next.length() !== 0))
+        (inclusive &&
+          index === length &&
+          (cur.next == null || cur.next.length() !== 0))
       ) {
         return [cur, index];
       }
       index -= length;
+      cur = next();
     }
     return [null, 0];
   }
 
-  forEach(callback: (cur: T) => void): void {
-    let cur,
-      next = this.iterator();
-    while ((cur = next())) {
+  public forEach(callback: (cur: T) => void): void {
+    const next = this.iterator();
+    let cur = next();
+    while (cur) {
       callback(cur);
+      cur = next();
     }
   }
 
-  forEachAt(
+  public forEachAt(
     index: number,
     length: number,
     callback: (cur: T, offset: number, length: number) => void,
   ): void {
-    if (length <= 0) return;
-    let [startNode, offset] = this.find(index);
-    let cur,
-      curIndex = index - offset,
-      next = this.iterator(startNode);
-    while ((cur = next()) && curIndex < index + length) {
-      let curLength = cur.length();
+    if (length <= 0) {
+      return;
+    }
+    const [startNode, offset] = this.find(index);
+    let curIndex = index - offset;
+    const next = this.iterator(startNode);
+    let cur = next();
+    while (cur && curIndex < index + length) {
+      const curLength = cur.length();
       if (index > curIndex) {
-        callback(cur, index - curIndex, Math.min(length, curIndex + curLength - index));
+        callback(
+          cur,
+          index - curIndex,
+          Math.min(length, curIndex + curLength - index),
+        );
       } else {
         callback(cur, 0, Math.min(curLength, index + length - curIndex));
       }
       curIndex += curLength;
+      cur = next();
     }
   }
 
-  map(callback: (cur: T | null) => any): any[] {
-    return this.reduce(function(memo: (T | null)[], cur: T | null) {
+  public map(callback: (cur: T) => any): any[] {
+    return this.reduce((memo: T[], cur: T) => {
       memo.push(callback(cur));
       return memo;
     }, []);
   }
 
-  reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {
-    let cur,
-      next = this.iterator();
-    while ((cur = next())) {
+  public reduce<M>(callback: (memo: M, cur: T) => M, memo: M): M {
+    const next = this.iterator();
+    let cur = next();
+    while (cur) {
       memo = callback(memo, cur);
+      cur = next();
     }
     return memo;
   }
