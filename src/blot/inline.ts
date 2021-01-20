@@ -54,6 +54,11 @@ class InlineBlot extends ParentBlot implements Formattable {
     this.attributes = new AttributorStore(this.domNode);
   }
 
+  public deleteAt(index: number, length: number): void {
+    const avoidRemove = this.parent.children.indexOf(this) === 0;
+    super.deleteAt(index, length, avoidRemove);
+  }
+
   public format(name: string, value: any): void {
     if (name === this.statics.blotName && !value) {
       this.children.forEach((child) => {
