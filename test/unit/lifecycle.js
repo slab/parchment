@@ -158,7 +158,7 @@ describe('Lifecycle', function () {
       expect(this.container.querySelector('strong').childNodes.length).toBe(1);
     });
 
-    // NOTE: This test case is removed because this case is handled by creately / quill
+    // NOTE: This test case is removed because this case is handled by quilljs / quill
     // it('remove text + recursive merge', function () {
     //   let node = document.createElement('p');
     //   node.innerHTML = '<em>Te</em>|<em>st</em>';
