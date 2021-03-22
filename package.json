@@ -1,5 +1,5 @@
 {
-  "name": "parchment",
+  "name": "@creately/parchment",
   "version": "1.0.1",
   "description": "A document model for rich text editors",
   "author": "Jason Chen <jhchen7@gmail.com>",
