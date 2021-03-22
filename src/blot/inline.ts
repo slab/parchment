@@ -55,7 +55,9 @@ class InlineBlot extends ParentBlot implements Formattable {
   }
 
   public deleteAt(index: number, length: number): void {
-    const avoidRemove = this.parent.children.indexOf(this) === 0 && this.parent.children.length === 1;
+    const avoidRemove =
+      this.parent.children.indexOf(this) === 0 &&
+      this.parent.children.length === 1;
     super.deleteAt(index, length, avoidRemove);
   }
 

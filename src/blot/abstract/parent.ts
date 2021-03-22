@@ -81,7 +81,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       });
   }
 
-  public deleteAt(index: number, length: number, avoidRemove: boolean = false): void {
+  public deleteAt(index: number, length: number, avoidRemove = false): void {
     if (index === 0 && length === this.length() && !avoidRemove) {
       return this.remove();
     }
