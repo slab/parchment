@@ -4,10 +4,40 @@ import Scope from '../../scope';
 import { Blot, BlotConstructor, Parent, Root } from './blot';
 import ShadowBlot from './shadow';
 
+// When delete a colored text, Chrome creates an empty font
+// instead of keeping the original node.
+// This method normalizes it back to spans with corresponding
+// styles.
+// Related bug: https://bugs.chromium.org/p/chromium/issues/detail?id=546461
+function normalizeFontNode(node: HTMLFontElement) {
+  const span = node.ownerDocument.createElement('span');
+  const attrToStyles = [['color', 'color'], ['face', 'font-family']];
+
+  const styles = attrToStyles.reduce(
+    (styles, [attrName, styleName]) => ({
+      ...styles,
+      [styleName]: node.getAttribute(attrName),
+    }),
+    {},
+  );
+  Object.assign(span.style, styles);
+  Array.from(node.childNodes).forEach((child: Node) => {
+    // @ts-ignore
+    span.appendChild(child);
+  });
+  if (node.parentNode) {
+    node.parentNode.replaceChild(span, node);
+  }
+  return span;
+}
+
 function makeAttachedBlot(node: Node, scroll: Root): Blot {
   let blot = scroll.find(node);
   if (blot == null) {
     try {
+      if (node instanceof HTMLFontElement) {
+        node = normalizeFontNode(node);
+      }
       blot = scroll.create(node);
     } catch (e) {
       blot = scroll.create(Scope.INLINE) as Blot;

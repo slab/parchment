@@ -125,6 +125,12 @@ export default class Registry implements RegistryInterface {
           ? definition.tagName
           : [definition.tagName];
         tagNames.forEach((tag: string) => {
+          if (tag === 'FONT') {
+            throw new Error(
+              `${definition.blotName ||
+                definition.attrName}: "font" cannot be used as tagName.`,
+            );
+          }
           if (this.tags[tag] == null || definition.className == null) {
             this.tags[tag] = definition;
           }
