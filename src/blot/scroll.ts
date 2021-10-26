@@ -44,7 +44,14 @@ class ScrollBlot extends ParentBlot implements Root {
   }
 
   public find(node: Node | null, bubble = false): Blot | null {
-    return this.registry.find(node, bubble);
+    const blot = this.registry.find(node, bubble);
+    if (!blot) {
+      return null;
+    }
+    if (blot.scroll === this) {
+      return blot;
+    }
+    return bubble ? this.find(blot.scroll.domNode.parentNode, true) : null;
   }
 
   public query(
@@ -181,7 +188,7 @@ class ScrollBlot extends ParentBlot implements Root {
     const mutationsMap = new WeakMap();
     mutations
       .map((mutation: MutationRecord) => {
-        const blot = Registry.find(mutation.target, true);
+        const blot = this.find(mutation.target, true);
         if (blot == null) {
           return null;
         }
