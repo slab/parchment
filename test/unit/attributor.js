@@ -162,7 +162,7 @@ describe('Attributor', function () {
   });
 
   it('add to block', function () {
-    let container = this.scroll.create('scroll');
+    let container = this.scroll.create('block');
     let block = this.scroll.create('header', 'h1');
     container.appendChild(block);
     block.format('align', 'right');
