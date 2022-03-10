@@ -12,7 +12,7 @@ function makeAttachedBlot(node: Node, scroll: Root): Blot {
     } catch (e) {
       blot = scroll.create(Scope.INLINE) as Blot;
       Array.from(node.childNodes).forEach((child: Node) => {
-        // @ts-ignore
+        // @ts-expect-error
         blot.domNode.appendChild(child);
       });
       if (node.parentNode) {
@@ -341,7 +341,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       // from DOM but MutationRecord is correct in its reported removal
       if (
         node.parentNode != null &&
-        // @ts-ignore
+        // @ts-expect-error
         node.tagName !== 'IFRAME' &&
         document.body.compareDocumentPosition(node) &
           Node.DOCUMENT_POSITION_CONTAINED_BY

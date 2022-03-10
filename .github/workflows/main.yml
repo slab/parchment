@@ -1,0 +1,22 @@
+name: 'Run tests'
+on:
+  push:
+    branches: [ master, "2.0" ]
+  pull_request:
+    branches: [ master, "2.0" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test:ci
+        env:
+          SAUCE_USERNAME: quill
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCELABS_ACCESS_KEY }}

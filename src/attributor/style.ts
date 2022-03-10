@@ -21,13 +21,13 @@ class StyleAttributor extends Attributor {
     if (!this.canAdd(node, value)) {
       return false;
     }
-    // @ts-ignore
+    // @ts-expect-error
     node.style[camelize(this.keyName)] = value;
     return true;
   }
 
   public remove(node: HTMLElement): void {
-    // @ts-ignore
+    // @ts-expect-error
     node.style[camelize(this.keyName)] = '';
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
@@ -35,7 +35,7 @@ class StyleAttributor extends Attributor {
   }
 
   public value(node: HTMLElement): string {
-    // @ts-ignore
+    // @ts-expect-error
     const value = node.style[camelize(this.keyName)];
     return this.canAdd(node, value) ? value : '';
   }

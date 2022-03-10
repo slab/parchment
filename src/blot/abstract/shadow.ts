@@ -40,7 +40,7 @@ class ShadowBlot implements Blot {
 
   public prev: Blot | null;
   public next: Blot | null;
-  // @ts-ignore
+  // @ts-expect-error
   public parent: Parent;
 
   // Hack for accessing inherited static methods

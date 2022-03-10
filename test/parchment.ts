@@ -19,40 +19,40 @@ import Scope from '../src/scope';
 
 const TestRegistry = new Registry();
 
-// @ts-ignore
+// @ts-expect-error
 window['Attributor'] = Attributor;
-// @ts-ignore
+// @ts-expect-error
 window['ClassAttributor'] = ClassAttributor;
-// @ts-ignore
+// @ts-expect-error
 window['StyleAttributor'] = StyleAttributor;
 
-// @ts-ignore
+// @ts-expect-error
 window['ShadowBlot'] = ShadowBlot;
-// @ts-ignore
+// @ts-expect-error
 window['ParentBlot'] = ParentBlot;
-// @ts-ignore
+// @ts-expect-error
 window['LeafBlot'] = LeafBlot;
-// @ts-ignore
+// @ts-expect-error
 window['EmbedBlot'] = EmbedBlot;
 
-// @ts-ignore
+// @ts-expect-error
 window['ScrollBlot'] = ScrollBlot;
-// @ts-ignore
+// @ts-expect-error
 window['ContainerBlot'] = ContainerBlot;
-// @ts-ignore
+// @ts-expect-error
 window['BlockBlot'] = BlockBlot;
-// @ts-ignore
+// @ts-expect-error
 window['InlineBlot'] = InlineBlot;
-// @ts-ignore
+// @ts-expect-error
 window['TextBlot'] = TextBlot;
 
-// @ts-ignore
+// @ts-expect-error
 window['LinkedList'] = LinkedList;
-// @ts-ignore
+// @ts-expect-error
 window['Scope'] = Scope;
-// @ts-ignore
+// @ts-expect-error
 window['Registry'] = Registry;
-// @ts-ignore
+// @ts-expect-error
 window['TestRegistry'] = TestRegistry;
 
 TestRegistry.register(ScrollBlot);
