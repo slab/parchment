@@ -8,7 +8,7 @@ module.exports = {
       name: 'Parchment',
       type: 'umd',
     },
-    path: __dirname + '/dist/umd',
+    path: __dirname + '/dist',
     // https://github.com/webpack/webpack/issues/6525
     globalObject: `(() => {
         if (typeof self !== 'undefined') {
