@@ -1,10 +1,26 @@
 module.exports = {
-  entry: ['./src/parchment.ts'],
+  entry: {
+    parchment: './src/parchment.ts',
+  },
   output: {
-    filename: 'parchment.js',
-    library: 'Parchment',
-    libraryTarget: 'umd',
-    path: __dirname + '/dist',
+    filename: '[name].js',
+    library: {
+      name: 'Parchment',
+      type: 'umd',
+    },
+    path: __dirname + '/dist/umd',
+    // https://github.com/webpack/webpack/issues/6525
+    globalObject: `(() => {
+        if (typeof self !== 'undefined') {
+            return self;
+        } else if (typeof window !== 'undefined') {
+            return window;
+        } else if (typeof global !== 'undefined') {
+            return global;
+        } else {
+            return Function('return this')();
+        }
+    })()`,
   },
   resolve: {
     extensions: ['.js', '.ts'],

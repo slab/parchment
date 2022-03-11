@@ -43,10 +43,6 @@ module.exports = (config) => {
     },
     exclude: [],
     reporters: ['progress'],
-    coverageReporter: {
-      dir: '.build/coverage',
-      reporters: [{ type: 'html' }, { type: 'text' }, { type: 'lcov' }],
-    },
     browsers: ['Chrome'],
     customLaunchers: {
       'saucelabs-chrome': {

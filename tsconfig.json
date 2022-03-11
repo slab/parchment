@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "module": "es6",
+    "module": "amd",
     "target": "es6",
-    "declaration": false,
+    "lib": ["es2015", "dom", "dom.iterable"],
+    "outDir": "./dist/esm",
+    "declaration": true,
+    "declarationDir": "./dist/typings/",
     "strict": true,
+    "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
+  "files": ["./src/parchment.ts"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["node_modules", "test"]
 }

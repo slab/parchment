@@ -15,7 +15,6 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run lint
-      - run: npm run build
       - run: npm run test:ci
         env:
           SAUCE_USERNAME: quill
