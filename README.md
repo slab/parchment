@@ -1,4 +1,4 @@
-# Parchment [![Build Status](https://github.com/quilljs/parchment/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/quilljs/parchment/actions?query=branch%3Amaster)
+# Parchment [![Build Status](https://github.com/quilljs/parchment/actions/workflows/main.yml/badge.svg?branch=2.0)](https://github.com/quilljs/parchment/actions?query=branch%3A2.0)
 
 Parchment is [Quill](https://quilljs.com)'s document model. It is a parallel tree structure to the DOM tree, and provides functionality useful for content editors, like Quill. A Parchment tree is made up of [Blots](#blots), which mirror a DOM node counterpart. Blots can provide structure, formatting, and/or content. [Attributors](#attributors) can also provide lightweight formatting information.
 
