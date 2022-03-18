@@ -1,6 +1,7 @@
-var webpackConfig = require('./webpack.conf');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpackConfig = require('./webpack.conf');
 
-module.exports = function(config) {
+module.exports = (config) => {
   config.set({
     basePath: '',
     frameworks: ['jasmine'],
@@ -42,26 +43,22 @@ module.exports = function(config) {
     },
     exclude: [],
     reporters: ['progress'],
-    coverageReporter: {
-      dir: '.build/coverage',
-      reporters: [{ type: 'html' }, { type: 'text' }, { type: 'lcov' }],
-    },
     browsers: ['Chrome'],
     customLaunchers: {
       'saucelabs-chrome': {
         base: 'SauceLabs',
         browserName: 'Chrome',
         platform: 'OS X 10.15',
-        version: 'beta',
+        version: '75',
       },
     },
     sauceLabs: {
       testName: 'Parchment Unit Tests',
-      build: process.env.TRAVIS_BUILD_ID,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-      startConnect: false,
+      build: process.env.GITHUB_RUN_ID
+        ? `${process.env.GITHUB_REPOSITORY} run #${process.env.GITHUB_RUN_ID}`
+        : null,
     },
-    port: process.env.TRAVIS ? 9876 : 10876,
+    port: process.env.GITHUB_ACTION ? 9876 : 10876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,

@@ -16,9 +16,8 @@ function isEqual(obj1: object, obj2: object): boolean {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
-  // @ts-ignore
   for (const prop in obj1) {
-    // @ts-ignore
+    // @ts-expect-error
     if (obj1[prop] !== obj2[prop]) {
       return false;
     }
