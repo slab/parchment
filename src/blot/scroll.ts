@@ -185,29 +185,31 @@ class ScrollBlot extends ParentBlot implements Root {
     context: { [key: string]: any } = {},
   ): void {
     mutations = mutations || this.observer.takeRecords();
-    const mutationsMap = new WeakMap();
-    mutations
-      .map((mutation: MutationRecord) => {
-        const blot = this.find(mutation.target, true);
-        if (blot == null) {
-          return null;
-        }
-        if (mutationsMap.has(blot.domNode)) {
-          mutationsMap.get(blot.domNode).push(mutation);
-          return null;
-        } else {
-          mutationsMap.set(blot.domNode, [mutation]);
-          return blot;
-        }
-      })
-      .forEach((blot: Blot | null) => {
-        if (blot != null && blot !== this && mutationsMap.has(blot.domNode)) {
-          blot.update(mutationsMap.get(blot.domNode) || [], context);
-        }
-      });
+    const mutationsMap = new WeakMap<Node, MutationRecord[]>();
+
+    mutations.reduce<Node[]>((result, mutation: MutationRecord) => {
+      const blot = this.find(mutation.target, true);
+      if (blot == null) {
+        return result;
+      }
+
+      if (mutationsMap.has(blot.domNode)) {
+        mutationsMap.get(blot.domNode)!.push(mutation);
+        return result;
+      }
+
+      mutationsMap.set(blot.domNode, [mutation]);
+      result.push(mutation.target);
+      return result;
+    }, []).forEach((node: Node) => {
+      const blot = this.find(node, true);
+      if (blot != null && blot !== this && mutationsMap.has(blot.domNode)) {
+        blot.update(mutationsMap.get(blot.domNode) || [], context);
+      }
+    });
     context.mutationsMap = mutationsMap;
     if (mutationsMap.has(this.domNode)) {
-      super.update(mutationsMap.get(this.domNode), context);
+      super.update(mutationsMap.get(this.domNode)!, context);
     }
     this.optimize(mutations, context);
   }
