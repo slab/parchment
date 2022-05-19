@@ -1,24 +1,24 @@
 'use strict';
 
-describe('LinkedList', function() {
-  beforeEach(function() {
+describe('LinkedList', function () {
+  beforeEach(function () {
     this.list = new LinkedList();
     this.a = { str: 'a' };
     this.b = { str: 'b' };
     this.c = { str: 'c' };
     this.zero = {
       str: '!',
-      length: function() {
+      length: function () {
         return 0;
       },
     };
-    this.a.length = this.b.length = this.c.length = function() {
+    this.a.length = this.b.length = this.c.length = function () {
       return 3;
     };
   });
 
-  describe('manipulation', function() {
-    it('append to empty list', function() {
+  describe('manipulation', function () {
+    it('append to empty list', function () {
       this.list.append(this.a);
       expect(this.list.length).toBe(1);
       expect(this.list.head).toBe(this.a);
@@ -27,7 +27,7 @@ describe('LinkedList', function() {
       expect(this.a.next).toBeNull();
     });
 
-    it('insert to become head', function() {
+    it('insert to become head', function () {
       this.list.append(this.b);
       this.list.insertBefore(this.a, this.b);
       expect(this.list.length).toBe(2);
@@ -39,7 +39,7 @@ describe('LinkedList', function() {
       expect(this.b.next).toBeNull();
     });
 
-    it('insert to become tail', function() {
+    it('insert to become tail', function () {
       this.list.append(this.a);
       this.list.insertBefore(this.b, null);
       expect(this.list.length).toBe(2);
@@ -51,7 +51,7 @@ describe('LinkedList', function() {
       expect(this.b.next).toBeNull();
     });
 
-    it('insert in middle', function() {
+    it('insert in middle', function () {
       this.list.append(this.a, this.c);
       this.list.insertBefore(this.b, this.c);
       expect(this.list.length).toBe(3);
@@ -61,7 +61,7 @@ describe('LinkedList', function() {
       expect(this.list.tail).toBe(this.c);
     });
 
-    it('remove head', function() {
+    it('remove head', function () {
       this.list.append(this.a, this.b);
       this.list.remove(this.a);
       expect(this.list.length).toBe(1);
@@ -71,7 +71,7 @@ describe('LinkedList', function() {
       expect(this.list.tail.next).toBeNull();
     });
 
-    it('remove tail', function() {
+    it('remove tail', function () {
       this.list.append(this.a, this.b);
       this.list.remove(this.b);
       expect(this.list.length).toBe(1);
@@ -81,7 +81,7 @@ describe('LinkedList', function() {
       expect(this.list.tail.next).toBeNull();
     });
 
-    it('remove inner', function() {
+    it('remove inner', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.remove(this.b);
       expect(this.list.length).toBe(2);
@@ -96,7 +96,7 @@ describe('LinkedList', function() {
       expect(this.b.next).toBe(this.c);
     });
 
-    it('remove only node', function() {
+    it('remove only node', function () {
       this.list.append(this.a);
       this.list.remove(this.a);
       expect(this.list.length).toBe(0);
@@ -104,14 +104,14 @@ describe('LinkedList', function() {
       expect(this.list.tail).toBeNull();
     });
 
-    it('contains', function() {
+    it('contains', function () {
       this.list.append(this.a, this.b);
       expect(this.list.contains(this.a)).toBe(true);
       expect(this.list.contains(this.b)).toBe(true);
       expect(this.list.contains(this.c)).toBe(false);
     });
 
-    it('move', function() {
+    it('move', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.remove(this.b);
       this.list.remove(this.a);
@@ -122,22 +122,22 @@ describe('LinkedList', function() {
     });
   });
 
-  describe('iteration', function() {
-    beforeEach(function() {
+  describe('iteration', function () {
+    beforeEach(function () {
       this.spy = {
-        callback: function() {
+        callback: function () {
           return arguments;
         },
       };
       spyOn(this.spy, 'callback');
     });
 
-    it('iterate over empty list', function() {
+    it('iterate over empty list', function () {
       this.list.forEach(this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(0);
     });
 
-    it('iterate non-head start', function() {
+    it('iterate non-head start', function () {
       this.list.append(this.a, this.b, this.c);
       let next = this.list.iterator(this.b);
       let b = next();
@@ -148,7 +148,7 @@ describe('LinkedList', function() {
       expect(d).toBeNull();
     });
 
-    it('find', function() {
+    it('find', function () {
       this.list.append(this.a, this.b, this.zero, this.c);
       expect(this.list.find(0)).toEqual([this.a, 0]);
       expect(this.list.find(2)).toEqual([this.a, 2]);
@@ -160,7 +160,7 @@ describe('LinkedList', function() {
       expect(this.list.find(10)).toEqual([null, 0]);
     });
 
-    it('offset', function() {
+    it('offset', function () {
       this.list.append(this.a, this.b, this.c);
       expect(this.list.offset(this.a)).toBe(0);
       expect(this.list.offset(this.b)).toBe(3);
@@ -168,20 +168,20 @@ describe('LinkedList', function() {
       expect(this.list.offset({})).toBe(-1);
     });
 
-    it('forEach', function() {
+    it('forEach', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.forEach(this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(3);
-      let result = this.spy.callback.calls.all().reduce(function(memo, call) {
+      let result = this.spy.callback.calls.all().reduce(function (memo, call) {
         return memo + call.args[0].str;
       }, '');
       expect(result).toBe('abc');
     });
 
-    it('destructive modification', function() {
+    it('destructive modification', function () {
       this.list.append(this.a, this.b, this.c);
       let arr = [];
-      this.list.forEach(node => {
+      this.list.forEach((node) => {
         arr.push(node.str);
         if (node === this.a) {
           this.list.remove(this.a);
@@ -192,30 +192,30 @@ describe('LinkedList', function() {
       expect(arr).toEqual(['a', 'b', 'c', 'a']);
     });
 
-    it('map', function() {
+    it('map', function () {
       this.list.append(this.a, this.b, this.c);
-      let arr = this.list.map(function(node) {
+      let arr = this.list.map(function (node) {
         return node.str;
       });
       expect(arr).toEqual(['a', 'b', 'c']);
     });
 
-    it('reduce', function() {
+    it('reduce', function () {
       this.list.append(this.a, this.b, this.c);
-      let memo = this.list.reduce(function(memo, node) {
+      let memo = this.list.reduce(function (memo, node) {
         return memo + node.str;
       }, '');
       expect(memo).toBe('abc');
     });
 
-    it('forEachAt', function() {
+    it('forEachAt', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.forEachAt(3, 3, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(1);
       expect(this.spy.callback.calls.first().args).toEqual([this.b, 0, 3]);
     });
 
-    it('forEachAt zero length nodes', function() {
+    it('forEachAt zero length nodes', function () {
       this.list.append(this.a, this.zero, this.c);
       this.list.forEachAt(2, 2, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(3);
@@ -225,13 +225,13 @@ describe('LinkedList', function() {
       expect(calls[2].args).toEqual([this.c, 0, 1]);
     });
 
-    it('forEachAt none', function() {
+    it('forEachAt none', function () {
       this.list.append(this.a, this.b);
       this.list.forEachAt(1, 0, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(0);
     });
 
-    it('forEachAt partial nodes', function() {
+    it('forEachAt partial nodes', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.forEachAt(1, 7, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(3);
@@ -241,7 +241,7 @@ describe('LinkedList', function() {
       expect(calls[2].args).toEqual([this.c, 0, 2]);
     });
 
-    it('forEachAt at part of single node', function() {
+    it('forEachAt at part of single node', function () {
       this.list.append(this.a, this.b, this.c);
       this.list.forEachAt(4, 1, this.spy.callback);
       expect(this.spy.callback.calls.count()).toBe(1);

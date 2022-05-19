@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
+    "module": "es6",
+    "target": "es6",
+    "lib": ["es2015", "dom", "dom.iterable"],
+    "outDir": "./dist/esm",
     "declaration": true,
-    "strict": true
+    "declarationDir": "./dist/typings",
+    "strict": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "exclude": ["node_modules", "test"]
 }

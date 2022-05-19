@@ -3,8 +3,8 @@ import ClassAttributor from '../src/attributor/class';
 import StyleAttributor from '../src/attributor/style';
 
 import ShadowBlot from '../src/blot/abstract/shadow';
+import ParentBlot from '../src/blot/abstract/parent';
 import ContainerBlot from '../src/blot/abstract/container';
-import FormatBlot from '../src/blot/abstract/format';
 import LeafBlot from '../src/blot/abstract/leaf';
 
 import ScrollBlot from '../src/blot/scroll';
@@ -14,46 +14,48 @@ import EmbedBlot from '../src/blot/embed';
 import TextBlot from '../src/blot/text';
 
 import LinkedList from '../src/collection/linked-list';
+import Registry from '../src/registry';
+import Scope from '../src/scope';
 
-import * as Registry from '../src/registry';
-import Parchment from '../src/parchment';
+const TestRegistry = new Registry();
 
-// @ts-ignore
+// @ts-expect-error
 window['Attributor'] = Attributor;
-// @ts-ignore
+// @ts-expect-error
 window['ClassAttributor'] = ClassAttributor;
-// @ts-ignore
+// @ts-expect-error
 window['StyleAttributor'] = StyleAttributor;
 
-// @ts-ignore
+// @ts-expect-error
 window['ShadowBlot'] = ShadowBlot;
-// @ts-ignore
-window['ContainerBlot'] = ContainerBlot;
-// @ts-ignore
-window['FormatBlot'] = FormatBlot;
-// @ts-ignore
+// @ts-expect-error
+window['ParentBlot'] = ParentBlot;
+// @ts-expect-error
 window['LeafBlot'] = LeafBlot;
-// @ts-ignore
+// @ts-expect-error
 window['EmbedBlot'] = EmbedBlot;
 
-// @ts-ignore
+// @ts-expect-error
 window['ScrollBlot'] = ScrollBlot;
-// @ts-ignore
+// @ts-expect-error
+window['ContainerBlot'] = ContainerBlot;
+// @ts-expect-error
 window['BlockBlot'] = BlockBlot;
-// @ts-ignore
+// @ts-expect-error
 window['InlineBlot'] = InlineBlot;
-// @ts-ignore
+// @ts-expect-error
 window['TextBlot'] = TextBlot;
 
-// @ts-ignore
+// @ts-expect-error
 window['LinkedList'] = LinkedList;
-
-// @ts-ignore
-window['Parchment'] = Parchment;
-// @ts-ignore
+// @ts-expect-error
+window['Scope'] = Scope;
+// @ts-expect-error
 window['Registry'] = Registry;
+// @ts-expect-error
+window['TestRegistry'] = TestRegistry;
 
-Registry.register(ScrollBlot);
-Registry.register(BlockBlot);
-Registry.register(InlineBlot);
-Registry.register(TextBlot);
+TestRegistry.register(ScrollBlot);
+TestRegistry.register(BlockBlot);
+TestRegistry.register(InlineBlot);
+TestRegistry.register(TextBlot);

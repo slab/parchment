@@ -1,18 +1,21 @@
-var webpackConfig = require('./webpack.conf');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const webpackConfig = require('./webpack.conf');
 
-module.exports = function(config) {
+module.exports = (config) => {
   config.set({
     basePath: '',
     frameworks: ['jasmine'],
     files: [
       'test/parchment.ts',
+      'test/setup.js',
       'test/registry/*.js',
       'test/unit/linked-list.js', // Control test order
       'test/unit/registry.js',
       'test/unit/attributor.js',
       'test/unit/blot.js',
-      'test/unit/container.js',
+      'test/unit/parent.js',
       'test/unit/scroll.js',
+      'test/unit/container.js',
       'test/unit/block.js',
       'test/unit/inline.js',
       'test/unit/embed.js',
@@ -40,26 +43,22 @@ module.exports = function(config) {
     },
     exclude: [],
     reporters: ['progress'],
-    coverageReporter: {
-      dir: '.build/coverage',
-      reporters: [{ type: 'html' }, { type: 'text' }, { type: 'lcov' }],
-    },
     browsers: ['Chrome'],
     customLaunchers: {
       'saucelabs-chrome': {
         base: 'SauceLabs',
         browserName: 'Chrome',
-        platform: 'OS X 10.13',
-        version: '67.0',
+        platform: 'OS X 10.15',
+        version: '75',
       },
     },
     sauceLabs: {
       testName: 'Parchment Unit Tests',
-      build: process.env.TRAVIS_BUILD_ID,
-      tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
-      startConnect: false,
+      build: process.env.GITHUB_RUN_ID
+        ? `${process.env.GITHUB_REPOSITORY} run #${process.env.GITHUB_RUN_ID}`
+        : null,
     },
-    port: 10876,
+    port: process.env.GITHUB_ACTION ? 9876 : 10876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
