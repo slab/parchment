@@ -22,8 +22,8 @@ class Blot {
   static scope: Scope;
 
   domNode: Node;
-  prev: Blot;
-  next: Blot;
+  prev: Blot | null;
+  next: Blot | null;
   parent: Blot;
 
   // Creates corresponding DOM node
@@ -84,7 +84,7 @@ class Blot {
   static allowedChildren: Blot[];
 
   // Default child blot to be inserted if this blot becomes empty.
-  static defaultChild: string;
+  static defaultChild: Registry.BlotConstructor;
 
   children: LinkedList<Blot>;
 
