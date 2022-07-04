@@ -23,7 +23,17 @@ export default class Registry implements RegistryInterface {
       return this.blots.get(node) || null;
     }
     if (bubble) {
-      return this.find(node.parentNode, bubble);
+      let parentNode: Node | null = null;
+      try {
+        parentNode = node.parentNode;
+      } catch (err) {
+        // Probably hit a permission denied error.
+        // A known case is in Firefox, event targets can be anonymous DIVs
+        // inside an input element.
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=208427
+        return null;
+      }
+      return this.find(parentNode, bubble);
     }
     return null;
   }

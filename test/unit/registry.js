@@ -92,6 +92,19 @@ describe('TestRegistry', function () {
       expect(TestRegistry.find(blockNode.firstChild)).toBeFalsy();
       expect(TestRegistry.find(blockNode.firstChild, true)).toBeFalsy();
     });
+
+    it('restricted parent', function () {
+      let blockBlot = TestRegistry.create(this.scroll, 'block');
+      let textNode = document.createTextNode('Test');
+      blockBlot.domNode.appendChild(textNode);
+      Object.defineProperty(textNode, 'parentNode', {
+        get() {
+          throw new Error('Permission denied to access property "parentNode"');
+        },
+      });
+      expect(TestRegistry.find(textNode)).toEqual(null);
+      expect(TestRegistry.find(textNode, true)).toEqual(null);
+    });
   });
 
   describe('query()', function () {
