@@ -1,3 +1,7 @@
+# 2.0.1
+
+- `Registry.find()` handles restricted nodes on Firefox.
+
 # 2.0.0
 
 - Add `ParentBlot`. `ContainerBlot` now inherits `ParentBlot`.
@@ -12,16 +16,16 @@
   Before:
 
   ```ts
-  import Parchment from 'parchment'
-  const blot = Parchment.create(/* ... */)
+  import Parchment from 'parchment';
+  const blot = Parchment.create(/* ... */);
   class MyContainer extends Parchment.Container {}
   ```
 
   After:
 
   ```ts
-  import { Registry, ContainerBlot } from 'parchment'
-  const blot = Registry.create(/* ... */)
+  import { Registry, ContainerBlot } from 'parchment';
+  const blot = Registry.create(/* ... */);
   class MyContainer extends Parchment.ContainerBlot {}
   ```
 
