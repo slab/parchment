@@ -361,7 +361,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     });
     addedNodes
       .filter((node) => {
-        return node.parentNode === this.domNode || node === this.uiNode;
+        return node.parentNode === this.domNode && node !== this.uiNode;
       })
       .sort((a, b) => {
         if (a === b) {
