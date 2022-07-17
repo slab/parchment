@@ -81,6 +81,15 @@ describe('Parent', function () {
     }).not.toThrowError(/\[Parchment\]/);
   });
 
+  it('ignore added uiNode', function () {
+    this.scroll.appendChild(this.blot);
+    this.blot.attachUI(document.createElement('div'));
+    this.scroll.update();
+    expect(this.scroll.domNode.innerHTML).toEqual(
+      '<p><div contenteditable="false"></div>0<em>1<strong>2</strong><img></em>4</p>',
+    );
+  });
+
   it('allowedChildren', function () {
     this.scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
     this.scroll.update();
