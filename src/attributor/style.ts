@@ -10,7 +10,7 @@ function camelize(name: string): string {
 }
 
 class StyleAttributor extends Attributor {
-  public static keys(node: Element): string[] {
+  public static keys(node: HTMLElement): string[] {
     return (node.getAttribute('style') || '').split(';').map((value) => {
       const arr = value.split(':');
       return arr[0].trim();
