@@ -25,7 +25,7 @@ export interface Blot extends LinkedNode {
     defaultChild?: BlotConstructor;
     requiredContainer?: BlotConstructor;
     scope: Scope;
-    tagName: string;
+    tagName: string | string[];
   };
 
   attach(): void;
