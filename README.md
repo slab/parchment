@@ -18,7 +18,7 @@ At the very minimum a Blot must be named with a static `blotName` and associated
 class Blot {
   static blotName: string;
   static className: string;
-  static tagName: string;
+  static tagName: string | string[];
   static scope: Scope;
 
   domNode: Node;
