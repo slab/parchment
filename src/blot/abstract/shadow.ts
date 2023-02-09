@@ -8,7 +8,7 @@ class ShadowBlot implements Blot {
   public static className: string;
   public static requiredContainer: BlotConstructor;
   public static scope: Scope;
-  public static tagName: string;
+  public static tagName: string | string[];
 
   public static create(value: any): Node {
     if (this.tagName == null) {
