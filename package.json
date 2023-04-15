@@ -4,18 +4,24 @@
   "description": "A document model for rich text editors",
   "author": "Jason Chen <jhchen7@gmail.com>",
   "homepage": "http://quilljs.com/docs/parchment",
-  "main": "./dist/parchment.js",
-  "types": "./dist/typings/parchment.d.ts",
+  "main": "./dist/parchment.umd.js",
+  "module": "./dist/parchment.mjs",
+  "types": "./dist/parchment.d.ts",
   "files": [
     "tsconfig.json",
     "dist",
     "src"
   ],
+  "overrides": {
+    "semver-regex": "^3.1.4",
+    "http-cache-semantics": "^4.1.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@microsoft/api-extractor": "^7.34.4",
+    "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
-    "babel-loader": "^8.2.3",
     "del-cli": "^4.0.1",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
@@ -28,10 +34,8 @@
     "karma-sauce-launcher": "^4.3.6",
     "karma-webpack": "^5.0.0",
     "prettier": "^2.5.1",
-    "ts-loader": "^9.2.8",
-    "typescript": "^4.6.2",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "typescript": "^4.9.5",
+    "vite": "^4.2.1"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -65,7 +69,8 @@
     "url": "https://github.com/quilljs/parchment"
   },
   "scripts": {
-    "build": "webpack --config webpack.conf.js",
+    "build": "vite build && npm run build:types",
+    "build:types": "tsc && api-extractor run && rm -rf dist/typings",
     "prebuild": "del-cli dist",
     "lint": "eslint 'src/**/*.ts'",
     "prepare": "npm run build",

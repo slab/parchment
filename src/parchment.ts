@@ -32,3 +32,19 @@ export {
   Registry,
   Scope,
 };
+
+// Add missing type exports found by api-extractor
+// See: https://api-extractor.com/pages/messages/ae-forgotten-export/
+export type { RegistryInterface } from './registry';
+export type { default as ShadowBlot } from './blot/abstract/shadow';
+export type { default as LinkedList } from './collection/linked-list';
+export type { default as LinkedNode } from './collection/linked-node';
+export type { AttributorOptions } from './attributor/attributor';
+export type {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Leaf,
+  Parent,
+  Root,
+} from './blot/abstract/blot';
