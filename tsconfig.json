@@ -3,7 +3,7 @@
     "module": "es6",
     "target": "es6",
     "lib": ["es2015", "dom", "dom.iterable"],
-    "emitDeclarationOnly": true,
+    "outDir": "./dist/esm",
     "declaration": true,
     "declarationDir": "./dist/typings",
     "strict": true,
