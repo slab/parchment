@@ -71,7 +71,7 @@
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && rm -rf dist/typings",
     "prebuild": "del-cli dist",
     "lint": "eslint 'src/**/*.ts'",
-    "prepare": "npm run build",
+    "prepare": "npm run build && npm run build:types",
     "test": "karma start",
     "test:server": "karma start --no-single-run",
     "test:ci": "karma start --browsers saucelabs-chrome --reporters dots,saucelabs"

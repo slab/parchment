@@ -33,8 +33,6 @@ export {
   Scope,
 };
 
-// Add missing type exports found by api-extractor
-// See: https://api-extractor.com/pages/messages/ae-forgotten-export/
 export type { RegistryInterface } from './registry';
 export type { default as ShadowBlot } from './blot/abstract/shadow';
 export type { default as LinkedList } from './collection/linked-list';
