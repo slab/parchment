@@ -16,6 +16,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run test:ci
+        timeout-minutes: 10
         env:
           SAUCE_USERNAME: quill
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCELABS_ACCESS_KEY }}
