@@ -90,10 +90,10 @@ class ParentBlot extends ShadowBlot implements Parent {
     });
   }
 
-  public descendant(
-    criteria: new () => Blot,
+  public descendant<T extends Blot>(
+    criteria: new (...args: any[]) => T,
     index: number,
-  ): [Blot | null, number];
+  ): [T | null, number];
   public descendant(
     criteria: (blot: Blot) => boolean,
     index: number,
@@ -112,15 +112,15 @@ class ParentBlot extends ShadowBlot implements Parent {
     }
   }
 
-  public descendants(
-    criteria: new () => Blot,
-    index: number,
-    length: number,
-  ): Blot[];
+  public descendants<T extends Blot>(
+    criteria: new (...args: any[]) => T,
+    index?: number,
+    length?: number,
+  ): T[];
   public descendants(
     criteria: (blot: Blot) => boolean,
-    index: number,
-    length: number,
+    index?: number,
+    length?: number,
   ): Blot[];
   public descendants(
     criteria: any,
