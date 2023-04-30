@@ -32,3 +32,17 @@ export {
   Registry,
   Scope,
 };
+
+export type { RegistryInterface } from './registry';
+export type { default as ShadowBlot } from './blot/abstract/shadow';
+export type { default as LinkedList } from './collection/linked-list';
+export type { default as LinkedNode } from './collection/linked-node';
+export type { AttributorOptions } from './attributor/attributor';
+export type {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Leaf,
+  Parent,
+  Root,
+} from './blot/abstract/blot';
