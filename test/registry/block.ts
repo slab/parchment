@@ -1,7 +1,5 @@
-'use strict';
+import BlockBlot from '../../src/blot/block';
 
-class HeaderBlot extends BlockBlot {}
+export class HeaderBlot extends BlockBlot {}
 HeaderBlot.blotName = 'header';
 HeaderBlot.tagName = ['h1', 'h2'];
-
-TestRegistry.register(HeaderBlot);

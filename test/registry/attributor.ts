@@ -1,27 +1,28 @@
-'use strict';
+import Attributor from '../../src/attributor/attributor';
+import ClassAttributor from '../../src/attributor/class';
+import StyleAttributor from '../../src/attributor/style';
+import Scope from '../../src/scope';
 
-let Color = new StyleAttributor('color', 'color', {
+export const Color = new StyleAttributor('color', 'color', {
   scope: Scope.INLINE_ATTRIBUTE,
 });
 
-let Size = new StyleAttributor('size', 'font-size', {
+export const Size = new StyleAttributor('size', 'font-size', {
   scope: Scope.INLINE_ATTRIBUTE,
 });
 
-let Family = new StyleAttributor('family', 'font-family', {
+export const Family = new StyleAttributor('family', 'font-family', {
   scope: Scope.INLINE_ATTRIBUTE,
   whitelist: ['Arial', 'Times New Roman'],
 });
 
-let Id = new Attributor('id', 'id');
+export const Id = new Attributor('id', 'id');
 
-let Align = new StyleAttributor('align', 'text-align', {
+export const Align = new StyleAttributor('align', 'text-align', {
   scope: Scope.BLOCK_ATTRIBUTE,
   whitelist: ['right', 'center'], // exclude justify to test valid but missing from whitelist
 });
 
-let Indent = new ClassAttributor('indent', 'indent', {
+export const Indent = new ClassAttributor('indent', 'indent', {
   scope: Scope.BLOCK_ATTRIBUTE,
 });
-
-TestRegistry.register(Color, Size, Family, Id, Align, Indent);

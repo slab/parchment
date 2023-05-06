@@ -1,15 +1,13 @@
-'use strict';
+import ContainerBlot from '../../src/blot/abstract/container';
+import BlockBlot from '../../src/blot/block';
 
-class ListItem extends BlockBlot {}
+export class ListItem extends BlockBlot {}
 ListItem.blotName = 'list';
 ListItem.tagName = 'LI';
 
-class ListContainer extends ContainerBlot {}
+export class ListContainer extends ContainerBlot {}
 ListContainer.blotName = 'list-container';
 ListContainer.tagName = 'OL';
 
 ListContainer.allowedChildren = [ListItem];
 ListItem.requiredContainer = ListContainer;
-
-TestRegistry.register(ListItem);
-TestRegistry.register(ListContainer);
