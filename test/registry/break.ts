@@ -1,7 +1,5 @@
-'use strict';
+import EmbedBlot from '../../src/blot/embed';
 
-class BreakBlot extends EmbedBlot {}
+export class BreakBlot extends EmbedBlot {}
 BreakBlot.blotName = 'break';
 BreakBlot.tagName = 'br';
-
-TestRegistry.register(BreakBlot);

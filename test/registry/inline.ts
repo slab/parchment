@@ -1,19 +1,17 @@
-'use strict';
+import InlineBlot from '../../src/blot/inline';
 
-class AuthorBlot extends InlineBlot {}
+export class AuthorBlot extends InlineBlot {}
 AuthorBlot.blotName = 'author';
 AuthorBlot.className = 'author-blot';
 
-class BoldBlot extends InlineBlot {}
+export class BoldBlot extends InlineBlot {}
 BoldBlot.blotName = 'bold';
 BoldBlot.tagName = 'STRONG';
 
-class ItalicBlot extends InlineBlot {}
+export class ItalicBlot extends InlineBlot {}
 ItalicBlot.blotName = 'italic';
 ItalicBlot.tagName = 'em';
 
-class ScriptBlot extends InlineBlot {}
+export class ScriptBlot extends InlineBlot {}
 ScriptBlot.blotName = 'script';
 ScriptBlot.tagName = ['sup', 'sub'];
-
-TestRegistry.register(AuthorBlot, BoldBlot, ItalicBlot, ScriptBlot);

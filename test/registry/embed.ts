@@ -1,6 +1,7 @@
-'use strict';
+import EmbedBlot from '../../src/blot/embed';
+import Scope from '../../src/scope';
 
-class ImageBlot extends EmbedBlot {
+export class ImageBlot extends EmbedBlot {
   static create(value) {
     let node = super.create(value);
     if (typeof value === 'string') {
@@ -31,7 +32,7 @@ class ImageBlot extends EmbedBlot {
 ImageBlot.blotName = 'image';
 ImageBlot.tagName = 'IMG';
 
-class VideoBlot extends EmbedBlot {
+export class VideoBlot extends EmbedBlot {
   static create(value) {
     let node = super.create(value);
     if (typeof value === 'string') {
@@ -68,6 +69,3 @@ class VideoBlot extends EmbedBlot {
 VideoBlot.blotName = 'video';
 VideoBlot.scope = Scope.BLOCK_BLOT;
 VideoBlot.tagName = 'VIDEO';
-
-TestRegistry.register(ImageBlot);
-TestRegistry.register(VideoBlot);

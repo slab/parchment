@@ -1,25 +1,28 @@
-'use strict';
+import Registry from '../../src/registry';
+import { setupContextBeforeEach } from '../setup';
 
 describe('Blot', function () {
+  const ctx = setupContextBeforeEach();
+
   it('offset()', function () {
     let blockNode = document.createElement('p');
     blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
-    let blockBlot = this.scroll.create(blockNode);
+    let blockBlot = ctx.scroll.create(blockNode);
     let boldBlot = blockBlot.children.tail.children.tail;
     expect(boldBlot.offset()).toEqual(2);
     expect(boldBlot.offset(blockBlot)).toEqual(4);
   });
 
   it('detach()', function () {
-    let blot = this.scroll.create('block');
+    let blot = ctx.scroll.create('block');
     expect(Registry.blots.get(blot.domNode)).toEqual(blot);
     blot.detach();
     expect(Registry.blots.get(blot.domNode)).toEqual(undefined);
   });
 
   it('remove()', function () {
-    let blot = this.scroll.create('block');
-    let text = this.scroll.create('text', 'Test');
+    let blot = ctx.scroll.create('block');
+    let text = ctx.scroll.create('text', 'Test');
     blot.appendChild(text);
     expect(blot.children.head).toBe(text);
     expect(blot.domNode.innerHTML).toBe('Test');
@@ -29,10 +32,10 @@ describe('Blot', function () {
   });
 
   it('wrap()', function () {
-    let parent = this.scroll.create('block');
-    let head = this.scroll.create('bold');
-    let text = this.scroll.create('text', 'Test');
-    let tail = this.scroll.create('bold');
+    let parent = ctx.scroll.create('block');
+    let head = ctx.scroll.create('bold');
+    let text = ctx.scroll.create('text', 'Test');
+    let tail = ctx.scroll.create('bold');
     parent.appendChild(head);
     parent.appendChild(text);
     parent.appendChild(tail);
@@ -49,9 +52,9 @@ describe('Blot', function () {
   });
 
   it('wrap() with blot', function () {
-    let parent = this.scroll.create('block');
-    let text = this.scroll.create('text', 'Test');
-    let italic = this.scroll.create('italic');
+    let parent = ctx.scroll.create('block');
+    let text = ctx.scroll.create('text', 'Test');
+    let italic = ctx.scroll.create('italic');
     parent.appendChild(text);
     text.wrap(italic);
     expect(parent.domNode.innerHTML).toEqual('<em>Test</em>');

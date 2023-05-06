@@ -9,7 +9,7 @@ import InlineBlot from './inline';
 class BlockBlot extends ParentBlot implements Formattable {
   public static blotName = 'block';
   public static scope = Scope.BLOCK_BLOT;
-  public static tagName = 'P';
+  public static tagName: string | string[] = 'P';
   public static allowedChildren: BlotConstructor[] = [
     InlineBlot,
     BlockBlot,

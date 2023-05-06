@@ -6,7 +6,7 @@ import Scope from '../../scope';
 export interface BlotConstructor {
   blotName: string;
   className?: string;
-  tagName: string;
+  tagName: string | string[];
   new (scroll: Root, node: Node, value?: any): Blot;
   create(value?: any): Node;
 }

@@ -1,8 +1,10 @@
-'use strict';
+import { setupContextBeforeEach } from '../setup';
 
 describe('Attributor', function () {
+  const ctx = setupContextBeforeEach();
+
   it('build', function () {
-    let blot = this.scroll.create('inline');
+    let blot = ctx.scroll.create('inline');
     blot.domNode.style.color = 'red';
     blot.domNode.style.fontSize = '24px';
     blot.domNode.id = 'blot-test';
@@ -14,8 +16,8 @@ describe('Attributor', function () {
   });
 
   it('add to inline', function () {
-    let container = this.scroll.create('block');
-    let boldBlot = this.scroll.create('bold');
+    let container = ctx.scroll.create('block');
+    let boldBlot = ctx.scroll.create('bold');
     container.appendChild(boldBlot);
     boldBlot.format('id', 'test-add');
     expect(boldBlot.domNode.id).toEqual('test-add');
@@ -24,7 +26,7 @@ describe('Attributor', function () {
   it('add multiple', function () {
     let node = document.createElement('p');
     node.innerHTML = '<em><strong>0</strong></em>';
-    let container = this.scroll.create(node);
+    let container = ctx.scroll.create(node);
     container.formatAt(0, 1, 'color', 'red');
     container.formatAt(0, 1, 'size', '18px');
     expect(node.innerHTML).toEqual(
@@ -33,15 +35,15 @@ describe('Attributor', function () {
   });
 
   it('add to text', function () {
-    let container = this.scroll.create('block');
-    let textBlot = this.scroll.create('text', 'Test');
+    let container = ctx.scroll.create('block');
+    let textBlot = ctx.scroll.create('text', 'Test');
     container.appendChild(textBlot);
     textBlot.formatAt(0, 4, 'color', 'red');
     expect(textBlot.domNode.parentNode.style.color).toEqual('red');
   });
 
   it('add existing style', function () {
-    let boldBlot = this.scroll.create('bold');
+    let boldBlot = ctx.scroll.create('bold');
     boldBlot.format('color', 'red');
     expect(boldBlot.domNode.style.color).toEqual('red');
     let original = boldBlot.domNode.outerHTML;
@@ -52,7 +54,7 @@ describe('Attributor', function () {
   });
 
   it('replace existing class', function () {
-    let blockBlot = this.scroll.create('block');
+    let blockBlot = ctx.scroll.create('block');
     blockBlot.format('indent', 2);
     expect(blockBlot.domNode.classList.contains('indent-2')).toBe(true);
     blockBlot.format('indent', 3);
@@ -61,23 +63,23 @@ describe('Attributor', function () {
   });
 
   it('add whitelist style', function () {
-    let blockBlot = this.scroll.create('block');
+    let blockBlot = ctx.scroll.create('block');
     blockBlot.format('align', 'right');
     expect(blockBlot.domNode.style.textAlign).toBe('right');
   });
 
   it('add non-whitelisted style', function () {
-    let blockBlot = this.scroll.create('block');
+    let blockBlot = ctx.scroll.create('block');
     blockBlot.format('align', 'justify');
     expect(blockBlot.domNode.style.textAlign).toBeFalsy();
   });
 
   it('unwrap', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.style.color = 'red';
     node.innerHTML = '<em>01</em>23';
-    let blot = this.scroll.create(node);
+    let blot = ctx.scroll.create(node);
     container.appendChild(blot);
     container.formatAt(0, 4, 'bold', false);
     expect(container.domNode.innerHTML).toEqual(
@@ -86,14 +88,14 @@ describe('Attributor', function () {
   });
 
   it('remove', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.innerHTML = 'Bold';
     node.style.color = 'red';
     node.style.fontSize = '24px';
     container.domNode.classList.add('indent-5');
     container.domNode.id = 'test-remove';
-    let boldBlot = this.scroll.create(node);
+    let boldBlot = ctx.scroll.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'color', false);
     expect(container.children.length).toEqual(3);
@@ -109,17 +111,17 @@ describe('Attributor', function () {
   });
 
   it('remove nonexistent', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.innerHTML = 'Bold';
-    let boldBlot = this.scroll.create(node);
+    let boldBlot = ctx.scroll.create(node);
     container.appendChild(boldBlot);
     boldBlot.format('color', false);
     expect(container.domNode.innerHTML).toEqual('<strong>Bold</strong>');
   });
 
   it('keep class attribute after removal', function () {
-    let boldBlot = this.scroll.create('bold');
+    let boldBlot = ctx.scroll.create('bold');
     boldBlot.domNode.classList.add('blot');
     boldBlot.format('indent', 2);
     boldBlot.format('indent', false);
@@ -127,11 +129,11 @@ describe('Attributor', function () {
   });
 
   it('move attribute', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.innerHTML = 'Bold';
     node.style.color = 'red';
-    let boldBlot = this.scroll.create(node);
+    let boldBlot = ctx.scroll.create(node);
     container.appendChild(boldBlot);
     container.formatAt(1, 2, 'bold', false);
     expect(container.children.length).toEqual(3);
@@ -140,10 +142,10 @@ describe('Attributor', function () {
   });
 
   it('wrap with inline', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.style.color = 'red';
-    let boldBlot = this.scroll.create(node);
+    let boldBlot = ctx.scroll.create(node);
     container.appendChild(boldBlot);
     boldBlot.wrap('italic');
     expect(node.style.color).toBeFalsy();
@@ -151,10 +153,10 @@ describe('Attributor', function () {
   });
 
   it('wrap with block', function () {
-    let container = this.scroll.create('block');
+    let container = ctx.scroll.create('block');
     let node = document.createElement('strong');
     node.style.color = 'red';
-    let boldBlot = this.scroll.create(node);
+    let boldBlot = ctx.scroll.create(node);
     container.appendChild(boldBlot);
     boldBlot.wrap('block');
     expect(node.style.color).toBe('red');
@@ -162,8 +164,8 @@ describe('Attributor', function () {
   });
 
   it('add to block', function () {
-    let container = this.scroll.create('block');
-    let block = this.scroll.create('header', 'h1');
+    let container = ctx.scroll.create('block');
+    let block = ctx.scroll.create('header', 'h1');
     container.appendChild(block);
     block.format('align', 'right');
     expect(container.domNode.innerHTML).toBe(
@@ -176,14 +178,14 @@ describe('Attributor', function () {
   });
 
   it('missing class value', function () {
-    let block = this.scroll.create('block');
-    let indentAttributor = this.scroll.query('indent');
+    let block = ctx.scroll.create('block');
+    let indentAttributor = ctx.scroll.query('indent');
     expect(indentAttributor.value(block.domNode)).toBeFalsy();
   });
 
   it('removes quotes from attribute value when checking if canAdd', function () {
-    let bold = this.scroll.create('bold');
-    let familyAttributor = this.scroll.query('family');
+    let bold = ctx.scroll.create('bold');
+    let familyAttributor = ctx.scroll.query('family');
     expect(familyAttributor.canAdd(bold.domNode, 'Arial')).toBeTruthy();
     expect(
       familyAttributor.canAdd(bold.domNode, '"Times New Roman"'),

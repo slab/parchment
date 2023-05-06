@@ -1,15 +1,17 @@
-'use strict';
+import { setupContextBeforeEach } from '../setup';
 
-describe('Scroll', function () {
+describe('scroll', function () {
+  const ctx = setupContextBeforeEach();
+
   beforeEach(function () {
-    this.container.innerHTML =
+    ctx.container.innerHTML =
       '<p><strong>012</strong><span>34</span><em><strong>5678</strong></em></p>';
-    this.scroll.update();
+    ctx.scroll.update();
   });
 
   describe('path()', function () {
     it('middle', function () {
-      let path = this.scroll.path(7);
+      let path = ctx.scroll.path(7);
       let expected = [
         ['scroll', 7],
         ['block', 7],
@@ -25,7 +27,7 @@ describe('Scroll', function () {
     });
 
     it('between blots', function () {
-      let path = this.scroll.path(5);
+      let path = ctx.scroll.path(5);
       let expected = [
         ['scroll', 5],
         ['block', 5],
@@ -41,7 +43,7 @@ describe('Scroll', function () {
     });
 
     it('inclusive', function () {
-      let path = this.scroll.path(3, true);
+      let path = ctx.scroll.path(3, true);
       let expected = [
         ['scroll', 3],
         ['block', 3],
@@ -56,7 +58,7 @@ describe('Scroll', function () {
     });
 
     it('last', function () {
-      let path = this.scroll.path(9);
+      let path = ctx.scroll.path(9);
       let expected = [['scroll', 9]];
       expect(path.length).toEqual(expected.length);
       path.forEach(function (position, i) {
@@ -68,20 +70,20 @@ describe('Scroll', function () {
 
   it('delete all', function () {
     let wrapper = document.createElement('div');
-    wrapper.appendChild(this.scroll.domNode);
-    this.scroll.deleteAt(0, 9);
-    expect(wrapper.firstChild).toEqual(this.scroll.domNode);
+    wrapper.appendChild(ctx.scroll.domNode);
+    ctx.scroll.deleteAt(0, 9);
+    expect(wrapper.firstChild).toEqual(ctx.scroll.domNode);
   });
 
   it('detach', function (done) {
-    spyOn(this.scroll, 'optimize').and.callThrough();
-    this.scroll.domNode.innerHTML = 'Test';
+    spyOn(ctx.scroll, 'optimize').and.callThrough();
+    ctx.scroll.domNode.innerHTML = 'Test';
     setTimeout(() => {
-      expect(this.scroll.optimize).toHaveBeenCalledTimes(1);
-      this.scroll.detach();
-      this.scroll.domNode.innerHTML = '!';
+      expect(ctx.scroll.optimize).toHaveBeenCalledTimes(1);
+      ctx.scroll.detach();
+      ctx.scroll.domNode.innerHTML = '!';
       setTimeout(() => {
-        expect(this.scroll.optimize).toHaveBeenCalledTimes(1);
+        expect(ctx.scroll.optimize).toHaveBeenCalledTimes(1);
         done();
       }, 1);
     }, 1);
@@ -89,23 +91,23 @@ describe('Scroll', function () {
 
   describe('scroll reference', function () {
     it('initialization', function () {
-      expect(this.scroll.scroll).toEqual(this.scroll);
-      this.scroll.descendants((blot) => {
-        expect(blot.scroll).toEqual(this.scroll);
+      expect(ctx.scroll).toEqual(ctx.scroll);
+      ctx.scroll.descendants((blot) => {
+        expect(blot.scroll).toEqual(ctx.scroll);
       });
     });
 
     it('api change', function () {
-      const blot = this.scroll.create('text', 'Test');
-      this.scroll.appendChild(blot);
-      expect(blot.scroll).toEqual(this.scroll);
+      const blot = ctx.scroll.create('text', 'Test');
+      ctx.scroll.appendChild(blot);
+      expect(blot.scroll).toEqual(ctx.scroll);
     });
 
     it('user change', function () {
-      this.scroll.domNode.innerHTML = '<p><em>01</em>23</p>';
-      this.scroll.update();
-      this.scroll.descendants((blot) => {
-        expect(blot.scroll).toEqual(this.scroll);
+      ctx.scroll.domNode.innerHTML = '<p><em>01</em>23</p>';
+      ctx.scroll.update();
+      ctx.scroll.descendants((blot) => {
+        expect(blot.scroll).toEqual(ctx.scroll);
       });
     });
   });
