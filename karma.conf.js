@@ -4,7 +4,6 @@ module.exports = (config) => {
     frameworks: ['jasmine', 'vite'],
     files: [
       {
-        // test ordering doesn't matter
         pattern: 'test/unit/*.ts',
         type: 'module',
         watched: false,
