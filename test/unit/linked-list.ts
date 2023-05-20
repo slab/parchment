@@ -1,4 +1,4 @@
-'use strict';
+import LinkedList from '../../src/collection/linked-list';
 
 describe('LinkedList', function () {
   beforeEach(function () {
@@ -12,9 +12,7 @@ describe('LinkedList', function () {
         return 0;
       },
     };
-    this.a.length = this.b.length = this.c.length = function () {
-      return 3;
-    };
+    this.a.length = this.b.length = this.c.length = () => 3;
   });
 
   describe('manipulation', function () {

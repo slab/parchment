@@ -29,7 +29,7 @@ class InlineBlot extends ParentBlot implements Formattable {
   public static allowedChildren: BlotConstructor[] = [InlineBlot, LeafBlot];
   public static blotName = 'inline';
   public static scope = Scope.INLINE_BLOT;
-  public static tagName = 'SPAN';
+  public static tagName: string | string[] = 'SPAN';
 
   public static formats(domNode: HTMLElement, scroll: Root): any {
     const match = scroll.query(InlineBlot.blotName);

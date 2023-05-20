@@ -1,10 +1,22 @@
-'use strict';
+import LeafBlot from '../../src/blot/abstract/leaf';
+import ParentBlot from '../../src/blot/abstract/parent';
+import ShadowBlot from '../../src/blot/abstract/shadow';
+import EmbedBlot from '../../src/blot/embed';
+
+import { VideoBlot } from '../registry/embed';
+import { ItalicBlot } from '../registry/inline';
+
+import Registry from '../../src/registry';
+import TextBlot from '../../src/blot/text';
+import { setupContextBeforeEach } from '../setup';
 
 describe('Parent', function () {
+  const ctx = setupContextBeforeEach();
+
   beforeEach(function () {
     let node = document.createElement('p');
     node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
-    this.blot = TestRegistry.create(this.scroll, node);
+    this.blot = ctx.registry.create(ctx.scroll, node);
   });
 
   describe('descendants()', function () {
@@ -77,22 +89,22 @@ describe('Parent', function () {
     let node = document.createElement('p');
     node.appendChild(document.createElement('input'));
     expect(() => {
-      this.scroll.create(node);
+      ctx.scroll.create(node);
     }).not.toThrowError(/\[Parchment\]/);
   });
 
   it('ignore added uiNode', function () {
-    this.scroll.appendChild(this.blot);
+    ctx.scroll.appendChild(this.blot);
     this.blot.attachUI(document.createElement('div'));
-    this.scroll.update();
-    expect(this.scroll.domNode.innerHTML).toEqual(
+    ctx.scroll.update();
+    expect(ctx.scroll.domNode.innerHTML).toEqual(
       '<p><div contenteditable="false"></div>0<em>1<strong>2</strong><img></em>4</p>',
     );
   });
 
   it('allowedChildren', function () {
-    this.scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
-    this.scroll.update();
-    expect(this.scroll.domNode.innerHTML).toEqual('<p>A</p><p>D</p>');
+    ctx.scroll.domNode.innerHTML = '<p>A</p>B<span>C</span><p>D</p>';
+    ctx.scroll.update();
+    expect(ctx.scroll.domNode.innerHTML).toEqual('<p>A</p><p>D</p>');
   });
 });
