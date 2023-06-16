@@ -1,3 +1,10 @@
+# 3.0.0-alpha.0
+
+- BREAKING: Types are now directly exposed from `parchment`.
+- Added ESM bundle.
+- Fixed typing for `Parent#descendants`.
+- Updated `Blot.tagName` to allow `string[]`.
+
 # 2.0.1
 
 - `Registry.find()` handles restricted nodes on Firefox.
