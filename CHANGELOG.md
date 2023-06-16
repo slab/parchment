@@ -1,3 +1,7 @@
+# 3.0.0-alpha.1
+
+- Fix ESM bundle not exposed in package.json.
+
 # 3.0.0-alpha.0
 
 - BREAKING: Types are now directly exposed from `parchment`.
