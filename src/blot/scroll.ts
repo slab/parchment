@@ -1,7 +1,6 @@
-import Attributor from '../attributor/attributor';
-import Registry from '../registry';
+import Registry, { type RegistryDefinition } from '../registry';
 import Scope from '../scope';
-import { Blot, BlotConstructor, Root } from './abstract/blot';
+import type { Blot, BlotConstructor, Root } from './abstract/blot';
 import ContainerBlot from './abstract/container';
 import ParentBlot from './abstract/parent';
 import BlockBlot from './block';
@@ -23,13 +22,10 @@ class ScrollBlot extends ParentBlot implements Root {
   public static scope = Scope.BLOCK_BLOT;
   public static tagName = 'DIV';
 
-  public registry: Registry;
   public observer: MutationObserver;
 
-  constructor(registry: Registry, node: HTMLDivElement) {
-    // @ts-expect-error
-    super(null, node);
-    this.registry = registry;
+  constructor(public registry: Registry, node: HTMLDivElement) {
+    super(null as any /* scroll is the root with no parent */, node);
     this.scroll = this;
     this.build();
     this.observer = new MutationObserver((mutations: MutationRecord[]) => {
@@ -57,11 +53,11 @@ class ScrollBlot extends ParentBlot implements Root {
   public query(
     query: string | Node | Scope,
     scope: Scope = Scope.ANY,
-  ): Attributor | BlotConstructor | null {
+  ): RegistryDefinition | null {
     return this.registry.query(query, scope);
   }
 
-  public register(...definitions: any[]): any {
+  public register(...definitions: RegistryDefinition[]) {
     return this.registry.register(...definitions);
   }
 
@@ -103,7 +99,7 @@ class ScrollBlot extends ParentBlot implements Root {
     super.insertAt(index, value, def);
   }
 
-  public optimize(context: { [key: string]: any }): void;
+  public optimize(context?: { [key: string]: any }): void;
   public optimize(
     mutations: MutationRecord[],
     context: { [key: string]: any },

@@ -9,7 +9,8 @@
     "strict": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["src"],
+  "include": ["src", "test"],  // Also type-check tests
 }

@@ -2,26 +2,29 @@ import EmbedBlot from '../../src/blot/embed';
 import Scope from '../../src/scope';
 
 export class ImageBlot extends EmbedBlot {
-  static create(value) {
-    let node = super.create(value);
+  declare domNode: HTMLImageElement;
+  static readonly blotName = 'image';
+  static tagName = 'IMG';
+  static create(value: string) {
+    let node = super.create(value) as HTMLElement;
     if (typeof value === 'string') {
       node.setAttribute('src', value);
     }
     return node;
   }
 
-  static value(domNode) {
+  static value(domNode: HTMLImageElement) {
     return domNode.getAttribute('src');
   }
 
-  static formats(domNode) {
+  static formats(domNode: HTMLImageElement) {
     if (domNode.hasAttribute('alt')) {
       return { alt: domNode.getAttribute('alt') };
     }
     return undefined;
   }
 
-  format(name, value) {
+  format(name: string, value: string) {
     if (name === 'alt') {
       this.domNode.setAttribute(name, value);
     } else {
@@ -29,36 +32,38 @@ export class ImageBlot extends EmbedBlot {
     }
   }
 }
-ImageBlot.blotName = 'image';
-ImageBlot.tagName = 'IMG';
 
 export class VideoBlot extends EmbedBlot {
-  static create(value) {
-    let node = super.create(value);
+  declare domNode: HTMLVideoElement;
+  static scope = Scope.BLOCK_BLOT;
+  static readonly blotName = 'video';
+  static tagName = 'VIDEO';
+  static create(value: string) {
+    let node = super.create(value) as HTMLVideoElement;
     if (typeof value === 'string') {
       node.setAttribute('src', value);
     }
     return node;
   }
 
-  static formats(domNode) {
-    let formats = {};
-    if (domNode.hasAttribute('height'))
-      formats['height'] = domNode.getAttribute('height');
-    if (domNode.hasAttribute('width'))
-      formats['width'] = domNode.getAttribute('width');
+  static formats(domNode: HTMLVideoElement) {
+    let formats: Partial<{ height: string; width: string }> = {};
+    const height = domNode.getAttribute('height');
+    const width = domNode.getAttribute('width');
+    height && (formats.height = height);
+    width && (formats.width = width);
     return formats;
   }
 
-  static value(domNode) {
+  static value(domNode: HTMLVideoElement) {
     return domNode.getAttribute('src');
   }
 
-  format(name, value) {
+  format(name: string, value: unknown) {
     if (name === 'height' || name === 'width') {
-      if (value) {
+      if (typeof value === 'string') {
         this.domNode.setAttribute(name, value);
-      } else {
+      } else if (value === false || value === null) {
         this.domNode.removeAttribute(name);
       }
     } else {
@@ -66,6 +71,3 @@ export class VideoBlot extends EmbedBlot {
     }
   }
 }
-VideoBlot.blotName = 'video';
-VideoBlot.scope = Scope.BLOCK_BLOT;
-VideoBlot.tagName = 'VIDEO';

@@ -1,5 +1,9 @@
 import BlockBlot from '../../src/blot/block';
 
-export class HeaderBlot extends BlockBlot {}
-HeaderBlot.blotName = 'header';
-HeaderBlot.tagName = ['h1', 'h2'];
+export class HeaderBlot extends BlockBlot {
+  static readonly blotName = 'header';
+  static tagName = ['h1', 'h2'];
+  static create(value?: number | string) {
+    return super.create(value) as HTMLHeadingElement;
+  }
+}

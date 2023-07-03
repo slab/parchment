@@ -1,4 +1,4 @@
-import { Formattable } from '../blot/abstract/blot';
+import type { Formattable } from '../blot/abstract/blot';
 import Registry from '../registry';
 import Scope from '../scope';
 import Attributor from './attributor';

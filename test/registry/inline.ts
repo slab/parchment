@@ -1,17 +1,21 @@
 import InlineBlot from '../../src/blot/inline';
 
-export class AuthorBlot extends InlineBlot {}
-AuthorBlot.blotName = 'author';
-AuthorBlot.className = 'author-blot';
+export class AuthorBlot extends InlineBlot {
+  static readonly blotName = 'author';
+  static className = 'author-blot';
+}
 
-export class BoldBlot extends InlineBlot {}
-BoldBlot.blotName = 'bold';
-BoldBlot.tagName = 'STRONG';
+export class BoldBlot extends InlineBlot {
+  static readonly blotName = 'bold';
+  static tagName = 'strong';
+}
 
-export class ItalicBlot extends InlineBlot {}
-ItalicBlot.blotName = 'italic';
-ItalicBlot.tagName = 'em';
+export class ItalicBlot extends InlineBlot {
+  static readonly blotName = 'italic';
+  static tagName = 'em';
+}
 
-export class ScriptBlot extends InlineBlot {}
-ScriptBlot.blotName = 'script';
-ScriptBlot.tagName = ['sup', 'sub'];
+export class ScriptBlot extends InlineBlot {
+  static readonly blotName = 'script';
+  static tagName = ['sup', 'sub'];
+}

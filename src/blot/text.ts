@@ -1,9 +1,9 @@
 import Scope from '../scope';
-import { Blot, Leaf, Root } from './abstract/blot';
+import type { Blot, Leaf, Root } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 
 class TextBlot extends LeafBlot implements Leaf {
-  public static blotName = 'text';
+  public static readonly blotName = 'text';
   public static scope = Scope.INLINE_BLOT;
 
   public static create(value: string): Text {

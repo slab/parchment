@@ -1,7 +1,7 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
 import Scope from '../scope';
-import {
+import type {
   Blot,
   BlotConstructor,
   Formattable,
@@ -12,12 +12,14 @@ import LeafBlot from './abstract/leaf';
 import ParentBlot from './abstract/parent';
 
 // Shallow object comparison
-function isEqual(obj1: object, obj2: object): boolean {
+function isEqual(
+  obj1: Record<string, unknown>,
+  obj2: Record<string, unknown>,
+): boolean {
   if (Object.keys(obj1).length !== Object.keys(obj2).length) {
     return false;
   }
   for (const prop in obj1) {
-    // @ts-expect-error
     if (obj1[prop] !== obj2[prop]) {
       return false;
     }
@@ -30,6 +32,10 @@ class InlineBlot extends ParentBlot implements Formattable {
   public static blotName = 'inline';
   public static scope = Scope.INLINE_BLOT;
   public static tagName: string | string[] = 'SPAN';
+
+  static create(value?: unknown) {
+    return super.create(value) as HTMLElement;
+  }
 
   public static formats(domNode: HTMLElement, scroll: Root): any {
     const match = scroll.query(InlineBlot.blotName);

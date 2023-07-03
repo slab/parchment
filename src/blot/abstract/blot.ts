@@ -1,6 +1,6 @@
-import Attributor from '../../attributor/attributor';
-import LinkedList from '../../collection/linked-list';
-import LinkedNode from '../../collection/linked-node';
+import type LinkedList from '../../collection/linked-list';
+import type LinkedNode from '../../collection/linked-node';
+import type { RegistryDefinition } from '../../registry';
 import Scope from '../../scope';
 
 export interface BlotConstructor {
@@ -38,7 +38,7 @@ export interface Blot extends LinkedNode {
   replaceWith(name: string, value: any): Blot;
   replaceWith(replacement: Blot): Blot;
   split(index: number, force?: boolean): Blot | null;
-  wrap(name: string, value: any): Parent;
+  wrap(name: string, value?: any): Parent;
   wrap(wrapper: Parent): Parent;
 
   deleteAt(index: number, length: number): void;
@@ -72,10 +72,7 @@ export interface Parent extends Blot {
 export interface Root extends Parent {
   create(input: Node | string | Scope, value?: any): Blot;
   find(node: Node | null, bubble?: boolean): Blot | null;
-  query(
-    query: string | Node | Scope,
-    scope?: Scope,
-  ): Attributor | BlotConstructor | null;
+  query(query: string | Node | Scope, scope?: Scope): RegistryDefinition | null;
 }
 
 export interface Formattable extends Blot {
@@ -88,3 +85,6 @@ export interface Leaf extends Blot {
   position(index: number, inclusive: boolean): [Node, number];
   value(): any;
 }
+
+export const isBlotConstructor = (def: unknown): def is BlotConstructor =>
+  typeof def === 'function' && 'blotName' in def;
