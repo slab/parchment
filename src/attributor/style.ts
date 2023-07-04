@@ -10,7 +10,8 @@ function camelize(name: string): string {
 }
 
 class StyleAttributor extends Attributor {
-  private styleKey = assertValidStyleKey(camelize(this.keyName));
+  private styleKey = camelize(this.keyName);
+
   public static keys(node: HTMLElement): string[] {
     return (node.getAttribute('style') || '').split(';').map((value) => {
       const arr = value.split(':');
@@ -22,41 +23,21 @@ class StyleAttributor extends Attributor {
     if (!this.canAdd(node, value)) {
       return false;
     }
-    node.style[this.styleKey] = value;
+    node.style.setProperty(this.styleKey, value);
     return true;
   }
 
   public remove(node: HTMLElement): void {
-    node.style[this.styleKey] = '';
+    node.style.setProperty(this.styleKey, '');
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
     }
   }
 
   public value(node: HTMLElement): string {
-    const value = node.style[this.styleKey];
+    const value = node.style.getPropertyValue(this.styleKey);
     return this.canAdd(node, value) ? value : '';
   }
 }
-
-function assertValidStyleKey(k: string): ValidStyleKeys {
-  if (!(k in document.documentElement.style)) {
-    throw new Error(`Invalid keyName ${k} for css style`);
-  }
-  return k as ValidStyleKeys;
-}
-
-// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types
-type DistributiveCheck<Keys> = Keys extends keyof CSSStyleDeclaration
-  ? // Distribute union type parameter with `A extends B ? ... : never` conditional
-    CSSStyleDeclaration[Keys] extends string
-    ? Keys
-    : never
-  : never;
-
-type ValidStyleKeys = Exclude<
-  DistributiveCheck<keyof CSSStyleDeclaration>,
-  number
->;
 
 export default StyleAttributor;

@@ -1,6 +1,5 @@
-import Attributor, { isAttributor } from './attributor/attributor';
+import Attributor from './attributor/attributor';
 import {
-  isBlotConstructor,
   type Blot,
   type BlotConstructor,
   type Root,
@@ -71,7 +70,8 @@ export default class Registry implements RegistryInterface {
     let match;
     if (typeof query === 'string') {
       match = this.types[query] || this.attributes[query];
-    } else if (query instanceof Text) {
+      // @ts-expect-error
+    } else if (query instanceof Text || query.nodeType === Node.TEXT_NODE) {
       match = this.types.text;
     } else if (typeof query === 'number') {
       if (query & Scope.LEVEL & Scope.BLOCK) {
@@ -105,8 +105,8 @@ export default class Registry implements RegistryInterface {
 
   public register(...definitions: RegistryDefinition[]): RegistryDefinition[] {
     return definitions.map((definition) => {
-      const isBlot = isBlotConstructor(definition);
-      const isAttr = isAttributor(definition);
+      const isBlot = 'blotName' in definition;
+      const isAttr = 'attrName' in definition;
       if (!isBlot && !isAttr) {
         throw new ParchmentError('Invalid definition');
       } else if (isBlot && definition.blotName === 'abstract') {

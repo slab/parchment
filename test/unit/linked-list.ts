@@ -13,7 +13,7 @@ const setupContextBeforeEach = () => {
       a: { str: 'a', length } as StrNode,
       b: { str: 'b', length } as StrNode,
       c: { str: 'c', length } as StrNode,
-      zero: { str: '!', length: () => 0 },
+      zero: { str: '!', length: () => 0 } as StrNode,
     };
   };
   let ctx = getContext();

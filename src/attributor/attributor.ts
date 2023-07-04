@@ -60,6 +60,3 @@ export default class Attributor {
     return '';
   }
 }
-
-export const isAttributor = (def: unknown): def is Attributor =>
-  !!(def && typeof def === 'object' && 'attrName' in def);

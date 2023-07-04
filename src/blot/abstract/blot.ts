@@ -85,6 +85,3 @@ export interface Leaf extends Blot {
   position(index: number, inclusive: boolean): [Node, number];
   value(): any;
 }
-
-export const isBlotConstructor = (def: unknown): def is BlotConstructor =>
-  typeof def === 'function' && 'blotName' in def;

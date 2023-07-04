@@ -25,7 +25,8 @@ class ScrollBlot extends ParentBlot implements Root {
   public observer: MutationObserver;
 
   constructor(public registry: Registry, node: HTMLDivElement) {
-    super(null as any /* scroll is the root with no parent */, node);
+    // @ts-expect-error scroll is the root with no parent
+    super(null, node);
     this.scroll = this;
     this.build();
     this.observer = new MutationObserver((mutations: MutationRecord[]) => {

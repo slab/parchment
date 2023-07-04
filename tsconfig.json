@@ -12,5 +12,5 @@
     "noUnusedParameters": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src", "test"],  // Also type-check tests
+  "include": ["src", "test"],  
 }
