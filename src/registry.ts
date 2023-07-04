@@ -52,11 +52,15 @@ export default class Registry implements RegistryInterface {
       throw new ParchmentError(`Unable to create ${input} blot`);
     }
     const blotClass = match as BlotConstructor;
-    const node = input instanceof Node ? input : blotClass.create(value);
+    const node =
+      // @ts-expect-error
+      input instanceof Node || input.nodeType === Node.TEXT_NODE
+        ? input
+        : blotClass.create(value);
 
     const blot = new blotClass(scroll, node as Node, value);
     Registry.blots.set(blot.domNode, blot);
-    return blot as any;
+    return blot;
   }
 
   public find(node: Node | null, bubble = false): Blot | null {
