@@ -10,8 +10,6 @@ function camelize(name: string): string {
 }
 
 class StyleAttributor extends Attributor {
-  private styleKey = camelize(this.keyName);
-
   public static keys(node: HTMLElement): string[] {
     return (node.getAttribute('style') || '').split(';').map((value) => {
       const arr = value.split(':');
@@ -23,19 +21,19 @@ class StyleAttributor extends Attributor {
     if (!this.canAdd(node, value)) {
       return false;
     }
-    node.style.setProperty(this.styleKey, value);
+    node.style.setProperty(this.keyName, value);
     return true;
   }
 
   public remove(node: HTMLElement): void {
-    node.style.setProperty(this.styleKey, '');
+    node.style.setProperty(this.keyName, '');
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
     }
   }
 
   public value(node: HTMLElement): string {
-    const value = node.style.getPropertyValue(this.styleKey);
+    const value = node.style.getPropertyValue(this.keyName);
     return this.canAdd(node, value) ? value : '';
   }
 }
