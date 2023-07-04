@@ -21,19 +21,22 @@ class StyleAttributor extends Attributor {
     if (!this.canAdd(node, value)) {
       return false;
     }
-    node.style.setProperty(this.keyName, value);
+    // @ts-expect-error
+    node.style[camelize(this.keyName)] = value;
     return true;
   }
 
   public remove(node: HTMLElement): void {
-    node.style.setProperty(this.keyName, '');
+    // @ts-expect-error
+    node.style[camelize(this.keyName)] = '';
     if (!node.getAttribute('style')) {
       node.removeAttribute('style');
     }
   }
 
   public value(node: HTMLElement): string {
-    const value = node.style.getPropertyValue(this.keyName);
+    // @ts-expect-error
+    const value = node.style[camelize(this.keyName)];
     return this.canAdd(node, value) ? value : '';
   }
 }
