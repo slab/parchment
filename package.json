@@ -37,10 +37,11 @@
     "url": "https://github.com/quilljs/parchment"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "npm run build:bundle && npm run build:types",
+    "build:bundle": "vite build",
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
     "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
-    "prepare": "npm run build && npm run build:types",
+    "prepare": "npm run build",
     "test": "npm run test:unit && npm run test:types",
     "test:unit": "vitest",
     "test:types": "vitest typecheck"
