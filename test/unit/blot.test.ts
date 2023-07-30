@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import type { BlockBlot, Parent } from '../../src/parchment';
 import Registry from '../../src/registry';
-import type { ItalicBlot } from '../registry/inline';
+import type { ItalicBlot } from '../__helpers__/registry/inline';
 import { setupContextBeforeEach } from '../setup';
 
 describe('Blot', function () {

@@ -1,5 +1,5 @@
-import ContainerBlot from '../../src/blot/abstract/container';
-import BlockBlot from '../../src/blot/block';
+import ContainerBlot from '../../../src/blot/abstract/container';
+import BlockBlot from '../../../src/blot/block';
 
 export class ListItem extends BlockBlot {
   static readonly blotName = 'list';

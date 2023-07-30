@@ -13,12 +13,19 @@ import {
   BoldBlot,
   ItalicBlot,
   ScriptBlot,
-} from './registry/inline';
-import { Align, Color, Family, Id, Indent, Size } from './registry/attributor';
-import { HeaderBlot } from './registry/block';
-import { ImageBlot, VideoBlot } from './registry/embed';
-import { ListContainer, ListItem } from './registry/list';
-import { BreakBlot } from './registry/break';
+} from './__helpers__/registry/inline';
+import {
+  Align,
+  Color,
+  Family,
+  Id,
+  Indent,
+  Size,
+} from './__helpers__/registry/attributor';
+import { HeaderBlot } from './__helpers__/registry/block';
+import { ImageBlot, VideoBlot } from './__helpers__/registry/embed';
+import { ListContainer, ListItem } from './__helpers__/registry/list';
+import { BreakBlot } from './__helpers__/registry/break';
 
 const getTestRegistry = () => {
   const reg = new Registry();

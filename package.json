@@ -20,11 +20,10 @@
     "@vitest/browser": "^0.33.0",
     "del-cli": "^5.0.0",
     "eslint": "^8.46.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-config-prettier": "^8.9.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "playwright": "^1.36.2",
-    "prettier": "^2.5.1",
-    "tsd": "^0.28.1",
+    "prettier": "^3.0.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.7",
     "vitest": "^0.33.0"
@@ -65,8 +64,9 @@
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
     "lint": "eslint 'src/**/*.ts'",
     "prepare": "npm run build && npm run build:types",
-    "test": "vitest",
-    "test:types": "npm run build && npm run build:types && tsd"
+    "test": "npm run test:unit && npm run test:types",
+    "test:unit": "vitest",
+    "test:types": "vitest typecheck"
   },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"

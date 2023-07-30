@@ -5,8 +5,8 @@ import type {
   Formattable,
   InlineBlot,
 } from '../../src/parchment';
-import type { HeaderBlot } from '../registry/block';
-import type { BoldBlot } from '../registry/inline';
+import type { HeaderBlot } from '../__helpers__/registry/block';
+import type { BoldBlot } from '../__helpers__/registry/inline';
 import { setupContextBeforeEach } from '../setup';
 
 describe('Attributor', function () {

@@ -1,5 +1,5 @@
-import EmbedBlot from '../../src/blot/embed';
-import Scope from '../../src/scope';
+import EmbedBlot from '../../../src/blot/embed';
+import Scope from '../../../src/scope';
 
 export class ImageBlot extends EmbedBlot {
   declare domNode: HTMLImageElement;

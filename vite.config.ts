@@ -12,7 +12,6 @@ export default defineConfig({
     sourcemap: true,
   },
   test: {
-    include: ['./test/unit/*'],
     browser: {
       enabled: true,
       provider: 'playwright',

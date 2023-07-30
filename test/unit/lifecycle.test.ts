@@ -7,10 +7,10 @@ import type {
   InlineBlot,
   TextBlot,
 } from '../../src/parchment';
-import { HeaderBlot } from '../registry/block';
-import { ImageBlot } from '../registry/embed';
-import type { ItalicBlot } from '../registry/inline';
-import { BoldBlot } from '../registry/inline';
+import { HeaderBlot } from '../__helpers__/registry/block';
+import { ImageBlot } from '../__helpers__/registry/embed';
+import type { ItalicBlot } from '../__helpers__/registry/inline';
+import { BoldBlot } from '../__helpers__/registry/inline';
 import { setupContextBeforeEach } from '../setup';
 
 describe('Lifecycle', function () {

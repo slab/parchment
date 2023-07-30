@@ -4,8 +4,8 @@ import ParentBlot from '../../src/blot/abstract/parent';
 import ShadowBlot from '../../src/blot/abstract/shadow';
 import EmbedBlot from '../../src/blot/embed';
 
-import { VideoBlot } from '../registry/embed';
-import { ItalicBlot } from '../registry/inline';
+import { VideoBlot } from '../__helpers__/registry/embed';
+import { ItalicBlot } from '../__helpers__/registry/inline';
 
 import Registry from '../../src/registry';
 import TextBlot from '../../src/blot/text';

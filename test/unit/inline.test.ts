@@ -1,6 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import type { BlockBlot, Leaf } from '../../src/parchment';
-import type { BoldBlot, ItalicBlot, ScriptBlot } from '../registry/inline';
+import type {
+  BoldBlot,
+  ItalicBlot,
+  ScriptBlot,
+} from '../__helpers__/registry/inline';
 import { setupContextBeforeEach } from '../setup';
 
 describe('InlineBlot', function () {

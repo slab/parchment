@@ -1,7 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import Scope from '../../src/scope';
-import { HeaderBlot } from '../registry/block';
-import { AuthorBlot, BoldBlot, ItalicBlot } from '../registry/inline';
+import { HeaderBlot } from '../__helpers__/registry/block';
+import {
+  AuthorBlot,
+  BoldBlot,
+  ItalicBlot,
+} from '../__helpers__/registry/inline';
 
 import ShadowBlot from '../../src/blot/abstract/shadow';
 import InlineBlot from '../../src/blot/inline';
