@@ -17,7 +17,7 @@ const setupContextBeforeEach = () => {
       zero: { str: '!', length: () => 0 } as StrNode,
     };
   };
-  let ctx = getContext();
+  const ctx = getContext();
   beforeEach(function () {
     Object.assign(ctx, getContext());
   });
@@ -145,10 +145,10 @@ describe('LinkedList', function () {
 
     it('iterate non-head start', function () {
       ctx.list.append(ctx.a, ctx.b, ctx.c);
-      let next = ctx.list.iterator(ctx.b);
-      let b = next();
-      let c = next();
-      let d = next();
+      const next = ctx.list.iterator(ctx.b);
+      const b = next();
+      const c = next();
+      const d = next();
       expect(b).toBe(ctx.b);
       expect(c).toBe(ctx.c);
       expect(d).toBeNull();
@@ -171,7 +171,7 @@ describe('LinkedList', function () {
       expect(ctx.list.offset(ctx.a)).toBe(0);
       expect(ctx.list.offset(ctx.b)).toBe(3);
       expect(ctx.list.offset(ctx.c)).toBe(6);
-      // @ts-ignore This tests invalid usage
+      // @ts-expect-error Testing invalid usage
       expect(ctx.list.offset({})).toBe(-1);
     });
 
@@ -188,7 +188,7 @@ describe('LinkedList', function () {
 
     it('destructive modification', function () {
       ctx.list.append(ctx.a, ctx.b, ctx.c);
-      let arr: string[] = [];
+      const arr: string[] = [];
       ctx.list.forEach((node) => {
         arr.push(node.str);
         if (node === ctx.a) {
@@ -202,7 +202,7 @@ describe('LinkedList', function () {
 
     it('map', function () {
       ctx.list.append(ctx.a, ctx.b, ctx.c);
-      let arr = ctx.list.map(function (node) {
+      const arr = ctx.list.map(function (node) {
         return node.str;
       });
       expect(arr).toEqual(['a', 'b', 'c']);
@@ -210,7 +210,7 @@ describe('LinkedList', function () {
 
     it('reduce', function () {
       ctx.list.append(ctx.a, ctx.b, ctx.c);
-      let memo = ctx.list.reduce(function (memo, node) {
+      const memo = ctx.list.reduce(function (memo, node) {
         return memo + node.str;
       }, '');
       expect(memo).toBe('abc');
@@ -227,7 +227,7 @@ describe('LinkedList', function () {
       ctx.list.append(ctx.a, ctx.zero, ctx.c);
       ctx.list.forEachAt(2, 2, spy);
       expect(spy.mock.calls.length).toBe(3);
-      let calls = spy.mock.calls;
+      const calls = spy.mock.calls;
       expect(calls[0]).toEqual([ctx.a, 2, 1]);
       expect(calls[1]).toEqual([ctx.zero, 0, 0]);
       expect(calls[2]).toEqual([ctx.c, 0, 1]);
@@ -243,7 +243,7 @@ describe('LinkedList', function () {
       ctx.list.append(ctx.a, ctx.b, ctx.c);
       ctx.list.forEachAt(1, 7, spy);
       expect(spy.mock.calls.length).toBe(3);
-      let calls = spy.mock.calls;
+      const calls = spy.mock.calls;
       expect(calls[0]).toEqual([ctx.a, 1, 2]);
       expect(calls[1]).toEqual([ctx.b, 0, 3]);
       expect(calls[2]).toEqual([ctx.c, 0, 2]);

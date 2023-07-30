@@ -18,7 +18,7 @@ describe('Parent', function () {
   let testBlot!: BlockBlot;
 
   beforeEach(function () {
-    let node = document.createElement('p');
+    const node = document.createElement('p');
     node.innerHTML = '<span>0</span><em>1<strong>2</strong><img></em>4';
     testBlot = ctx.registry.create(ctx.scroll, node) as BlockBlot;
   });
@@ -59,13 +59,13 @@ describe('Parent', function () {
 
   describe('descendant', function () {
     it('index', function () {
-      let [blot, offset] = testBlot.descendant(ItalicBlot, 3);
+      const [blot, offset] = testBlot.descendant(ItalicBlot, 3);
       expect(blot instanceof ItalicBlot).toBe(true);
       expect(offset).toEqual(2);
     });
 
     it('function match', function () {
-      let [blot, offset] = testBlot.descendant(function (blot: Blot) {
+      const [blot, offset] = testBlot.descendant(function (blot: Blot) {
         return blot instanceof ItalicBlot;
       }, 3);
       expect(blot instanceof ItalicBlot).toBe(true);
@@ -73,7 +73,7 @@ describe('Parent', function () {
     });
 
     it('no match', function () {
-      let [blot, offset] = testBlot.descendant(VideoBlot, 1);
+      const [blot, offset] = testBlot.descendant(VideoBlot, 1);
       expect(blot).toEqual(null);
       expect(offset).toEqual(-1);
     });
@@ -90,7 +90,7 @@ describe('Parent', function () {
   });
 
   it('attach unknown blot', function () {
-    let node = document.createElement('p');
+    const node = document.createElement('p');
     node.appendChild(document.createElement('input'));
     expect(() => {
       ctx.scroll.create(node);

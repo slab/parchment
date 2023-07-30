@@ -53,7 +53,7 @@ export default class Registry implements RegistryInterface {
     }
     const blotClass = match as BlotConstructor;
     const node =
-      // @ts-expect-error
+      // @ts-expect-error Fix me later
       input instanceof Node || input.nodeType === Node.TEXT_NODE
         ? input
         : blotClass.create(value);
@@ -74,7 +74,7 @@ export default class Registry implements RegistryInterface {
     let match;
     if (typeof query === 'string') {
       match = this.types[query] || this.attributes[query];
-      // @ts-expect-error
+      // @ts-expect-error Fix me later
     } else if (query instanceof Text || query.nodeType === Node.TEXT_NODE) {
       match = this.types.text;
     } else if (typeof query === 'number') {

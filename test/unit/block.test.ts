@@ -8,7 +8,7 @@ describe('Block', function () {
 
   describe('format', function () {
     it('add', function () {
-      let block = ctx.scroll.create('block') as BlockBlot;
+      const block = ctx.scroll.create('block') as BlockBlot;
       ctx.scroll.appendChild(block);
       block.format('header', 'h1');
       expect(ctx.scroll.domNode.innerHTML).toBe('<h1></h1>');
@@ -18,7 +18,7 @@ describe('Block', function () {
     });
 
     it('remove', function () {
-      let block = ctx.scroll.create('header', 'h1') as HeaderBlot;
+      const block = ctx.scroll.create('header', 'h1') as HeaderBlot;
       ctx.scroll.appendChild(block);
       block.format('header', false);
       expect(ctx.scroll.domNode.innerHTML).toBe('<p></p>');
@@ -28,8 +28,8 @@ describe('Block', function () {
     });
 
     it('change', function () {
-      let block = ctx.scroll.create('block') as BlockBlot;
-      let text = ctx.scroll.create('text', 'Test');
+      const block = ctx.scroll.create('block') as BlockBlot;
+      const text = ctx.scroll.create('text', 'Test');
       block.appendChild(text);
       ctx.scroll.appendChild(block);
       block.format('header', 'h2');
@@ -42,11 +42,11 @@ describe('Block', function () {
     });
 
     it('split', function () {
-      let block = ctx.scroll.create('block') as BlockBlot;
-      let text = ctx.scroll.create('text', 'Test');
+      const block = ctx.scroll.create('block') as BlockBlot;
+      const text = ctx.scroll.create('text', 'Test');
       block.appendChild(text);
       ctx.scroll.appendChild(block);
-      let src = 'http://www.w3schools.com/html/mov_bbb.mp4';
+      const src = 'http://www.w3schools.com/html/mov_bbb.mp4';
       block.insertAt(2, 'video', src);
       expect(ctx.scroll.domNode.innerHTML).toBe(
         `<p>Te</p><video src="${src}"></video><p>st</p>`,
@@ -56,7 +56,7 @@ describe('Block', function () {
     });
 
     it('ignore inline', function () {
-      let block = ctx.scroll.create('header', 1) as HeaderBlot;
+      const block = ctx.scroll.create('header', 1) as HeaderBlot;
       ctx.scroll.appendChild(block);
       block.format('bold', true);
       expect(ctx.scroll.domNode.innerHTML).toBe('<h1></h1>');

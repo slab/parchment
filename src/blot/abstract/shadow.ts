@@ -43,14 +43,17 @@ class ShadowBlot implements Blot {
 
   public prev: Blot | null;
   public next: Blot | null;
-  // @ts-expect-error
+  // @ts-expect-error Fix me later
   public parent: Parent;
 
   // Hack for accessing inherited static methods
   get statics(): any {
     return this.constructor;
   }
-  constructor(public scroll: Root, public domNode: Node) {
+  constructor(
+    public scroll: Root,
+    public domNode: Node,
+  ) {
     Registry.blots.set(domNode, this);
     this.prev = null;
     this.next = null;

@@ -339,7 +339,7 @@ class ParentBlot extends ShadowBlot implements Parent {
       // from DOM but MutationRecord is correct in its reported removal
       if (
         node.parentNode != null &&
-        // @ts-expect-error
+        // @ts-expect-error Fix me later
         node.tagName !== 'IFRAME' &&
         document.body.compareDocumentPosition(node) &
           Node.DOCUMENT_POSITION_CONTAINED_BY

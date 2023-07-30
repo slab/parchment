@@ -18,29 +18,29 @@ describe('Lifecycle', function () {
 
   describe('create()', function () {
     it('specific tagName', function () {
-      let node = BoldBlot.create();
+      const node = BoldBlot.create();
       expect(node).toBeTruthy();
       expect(node.tagName).toEqual(BoldBlot.tagName.toUpperCase());
     });
 
     it('array tagName index', function () {
-      let node = HeaderBlot.create(2);
+      const node = HeaderBlot.create(2);
       expect(node).toBeTruthy();
-      let blot = ctx.scroll.create(node) as HeaderBlot;
+      const blot = ctx.scroll.create(node) as HeaderBlot;
       expect(blot.formats()).toEqual({ header: 'h2' });
     });
 
     it('array tagName value', function () {
-      let node = HeaderBlot.create('h2');
+      const node = HeaderBlot.create('h2');
       expect(node).toBeTruthy();
-      let blot = ctx.scroll.create(node) as HeaderBlot;
+      const blot = ctx.scroll.create(node) as HeaderBlot;
       expect(blot.formats()).toEqual({ header: 'h2' });
     });
 
     it('array tagName default', function () {
-      let node = HeaderBlot.create();
+      const node = HeaderBlot.create();
       expect(node).toBeTruthy();
-      let blot = ctx.scroll.create(node) as HeaderBlot;
+      const blot = ctx.scroll.create(node) as HeaderBlot;
       expect(blot.formats()).toEqual({ header: 'h1' });
     });
 
@@ -57,7 +57,7 @@ describe('Lifecycle', function () {
           return super.create() as HTMLElement;
         }
       }
-      let node = ClassBlot.create();
+      const node = ClassBlot.create();
       expect(node).toBeTruthy();
       expect(node.classList.contains('test')).toBe(true);
       expect(node.tagName).toBe('SPAN');
@@ -66,12 +66,12 @@ describe('Lifecycle', function () {
 
   describe('optimize()', function () {
     it('unwrap empty inline', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML =
         '<span style="color: red;"><strong>Te</strong><em>st</em></span>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
-      let span = ctx.scroll.find(node.querySelector('span')) as InlineBlot;
+      const span = ctx.scroll.find(node.querySelector('span')) as InlineBlot;
       span.format('color', false);
       ctx.scroll.optimize();
       expect(ctx.container.innerHTML).toEqual(
@@ -80,11 +80,11 @@ describe('Lifecycle', function () {
     });
 
     it('unwrap recursive', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML = '<em><strong>Test</strong></em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
-      let text = ctx.scroll.find(
+      const text = ctx.scroll.find(
         node.querySelector('strong')?.firstChild as HTMLElement,
       );
       text?.deleteAt(0, 4);
@@ -93,11 +93,11 @@ describe('Lifecycle', function () {
     });
 
     it('format merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML = '<strong>T</strong>es<strong>t</strong>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
-      let text = ctx.scroll.find(node.childNodes[1]);
+      const text = ctx.scroll.find(node.childNodes[1]);
       text?.formatAt(0, 2, 'bold', true);
       ctx.scroll.optimize();
       expect(ctx.container.innerHTML).toEqual('<p><strong>Test</strong></p>');
@@ -105,12 +105,12 @@ describe('Lifecycle', function () {
     });
 
     it('format recursive merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML =
         '<em><strong>T</strong></em><strong>es</strong><em><strong>t</strong></em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
-      let target = ctx.scroll.find(node.childNodes[1]);
+      const target = ctx.scroll.find(node.childNodes[1]);
       target?.wrap('italic', true);
       ctx.scroll.optimize();
       expect(ctx.container.innerHTML).toEqual(
@@ -120,10 +120,10 @@ describe('Lifecycle', function () {
     });
 
     it('remove format merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML =
         '<strong>T</strong><em><strong>es</strong></em><strong>t</strong>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       block.formatAt(1, 2, 'italic', false);
       ctx.scroll.optimize();
@@ -132,9 +132,9 @@ describe('Lifecycle', function () {
     });
 
     it('remove attribute merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML = '<em>T</em><em style="color: red;">es</em><em>t</em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       block.formatAt(1, 2, 'color', false);
       ctx.scroll.optimize();
@@ -143,10 +143,10 @@ describe('Lifecycle', function () {
     });
 
     it('format no merge attribute mismatch', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML =
         '<strong>Te</strong><em><strong style="color: red;">st</strong></em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       block.formatAt(2, 2, 'italic', false);
       ctx.scroll.optimize();
@@ -156,9 +156,9 @@ describe('Lifecycle', function () {
     });
 
     it('delete + merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML = '<em>T</em>es<em>t</em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       block.deleteAt(1, 2);
       ctx.scroll.optimize();
@@ -167,10 +167,10 @@ describe('Lifecycle', function () {
     });
 
     it('unwrap + recursive merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML =
         '<strong>T</strong><em style="color: red;"><strong>es</strong></em><strong>t</strong>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       block.formatAt(1, 2, 'italic', false);
       block.formatAt(1, 2, 'color', false);
@@ -180,9 +180,9 @@ describe('Lifecycle', function () {
     });
 
     it('remove text + recursive merge', function () {
-      let node = document.createElement('p');
+      const node = document.createElement('p');
       node.innerHTML = '<em>Te</em>|<em>st</em>';
-      let block = ctx.scroll.create(node);
+      const block = ctx.scroll.create(node);
       ctx.scroll.appendChild(block);
       (node.childNodes[1] as Text).data = '';
       ctx.scroll.optimize();
@@ -192,7 +192,7 @@ describe('Lifecycle', function () {
 
     it('insert default child', function () {
       HeaderBlot.defaultChild = ImageBlot;
-      let blot = ctx.scroll.create('header') as HeaderBlot;
+      const blot = ctx.scroll.create('header') as HeaderBlot;
       expect(blot.domNode.innerHTML).toEqual('');
       blot.optimize();
       HeaderBlot.defaultChild = undefined;
@@ -220,7 +220,7 @@ describe('Lifecycle', function () {
       checkValues: (expected: any[]) => void;
       descendants: Blots;
     };
-    let updateCtx = {} as UpdateTestContext;
+    const updateCtx = {} as UpdateTestContext;
     beforeEach(function () {
       ctx.container.innerHTML = ContentFixture;
       ctx.scroll.update();
@@ -241,7 +241,7 @@ describe('Lifecycle', function () {
         });
       };
       updateCtx.checkValues = (expected) => {
-        let values = ctx.scroll.descendants(LeafBlot).map(function (leaf) {
+        const values = ctx.scroll.descendants(LeafBlot).map(function (leaf) {
           return leaf.value();
         });
         expect(values).toEqual(expected);
@@ -287,7 +287,7 @@ describe('Lifecycle', function () {
 
     describe('dom', function () {
       it('change text', function () {
-        let textBlot = updateCtx.descendants[3];
+        const textBlot = updateCtx.descendants[3];
         textBlot.domNode.data = 'Te|st';
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(textBlot);
@@ -295,8 +295,8 @@ describe('Lifecycle', function () {
       });
 
       it('add/remove unknown element', function () {
-        let unknownElement = document.createElement('unknownElement');
-        let unknownElement2 = document.createElement('unknownElement2');
+        const unknownElement = document.createElement('unknownElement');
+        const unknownElement2 = document.createElement('unknownElement2');
         ctx.scroll.domNode.appendChild(unknownElement);
         unknownElement.appendChild(unknownElement2);
         ctx.scroll.domNode.removeChild(unknownElement);
@@ -305,7 +305,7 @@ describe('Lifecycle', function () {
       });
 
       it('add attribute', function () {
-        let attrBlot = updateCtx.descendants[1];
+        const attrBlot = updateCtx.descendants[1];
         attrBlot.domNode.setAttribute('id', 'blot');
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(attrBlot);
@@ -317,14 +317,14 @@ describe('Lifecycle', function () {
       });
 
       it('add embed attribute', function () {
-        let imageBlot = updateCtx.descendants[4];
+        const imageBlot = updateCtx.descendants[4];
         imageBlot.domNode.setAttribute('alt', 'image');
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(imageBlot);
       });
 
       it('change attributes', function () {
-        let attrBlot = updateCtx.descendants[1];
+        const attrBlot = updateCtx.descendants[1];
         attrBlot.domNode.style.color = 'blue';
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(attrBlot);
@@ -332,7 +332,7 @@ describe('Lifecycle', function () {
       });
 
       it('remove attribute', function () {
-        let attrBlot = updateCtx.descendants[1];
+        const attrBlot = updateCtx.descendants[1];
         attrBlot.domNode.removeAttribute('style');
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(attrBlot);
@@ -340,7 +340,7 @@ describe('Lifecycle', function () {
       });
 
       it('add child node', function () {
-        let italicBlot = updateCtx.descendants[1];
+        const italicBlot = updateCtx.descendants[1];
         italicBlot.domNode.appendChild(document.createTextNode('|'));
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(italicBlot);
@@ -348,9 +348,9 @@ describe('Lifecycle', function () {
       });
 
       it('add empty family', function () {
-        let blockBlot = updateCtx.descendants[0];
-        let boldNode = document.createElement('strong');
-        let html = ctx.scroll.domNode.innerHTML;
+        const blockBlot = updateCtx.descendants[0];
+        const boldNode = document.createElement('strong');
+        const html = ctx.scroll.domNode.innerHTML;
         boldNode.appendChild(document.createTextNode(''));
         blockBlot.domNode.appendChild(boldNode);
         ctx.scroll.update();
@@ -362,7 +362,7 @@ describe('Lifecycle', function () {
       });
 
       it('move node up', function () {
-        let imageBlot = updateCtx.descendants[4];
+        const imageBlot = updateCtx.descendants[4];
         imageBlot.domNode.parentNode?.insertBefore(
           imageBlot.domNode,
           imageBlot.domNode.previousSibling,
@@ -373,7 +373,7 @@ describe('Lifecycle', function () {
       });
 
       it('move node down', function () {
-        let imageBlot = updateCtx.descendants[4];
+        const imageBlot = updateCtx.descendants[4];
         imageBlot.domNode.parentNode?.insertBefore(
           imageBlot.domNode.nextSibling!,
           imageBlot.domNode,
@@ -384,8 +384,8 @@ describe('Lifecycle', function () {
       });
 
       it('move node and change', function () {
-        let firstBlockBlot = updateCtx.descendants[0];
-        let lastItalicBlot = updateCtx.descendants[7];
+        const firstBlockBlot = updateCtx.descendants[0];
+        const lastItalicBlot = updateCtx.descendants[7];
         firstBlockBlot.domNode.appendChild(lastItalicBlot.domNode);
         lastItalicBlot.domNode.innerHTML = '?';
         ctx.scroll.update();
@@ -398,10 +398,10 @@ describe('Lifecycle', function () {
       });
 
       it('add and remove consecutive nodes', function () {
-        let italicBlot = updateCtx.descendants[1];
-        let imageNode = document.createElement('img');
-        let textNode = document.createTextNode('|');
-        let refNode = italicBlot.domNode.childNodes[1]; // Old img
+        const italicBlot = updateCtx.descendants[1];
+        const imageNode = document.createElement('img');
+        const textNode = document.createTextNode('|');
+        const refNode = italicBlot.domNode.childNodes[1]; // Old img
         italicBlot.domNode.insertBefore(textNode, refNode);
         italicBlot.domNode.insertBefore(imageNode, textNode);
         italicBlot.domNode.removeChild(refNode);
@@ -411,8 +411,8 @@ describe('Lifecycle', function () {
       });
 
       it('wrap text', function () {
-        let textNode = updateCtx.descendants[5].domNode;
-        let spanNode = document.createElement('span');
+        const textNode = updateCtx.descendants[5].domNode;
+        const spanNode = document.createElement('span');
         textNode.parentNode?.removeChild(textNode);
         ctx.scroll.domNode.lastChild?.appendChild(spanNode);
         spanNode.appendChild(textNode);
@@ -421,8 +421,8 @@ describe('Lifecycle', function () {
       });
 
       it('add then remove same node', function () {
-        let italicBlot = updateCtx.descendants[1];
-        let textNode = document.createTextNode('|');
+        const italicBlot = updateCtx.descendants[1];
+        const textNode = document.createTextNode('|');
         italicBlot.domNode.appendChild(textNode);
         italicBlot.domNode.removeChild(textNode);
         ctx.scroll.update();
@@ -431,7 +431,7 @@ describe('Lifecycle', function () {
       });
 
       it('remove child node', function () {
-        let imageBlot = updateCtx.descendants[4];
+        const imageBlot = updateCtx.descendants[4];
         imageBlot.domNode.parentNode?.removeChild(imageBlot.domNode);
         ctx.scroll.update();
         updateCtx.checkUpdateCalls(updateCtx.descendants[1]);
@@ -439,7 +439,7 @@ describe('Lifecycle', function () {
       });
 
       it('change and remove node', function () {
-        let italicBlot = updateCtx.descendants[1];
+        const italicBlot = updateCtx.descendants[1];
         // @ts-expect-error This simulates ignored dom mutation
         italicBlot.domNode.color = 'blue';
         italicBlot.domNode.parentNode?.removeChild(italicBlot.domNode);
@@ -449,8 +449,8 @@ describe('Lifecycle', function () {
       });
 
       it('change and remove parent', function () {
-        let blockBlot = updateCtx.descendants[0];
-        let italicBlot = updateCtx.descendants[1];
+        const blockBlot = updateCtx.descendants[0];
+        const italicBlot = updateCtx.descendants[1];
         // @ts-expect-error This simulates ignored dom mutation
         italicBlot.domNode.color = 'blue';
         ctx.scroll.domNode.removeChild(blockBlot.domNode);
@@ -460,7 +460,7 @@ describe('Lifecycle', function () {
       });
 
       it('different changes to same blot', function () {
-        let attrBlot = updateCtx.descendants[1];
+        const attrBlot = updateCtx.descendants[1];
         attrBlot.domNode.style.color = 'blue';
         attrBlot.domNode.insertBefore(
           document.createTextNode('|'),

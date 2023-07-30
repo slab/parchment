@@ -6,7 +6,7 @@ export class ImageBlot extends EmbedBlot {
   static readonly blotName = 'image';
   static tagName = 'IMG';
   static create(value: string) {
-    let node = super.create(value) as HTMLElement;
+    const node = super.create(value) as HTMLElement;
     if (typeof value === 'string') {
       node.setAttribute('src', value);
     }
@@ -39,7 +39,7 @@ export class VideoBlot extends EmbedBlot {
   static readonly blotName = 'video';
   static tagName = 'VIDEO';
   static create(value: string) {
-    let node = super.create(value) as HTMLVideoElement;
+    const node = super.create(value) as HTMLVideoElement;
     if (typeof value === 'string') {
       node.setAttribute('src', value);
     }
@@ -47,7 +47,7 @@ export class VideoBlot extends EmbedBlot {
   }
 
   static formats(domNode: HTMLVideoElement) {
-    let formats: Partial<{ height: string; width: string }> = {};
+    const formats: Partial<{ height: string; width: string }> = {};
     const height = domNode.getAttribute('height');
     const width = domNode.getAttribute('width');
     height && (formats.height = height);
