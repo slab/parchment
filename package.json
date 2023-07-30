@@ -40,7 +40,7 @@
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "vite build",
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
-    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts' 'tests/**/*.ts'",
     "prepare": "npm run build",
     "test": "npm run test:unit && npm run test:types",
     "test:unit": "vitest",
