@@ -10,18 +10,14 @@ export default class Attributor {
     return Array.from(node.attributes).map((item: Attr) => item.name);
   }
 
-  public attrName: string;
-  public keyName: string;
   public scope: Scope;
   public whitelist: string[] | undefined;
 
   constructor(
-    attrName: string,
-    keyName: string,
+    public readonly attrName: string,
+    public readonly keyName: string,
     options: AttributorOptions = {},
   ) {
-    this.attrName = attrName;
-    this.keyName = keyName;
     const attributeBit = Scope.TYPE & Scope.ATTRIBUTE;
     this.scope =
       options.scope != null

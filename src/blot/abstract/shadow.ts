@@ -1,7 +1,7 @@
 import ParchmentError from '../../error';
 import Registry from '../../registry';
 import Scope from '../../scope';
-import { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
+import type { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
 
 class ShadowBlot implements Blot {
   public static blotName = 'abstract';
@@ -10,21 +10,24 @@ class ShadowBlot implements Blot {
   public static scope: Scope;
   public static tagName: string | string[];
 
-  public static create(value: any): Node {
+  public static create(rawValue?: unknown): Node {
     if (this.tagName == null) {
       throw new ParchmentError('Blot definition missing tagName');
     }
-    let node;
+    let node: HTMLElement;
+    let value: string | number | undefined;
     if (Array.isArray(this.tagName)) {
-      if (typeof value === 'string') {
-        value = value.toUpperCase();
+      if (typeof rawValue === 'string') {
+        value = rawValue.toUpperCase();
         if (parseInt(value, 10).toString() === value) {
           value = parseInt(value, 10);
         }
+      } else if (typeof rawValue === 'number') {
+        value = rawValue;
       }
       if (typeof value === 'number') {
         node = document.createElement(this.tagName[value - 1]);
-      } else if (this.tagName.indexOf(value) > -1) {
+      } else if (value && this.tagName.indexOf(value) > -1) {
         node = document.createElement(value);
       } else {
         node = document.createElement(this.tagName[0]);
@@ -120,7 +123,7 @@ class ShadowBlot implements Blot {
     return this.parent.children.offset(this) + this.parent.offset(root);
   }
 
-  public optimize(_context: { [key: string]: any }): void {
+  public optimize(_context?: { [key: string]: any }): void {
     if (
       this.statics.requiredContainer &&
       !(this.parent instanceof this.statics.requiredContainer)

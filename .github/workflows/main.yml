@@ -8,16 +8,16 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # https://playwright.dev/docs/ci#via-containers
+    container:
+      image: mcr.microsoft.com/playwright:v1.36.0-jammy
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: npm ci
       - run: npm run lint
       - run: npm run test:types
-      - run: npm run test:ci
+      - run: npm test
         timeout-minutes: 10
-        env:
-          SAUCE_USERNAME: quill
-          SAUCE_ACCESS_KEY: ${{ secrets.SAUCELABS_ACCESS_KEY }}

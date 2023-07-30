@@ -13,25 +13,21 @@
     "src"
   ],
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.34.6",
+    "@microsoft/api-extractor": "^7.36.3",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.14.0",
-    "@typescript-eslint/parser": "^5.14.0",
-    "del-cli": "^4.0.1",
-    "eslint": "^8.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "@vitest/browser": "^0.33.0",
+    "del-cli": "^5.0.0",
+    "eslint": "^8.46.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "jasmine-core": "^4.6.0",
-    "karma": "^6.4.2",
-    "karma-babel-preprocessor": "^8.0.2",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-jasmine": "^5.1.0",
-    "karma-sauce-launcher": "^4.3.6",
-    "karma-vite": "^1.0.4",
+    "playwright": "^1.36.2",
     "prettier": "^2.5.1",
     "tsd": "^0.28.1",
-    "typescript": "^4.9.5",
-    "vite": "^4.2.1"
+    "typescript": "^5.1.6",
+    "vite": "^4.4.7",
+    "vitest": "^0.33.0"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -66,13 +62,11 @@
   },
   "scripts": {
     "build": "vite build",
-    "build:types": "tsc --emitDeclarationOnly && api-extractor run && rm -rf dist/typings",
+    "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
     "lint": "eslint 'src/**/*.ts'",
     "prepare": "npm run build && npm run build:types",
-    "test": "karma start",
-    "test:types": "npm run build && npm run build:types && tsd",
-    "test:server": "karma start --no-single-run",
-    "test:ci": "karma start --browsers saucelabs-chrome --reporters dots,saucelabs"
+    "test": "vitest",
+    "test:types": "npm run build && npm run build:types && tsd"
   },
   "bugs": {
     "url": "https://github.com/quilljs/parchment/issues"

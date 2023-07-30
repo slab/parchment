@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import Scope from '../../src/scope';
 import { HeaderBlot } from '../registry/block';
 import { AuthorBlot, BoldBlot, ItalicBlot } from '../registry/inline';
@@ -5,6 +6,8 @@ import { AuthorBlot, BoldBlot, ItalicBlot } from '../registry/inline';
 import ShadowBlot from '../../src/blot/abstract/shadow';
 import InlineBlot from '../../src/blot/inline';
 import BlockBlot from '../../src/blot/block';
+import type { Parent } from '../../src/parchment';
+
 import { setupContextBeforeEach } from '../setup';
 
 describe('ctx.registry', function () {
@@ -38,12 +41,14 @@ describe('ctx.registry', function () {
 
     it('string index', function () {
       let blot = ctx.registry.create(ctx.scroll, 'header', '2');
-      expect(blot instanceof HeaderBlot).toBe(true);
-      expect(blot.formats()).toEqual({ header: 'h2' });
+      expect(blot instanceof HeaderBlot && blot.formats()).toEqual({
+        header: 'h2',
+      });
     });
 
     it('invalid', function () {
       expect(() => {
+        // @ts-expect-error This tests invalid usage
         ctx.registry.create(ctx.scroll, BoldBlot);
       }).toThrowError(/\[Parchment\]/);
     });
@@ -52,6 +57,7 @@ describe('ctx.registry', function () {
   describe('register()', function () {
     it('invalid', function () {
       expect(function () {
+        // @ts-expect-error This tests invalid usage
         ctx.registry.register({});
       }).toThrowError(/\[Parchment\]/);
     });
@@ -67,7 +73,7 @@ describe('ctx.registry', function () {
     it('exact', function () {
       let blockNode = document.createElement('p');
       blockNode.innerHTML = '<span>01</span><em>23<strong>45</strong></em>';
-      let blockBlot = ctx.registry.create(ctx.scroll, blockNode);
+      let blockBlot = ctx.registry.create(ctx.scroll, blockNode) as BlockBlot;
       expect(ctx.registry.find(document.body)).toBeFalsy();
       expect(ctx.registry.find(blockNode)).toBe(blockBlot);
       expect(ctx.registry.find(blockNode.querySelector('span'))).toBe(
@@ -77,11 +83,12 @@ describe('ctx.registry', function () {
         blockBlot.children.tail,
       );
       expect(ctx.registry.find(blockNode.querySelector('strong'))).toBe(
-        blockBlot.children.tail.children.tail,
+        (blockBlot.children.tail as Parent)?.children.tail,
       );
-      let text01 = blockBlot.children.head.children.head;
-      let text23 = blockBlot.children.tail.children.head;
-      let text45 = blockBlot.children.tail.children.tail.children.head;
+      let text01 = (blockBlot.children.head as Parent).children.head!;
+      let text23 = (blockBlot.children.tail as Parent).children.head!;
+      let text45 = ((blockBlot.children.tail as Parent).children.tail as Parent)
+        .children.head!;
       expect(ctx.registry.find(text01.domNode)).toBe(text01);
       expect(ctx.registry.find(text23.domNode)).toBe(text23);
       expect(ctx.registry.find(text45.domNode)).toBe(text45);

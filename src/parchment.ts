@@ -33,7 +33,7 @@ export {
   Scope,
 };
 
-export type { RegistryInterface } from './registry';
+export type { RegistryInterface, RegistryDefinition } from './registry';
 export type { default as ShadowBlot } from './blot/abstract/shadow';
 export type { default as LinkedList } from './collection/linked-list';
 export type { default as LinkedNode } from './collection/linked-node';

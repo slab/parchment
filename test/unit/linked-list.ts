@@ -1,249 +1,259 @@
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import LinkedList from '../../src/collection/linked-list';
+import type { LinkedNode } from '../../src/parchment';
+
+interface StrNode extends LinkedNode {
+  str: string;
+}
+
+const setupContextBeforeEach = () => {
+  const getContext = () => {
+    const length = () => 3;
+    return {
+      list: new LinkedList<StrNode>(),
+      a: { str: 'a', length } as StrNode,
+      b: { str: 'b', length } as StrNode,
+      c: { str: 'c', length } as StrNode,
+      zero: { str: '!', length: () => 0 } as StrNode,
+    };
+  };
+  let ctx = getContext();
+  beforeEach(function () {
+    Object.assign(ctx, getContext());
+  });
+  return ctx;
+};
 
 describe('LinkedList', function () {
-  beforeEach(function () {
-    this.list = new LinkedList();
-    this.a = { str: 'a' };
-    this.b = { str: 'b' };
-    this.c = { str: 'c' };
-    this.zero = {
-      str: '!',
-      length: function () {
-        return 0;
-      },
-    };
-    this.a.length = this.b.length = this.c.length = () => 3;
-  });
+  const ctx = setupContextBeforeEach();
 
   describe('manipulation', function () {
     it('append to empty list', function () {
-      this.list.append(this.a);
-      expect(this.list.length).toBe(1);
-      expect(this.list.head).toBe(this.a);
-      expect(this.list.tail).toBe(this.a);
-      expect(this.a.prev).toBeNull();
-      expect(this.a.next).toBeNull();
+      ctx.list.append(ctx.a);
+      expect(ctx.list.length).toBe(1);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.list.tail).toBe(ctx.a);
+      expect(ctx.a.prev).toBeNull();
+      expect(ctx.a.next).toBeNull();
     });
 
     it('insert to become head', function () {
-      this.list.append(this.b);
-      this.list.insertBefore(this.a, this.b);
-      expect(this.list.length).toBe(2);
-      expect(this.list.head).toBe(this.a);
-      expect(this.list.tail).toBe(this.b);
-      expect(this.a.prev).toBeNull();
-      expect(this.a.next).toBe(this.b);
-      expect(this.b.prev).toBe(this.a);
-      expect(this.b.next).toBeNull();
+      ctx.list.append(ctx.b);
+      ctx.list.insertBefore(ctx.a, ctx.b);
+      expect(ctx.list.length).toBe(2);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.list.tail).toBe(ctx.b);
+      expect(ctx.a.prev).toBeNull();
+      expect(ctx.a.next).toBe(ctx.b);
+      expect(ctx.b.prev).toBe(ctx.a);
+      expect(ctx.b.next).toBeNull();
     });
 
     it('insert to become tail', function () {
-      this.list.append(this.a);
-      this.list.insertBefore(this.b, null);
-      expect(this.list.length).toBe(2);
-      expect(this.list.head).toBe(this.a);
-      expect(this.list.tail).toBe(this.b);
-      expect(this.a.prev).toBeNull();
-      expect(this.a.next).toBe(this.b);
-      expect(this.b.prev).toBe(this.a);
-      expect(this.b.next).toBeNull();
+      ctx.list.append(ctx.a);
+      ctx.list.insertBefore(ctx.b, null);
+      expect(ctx.list.length).toBe(2);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.list.tail).toBe(ctx.b);
+      expect(ctx.a.prev).toBeNull();
+      expect(ctx.a.next).toBe(ctx.b);
+      expect(ctx.b.prev).toBe(ctx.a);
+      expect(ctx.b.next).toBeNull();
     });
 
     it('insert in middle', function () {
-      this.list.append(this.a, this.c);
-      this.list.insertBefore(this.b, this.c);
-      expect(this.list.length).toBe(3);
-      expect(this.list.head).toBe(this.a);
-      expect(this.a.next).toBe(this.b);
-      expect(this.b.next).toBe(this.c);
-      expect(this.list.tail).toBe(this.c);
+      ctx.list.append(ctx.a, ctx.c);
+      ctx.list.insertBefore(ctx.b, ctx.c);
+      expect(ctx.list.length).toBe(3);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.a.next).toBe(ctx.b);
+      expect(ctx.b.next).toBe(ctx.c);
+      expect(ctx.list.tail).toBe(ctx.c);
     });
 
     it('remove head', function () {
-      this.list.append(this.a, this.b);
-      this.list.remove(this.a);
-      expect(this.list.length).toBe(1);
-      expect(this.list.head).toBe(this.b);
-      expect(this.list.tail).toBe(this.b);
-      expect(this.list.head.prev).toBeNull();
-      expect(this.list.tail.next).toBeNull();
+      ctx.list.append(ctx.a, ctx.b);
+      ctx.list.remove(ctx.a);
+      expect(ctx.list.length).toBe(1);
+      expect(ctx.list.head).toBe(ctx.b);
+      expect(ctx.list.tail).toBe(ctx.b);
+      expect(ctx.list.head?.prev).toBeNull();
+      expect(ctx.list.tail?.next).toBeNull();
     });
 
     it('remove tail', function () {
-      this.list.append(this.a, this.b);
-      this.list.remove(this.b);
-      expect(this.list.length).toBe(1);
-      expect(this.list.head).toBe(this.a);
-      expect(this.list.tail).toBe(this.a);
-      expect(this.list.head.prev).toBeNull();
-      expect(this.list.tail.next).toBeNull();
+      ctx.list.append(ctx.a, ctx.b);
+      ctx.list.remove(ctx.b);
+      expect(ctx.list.length).toBe(1);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.list.tail).toBe(ctx.a);
+      expect(ctx.list.head?.prev).toBeNull();
+      expect(ctx.list.tail?.next).toBeNull();
     });
 
     it('remove inner', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.remove(this.b);
-      expect(this.list.length).toBe(2);
-      expect(this.list.head).toBe(this.a);
-      expect(this.list.tail).toBe(this.c);
-      expect(this.list.head.prev).toBeNull();
-      expect(this.list.tail.next).toBeNull();
-      expect(this.a.next).toBe(this.c);
-      expect(this.c.prev).toBe(this.a);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.remove(ctx.b);
+      expect(ctx.list.length).toBe(2);
+      expect(ctx.list.head).toBe(ctx.a);
+      expect(ctx.list.tail).toBe(ctx.c);
+      expect(ctx.list.head?.prev).toBeNull();
+      expect(ctx.list.tail?.next).toBeNull();
+      expect(ctx.a.next).toBe(ctx.c);
+      expect(ctx.c.prev).toBe(ctx.a);
       // Maintain references
-      expect(this.b.prev).toBe(this.a);
-      expect(this.b.next).toBe(this.c);
+      expect(ctx.b.prev).toBe(ctx.a);
+      expect(ctx.b.next).toBe(ctx.c);
     });
 
     it('remove only node', function () {
-      this.list.append(this.a);
-      this.list.remove(this.a);
-      expect(this.list.length).toBe(0);
-      expect(this.list.head).toBeNull();
-      expect(this.list.tail).toBeNull();
+      ctx.list.append(ctx.a);
+      ctx.list.remove(ctx.a);
+      expect(ctx.list.length).toBe(0);
+      expect(ctx.list.head).toBeNull();
+      expect(ctx.list.tail).toBeNull();
     });
 
     it('contains', function () {
-      this.list.append(this.a, this.b);
-      expect(this.list.contains(this.a)).toBe(true);
-      expect(this.list.contains(this.b)).toBe(true);
-      expect(this.list.contains(this.c)).toBe(false);
+      ctx.list.append(ctx.a, ctx.b);
+      expect(ctx.list.contains(ctx.a)).toBe(true);
+      expect(ctx.list.contains(ctx.b)).toBe(true);
+      expect(ctx.list.contains(ctx.c)).toBe(false);
     });
 
     it('move', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.remove(this.b);
-      this.list.remove(this.a);
-      this.list.remove(this.c);
-      this.list.append(this.b);
-      expect(this.b.prev).toBeNull();
-      expect(this.b.next).toBeNull();
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.remove(ctx.b);
+      ctx.list.remove(ctx.a);
+      ctx.list.remove(ctx.c);
+      ctx.list.append(ctx.b);
+      expect(ctx.b.prev).toBeNull();
+      expect(ctx.b.next).toBeNull();
     });
   });
 
   describe('iteration', function () {
+    const spy = vi.fn();
     beforeEach(function () {
-      this.spy = {
-        callback: function () {
-          return arguments;
-        },
-      };
-      spyOn(this.spy, 'callback');
+      spy.mockReset();
     });
 
     it('iterate over empty list', function () {
-      this.list.forEach(this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(0);
+      ctx.list.forEach(spy);
+      expect(spy.mock.calls.length).toBe(0);
     });
 
     it('iterate non-head start', function () {
-      this.list.append(this.a, this.b, this.c);
-      let next = this.list.iterator(this.b);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      let next = ctx.list.iterator(ctx.b);
       let b = next();
       let c = next();
       let d = next();
-      expect(b).toBe(this.b);
-      expect(c).toBe(this.c);
+      expect(b).toBe(ctx.b);
+      expect(c).toBe(ctx.c);
       expect(d).toBeNull();
     });
 
     it('find', function () {
-      this.list.append(this.a, this.b, this.zero, this.c);
-      expect(this.list.find(0)).toEqual([this.a, 0]);
-      expect(this.list.find(2)).toEqual([this.a, 2]);
-      expect(this.list.find(6)).toEqual([this.c, 0]);
-      expect(this.list.find(3, true)).toEqual([this.a, 3]);
-      expect(this.list.find(6, true)).toEqual([this.zero, 0]);
-      expect(this.list.find(3)).toEqual([this.b, 0]);
-      expect(this.list.find(4)).toEqual([this.b, 1]);
-      expect(this.list.find(10)).toEqual([null, 0]);
+      ctx.list.append(ctx.a, ctx.b, ctx.zero, ctx.c);
+      expect(ctx.list.find(0)).toEqual([ctx.a, 0]);
+      expect(ctx.list.find(2)).toEqual([ctx.a, 2]);
+      expect(ctx.list.find(6)).toEqual([ctx.c, 0]);
+      expect(ctx.list.find(3, true)).toEqual([ctx.a, 3]);
+      expect(ctx.list.find(6, true)).toEqual([ctx.zero, 0]);
+      expect(ctx.list.find(3)).toEqual([ctx.b, 0]);
+      expect(ctx.list.find(4)).toEqual([ctx.b, 1]);
+      expect(ctx.list.find(10)).toEqual([null, 0]);
     });
 
     it('offset', function () {
-      this.list.append(this.a, this.b, this.c);
-      expect(this.list.offset(this.a)).toBe(0);
-      expect(this.list.offset(this.b)).toBe(3);
-      expect(this.list.offset(this.c)).toBe(6);
-      expect(this.list.offset({})).toBe(-1);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      expect(ctx.list.offset(ctx.a)).toBe(0);
+      expect(ctx.list.offset(ctx.b)).toBe(3);
+      expect(ctx.list.offset(ctx.c)).toBe(6);
+      // @ts-ignore This tests invalid usage
+      expect(ctx.list.offset({})).toBe(-1);
     });
 
     it('forEach', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.forEach(this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(3);
-      let result = this.spy.callback.calls.all().reduce(function (memo, call) {
-        return memo + call.args[0].str;
-      }, '');
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.forEach(spy);
+      expect(spy.mock.calls.length).toBe(3);
+      const result = spy.mock.calls.reduce(
+        (memo: string, call: StrNode[]) => memo + call[0].str,
+        '',
+      );
       expect(result).toBe('abc');
     });
 
     it('destructive modification', function () {
-      this.list.append(this.a, this.b, this.c);
-      let arr = [];
-      this.list.forEach((node) => {
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      let arr: string[] = [];
+      ctx.list.forEach((node) => {
         arr.push(node.str);
-        if (node === this.a) {
-          this.list.remove(this.a);
-          this.list.remove(this.b);
-          this.list.append(this.a);
+        if (node === ctx.a) {
+          ctx.list.remove(ctx.a);
+          ctx.list.remove(ctx.b);
+          ctx.list.append(ctx.a);
         }
       });
       expect(arr).toEqual(['a', 'b', 'c', 'a']);
     });
 
     it('map', function () {
-      this.list.append(this.a, this.b, this.c);
-      let arr = this.list.map(function (node) {
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      let arr = ctx.list.map(function (node) {
         return node.str;
       });
       expect(arr).toEqual(['a', 'b', 'c']);
     });
 
     it('reduce', function () {
-      this.list.append(this.a, this.b, this.c);
-      let memo = this.list.reduce(function (memo, node) {
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      let memo = ctx.list.reduce(function (memo, node) {
         return memo + node.str;
       }, '');
       expect(memo).toBe('abc');
     });
 
     it('forEachAt', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.forEachAt(3, 3, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(1);
-      expect(this.spy.callback.calls.first().args).toEqual([this.b, 0, 3]);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.forEachAt(3, 3, spy);
+      expect(spy.mock.calls.length).toBe(1);
+      expect(spy.mock.calls[0]).toEqual([ctx.b, 0, 3]);
     });
 
     it('forEachAt zero length nodes', function () {
-      this.list.append(this.a, this.zero, this.c);
-      this.list.forEachAt(2, 2, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(3);
-      let calls = this.spy.callback.calls.all();
-      expect(calls[0].args).toEqual([this.a, 2, 1]);
-      expect(calls[1].args).toEqual([this.zero, 0, 0]);
-      expect(calls[2].args).toEqual([this.c, 0, 1]);
+      ctx.list.append(ctx.a, ctx.zero, ctx.c);
+      ctx.list.forEachAt(2, 2, spy);
+      expect(spy.mock.calls.length).toBe(3);
+      let calls = spy.mock.calls;
+      expect(calls[0]).toEqual([ctx.a, 2, 1]);
+      expect(calls[1]).toEqual([ctx.zero, 0, 0]);
+      expect(calls[2]).toEqual([ctx.c, 0, 1]);
     });
 
     it('forEachAt none', function () {
-      this.list.append(this.a, this.b);
-      this.list.forEachAt(1, 0, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(0);
+      ctx.list.append(ctx.a, ctx.b);
+      ctx.list.forEachAt(1, 0, spy);
+      expect(spy.mock.calls.length).toBe(0);
     });
 
     it('forEachAt partial nodes', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.forEachAt(1, 7, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(3);
-      let calls = this.spy.callback.calls.all();
-      expect(calls[0].args).toEqual([this.a, 1, 2]);
-      expect(calls[1].args).toEqual([this.b, 0, 3]);
-      expect(calls[2].args).toEqual([this.c, 0, 2]);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.forEachAt(1, 7, spy);
+      expect(spy.mock.calls.length).toBe(3);
+      let calls = spy.mock.calls;
+      expect(calls[0]).toEqual([ctx.a, 1, 2]);
+      expect(calls[1]).toEqual([ctx.b, 0, 3]);
+      expect(calls[2]).toEqual([ctx.c, 0, 2]);
     });
 
     it('forEachAt at part of single node', function () {
-      this.list.append(this.a, this.b, this.c);
-      this.list.forEachAt(4, 1, this.spy.callback);
-      expect(this.spy.callback.calls.count()).toBe(1);
-      expect(this.spy.callback.calls.first().args).toEqual([this.b, 1, 1]);
+      ctx.list.append(ctx.a, ctx.b, ctx.c);
+      ctx.list.forEachAt(4, 1, spy);
+      expect(spy.mock.calls.length).toBe(1);
+      expect(spy.mock.calls[0]).toEqual([ctx.b, 1, 1]);
     });
   });
 });

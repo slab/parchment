@@ -1,32 +1,30 @@
 import LinkedList from '../../collection/linked-list';
 import ParchmentError from '../../error';
 import Scope from '../../scope';
-import { Blot, BlotConstructor, Parent, Root } from './blot';
+import type { Blot, BlotConstructor, Parent, Root } from './blot';
 import ShadowBlot from './shadow';
 
 function makeAttachedBlot(node: Node, scroll: Root): Blot {
-  let blot = scroll.find(node);
-  if (blot == null) {
-    try {
-      blot = scroll.create(node);
-    } catch (e) {
-      blot = scroll.create(Scope.INLINE) as Blot;
-      Array.from(node.childNodes).forEach((child: Node) => {
-        // @ts-expect-error
-        blot.domNode.appendChild(child);
-      });
-      if (node.parentNode) {
-        node.parentNode.replaceChild(blot.domNode, node);
-      }
-      blot.attach();
+  const found = scroll.find(node);
+  if (found) return found;
+  try {
+    return scroll.create(node);
+  } catch (e) {
+    const blot = scroll.create(Scope.INLINE);
+    Array.from(node.childNodes).forEach((child: Node) => {
+      blot.domNode.appendChild(child);
+    });
+    if (node.parentNode) {
+      node.parentNode.replaceChild(blot.domNode, node);
     }
+    blot.attach();
+    return blot;
   }
-  return blot as Blot;
 }
 
 class ParentBlot extends ShadowBlot implements Parent {
   public static allowedChildren: BlotConstructor[] | null;
-  public static defaultChild: BlotConstructor | null;
+  public static defaultChild?: BlotConstructor;
   public static uiClass = '';
 
   public children!: LinkedList<Blot>;
@@ -241,7 +239,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     });
   }
 
-  public optimize(context: { [key: string]: any }): void {
+  public optimize(context?: { [key: string]: any }): void {
     super.optimize(context);
     this.enforceAllowedChildren();
     if (this.uiNode != null && this.uiNode !== this.domNode.firstChild) {

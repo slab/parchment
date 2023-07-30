@@ -1,5 +1,5 @@
 import { expectType } from 'tsd';
-import { Blot, EmbedBlot, Registry, ScrollBlot, ParentBlot } from '..';
+import { type Blot, EmbedBlot, Registry, ScrollBlot, ParentBlot } from '..';
 
 const registry = new Registry();
 const root = document.createElement('div');

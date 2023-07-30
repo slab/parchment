@@ -1,21 +1,24 @@
 import Attributor from './attributor/attributor';
-import { Blot, BlotConstructor, Root } from './blot/abstract/blot';
+import {
+  type Blot,
+  type BlotConstructor,
+  type Root,
+} from './blot/abstract/blot';
 import ParchmentError from './error';
 import Scope from './scope';
 
+export type RegistryDefinition = Attributor | BlotConstructor;
+
 export interface RegistryInterface {
   create(sroll: Root, input: Node | string | Scope, value?: any): Blot;
-  query(
-    query: string | Node | Scope,
-    scope: Scope,
-  ): Attributor | BlotConstructor | null;
+  query(query: string | Node | Scope, scope: Scope): RegistryDefinition | null;
   register(...definitions: any[]): any;
 }
 
 export default class Registry implements RegistryInterface {
   public static blots = new WeakMap<Node, Blot>();
 
-  public static find(node: Node | null, bubble = false): Blot | null {
+  public static find(node?: Node | null, bubble = false): Blot | null {
     if (node == null) {
       return null;
     }
@@ -41,7 +44,7 @@ export default class Registry implements RegistryInterface {
   private attributes: { [key: string]: Attributor } = {};
   private classes: { [key: string]: BlotConstructor } = {};
   private tags: { [key: string]: BlotConstructor } = {};
-  private types: { [key: string]: Attributor | BlotConstructor } = {};
+  private types: { [key: string]: RegistryDefinition } = {};
 
   public create(scroll: Root, input: Node | string | Scope, value?: any): Blot {
     const match = this.query(input);
@@ -67,7 +70,7 @@ export default class Registry implements RegistryInterface {
   public query(
     query: string | Node | Scope,
     scope: Scope = Scope.ANY,
-  ): Attributor | BlotConstructor | null {
+  ): RegistryDefinition | null {
     let match;
     if (typeof query === 'string') {
       match = this.types[query] || this.attributes[query];
@@ -94,53 +97,59 @@ export default class Registry implements RegistryInterface {
     if (match == null) {
       return null;
     }
-    // @ts-expect-error
-    if (scope & Scope.LEVEL & match.scope && scope & Scope.TYPE & match.scope) {
+    if (
+      'scope' in match &&
+      scope & Scope.LEVEL & match.scope &&
+      scope & Scope.TYPE & match.scope
+    ) {
       return match;
     }
     return null;
   }
 
-  public register(...definitions: any[]): any {
-    if (definitions.length > 1) {
-      return definitions.map((d) => {
-        return this.register(d);
-      });
-    }
-    const definition = definitions[0];
-    if (
-      typeof definition.blotName !== 'string' &&
-      typeof definition.attrName !== 'string'
-    ) {
-      throw new ParchmentError('Invalid definition');
-    } else if (definition.blotName === 'abstract') {
-      throw new ParchmentError('Cannot register abstract class');
-    }
-    this.types[definition.blotName || definition.attrName] = definition;
-    if (typeof definition.keyName === 'string') {
-      this.attributes[definition.keyName] = definition;
-    } else {
-      if (definition.className != null) {
-        this.classes[definition.className] = definition;
+  public register(...definitions: RegistryDefinition[]): RegistryDefinition[] {
+    return definitions.map((definition) => {
+      const isBlot = 'blotName' in definition;
+      const isAttr = 'attrName' in definition;
+      if (!isBlot && !isAttr) {
+        throw new ParchmentError('Invalid definition');
+      } else if (isBlot && definition.blotName === 'abstract') {
+        throw new ParchmentError('Cannot register abstract class');
       }
-      if (definition.tagName != null) {
-        if (Array.isArray(definition.tagName)) {
-          definition.tagName = definition.tagName.map((tagName: string) => {
-            return tagName.toUpperCase();
-          });
-        } else {
-          definition.tagName = definition.tagName.toUpperCase();
+      const key = isBlot
+        ? definition.blotName
+        : isAttr
+        ? definition.attrName
+        : (undefined as never); // already handled by above checks
+      this.types[key] = definition;
+
+      if (isAttr) {
+        if (typeof definition.keyName === 'string') {
+          this.attributes[definition.keyName] = definition;
         }
-        const tagNames = Array.isArray(definition.tagName)
-          ? definition.tagName
-          : [definition.tagName];
-        tagNames.forEach((tag: string) => {
-          if (this.tags[tag] == null || definition.className == null) {
-            this.tags[tag] = definition;
+      } else if (isBlot) {
+        if (definition.className) {
+          this.classes[definition.className] = definition;
+        }
+        if (definition.tagName) {
+          if (Array.isArray(definition.tagName)) {
+            definition.tagName = definition.tagName.map((tagName: string) => {
+              return tagName.toUpperCase();
+            });
+          } else {
+            definition.tagName = definition.tagName.toUpperCase();
           }
-        });
+          const tagNames = Array.isArray(definition.tagName)
+            ? definition.tagName
+            : [definition.tagName];
+          tagNames.forEach((tag: string) => {
+            if (this.tags[tag] == null || definition.className == null) {
+              this.tags[tag] = definition;
+            }
+          });
+        }
       }
-    }
-    return definition;
+      return definition;
+    });
   }
 }
