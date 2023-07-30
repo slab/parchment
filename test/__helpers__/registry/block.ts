@@ -1,4 +1,4 @@
-import BlockBlot from '../../src/blot/block';
+import BlockBlot from '../../../src/blot/block';
 
 export class HeaderBlot extends BlockBlot {
   static readonly blotName = 'header';
