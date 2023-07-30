@@ -70,7 +70,7 @@ describe('scroll', function () {
   });
 
   it('delete all', function () {
-    let wrapper = document.createElement('div');
+    const wrapper = document.createElement('div');
     wrapper.appendChild(ctx.scroll.domNode);
     ctx.scroll.deleteAt(0, 9);
     expect(wrapper.firstChild).toEqual(ctx.scroll.domNode);

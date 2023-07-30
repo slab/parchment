@@ -28,31 +28,8 @@
     "vite": "^4.4.7",
     "vitest": "^0.33.0"
   },
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:prettier/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-    },
-    "rules": {
-      "@typescript-eslint/ban-ts-ignore": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/ban-ts-comment": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_"
-        }
-      ]
-    }
-  },
   "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all"
+    "singleQuote": true
   },
   "license": "BSD-3-Clause",
   "repository": {
@@ -62,7 +39,7 @@
   "scripts": {
     "build": "vite build",
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
-    "lint": "eslint 'src/**/*.ts'",
+    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
     "prepare": "npm run build && npm run build:types",
     "test": "npm run test:unit && npm run test:types",
     "test:unit": "vitest",
