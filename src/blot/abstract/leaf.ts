@@ -1,5 +1,5 @@
 import Scope from '../../scope';
-import { Leaf } from './blot';
+import type { Leaf } from './blot';
 import ShadowBlot from './shadow';
 
 class LeafBlot extends ShadowBlot implements Leaf {

@@ -1,7 +1,7 @@
 import Attributor from '../attributor/attributor';
 import AttributorStore from '../attributor/store';
 import Scope from '../scope';
-import { Blot, BlotConstructor, Formattable, Root } from './abstract/blot';
+import type { Blot, BlotConstructor, Formattable, Root } from './abstract/blot';
 import LeafBlot from './abstract/leaf';
 import ParentBlot from './abstract/parent';
 import InlineBlot from './inline';
@@ -15,6 +15,10 @@ class BlockBlot extends ParentBlot implements Formattable {
     BlockBlot,
     LeafBlot,
   ];
+
+  static create(value?: unknown) {
+    return super.create(value) as HTMLElement;
+  }
 
   public static formats(domNode: HTMLElement, scroll: Root): any {
     const match = scroll.query(BlockBlot.blotName);

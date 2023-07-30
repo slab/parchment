@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -9,5 +10,13 @@ export default defineConfig({
       formats: ['es', 'umd'],
     },
     sourcemap: true,
+  },
+  test: {
+    include: ['./test/unit/*'],
+    browser: {
+      enabled: true,
+      provider: 'playwright',
+      name: 'chromium',
+    },
   },
 });

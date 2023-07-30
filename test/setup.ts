@@ -1,9 +1,13 @@
-import Registry from '../src/registry';
+import { beforeEach } from 'vitest';
 
-import ScrollBlot from '../src/blot/scroll';
-import BlockBlot from '../src/blot/block';
-import InlineBlot from '../src/blot/inline';
-import TextBlot from '../src/blot/text';
+import {
+  Registry,
+  ScrollBlot,
+  BlockBlot,
+  InlineBlot,
+  TextBlot,
+  type BlotConstructor,
+} from '../src/parchment';
 import {
   AuthorBlot,
   BoldBlot,
@@ -19,7 +23,7 @@ import { BreakBlot } from './registry/break';
 const getTestRegistry = () => {
   const reg = new Registry();
 
-  reg.register(ScrollBlot);
+  reg.register(ScrollBlot as unknown as BlotConstructor);
   reg.register(BlockBlot);
   reg.register(InlineBlot);
   reg.register(TextBlot);
@@ -41,7 +45,7 @@ type TestContext = {
 };
 
 export const setupContextBeforeEach = () => {
-  const ctx: TestContext = {} as TestContext;
+  const ctx = {} as TestContext;
   beforeEach(() => {
     const container = document.createElement('div');
     const registry = getTestRegistry();

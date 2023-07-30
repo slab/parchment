@@ -5,4 +5,4 @@ interface LinkedNode {
   length(): number;
 }
 
-export default LinkedNode;
+export type { LinkedNode as default };
