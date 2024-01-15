@@ -10,7 +10,7 @@ import Scope from './scope';
 export type RegistryDefinition = Attributor | BlotConstructor;
 
 export interface RegistryInterface {
-  create(sroll: Root, input: Node | string | Scope, value?: any): Blot;
+  create(scroll: Root, input: Node | string | Scope, value?: any): Blot;
   query(query: string | Node | Scope, scope: Scope): RegistryDefinition | null;
   register(...definitions: any[]): any;
 }
