@@ -7,7 +7,7 @@ export interface BlotConstructor {
   blotName: string;
   className?: string;
   tagName: string | string[];
-  new (scroll: Root, node: Node, value?: any): Blot;
+  new (...args: any[]): Blot;
   create(value?: any): Node;
 }
 
