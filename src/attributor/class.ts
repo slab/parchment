@@ -14,7 +14,7 @@ class ClassAttributor extends Attributor {
       .map((name) => name.split('-').slice(0, -1).join('-'));
   }
 
-  public add(node: HTMLElement, value: string): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
@@ -33,7 +33,7 @@ class ClassAttributor extends Attributor {
     }
   }
 
-  public value(node: HTMLElement): string {
+  public value(node: HTMLElement): any {
     const result = match(node, this.keyName)[0] || '';
     const value = result.slice(this.keyName.length + 1); // +1 for hyphen
     return this.canAdd(node, value) ? value : '';
