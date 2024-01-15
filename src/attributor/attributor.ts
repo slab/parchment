@@ -29,7 +29,7 @@ export default class Attributor {
     }
   }
 
-  public add(node: HTMLElement, value: string): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
@@ -52,7 +52,7 @@ export default class Attributor {
     node.removeAttribute(this.keyName);
   }
 
-  public value(node: HTMLElement): string {
+  public value(node: HTMLElement): any {
     const value = node.getAttribute(this.keyName);
     if (this.canAdd(node, value) && value) {
       return value;

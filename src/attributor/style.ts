@@ -17,7 +17,7 @@ class StyleAttributor extends Attributor {
     });
   }
 
-  public add(node: HTMLElement, value: string): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
@@ -34,7 +34,7 @@ class StyleAttributor extends Attributor {
     }
   }
 
-  public value(node: HTMLElement): string {
+  public value(node: HTMLElement): any {
     // @ts-expect-error Fix me later
     const value = node.style[camelize(this.keyName)];
     return this.canAdd(node, value) ? value : '';
