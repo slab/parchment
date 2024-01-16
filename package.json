@@ -32,10 +32,7 @@
     "singleQuote": true
   },
   "license": "BSD-3-Clause",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/quilljs/parchment"
-  },
+  "repository": "github:quilljs/parchment",
   "scripts": {
     "build": "npm run build:bundle && npm run build:types",
     "build:bundle": "vite build",
