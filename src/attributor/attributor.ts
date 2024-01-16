@@ -29,11 +29,11 @@ export default class Attributor {
     }
   }
 
-  public add(node: HTMLElement, value: string | number): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
-    node.setAttribute(this.keyName, String(value));
+    node.setAttribute(this.keyName, value);
     return true;
   }
 

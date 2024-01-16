@@ -14,7 +14,7 @@ class ClassAttributor extends Attributor {
       .map((name) => name.split('-').slice(0, -1).join('-'));
   }
 
-  public add(node: HTMLElement, value: string | number): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
