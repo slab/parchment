@@ -1,3 +1,7 @@
+# [Unreleased]
+
+- Improved typing for Attributor and Registry.
+
 # 3.0.0-alpha.1
 
 - Fix ESM bundle not exposed in package.json.
