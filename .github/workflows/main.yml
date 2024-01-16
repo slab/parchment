@@ -7,15 +7,4 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    # https://playwright.dev/docs/ci#via-containers
-    container:
-      image: mcr.microsoft.com/playwright:v1.36.0-jammy
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+    uses: ./.github/workflows/_test.yml

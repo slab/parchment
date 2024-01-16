@@ -8,7 +8,7 @@
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["vite.config.ts"],
+  "ignorePatterns": ["vite.config.ts", "scripts"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
