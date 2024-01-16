@@ -152,7 +152,7 @@ if (version === 'experimental') {
   fs.writeFileSync(filename, releaseNots);
   try {
     const prereleaseFlag = distTag === 'latest' ? '--latest' : ' --prerelease';
-    const releaseCommand = `gh release create v${version} ${prereleaseFlag} -t "Version ${version}" --notes-file "${filename}" --draft`;
+    const releaseCommand = `gh release create v${version} ${prereleaseFlag} -t "Version ${version}" --notes-file "${filename}"`;
     if (dryRun) {
       console.log(`Skipping: "${releaseCommand}" in dry-run mode`);
       console.log(`Release note:\n${releaseNots}`);
