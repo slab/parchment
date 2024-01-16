@@ -1,5 +1,7 @@
 # [Unreleased]
 
+# 3.0.0-alpha.2
+
 - Improved typing for Attributor and Registry.
 
 # 3.0.0-alpha.1
