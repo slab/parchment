@@ -107,7 +107,7 @@ fs.writeFileSync(
   'CHANGELOG.md',
   changelog.replace(
     UNRELEASED_PLACEHOLDER,
-    `${UNRELEASED_PLACEHOLDER}\n\n# v${version}`,
+    `${UNRELEASED_PLACEHOLDER}\n\n# ${version}`,
   ),
 );
 
