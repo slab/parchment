@@ -94,9 +94,9 @@ const index = changelog.indexOf(UNRELEASED_PLACEHOLDER);
 if (index === -1) {
   exitWithError(`Could not find "${UNRELEASED_PLACEHOLDER}" in CHANGELOG.md`);
 }
-let nextVersionIndex = changelog.indexOf('\n# v', index);
+let nextVersionIndex = changelog.indexOf('\n# ', index);
 if (nextVersionIndex === -1) {
-  nextVersionIndex = change.length - 1;
+  nextVersionIndex = changelog.length - 1;
 }
 
 const releaseNots = changelog
