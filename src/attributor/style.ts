@@ -17,7 +17,7 @@ class StyleAttributor extends Attributor {
     });
   }
 
-  public add(node: HTMLElement, value: string | number): boolean {
+  public add(node: HTMLElement, value: any): boolean {
     if (!this.canAdd(node, value)) {
       return false;
     }
