@@ -1,15 +1,15 @@
-import Attributor from '../attributor/attributor';
-import AttributorStore from '../attributor/store';
-import Scope from '../scope';
+import Attributor from '../attributor/attributor.js';
+import AttributorStore from '../attributor/store.js';
+import Scope from '../scope.js';
 import type {
   Blot,
   BlotConstructor,
   Formattable,
   Parent,
   Root,
-} from './abstract/blot';
-import LeafBlot from './abstract/leaf';
-import ParentBlot from './abstract/parent';
+} from './abstract/blot.js';
+import LeafBlot from './abstract/leaf.js';
+import ParentBlot from './abstract/parent.js';
 
 // Shallow object comparison
 function isEqual(

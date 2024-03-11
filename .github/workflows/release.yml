@@ -31,7 +31,7 @@ jobs:
           node-version: 20
 
       - run: npm ci
-      - run: ./scripts/release.js --version ${{ github.event.inputs.version }} ${{ github.event.inputs.dry-run == 'true' && '--dry-run' || '' }}
+      - run: ./scripts/release.cjs --version ${{ github.event.inputs.version }} ${{ github.event.inputs.dry-run == 'true' && '--dry-run' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { setupContextBeforeEach } from '../setup';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('Container', function () {
   const ctx = setupContextBeforeEach();

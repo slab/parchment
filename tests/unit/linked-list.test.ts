@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import LinkedList from '../../src/collection/linked-list';
-import type { LinkedNode } from '../../src/parchment';
+import LinkedList from '../../src/collection/linked-list.js';
+import type { LinkedNode } from '../../src/parchment.js';
 
 interface StrNode extends LinkedNode {
   str: string;

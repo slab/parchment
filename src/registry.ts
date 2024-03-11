@@ -1,11 +1,11 @@
-import Attributor from './attributor/attributor';
+import Attributor from './attributor/attributor.js';
 import {
   type Blot,
   type BlotConstructor,
   type Root,
-} from './blot/abstract/blot';
-import ParchmentError from './error';
-import Scope from './scope';
+} from './blot/abstract/blot.js';
+import ParchmentError from './error.js';
+import Scope from './scope.js';
 
 export type RegistryDefinition = Attributor | BlotConstructor;
 

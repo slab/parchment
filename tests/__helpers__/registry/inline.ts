@@ -1,4 +1,4 @@
-import InlineBlot from '../../../src/blot/inline';
+import InlineBlot from '../../../src/blot/inline.js';
 
 export class AuthorBlot extends InlineBlot {
   static readonly blotName = 'author';

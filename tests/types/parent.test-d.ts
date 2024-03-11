@@ -5,7 +5,7 @@ import {
   Registry,
   ScrollBlot,
   ParentBlot,
-} from '../../src/parchment';
+} from '../../src/parchment.js';
 
 const registry = new Registry();
 const root = document.createElement('div');

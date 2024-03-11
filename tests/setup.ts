@@ -7,13 +7,13 @@ import {
   InlineBlot,
   TextBlot,
   type BlotConstructor,
-} from '../src/parchment';
+} from '../src/parchment.js';
 import {
   AuthorBlot,
   BoldBlot,
   ItalicBlot,
   ScriptBlot,
-} from './__helpers__/registry/inline';
+} from './__helpers__/registry/inline.js';
 import {
   Align,
   Color,
@@ -21,11 +21,11 @@ import {
   Id,
   Indent,
   Size,
-} from './__helpers__/registry/attributor';
-import { HeaderBlot } from './__helpers__/registry/block';
-import { ImageBlot, VideoBlot } from './__helpers__/registry/embed';
-import { ListContainer, ListItem } from './__helpers__/registry/list';
-import { BreakBlot } from './__helpers__/registry/break';
+} from './__helpers__/registry/attributor.js';
+import { HeaderBlot } from './__helpers__/registry/block.js';
+import { ImageBlot, VideoBlot } from './__helpers__/registry/embed.js';
+import { ListContainer, ListItem } from './__helpers__/registry/list.js';
+import { BreakBlot } from './__helpers__/registry/break.js';
 
 const getTestRegistry = () => {
   const reg = new Registry();

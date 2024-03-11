@@ -1,10 +1,15 @@
-import Attributor from '../attributor/attributor';
-import AttributorStore from '../attributor/store';
-import Scope from '../scope';
-import type { Blot, BlotConstructor, Formattable, Root } from './abstract/blot';
-import LeafBlot from './abstract/leaf';
-import ParentBlot from './abstract/parent';
-import InlineBlot from './inline';
+import Attributor from '../attributor/attributor.js';
+import AttributorStore from '../attributor/store.js';
+import Scope from '../scope.js';
+import type {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Root,
+} from './abstract/blot.js';
+import LeafBlot from './abstract/leaf.js';
+import ParentBlot from './abstract/parent.js';
+import InlineBlot from './inline.js';
 
 class BlockBlot extends ParentBlot implements Formattable {
   public static blotName = 'block';

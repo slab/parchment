@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import type { BlockBlot, InlineBlot } from '../../src/parchment';
-import type { ImageBlot } from '../__helpers__/registry/embed';
-import { setupContextBeforeEach } from '../setup';
+import type { BlockBlot, InlineBlot } from '../../src/parchment.js';
+import type { ImageBlot } from '../__helpers__/registry/embed.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('EmbedBlot', function () {
   const ctx = setupContextBeforeEach();

@@ -1,6 +1,6 @@
-import Scope from '../scope';
-import type { Blot, Leaf, Root } from './abstract/blot';
-import LeafBlot from './abstract/leaf';
+import Scope from '../scope.js';
+import type { Blot, Leaf, Root } from './abstract/blot.js';
+import LeafBlot from './abstract/leaf.js';
 
 class TextBlot extends LeafBlot implements Leaf {
   public static readonly blotName = 'text';

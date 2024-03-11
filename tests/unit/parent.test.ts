@@ -1,16 +1,16 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import LeafBlot from '../../src/blot/abstract/leaf';
-import ParentBlot from '../../src/blot/abstract/parent';
-import ShadowBlot from '../../src/blot/abstract/shadow';
-import EmbedBlot from '../../src/blot/embed';
+import LeafBlot from '../../src/blot/abstract/leaf.js';
+import ParentBlot from '../../src/blot/abstract/parent.js';
+import ShadowBlot from '../../src/blot/abstract/shadow.js';
+import EmbedBlot from '../../src/blot/embed.js';
 
-import { VideoBlot } from '../__helpers__/registry/embed';
-import { ItalicBlot } from '../__helpers__/registry/inline';
+import { VideoBlot } from '../__helpers__/registry/embed.js';
+import { ItalicBlot } from '../__helpers__/registry/inline.js';
 
-import Registry from '../../src/registry';
-import TextBlot from '../../src/blot/text';
-import { setupContextBeforeEach } from '../setup';
-import type { BlockBlot, Blot } from '../../src/parchment';
+import Registry from '../../src/registry.js';
+import TextBlot from '../../src/blot/text.js';
+import { setupContextBeforeEach } from '../setup.js';
+import type { BlockBlot, Blot } from '../../src/parchment.js';
 
 describe('Parent', function () {
   const ctx = setupContextBeforeEach();

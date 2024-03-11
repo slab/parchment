@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import type { BlockBlot } from '../../src/parchment';
-import type { HeaderBlot } from '../__helpers__/registry/block';
-import { setupContextBeforeEach } from '../setup';
+import type { BlockBlot } from '../../src/parchment.js';
+import type { HeaderBlot } from '../__helpers__/registry/block.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('Block', function () {
   const ctx = setupContextBeforeEach();
