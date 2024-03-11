@@ -1,4 +1,4 @@
-import Attributor from './attributor';
+import Attributor from './attributor.js';
 
 function camelize(name: string): string {
   const parts = name.split('-');

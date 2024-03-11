@@ -1,7 +1,13 @@
-import ParchmentError from '../../error';
-import Registry from '../../registry';
-import Scope from '../../scope';
-import type { Blot, BlotConstructor, Formattable, Parent, Root } from './blot';
+import ParchmentError from '../../error.js';
+import Registry from '../../registry.js';
+import Scope from '../../scope.js';
+import type {
+  Blot,
+  BlotConstructor,
+  Formattable,
+  Parent,
+  Root,
+} from './blot.js';
 
 class ShadowBlot implements Blot {
   public static blotName = 'abstract';

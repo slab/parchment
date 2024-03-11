@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import type { BlockBlot, Leaf } from '../../src/parchment';
+import type { BlockBlot, Leaf } from '../../src/parchment.js';
 import type {
   BoldBlot,
   ItalicBlot,
   ScriptBlot,
-} from '../__helpers__/registry/inline';
-import { setupContextBeforeEach } from '../setup';
+} from '../__helpers__/registry/inline.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('InlineBlot', function () {
   const ctx = setupContextBeforeEach();

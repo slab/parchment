@@ -1,7 +1,7 @@
-import Attributor from '../../../src/attributor/attributor';
-import ClassAttributor from '../../../src/attributor/class';
-import StyleAttributor from '../../../src/attributor/style';
-import Scope from '../../../src/scope';
+import Attributor from '../../../src/attributor/attributor.js';
+import ClassAttributor from '../../../src/attributor/class.js';
+import StyleAttributor from '../../../src/attributor/style.js';
+import Scope from '../../../src/scope.js';
 
 export const Color = new StyleAttributor('color', 'color', {
   scope: Scope.INLINE_ATTRIBUTE,

@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import type { BlockBlot, Parent } from '../../src/parchment';
-import Registry from '../../src/registry';
-import type { ItalicBlot } from '../__helpers__/registry/inline';
-import { setupContextBeforeEach } from '../setup';
+import type { BlockBlot, Parent } from '../../src/parchment.js';
+import Registry from '../../src/registry.js';
+import type { ItalicBlot } from '../__helpers__/registry/inline.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('Blot', function () {
   const ctx = setupContextBeforeEach();

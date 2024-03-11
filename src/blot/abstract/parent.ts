@@ -1,8 +1,8 @@
-import LinkedList from '../../collection/linked-list';
-import ParchmentError from '../../error';
-import Scope from '../../scope';
-import type { Blot, BlotConstructor, Parent, Root } from './blot';
-import ShadowBlot from './shadow';
+import LinkedList from '../../collection/linked-list.js';
+import ParchmentError from '../../error.js';
+import Scope from '../../scope.js';
+import type { Blot, BlotConstructor, Parent, Root } from './blot.js';
+import ShadowBlot from './shadow.js';
 
 function makeAttachedBlot(node: Node, scroll: Root): Blot {
   const found = scroll.find(node);
