@@ -1,7 +1,7 @@
-import type LinkedList from '../../collection/linked-list';
-import type LinkedNode from '../../collection/linked-node';
-import type { RegistryDefinition } from '../../registry';
-import Scope from '../../scope';
+import type LinkedList from '../../collection/linked-list.js';
+import type LinkedNode from '../../collection/linked-node.js';
+import type { RegistryDefinition } from '../../registry.js';
+import Scope from '../../scope.js';
 
 export interface BlotConstructor {
   blotName: string;

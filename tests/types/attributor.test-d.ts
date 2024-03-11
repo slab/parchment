@@ -1,5 +1,5 @@
 import { assertType } from 'vitest';
-import { ClassAttributor } from '../../src/parchment';
+import { ClassAttributor } from '../../src/parchment.js';
 
 class IndentAttributor extends ClassAttributor {
   value(node: HTMLElement) {

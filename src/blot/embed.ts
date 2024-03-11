@@ -1,5 +1,5 @@
-import type { Formattable, Root } from './abstract/blot';
-import LeafBlot from './abstract/leaf';
+import type { Formattable, Root } from './abstract/blot.js';
+import LeafBlot from './abstract/leaf.js';
 
 class EmbedBlot extends LeafBlot implements Formattable {
   public static formats(_domNode: HTMLElement, _scroll: Root): any {

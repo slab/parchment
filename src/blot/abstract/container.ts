@@ -1,6 +1,6 @@
-import Scope from '../../scope';
-import BlockBlot from '../block';
-import ParentBlot from './parent';
+import Scope from '../../scope.js';
+import BlockBlot from '../block.js';
+import ParentBlot from './parent.js';
 
 class ContainerBlot extends ParentBlot {
   public static blotName = 'container';

@@ -4,10 +4,10 @@ import type {
   BlockBlot,
   Formattable,
   InlineBlot,
-} from '../../src/parchment';
-import type { HeaderBlot } from '../__helpers__/registry/block';
-import type { BoldBlot } from '../__helpers__/registry/inline';
-import { setupContextBeforeEach } from '../setup';
+} from '../../src/parchment.js';
+import type { HeaderBlot } from '../__helpers__/registry/block.js';
+import type { BoldBlot } from '../__helpers__/registry/inline.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('Attributor', function () {
   const ctx = setupContextBeforeEach();

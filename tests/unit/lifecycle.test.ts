@@ -1,17 +1,17 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import LeafBlot from '../../src/blot/abstract/leaf';
-import ShadowBlot from '../../src/blot/abstract/shadow';
+import LeafBlot from '../../src/blot/abstract/leaf.js';
+import ShadowBlot from '../../src/blot/abstract/shadow.js';
 import type {
   BlockBlot,
   Blot,
   InlineBlot,
   TextBlot,
-} from '../../src/parchment';
-import { HeaderBlot } from '../__helpers__/registry/block';
-import { ImageBlot } from '../__helpers__/registry/embed';
-import type { ItalicBlot } from '../__helpers__/registry/inline';
-import { BoldBlot } from '../__helpers__/registry/inline';
-import { setupContextBeforeEach } from '../setup';
+} from '../../src/parchment.js';
+import { HeaderBlot } from '../__helpers__/registry/block.js';
+import { ImageBlot } from '../__helpers__/registry/embed.js';
+import type { ItalicBlot } from '../__helpers__/registry/inline.js';
+import { BoldBlot } from '../__helpers__/registry/inline.js';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('Lifecycle', function () {
   const ctx = setupContextBeforeEach();

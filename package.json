@@ -7,13 +7,14 @@
   "main": "./dist/parchment.umd.js",
   "module": "./dist/parchment.mjs",
   "types": "./dist/parchment.d.ts",
+  "type": "module",
   "files": [
     "tsconfig.json",
     "dist",
     "src"
   ],
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.36.3",
+    "@microsoft/api-extractor": "^7.42.3",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
@@ -22,6 +23,7 @@
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^8.9.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-require-extensions": "^0.1.3",
     "playwright": "^1.36.2",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6",
