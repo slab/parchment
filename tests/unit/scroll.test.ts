@@ -1,5 +1,5 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { setupContextBeforeEach } from '../setup';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('scroll', function () {
   const ctx = setupContextBeforeEach();

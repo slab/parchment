@@ -122,6 +122,8 @@ exec(`npm version ${version} -f`);
 const pushCommand = `git push origin ${process.env.GITHUB_REF_NAME} --follow-tags`;
 if (dryRun) {
   console.log(`Skipping: "${pushCommand}" in dry-run mode`);
+} else if (version === 'experimental') {
+  console.log(`Skipping: "${pushCommand}" for experimental version`);
 } else {
   exec(pushCommand);
 }

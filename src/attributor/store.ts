@@ -1,9 +1,9 @@
-import type { Formattable } from '../blot/abstract/blot';
-import Registry from '../registry';
-import Scope from '../scope';
-import Attributor from './attributor';
-import ClassAttributor from './class';
-import StyleAttributor from './style';
+import type { Formattable } from '../blot/abstract/blot.js';
+import Registry from '../registry.js';
+import Scope from '../scope.js';
+import Attributor from './attributor.js';
+import ClassAttributor from './class.js';
+import StyleAttributor from './style.js';
 
 class AttributorStore {
   private attributes: { [key: string]: Attributor } = {};

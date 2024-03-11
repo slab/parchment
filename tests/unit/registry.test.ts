@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
-import Scope from '../../src/scope';
-import { HeaderBlot } from '../__helpers__/registry/block';
+import Scope from '../../src/scope.js';
+import { HeaderBlot } from '../__helpers__/registry/block.js';
 import {
   AuthorBlot,
   BoldBlot,
   ItalicBlot,
-} from '../__helpers__/registry/inline';
+} from '../__helpers__/registry/inline.js';
 
-import ShadowBlot from '../../src/blot/abstract/shadow';
-import InlineBlot from '../../src/blot/inline';
-import BlockBlot from '../../src/blot/block';
-import type { Parent } from '../../src/parchment';
+import ShadowBlot from '../../src/blot/abstract/shadow.js';
+import InlineBlot from '../../src/blot/inline.js';
+import BlockBlot from '../../src/blot/block.js';
+import type { Parent } from '../../src/parchment.js';
 
-import { setupContextBeforeEach } from '../setup';
+import { setupContextBeforeEach } from '../setup.js';
 
 describe('ctx.registry', function () {
   const ctx = setupContextBeforeEach();

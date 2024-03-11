@@ -1,6 +1,6 @@
-import Scope from '../../scope';
-import type { Leaf } from './blot';
-import ShadowBlot from './shadow';
+import Scope from '../../scope.js';
+import type { Leaf } from './blot.js';
+import ShadowBlot from './shadow.js';
 
 class LeafBlot extends ShadowBlot implements Leaf {
   public static scope = Scope.INLINE_BLOT;
