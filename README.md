@@ -4,7 +4,7 @@ Parchment is [Quill](https://quilljs.com)'s document model. It is a parallel tre
 
 **Note:** You should never instantiate a Blot yourself with `new`. This may prevent necessary lifecycle functionality of a Blot. Use the [Registry](#registry)'s `create()` method instead.
 
-`npm install --save parchment`
+`npm install parchment`
 
 See [Cloning Medium with Parchment](https://quilljs.com/guides/cloning-medium-with-parchment/) for a guide on how Quill uses Parchment its document model.
 
@@ -48,14 +48,13 @@ class Blot {
   // Called after update cycle completes. Cannot change the value or length
   // of the document, and any DOM operation must reduce complexity of the DOM
   // tree. A shared context object is passed through all blots.
-  optimize(context: {[key: string]: any}): void;
+  optimize(context: { [key: string]: any }): void;
 
   // Called when blot changes, with the mutation records of its change.
-  // Internal records of the blot values can be updated, and modifcations of
+  // Internal records of the blot values can be updated, and modifications of
   // the blot itself is permitted. Can be trigger from user change or API call.
   // A shared context object is passed through all blots.
-  update(mutations: MutationRecord[], context: {[key: string]: any});
-
+  update(mutations: MutationRecord[], context: { [key: string]: any });
 
   /** Leaf Blots only **/
 
@@ -77,11 +76,10 @@ class Blot {
   // user change detectable by update()
   value(): any;
 
-
   /** Parent blots only **/
 
   // Whitelist array of Blots that can be direct children.
-  static allowedChildren: Blot[];
+  static allowedChildren: Registry.BlotConstructor[];
 
   // Default child blot to be inserted if this blot becomes empty.
   static defaultChild: Registry.BlotConstructor;
@@ -92,9 +90,8 @@ class Blot {
   build();
 
   // Useful search functions for descendant(s), should not modify
-  descendant(type: BlotClass, index: number, inclusive): Blot
+  descendant(type: BlotClass, index: number, inclusive): Blot;
   descendants(type: BlotClass, index: number, length: number): Blot[];
-
 
   /** Formattable blots only **/
 
@@ -118,6 +115,9 @@ Implementation for a Blot representing a link, which is a parent, inline scoped,
 import Parchment from 'parchment';
 
 class LinkBlot extends Parchment.Inline {
+  static blotName = 'link';
+  static tagName = 'A';
+
   static create(url) {
     let node = super.create();
     node.setAttribute('href', url);
@@ -144,13 +144,11 @@ class LinkBlot extends Parchment.Inline {
     return formats;
   }
 }
-LinkBlot.blotName = 'link';
-LinkBlot.tagName = 'A';
 
 Parchment.register(LinkBlot);
 ```
 
-Quill also provides many great example implementions in its [source code](https://github.com/quilljs/quill/tree/develop/formats).
+Quill also provides many great example implementations in its [source code](https://github.com/quilljs/quill/tree/develop/formats).
 
 ### Block Blot
 
@@ -158,7 +156,7 @@ Basic implementation of a block scoped formattable parent Blot. Formatting a blo
 
 ### Inline Blot
 
-Basic implementation of an inline scoped formattable parent Blot. Formatting an inline blot by default either wraps itself with another blot or passes the call to the approprate child.
+Basic implementation of an inline scoped formattable parent Blot. Formatting an inline blot by default either wraps itself with another blot or passes the call to the appropriate child.
 
 ### Embed Blot
 
@@ -167,7 +165,6 @@ Basic implementation of a non-text leaf blot, that is formattable. Its correspon
 ### Scroll
 
 The root parent blot of a Parchment document. It is not formattable.
-
 
 ## Attributors
 
@@ -207,10 +204,10 @@ Parchment.register(Width);
 let imageNode = document.createElement('img');
 
 Width.add(imageNode, '10px');
-console.log(imageNode.outerHTML);   // Will print <img width="10px">
-Width.value(imageNode);	                // Will return 10px
+console.log(imageNode.outerHTML); // Will print <img width="10px">
+Width.value(imageNode); // Will return 10px
 Width.remove(imageNode);
-console.log(imageNode.outerHTML);   // Will print <img>
+console.log(imageNode.outerHTML); // Will print <img>
 ```
 
 ### Class Attributor
@@ -225,7 +222,7 @@ Parchment.register(Align);
 
 let node = document.createElement('div');
 Align.add(node, 'right');
-console.log(node.outerHTML);  // Will print <div class="blot-align-right"></div>
+console.log(node.outerHTML); // Will print <div class="blot-align-right"></div>
 ```
 
 ### Style Attributor
@@ -236,13 +233,13 @@ Uses inline styles to represent formats.
 import Parchment from 'parchment';
 
 let Align = new Parchment.Attributor.Style('align', 'text-align', {
-  whitelist: ['right', 'center', 'justify']   // Having no value implies left align
+  whitelist: ['right', 'center', 'justify'], // Having no value implies left align
 });
 Parchment.register(Align);
 
 let node = document.createElement('div');
 Align.add(node, 'right');
-console.log(node.outerHTML);  // Will print <div style="text-align: right;"></div>
+console.log(node.outerHTML); // Will print <div style="text-align: right;"></div>
 ```
 
 ## Registry

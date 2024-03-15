@@ -23,7 +23,14 @@ function makeAttachedBlot(node: Node, scroll: Root): Blot {
 }
 
 class ParentBlot extends ShadowBlot implements Parent {
-  public static allowedChildren: BlotConstructor[] | null;
+  /**
+   * Whitelist array of Blots that can be direct children.
+   */
+  public static allowedChildren?: BlotConstructor[];
+
+  /**
+   * Default child blot to be inserted if this blot becomes empty.
+   */
   public static defaultChild?: BlotConstructor;
   public static uiClass = '';
 
@@ -59,6 +66,9 @@ class ParentBlot extends ShadowBlot implements Parent {
     this.domNode.insertBefore(this.uiNode, this.domNode.firstChild);
   }
 
+  /**
+   * Called during construction, should fill its own children LinkedList.
+   */
   public build(): void {
     this.children = new LinkedList<Blot>();
     // Need to be reversed for if DOM nodes already in order

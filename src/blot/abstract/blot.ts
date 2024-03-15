@@ -4,11 +4,20 @@ import type { RegistryDefinition } from '../../registry.js';
 import Scope from '../../scope.js';
 
 export interface BlotConstructor {
-  blotName: string;
-  className?: string;
-  tagName: string | string[];
   new (...args: any[]): Blot;
+  /**
+   * Creates corresponding DOM node
+   */
   create(value?: any): Node;
+
+  blotName: string;
+  tagName: string | string[];
+  scope: Scope;
+  className?: string;
+
+  requiredContainer?: BlotConstructor;
+  allowedChildren?: BlotConstructor[];
+  defaultChild?: BlotConstructor;
 }
 
 export interface Blot extends LinkedNode {
@@ -18,21 +27,22 @@ export interface Blot extends LinkedNode {
   next: Blot | null;
   domNode: Node;
 
-  statics: {
-    allowedChildren?: BlotConstructor[];
-    blotName: string;
-    className?: string;
-    defaultChild?: BlotConstructor;
-    requiredContainer?: BlotConstructor;
-    scope: Scope;
-    tagName: string | string[];
-  };
+  statics: BlotConstructor;
 
   attach(): void;
   clone(): Blot;
   detach(): void;
   isolate(index: number, length: number): Blot;
+
+  /**
+   * For leaves, length of blot's value()
+   * For parents, sum of children's values
+   */
   length(): number;
+
+  /**
+   * Returns offset between this blot and an ancestor's
+   */
   offset(root?: Blot): number;
   remove(): void;
   replaceWith(name: string, value: any): Blot;
@@ -44,8 +54,21 @@ export interface Blot extends LinkedNode {
   deleteAt(index: number, length: number): void;
   formatAt(index: number, length: number, name: string, value: any): void;
   insertAt(index: number, value: string, def?: any): void;
+
+  /**
+   * Called after update cycle completes. Cannot change the value or length
+   * of the document, and any DOM operation must reduce complexity of the DOM
+   * tree. A shared context object is passed through all blots.
+   */
   optimize(context: { [key: string]: any }): void;
   optimize(mutations: MutationRecord[], context: { [key: string]: any }): void;
+
+  /**
+   * Called when blot changes, with the mutation records of its change.
+   * Internal records of the blot values can be updated, and modifications of
+   * the blot itself is permitted. Can be trigger from user change or API call.
+   * A shared context object is passed through all blots.
+   */
   update(mutations: MutationRecord[], context: { [key: string]: any }): void;
 }
 
@@ -76,7 +99,14 @@ export interface Root extends Parent {
 }
 
 export interface Formattable extends Blot {
+  /**
+   * Apply format to blot. Should not pass onto child or other blot.
+   */
   format(name: string, value: any): void;
+
+  /**
+   * Return formats represented by blot, including from Attributors.
+   */
   formats(): { [index: string]: any };
 }
 
