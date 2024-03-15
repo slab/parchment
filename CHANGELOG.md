@@ -1,5 +1,8 @@
 # [Unreleased]
 
+- Make the bundle a valid ESM page
+- Improve typings for Blot
+
 # 3.0.0-alpha.2
 
 - Improved typing for Attributor and Registry.
