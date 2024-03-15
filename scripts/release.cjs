@@ -122,7 +122,7 @@ exec(`npm version ${version} -f`);
 const pushCommand = `git push origin ${process.env.GITHUB_REF_NAME} --follow-tags`;
 if (dryRun) {
   console.log(`Skipping: "${pushCommand}" in dry-run mode`);
-} else if (version === 'experimental') {
+} else if (distTag === 'experimental') {
   console.log(`Skipping: "${pushCommand}" for experimental version`);
 } else {
   exec(pushCommand);
@@ -147,7 +147,7 @@ exec(`npm publish --tag ${distTag}${dryRun ? ' --dry-run' : ''}`);
 /*
  * Create GitHub release
  */
-if (version === 'experimental') {
+if (distTag === 'experimental') {
   console.log('Skipping GitHub release for experimental version');
 } else {
   const filename = `release-note-${version}-${(Math.random() * 1000) | 0}.txt`;
