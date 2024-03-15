@@ -1,5 +1,7 @@
 # [Unreleased]
 
+# 3.0.0-beta.0
+
 - Make the bundle a valid ESM page
 - Improve typings for Blot
 
