@@ -119,8 +119,8 @@ export default class Registry implements RegistryInterface {
       const key = isBlot
         ? definition.blotName
         : isAttr
-        ? definition.attrName
-        : (undefined as never); // already handled by above checks
+          ? definition.attrName
+          : (undefined as never); // already handled by above checks
       this.types[key] = definition;
 
       if (isAttr) {

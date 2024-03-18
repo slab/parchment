@@ -1,5 +1,7 @@
 # [Unreleased]
 
+- Keep identify names in built code bundle
+
 # 3.0.0-beta.0
 
 - Make the bundle a valid ESM page
