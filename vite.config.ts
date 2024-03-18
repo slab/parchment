@@ -11,6 +11,10 @@ export default defineConfig({
     },
     sourcemap: true,
   },
+  esbuild: {
+    // only disabling keepNames is not supported yet
+    minifyIdentifiers: false,
+  },
   test: {
     browser: {
       enabled: true,
