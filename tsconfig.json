@@ -7,7 +7,7 @@
     "declaration": true,
     "declarationDir": "./dist/typings",
     "strict": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "verbatimModuleSyntax": true

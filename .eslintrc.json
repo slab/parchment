@@ -11,7 +11,7 @@
   ],
   "ignorePatterns": ["vite.config.ts", "scripts"],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "require-extensions"],
+  "plugins": ["@typescript-eslint", "require-extensions", "tree-shaking"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -24,6 +24,15 @@
       {
         "argsIgnorePattern": "^_"
       }
-    ]
-  }
+    ],
+    "tree-shaking/no-side-effects-in-initialization": ["error"]
+  },
+  "overrides": [
+    {
+      "files": ["tests/**/*"],
+      "rules": {
+        "tree-shaking/no-side-effects-in-initialization": ["off"]
+      }
+    }
+  ]
 }

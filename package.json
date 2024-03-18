@@ -7,6 +7,7 @@
   "main": "./dist/parchment.js",
   "types": "./dist/parchment.d.ts",
   "type": "module",
+  "sideEffects": false,
   "files": [
     "tsconfig.json",
     "dist",
@@ -16,19 +17,20 @@
     "@arethetypeswrong/cli": "^0.15.1",
     "@microsoft/api-extractor": "^7.42.3",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^6.2.0",
-    "@typescript-eslint/parser": "^6.2.0",
-    "@vitest/browser": "^0.33.0",
-    "del-cli": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitest/browser": "^1.4.0",
+    "del-cli": "^5.1.0",
     "eslint": "^8.46.0",
-    "eslint-config-prettier": "^8.9.0",
-    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-require-extensions": "^0.1.3",
-    "playwright": "^1.36.2",
-    "prettier": "^3.0.0",
-    "typescript": "^5.1.6",
-    "vite": "^4.4.7",
-    "vitest": "^0.33.0"
+    "eslint-plugin-tree-shaking": "^1.12.1",
+    "playwright": "1.42.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6",
+    "vitest": "^1.4.0"
   },
   "prettier": {
     "singleQuote": true
@@ -41,9 +43,8 @@
     "build:types": "tsc --emitDeclarationOnly && api-extractor run && del-cli dist/typings",
     "lint": "eslint 'src/**/*.ts' 'tests/**/*.ts'",
     "prepare": "npm run build",
-    "test": "npm run test:unit && npm run test:types",
-    "test:unit": "vitest",
-    "test:types": "vitest typecheck",
+    "test": "npm run test:unit",
+    "test:unit": "vitest --typecheck",
     "test:pkg": "attw $(npm pack)"
   },
   "bugs": {
