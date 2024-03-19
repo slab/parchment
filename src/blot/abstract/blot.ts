@@ -20,6 +20,17 @@ export interface BlotConstructor {
   defaultChild?: BlotConstructor;
 }
 
+/**
+ * Blots are the basic building blocks of a Parchment document.
+ *
+ * Several basic implementations such as Block, Inline, and Embed are provided.
+ * In general you will want to extend one of these, instead of building from scratch.
+ * After implementation, blots need to be registered before usage.
+ *
+ * At the very minimum a Blot must be named with a static blotName and associated with either a tagName or className.
+ * If a Blot is defined with both a tag and class, the class takes precedence, but the tag may be used as a fallback.
+ * Blots must also have a scope, which determine if it is inline or block.
+ */
 export interface Blot extends LinkedNode {
   scroll: Root;
   parent: Parent;

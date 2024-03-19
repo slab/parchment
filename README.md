@@ -112,9 +112,9 @@ class Blot {
 Implementation for a Blot representing a link, which is a parent, inline scoped, and formattable.
 
 ```typescript
-import Parchment from 'parchment';
+import { InlineBlot, register } from 'parchment';
 
-class LinkBlot extends Parchment.Inline {
+class LinkBlot extends InlineBlot {
   static blotName = 'link';
   static tagName = 'A';
 
@@ -145,7 +145,7 @@ class LinkBlot extends Parchment.Inline {
   }
 }
 
-Parchment.register(LinkBlot);
+register(LinkBlot);
 ```
 
 Quill also provides many great example implementations in its [source code](https://github.com/quilljs/quill/tree/develop/formats).
@@ -189,17 +189,17 @@ class Attributor {
 
 Note custom attributors are instances, rather than class definitions like Blots. Similar to Blots, instead of creating from scratch, you will probably want to use existing Attributor implementations, such as the base [Attributor](#attributor), [Class Attributor](#class-attributor) or [Style Attributor](#style-attributor).
 
-The implementation for Attributors is surprisingly simple, and its [source code](https://github.com/quilljs/parchment/tree/master/src/attributor) may be another source of understanding.
+The implementation for Attributors is surprisingly simple, and its [source code](https://github.com/quilljs/parchment/tree/main/src/attributor) may be another source of understanding.
 
 ### Attributor
 
 Uses a plain attribute to represent formats.
 
 ```js
-import Parchment from 'parchment';
+import { Attributor, register } from 'parchment';
 
-let Width = new Parchment.Attributor.Attribute('width', 'width');
-Parchment.register(Width);
+let Width = new Attributor('width', 'width');
+register(Width);
 
 let imageNode = document.createElement('img');
 
@@ -212,13 +212,13 @@ console.log(imageNode.outerHTML); // Will print <img>
 
 ### Class Attributor
 
-Uses a classname pattern to represent formats.
+Uses a class name pattern to represent formats.
 
 ```js
-import Parchment from 'parchment';
+import { ClassAttributor, register } from 'parchment';
 
-let Align = new Parchment.Attributor.Class('align', 'blot-align');
-Parchment.register(Align);
+let Align = new ClassAttributor('align', 'blot-align');
+register(Align);
 
 let node = document.createElement('div');
 Align.add(node, 'right');
@@ -230,12 +230,12 @@ console.log(node.outerHTML); // Will print <div class="blot-align-right"></div>
 Uses inline styles to represent formats.
 
 ```js
-import Parchment from 'parchment';
+import { StyleAttributor, register } from 'parchment';
 
-let Align = new Parchment.Attributor.Style('align', 'text-align', {
+let Align = new StyleAttributor('align', 'text-align', {
   whitelist: ['right', 'center', 'justify'], // Having no value implies left align
 });
-Parchment.register(Align);
+register(Align);
 
 let node = document.createElement('div');
 Align.add(node, 'right');
