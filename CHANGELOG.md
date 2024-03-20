@@ -1,5 +1,7 @@
 # [Unreleased]
 
+# 3.0.0-rc.0
+
 - Keep identify names in built code bundle
 
 # 3.0.0-beta.0
