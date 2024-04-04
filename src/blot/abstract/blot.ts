@@ -96,8 +96,8 @@ export interface Parent extends Blot {
     index: number,
     length: number,
   ): T[];
-  insertBefore(child: Blot, refNode?: Blot): void;
-  moveChildren(parent: Parent, refNode?: Blot): void;
+  insertBefore(child: Blot, refNode?: Blot | null): void;
+  moveChildren(parent: Parent, refNode?: Blot | null): void;
   path(index: number, inclusive?: boolean): [Blot, number][];
   removeChild(child: Blot): void;
   unwrap(): void;
