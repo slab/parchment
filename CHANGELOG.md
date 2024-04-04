@@ -1,5 +1,7 @@
 # [Unreleased]
 
+# 3.0.0-rc.1
+
 - Allow ref blots to be null
 
 # 3.0.0-rc.0
