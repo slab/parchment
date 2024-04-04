@@ -1,5 +1,7 @@
 # [Unreleased]
 
+- Allow ref blots to be null
+
 # 3.0.0-rc.0
 
 - Keep identify names in built code bundle

@@ -243,7 +243,7 @@ class ParentBlot extends ShadowBlot implements Parent {
     }, 0);
   }
 
-  public moveChildren(targetParent: Parent, refNode?: Blot): void {
+  public moveChildren(targetParent: Parent, refNode?: Blot | null): void {
     this.children.forEach((child) => {
       targetParent.insertBefore(child, refNode);
     });
