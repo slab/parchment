@@ -351,7 +351,7 @@ class ParentBlot extends ShadowBlot implements Parent {
         node.parentNode != null &&
         // @ts-expect-error Fix me later
         node.tagName !== 'IFRAME' &&
-        document.body.compareDocumentPosition(node) &
+        (node.ownerDocument ?? document).body.compareDocumentPosition(node) &
           Node.DOCUMENT_POSITION_CONTAINED_BY
       ) {
         return;

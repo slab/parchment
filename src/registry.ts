@@ -83,7 +83,11 @@ export default class Registry implements RegistryInterface {
       } else if (query & Scope.LEVEL & Scope.INLINE) {
         match = this.types.inline;
       }
-    } else if (query instanceof Element) {
+    } else if (
+      query instanceof HTMLElement ||
+      query instanceof
+        (query.ownerDocument?.defaultView?.HTMLElement ?? HTMLElement)
+    ) {
       const names = (query.getAttribute('class') || '').split(/\s+/);
       names.some((name) => {
         match = this.classes[name];
